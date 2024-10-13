@@ -1,0 +1,8 @@
+{
+  "editor.formatOnSave": true, // 저장 시 포맷팅 실행
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true // 저장 시 ESLint 문제 해결
+  },
+  "eslint.validate": ["javascript", "typescript", "typescriptreact"],
+  "prettier.requireConfig": true // Prettier 설정 강제
+}
