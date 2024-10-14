@@ -1,19 +1,19 @@
-import CustomNoRowsOverlay from "@/components/common/layout/overlay/DatagridOverlay";
-import DefaultGrid from "@/components/schema/v2/DefaultGrid";
-import EditAccessAtom from "@/config/type/access/state";
-import { initialPaymentData, Payment } from "@/config/type/default/payment";
-import { Box, Chip, Drawer, Typography } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import db from "@/api/module";
-import PaymentAuditFilter from "./PaymentAuditFilter";
-import PaymentDataGridAtom from "./state";
-import DefaultToolbar from "./lib/DefaultToolbar";
-import { buttonOptions, DrawerType, OpenType } from "./lib";
-import PaymentDetailDrawer from "./lib/PaymentDetailDrawer";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
-import PaymentMobile from "./lib/PaymentMobile";
+import CustomNoRowsOverlay from 'package/src/Overlay/DatagridOverlay';
+import DefaultGrid from '@/components/schema/DefaultGrid';
+import EditAccessAtom from '@/config/type/access/state';
+import { initialPaymentData, Payment } from '@/config/type/default/payment';
+import { Box, Chip, Drawer, Typography } from '@mui/material';
+import { GridColDef } from '@mui/x-data-grid';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import db from '@/api/module';
+import PaymentAuditFilter from './PaymentAuditFilter';
+import PaymentDataGridAtom from './state';
+import DefaultToolbar from './lib/DefaultToolbar';
+import { buttonOptions, DrawerType, OpenType } from './lib';
+import PaymentDetailDrawer from './lib/PaymentDetailDrawer';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
+import PaymentMobile from './lib/PaymentMobile';
 
 interface PaymentRows {
   rows: Payment[];
@@ -22,7 +22,7 @@ interface PaymentRows {
 
 const PaymentAudit = () => {
   const [loading, setLoading] = useState(false);
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
   const [rows, setRows] = useState<PaymentRows>({ rows: [], total: 0 });
   const [selectedRow, setSelectedRow] = useState<Payment>(initialPaymentData);
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
@@ -37,71 +37,71 @@ const PaymentAudit = () => {
   const columns = useMemo<GridColDef[]>(
     () => [
       {
-        field: "studentName",
-        headerName: "이름",
+        field: 'studentName',
+        headerName: '이름',
         width: 100,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "paymentDate",
-        headerName: "결제일",
+        field: 'paymentDate',
+        headerName: '결제일',
         width: 180,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "confirmationDate",
-        headerName: "결제처리일",
+        field: 'confirmationDate',
+        headerName: '결제처리일',
         width: 180,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "paymentType",
-        headerName: "수강정보",
+        field: 'paymentType',
+        headerName: '수강정보',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => (
           <Chip
             sx={{ borderWidth: 2 }}
             size="small"
             variant="outlined"
             label={
-              params.row.paymentType === "regular" ? "정기결제" : "회차결제"
+              params.row.paymentType === 'regular' ? '정기결제' : '회차결제'
             }
-            color={params.row.paymentType === "regular" ? "info" : "warning"}
+            color={params.row.paymentType === 'regular' ? 'info' : 'warning'}
           />
         ),
       },
       {
-        field: "confirmationId",
-        headerName: "결제 처리인",
+        field: 'confirmationId',
+        headerName: '결제 처리인',
         width: 180,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "method",
-        headerName: "결제수단",
+        field: 'method',
+        headerName: '결제수단',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => {
           const methodMap: Record<
             string,
-            { label: string; color: "primary" | "info" | "success" | "warning" }
+            { label: string; color: 'primary' | 'info' | 'success' | 'warning' }
           > = {
-            card: { label: "카드", color: "primary" },
-            account: { label: "계좌", color: "info" },
-            cash: { label: "현금", color: "success" },
-            other: { label: "기타", color: "warning" },
+            card: { label: '카드', color: 'primary' },
+            account: { label: '계좌', color: 'info' },
+            cash: { label: '현금', color: 'success' },
+            other: { label: '기타', color: 'warning' },
           };
 
           const { label, color } = methodMap[params.row.method] || {
-            label: "알수없음",
-            color: "default" as "primary",
+            label: '알수없음',
+            color: 'default' as 'primary',
           };
 
           return (
@@ -116,22 +116,22 @@ const PaymentAudit = () => {
         },
       },
       {
-        field: "amount",
-        headerName: "금액",
+        field: 'amount',
+        headerName: '금액',
         width: 100,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
     ],
-    []
+    [],
   );
 
   const getRows = useCallback(async () => {
     setLoading(true);
     try {
       const { data: { items = [], totalItems = 0 } = {} } = await db.search(
-        "payment",
-        { pagination, options: { ...dataGridPaymentState } }
+        'payment',
+        { pagination, options: { ...dataGridPaymentState } },
       );
 
       setRows({ rows: items, total: totalItems });
@@ -144,7 +144,7 @@ const PaymentAudit = () => {
   };
 
   const NoRowsMessageOverlay = () => (
-    <CustomNoRowsOverlay message={"데이터가 존재하지 않습니다!"} />
+    <CustomNoRowsOverlay message={'데이터가 존재하지 않습니다!'} />
   );
 
   useEffect(() => {
@@ -213,10 +213,10 @@ const PaymentAudit = () => {
               setDrawertype(OpenType.update);
               setDrawerState(DrawerType.form);
             }}
-            onRowSelectionModelChange={([rowId = ""]) => {
+            onRowSelectionModelChange={([rowId = '']) => {
               if (!rowId) return;
               const row =
-                rows.rows.find(({ id = "" }) => rowId === id) ??
+                rows.rows.find(({ id = '' }) => rowId === id) ??
                 initialPaymentData;
               setSelectedRow(row);
             }}
@@ -226,15 +226,15 @@ const PaymentAudit = () => {
 
       <Drawer
         open={DrawerType.none !== drawerState}
-        onClose={(e, reason: "backdropClick" | "escapeKeyDown") => {
-          if (["backdropClick", "escapeKeyDown"].includes(reason)) {
+        onClose={(e, reason: 'backdropClick' | 'escapeKeyDown') => {
+          if (['backdropClick', 'escapeKeyDown'].includes(reason)) {
             setDrawerState(DrawerType.none);
           }
         }}
         anchor="right"
       >
         {DrawerType.none !== drawerState && (
-          <Box sx={{ background: "white", width: 400, height: "100%" }}>
+          <Box sx={{ background: 'white', width: 400, height: '100%' }}>
             <PaymentDetailDrawer
               row={selectedRow}
               setDrawerState={setDrawerState}

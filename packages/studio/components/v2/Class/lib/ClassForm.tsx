@@ -1,4 +1,4 @@
-import { Class } from "@/config/type/default/class";
+import { Class } from '@/config/type/default/class';
 import {
   Box,
   Button,
@@ -6,14 +6,14 @@ import {
   Slider,
   TextField,
   Typography,
-} from "@mui/material";
-import { DrawerType, OpenType } from "..";
-import CloseIcon from "@mui/icons-material/Close";
-import { useEffect, useState } from "react";
-import AlertModal from "../../Alert/Modal";
-import db from "@/api/module";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import { DrawerType, OpenType } from '..';
+import CloseIcon from '@mui/icons-material/Close';
+import { useEffect, useState } from 'react';
+import AlertModal from 'package/src/Modal/AlertModal';
+import db from '@/api/module';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 interface Props {
   row: Class;
@@ -31,8 +31,8 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
   const handleOpen = () => setOpen(true);
 
   const handleSubmit = async () => {
-    const { id = "", name = "", price = 0 } = data;
-    if (!name) return toast.error("날짜를 설정해주세요!");
+    const { id = '', name = '', price = 0 } = data;
+    if (!name) return toast.error('날짜를 설정해주세요!');
 
     setLoading(true);
 
@@ -42,15 +42,15 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
         name,
         price,
       };
-      if (id) await db.update("class", form);
-      else await db.create("class", form);
+      if (id) await db.update('class', form);
+      else await db.create('class', form);
 
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
       handleClose();
       getRows();
       setDrawerState(DrawerType.none);
     } catch {
-      toast.error("저장에 실패했습니다.");
+      toast.error('저장에 실패했습니다.');
     }
 
     setLoading(false);
@@ -58,13 +58,13 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
 
   return (
     <>
-      <Box sx={{ width: "100%", p: 3, height: "90%" }}>
+      <Box sx={{ width: '100%', p: 3, height: '90%' }}>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "5%",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '5%',
             mb: 5,
           }}
         >
@@ -73,35 +73,35 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
               setDrawerState(DrawerType.none);
             }}
           >
-            <CloseIcon sx={{ flexShrink: 0, fontSize: "20px" }} />
+            <CloseIcon sx={{ flexShrink: 0, fontSize: '20px' }} />
           </ButtonBase>
           <Typography
             variant="subtitle1"
             sx={{
-              color: "text.primary",
-              textAlign: "center",
+              color: 'text.primary',
+              textAlign: 'center',
               flexGrow: 1,
-              width: "100%",
+              width: '100%',
             }}
           >
-            {row?.id ? "과목 정보 수정" : "과목 등록"}
+            {row?.id ? '과목 정보 수정' : '과목 등록'}
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />{" "}
+          <Box sx={{ flexGrow: 1 }} />{' '}
         </Box>
 
-        <Box sx={{ height: "85%" }}>
+        <Box sx={{ height: '85%' }}>
           <Box
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               my: 6,
             }}
           >
             <Box
               sx={{
-                width: "25%",
+                width: '25%',
               }}
             >
               <Typography variant="body1" fontWeight="bold" fontSize="14px">
@@ -120,12 +120,12 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
                 shrink: true,
               }}
               sx={{
-                height: "40px",
-                "& .MuiOutlinedInput-root": {
-                  height: "40px",
-                  "& input": {
-                    height: "40px",
-                    padding: "0 14px",
+                height: '40px',
+                '& .MuiOutlinedInput-root': {
+                  height: '40px',
+                  '& input': {
+                    height: '40px',
+                    padding: '0 14px',
                   },
                 },
               }}
@@ -133,16 +133,16 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
           </Box>
           <Box
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               my: 6,
             }}
           >
             <Box
               sx={{
-                width: "25%",
+                width: '25%',
               }}
             >
               <Typography variant="body1" fontWeight="bold" fontSize="14px">
@@ -151,7 +151,7 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
             </Box>
             <Slider
               aria-label="Custom marks"
-              sx={{ color: "info.main" }}
+              sx={{ color: 'info.main' }}
               defaultValue={data?.price || 0}
               step={10000}
               marks
@@ -168,13 +168,13 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
           </Box>
         </Box>
 
-        <Box sx={{ height: "10%" }}>
+        <Box sx={{ height: '10%' }}>
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
+              display: 'flex',
+              flexDirection: 'row',
               pt: 2,
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
             }}
           >
             <Button
@@ -182,14 +182,14 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
               disabled={loading}
               sx={{
                 background: (theme) => theme.palette.background.default,
-                height: "40px",
-                width: "40%",
+                height: '40px',
+                width: '40%',
               }}
               onClick={() => {
                 setDrawerState(DrawerType.none);
               }}
             >
-              <Box style={{ width: "100%", justifyContent: "center" }}>
+              <Box style={{ width: '100%', justifyContent: 'center' }}>
                 <Typography variant="h5" color="text.primary" fontWeight="bold">
                   취소하기
                 </Typography>
@@ -201,11 +201,11 @@ const ClassForm = ({ row, type, getRows, setDrawerState }: Props) => {
               disabled={loading}
               sx={{
                 background: (theme) => theme.palette.primary.main,
-                height: "40px",
-                width: "40%",
+                height: '40px',
+                width: '40%',
               }}
             >
-              <Box style={{ width: "100%", justifyContent: "center" }}>
+              <Box style={{ width: '100%', justifyContent: 'center' }}>
                 <Typography variant="h5" fontWeight="bold">
                   저장하기
                 </Typography>

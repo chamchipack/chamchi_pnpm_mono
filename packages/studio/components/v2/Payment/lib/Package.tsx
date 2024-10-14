@@ -16,22 +16,22 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-} from "@mui/material";
-import { Rows } from ".";
-import { useRef, useState } from "react";
-import moment from "moment";
-import AlertModal from "../../Alert/Modal";
-import { useSession } from "next-auth/react";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import db from "@/api/module";
+} from '@mui/material';
+import { Rows } from '.';
+import { useRef, useState } from 'react';
+import moment from 'moment';
+import AlertModal from 'package/src/Modal/AlertModal';
+import { useSession } from 'next-auth/react';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import db from '@/api/module';
 
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import { AnimatePresence, motion } from "framer-motion";
-import { SearchSharp } from "@mui/icons-material";
-import { useRecoilValue } from "recoil";
-import EditAccessAtom from "@/config/type/access/state";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { AnimatePresence, motion } from 'framer-motion';
+import { SearchSharp } from '@mui/icons-material';
+import { useRecoilValue } from 'recoil';
+import EditAccessAtom from '@/config/type/access/state';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
 interface Props {
   rows: Rows[];
   getRows: () => void;
@@ -43,14 +43,14 @@ type ClickEvent = {
 
 const Package = ({ rows, getRows }: Props) => {
   const { data: session } = useSession();
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
 
   const editAccessState = useRecoilValue(EditAccessAtom);
   const [target, setTarget] = useState<Rows[]>(rows);
   const [data, setData] = useState<Rows>();
   const [processing, setProcessing] = useState(false);
 
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const handleChange = (event: any) => {
     setPaymentMethod(event.target.value);
@@ -63,15 +63,15 @@ const Package = ({ rows, getRows }: Props) => {
   const searchKeywordRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if ("Enter" === e.key) {
+    if ('Enter' === e.key) {
       e.preventDefault();
 
       if (!searchKeywordRef.current?.value) setTarget(rows);
       else
         setTarget(
           rows.filter(
-            ({ name }) => name === (searchKeywordRef.current?.value as string)
-          )
+            ({ name }) => name === (searchKeywordRef.current?.value as string),
+          ),
         );
     }
   };
@@ -93,7 +93,7 @@ const Package = ({ rows, getRows }: Props) => {
   };
 
   const handleSubmit = async (multiple = false) => {
-    if (!paymentMethod) return toast.error("결제 방식을 선택해주세요");
+    if (!paymentMethod) return toast.error('결제 방식을 선택해주세요');
     setProcessing(true);
 
     const paymentTarget = multiple
@@ -102,22 +102,22 @@ const Package = ({ rows, getRows }: Props) => {
 
     try {
       for (let item of paymentTarget) {
-        const { id = "", ...rest } = item;
+        const { id = '', ...rest } = item;
         if (!id) continue;
 
         const paymentForm = {
-          studentId: id || "",
+          studentId: id || '',
           studentName: rest.name,
-          sessionId: rest.sessionId[0] || "",
-          sessionName: "",
-          classId: rest.classId[0] || "",
-          className: "",
-          instructorId: "",
-          confirmationId: session?.user?.id || "",
-          paymentDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+          sessionId: rest.sessionId[0] || '',
+          sessionName: '',
+          classId: rest.classId[0] || '',
+          className: '',
+          instructorId: '',
+          confirmationId: session?.user?.id || '',
+          paymentDate: moment().format('YYYY-MM-DD HH:mm:ss'),
           paymentType: rest.paymentType,
-          confirmationDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-          paymentYearMonth: moment().format("YYYY-MM"),
+          confirmationDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+          paymentYearMonth: moment().format('YYYY-MM'),
           amount: rest?.price ?? 0,
           method: paymentMethod, // cash, card, account
         };
@@ -138,19 +138,19 @@ const Package = ({ rows, getRows }: Props) => {
         const delay = (ms: number) =>
           new Promise((resolve) => setTimeout(resolve, ms));
 
-        await db.update("student", studentForm);
+        await db.update('student', studentForm);
 
         await delay(500);
 
-        await db.create("payment", paymentForm);
+        await db.create('payment', paymentForm);
 
         // await delay(500);
 
-        toast.success("정상적으로 처리 되었습니다.");
+        toast.success('정상적으로 처리 되었습니다.');
       }
       getRows();
     } catch {
-      toast.error("저장에 실패했습니다.");
+      toast.error('저장에 실패했습니다.');
     }
     setProcessing(false);
 
@@ -165,14 +165,14 @@ const Package = ({ rows, getRows }: Props) => {
     <>
       <Box
         sx={{
-          minWidth: "90%",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          minWidth: '90%',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           mb: 2,
           p: 0,
-          position: "sticky",
+          position: 'sticky',
           top: 0,
           height: 70,
           background: (theme) => theme.palette.background.default,
@@ -191,17 +191,17 @@ const Package = ({ rows, getRows }: Props) => {
                 acc += `#${item} `;
                 // if (key === "district" && !value.length) acc += "#전체 ";
                 return acc;
-              }, "")}
+              }, '')}
             </Typography>
           ) : (
-            ""
+            ''
           )}
         </Box>
         {!isMobile && (
           <Box>
             <FormControl
               size="small"
-              style={{ marginLeft: "auto", maxWidth: "300px" }}
+              style={{ marginLeft: 'auto', maxWidth: '300px' }}
             >
               <OutlinedInput
                 id="search"
@@ -210,7 +210,7 @@ const Package = ({ rows, getRows }: Props) => {
                 sx={{
                   borderRadius: 8,
                   border: (theme) => `2px solid ${theme.palette.primary.main}`,
-                  "> fieldset": { border: 0 },
+                  '> fieldset': { border: 0 },
                 }}
                 type="text"
                 onKeyDown={handleKeyDownSearch}
@@ -225,8 +225,8 @@ const Package = ({ rows, getRows }: Props) => {
                             rows.filter(
                               ({ name }) =>
                                 name ===
-                                (searchKeywordRef.current?.value as string)
-                            )
+                                (searchKeywordRef.current?.value as string),
+                            ),
                           );
                       }}
                       onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
@@ -262,18 +262,18 @@ const Package = ({ rows, getRows }: Props) => {
                       handleButtonClick(item.id, item.name as string)
                     }
                     sx={{
-                      cursor: item.rowStatus === "needCharge" ? "pointer" : "",
-                      maxWidth: "100%",
-                      "&:hover": {
+                      cursor: item.rowStatus === 'needCharge' ? 'pointer' : '',
+                      maxWidth: '100%',
+                      '&:hover': {
                         background: (theme) =>
-                          item.rowStatus === "needCharge"
+                          item.rowStatus === 'needCharge'
                             ? event[item.id as string]
                               ? `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.success.light})`
                               : `linear-gradient(to right, ${theme.palette.info.main}, ${theme.palette.secondary.main})`
                             : alpha(theme.palette.grey[400], 0.8),
                       },
                       background: (theme) =>
-                        item.rowStatus === "needCharge"
+                        item.rowStatus === 'needCharge'
                           ? event[item.id as string]
                             ? `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.success.main})`
                             : `linear-gradient(to right, ${theme.palette.info.main}, ${theme.palette.secondary.dark})`
@@ -290,9 +290,9 @@ const Package = ({ rows, getRows }: Props) => {
                         //     ? theme.palette.secondary.light
                         //     : theme.palette.background.default,
                         borderRadius: 3,
-                        display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "space-between",
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
                       }}
                     >
                       <Typography
@@ -304,38 +304,38 @@ const Package = ({ rows, getRows }: Props) => {
                         {item.name}
                       </Typography>
                       <Box
-                        sx={{ display: "flex", flexDirection: "row", mt: 1 }}
+                        sx={{ display: 'flex', flexDirection: 'row', mt: 1 }}
                       >
                         <Chip
                           sx={{
                             borderWidth: 2,
                             mr: 1,
-                            color: "white",
-                            borderColor: "white",
+                            color: 'white',
+                            borderColor: 'white',
                           }}
                           size="small"
                           variant="outlined"
-                          label={item.type === "lesson" ? "레슨" : "수업"}
+                          label={item.type === 'lesson' ? '레슨' : '수업'}
                           // color={item.type === "lesson" ? "primary" : "success"}
                         />
                         <Chip
                           sx={{
                             borderWidth: 2,
                             color:
-                              item.paymentType === "regular"
-                                ? "white"
-                                : "warning.main",
+                              item.paymentType === 'regular'
+                                ? 'white'
+                                : 'warning.main',
                             borderColor:
-                              item.paymentType === "regular"
-                                ? "white"
-                                : "warning.main",
+                              item.paymentType === 'regular'
+                                ? 'white'
+                                : 'warning.main',
                           }}
                           size="small"
                           variant="outlined"
                           label={
-                            item.paymentType === "regular"
-                              ? "정기결제"
-                              : "회차결제"
+                            item.paymentType === 'regular'
+                              ? '정기결제'
+                              : '회차결제'
                           }
                           // color={
                           //   item.paymentType === "regular" ? "info" : "warning"
@@ -347,9 +347,9 @@ const Package = ({ rows, getRows }: Props) => {
                     <Box sx={{ p: 1, pl: 2 }}>
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
                         }}
                       >
                         <Typography
@@ -358,7 +358,7 @@ const Package = ({ rows, getRows }: Props) => {
                           sx={{ mr: 1.5 }}
                         >
                           레슨 전체 횟수
-                        </Typography>{" "}
+                        </Typography>{' '}
                         <Typography variant="subtitle2" color="white">
                           {item.lessonBasedPayment.total}회
                         </Typography>
@@ -366,10 +366,10 @@ const Package = ({ rows, getRows }: Props) => {
 
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
+                          display: 'flex',
+                          flexDirection: 'row',
                           mt: 1,
-                          alignItems: "center",
+                          alignItems: 'center',
                         }}
                       >
                         <Typography
@@ -378,7 +378,7 @@ const Package = ({ rows, getRows }: Props) => {
                           sx={{ mr: 1.5 }}
                         >
                           미결제 레슨 횟수
-                        </Typography>{" "}
+                        </Typography>{' '}
                         <Typography variant="subtitle2" color="white">
                           {item.lessonBasedPayment.over}회
                         </Typography>
@@ -386,7 +386,7 @@ const Package = ({ rows, getRows }: Props) => {
                     </Box>
 
                     <Box
-                      sx={{ mt: 2, display: "flex", justifyContent: "center" }}
+                      sx={{ mt: 2, display: 'flex', justifyContent: 'center' }}
                     >
                       <Button
                         fullWidth
@@ -403,17 +403,17 @@ const Package = ({ rows, getRows }: Props) => {
                         }}
                         sx={{
                           width: 150,
-                          "&:hover": {
+                          '&:hover': {
                             backgroundColor: (theme) =>
                               theme.palette.warning.dark,
                             border: (theme) =>
                               `2px solid ${theme.palette.warning.dark}`,
                           },
                           pointerEvents:
-                            "needCharge" === item.rowStatus ? "auto" : "none",
-                          color: "primary.contrastText",
+                            'needCharge' === item.rowStatus ? 'auto' : 'none',
+                          color: 'primary.contrastText',
                           background: (theme) =>
-                            item.rowStatus === "needCharge"
+                            item.rowStatus === 'needCharge'
                               ? theme.palette.warning.main
                               : theme.palette.text.disabled,
                           borderRadius: 1,
@@ -421,15 +421,15 @@ const Package = ({ rows, getRows }: Props) => {
                           pl: 1,
                           border: (theme) =>
                             `2px solid ${
-                              item.rowStatus === "needCharge"
+                              item.rowStatus === 'needCharge'
                                 ? theme.palette.warning.main
                                 : theme.palette.grey[200]
                             }`,
                         }}
                       >
-                        {item.rowStatus === "completed"
-                          ? "결제완료"
-                          : "결제하기"}
+                        {item.rowStatus === 'completed'
+                          ? '결제완료'
+                          : '결제하기'}
                       </Button>
                     </Box>
                   </Card>
@@ -448,12 +448,12 @@ const Package = ({ rows, getRows }: Props) => {
         <Box
           sx={{
             background: (theme) => theme.palette.background.default,
-            display: "flex",
-            justifyContent: "start",
-            position: "sticky",
+            display: 'flex',
+            justifyContent: 'start',
+            position: 'sticky',
             bottom: 0,
             mt: 2,
-            width: "100%",
+            width: '100%',
             height: 40,
           }}
         >
@@ -468,8 +468,8 @@ const Package = ({ rows, getRows }: Props) => {
               mb: 1,
               borderRadius: 1,
               border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-              borderColor: "success.main",
-              color: "success.main",
+              borderColor: 'success.main',
+              color: 'success.main',
             }}
             onClick={() => setOpen(true)}
           >
@@ -481,7 +481,7 @@ const Package = ({ rows, getRows }: Props) => {
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.success.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />

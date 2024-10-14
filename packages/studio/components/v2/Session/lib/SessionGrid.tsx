@@ -1,30 +1,30 @@
-import CustomNoRowsOverlay from "@/components/common/layout/overlay/DatagridOverlay";
-import DefaultGrid from "@/components/schema/v2/DefaultGrid";
+import CustomNoRowsOverlay from 'package/src/Overlay/DatagridOverlay';
+import DefaultGrid from '@/components/schema/DefaultGrid';
 import {
   Session,
   initialSessionData,
   LessionTime,
   TimeSet,
   Day,
-} from "@/config/type/default/session";
-import { Box, Button, Chip, Drawer, Typography } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { DrawerType, OpenType, buttonOptions } from ".";
-import SessionForm from "../SessionForm";
-import db from "@/api/module";
-import moment from "moment";
-import { useRecoilState, useRecoilValue } from "recoil";
-import SessionDataGridAtom from "./state";
-import DefaultToolbar from "./GridToolbar";
-import EditAccessAtom from "@/config/type/access/state";
-import AlertModal from "../../Alert/Modal";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import SessionFilter from "./SessionFilter";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
-import useIsRendering from "package/src/hooks/useRenderStatus";
-import SessionMobile from "../SessionMobile";
+} from '@/config/type/default/session';
+import { Box, Button, Chip, Drawer, Typography } from '@mui/material';
+import { GridColDef } from '@mui/x-data-grid';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { DrawerType, OpenType, buttonOptions } from '.';
+import SessionForm from '../SessionForm';
+import db from '@/api/module';
+import moment from 'moment';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import SessionDataGridAtom from './state';
+import DefaultToolbar from './GridToolbar';
+import EditAccessAtom from '@/config/type/access/state';
+import AlertModal from 'package/src/Modal/AlertModal';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import SessionFilter from './SessionFilter';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
+import useIsRendering from 'package/src/hooks/useRenderStatus';
+import SessionMobile from '../SessionMobile';
 
 interface SessionRows {
   rows: Session[];
@@ -34,17 +34,17 @@ interface SessionRows {
 const weeks: {
   [key in string]: string;
 } = {
-  "0": "일",
-  "1": "월",
-  "2": "화",
-  "3": "수",
-  "4": "목",
-  "5": "금",
-  "6": "토",
+  '0': '일',
+  '1': '월',
+  '2': '화',
+  '3': '수',
+  '4': '목',
+  '5': '금',
+  '6': '토',
 };
 
 const SessionGrid = () => {
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
   const isRendering = useIsRendering();
 
   const [loading, setLoading] = useState(false);
@@ -67,34 +67,34 @@ const SessionGrid = () => {
   const columns = useMemo<GridColDef[]>(
     () => [
       {
-        field: "name",
-        headerName: "이름",
+        field: 'name',
+        headerName: '이름',
         width: 100,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "type",
-        headerName: "수강 타입",
+        field: 'type',
+        headerName: '수강 타입',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => (
           <Chip
             sx={{ borderWidth: 2 }}
             size="small"
             variant="outlined"
-            label={params.row.type === "lesson" ? "레슨" : "클래스"}
-            color={params.row.type === "lesson" ? "primary" : "success"}
+            label={params.row.type === 'lesson' ? '레슨' : '클래스'}
+            color={params.row.type === 'lesson' ? 'primary' : 'success'}
           />
         ),
       },
       {
-        field: "regularDays",
-        headerName: "수강일",
+        field: 'regularDays',
+        headerName: '수강일',
         width: 130,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => {
           if (!params.row.regularDays) return null;
           return params.row.regularDays.map((item: string) => (
@@ -103,22 +103,22 @@ const SessionGrid = () => {
               size="small"
               variant="outlined"
               label={weeks[item]}
-              color={["0", "6"].includes(item) ? "error" : "info"}
+              color={['0', '6'].includes(item) ? 'error' : 'info'}
             />
           ));
         },
       },
       {
-        field: "lessonTimes",
-        headerName: "수강 시간",
+        field: 'lessonTimes',
+        headerName: '수강 시간',
         width: 280,
-        headerAlign: "center",
-        align: "right",
+        headerAlign: 'center',
+        align: 'right',
         renderCell: (params) => {
           if (!params.row.lessonTimes) return null;
           return Object.entries(params.row.lessonTimes).map(
-            ([k = "", lessonTime = {}]) => {
-              const { stime = "", etime = "" } = lessonTime as {
+            ([k = '', lessonTime = {}]) => {
+              const { stime = '', etime = '' } = lessonTime as {
                 stime: string;
                 etime: string;
               };
@@ -127,24 +127,24 @@ const SessionGrid = () => {
                   <Typography
                     variant="caption"
                     component="span"
-                    color={["0", "6"].includes(k) ? "error.main" : "info.main"}
+                    color={['0', '6'].includes(k) ? 'error.main' : 'info.main'}
                   >
-                    {weeks[k]} :{" "}
+                    {weeks[k]} :{' '}
                   </Typography>
                   {`${stime as string} ~ ${etime as string}`}
                 </Typography>
               );
-            }
+            },
           );
         },
       },
     ],
-    []
+    [],
   );
 
   const handleSubmit = async () => {
     setLoading(true);
-    if (!selectedRow?.id) return toast.error("선택된 세션이 없습니다!");
+    if (!selectedRow?.id) return toast.error('선택된 세션이 없습니다!');
     const { regularDays = [], lessonTimes = {} } = selectedRow;
 
     const filteredLessonTimes: LessionTime = {};
@@ -160,9 +160,9 @@ const SessionGrid = () => {
     };
 
     try {
-      await db.update("session", submitForm);
+      await db.update('session', submitForm);
 
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
 
       handleClose();
 
@@ -171,7 +171,7 @@ const SessionGrid = () => {
       getRows();
       setDrawerState(DrawerType.none);
     } catch (e) {
-      toast.error("저장에 실패했습니다!");
+      toast.error('저장에 실패했습니다!');
     }
     setLoading(false);
   };
@@ -180,8 +180,8 @@ const SessionGrid = () => {
     setLoading(true);
     try {
       const { data: { items = [], totalItems = 0 } = {} } = await db.search(
-        "session",
-        { pagination, options: { ...datagridSessionState } }
+        'session',
+        { pagination, options: { ...datagridSessionState } },
       );
 
       setRows({ rows: items, total: totalItems });
@@ -214,7 +214,7 @@ const SessionGrid = () => {
     />
   );
   const NoRowsMessageOverlay = () => (
-    <CustomNoRowsOverlay message={"데이터가 존재하지 않습니다!"} />
+    <CustomNoRowsOverlay message={'데이터가 존재하지 않습니다!'} />
   );
 
   return (
@@ -250,10 +250,10 @@ const SessionGrid = () => {
               setDrawertype(OpenType.update);
               setDrawerState(DrawerType.form);
             }}
-            onRowSelectionModelChange={([rowId = ""]) => {
+            onRowSelectionModelChange={([rowId = '']) => {
               if (!rowId) return;
               const row =
-                rows.rows.find(({ id = "" }) => rowId === id) ??
+                rows.rows.find(({ id = '' }) => rowId === id) ??
                 initialSessionData;
               setSelectedRow(row);
             }}
@@ -274,15 +274,15 @@ const SessionGrid = () => {
 
       <Drawer
         open={DrawerType.none !== drawerState}
-        onClose={(e, reason: "backdropClick" | "escapeKeyDown") => {
-          if (["backdropClick", "escapeKeyDown"].includes(reason)) {
+        onClose={(e, reason: 'backdropClick' | 'escapeKeyDown') => {
+          if (['backdropClick', 'escapeKeyDown'].includes(reason)) {
             setDrawerState(DrawerType.none);
           }
         }}
         anchor="right"
       >
         {DrawerType.none !== drawerState && (
-          <Box sx={{ background: "white", width: 400, height: "100%", p: 3 }}>
+          <Box sx={{ background: 'white', width: 400, height: '100%', p: 3 }}>
             <SessionForm
               form={
                 drawerType === OpenType.create
@@ -296,12 +296,12 @@ const SessionGrid = () => {
               variant="contained"
               sx={{
                 background: (theme) => theme.palette.primary.main,
-                height: "40px",
-                width: "100%",
+                height: '40px',
+                width: '100%',
               }}
               onClick={handleOpen}
             >
-              <Box style={{ width: "100%", justifyContent: "center" }}>
+              <Box style={{ width: '100%', justifyContent: 'center' }}>
                 <Typography variant="h5" color="inherit" fontWeight="bold">
                   저장
                 </Typography>

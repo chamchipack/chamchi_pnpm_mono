@@ -16,24 +16,24 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
-} from "@mui/material";
-import { Rows } from ".";
-import { useEffect, useRef, useState } from "react";
-import moment from "moment";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import { AnimatePresence } from "framer-motion";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import { useSession } from "next-auth/react";
-import AlertModal from "../../Alert/Modal";
+} from '@mui/material';
+import { Rows } from '.';
+import { useEffect, useRef, useState } from 'react';
+import moment from 'moment';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { AnimatePresence } from 'framer-motion';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useSession } from 'next-auth/react';
+import AlertModal from 'package/src/Modal/AlertModal';
 
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import db from "@/api/module";
-import { useRecoilValue } from "recoil";
-import PaymentDataAtom from "./state";
-import { SearchSharp } from "@mui/icons-material";
-import EditAccessAtom from "@/config/type/access/state";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import db from '@/api/module';
+import { useRecoilValue } from 'recoil';
+import PaymentDataAtom from './state';
+import { SearchSharp } from '@mui/icons-material';
+import EditAccessAtom from '@/config/type/access/state';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
 interface Props {
   rows: Rows[];
@@ -47,7 +47,7 @@ type ClickEvent = {
 const Regular = ({ rows, getRows }: Props) => {
   const { data: session } = useSession();
   const editAccessState = useRecoilValue(EditAccessAtom);
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
 
   const [target, setTarget] = useState<Rows[]>(rows);
   const [data, setData] = useState<Rows>();
@@ -59,20 +59,20 @@ const Regular = ({ rows, getRows }: Props) => {
   const searchKeywordRef = useRef<HTMLInputElement>(null);
 
   const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if ("Enter" === e.key) {
+    if ('Enter' === e.key) {
       e.preventDefault();
 
       if (!searchKeywordRef.current?.value) setTarget(rows);
       else
         setTarget(
           rows.filter(
-            ({ name }) => name === (searchKeywordRef.current?.value as string)
-          )
+            ({ name }) => name === (searchKeywordRef.current?.value as string),
+          ),
         );
     }
   };
 
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const handleChange = (event: any) => {
     setPaymentMethod(event.target.value);
@@ -103,7 +103,7 @@ const Regular = ({ rows, getRows }: Props) => {
   const handleClose = () => setOpen(false);
 
   const handleSubmit = async (multiple = false) => {
-    if (!paymentMethod) return toast.error("결제 방식을 선택해주세요");
+    if (!paymentMethod) return toast.error('결제 방식을 선택해주세요');
     setProcessing(true);
 
     const delay = (ms: number) =>
@@ -115,46 +115,46 @@ const Regular = ({ rows, getRows }: Props) => {
 
     try {
       for (let item of paymentTarget) {
-        const { id = "", ...rest } = item;
+        const { id = '', ...rest } = item;
         if (!id) continue;
 
         const paymentForm = {
           studentId: id,
           studentName: rest.name,
-          sessionId: rest.sessionId[0] || "",
-          sessionName: "",
-          classId: rest.classId[0] || "",
-          className: "",
-          instructorId: "",
-          confirmationId: session?.user?.id || "",
-          paymentDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+          sessionId: rest.sessionId[0] || '',
+          sessionName: '',
+          classId: rest.classId[0] || '',
+          className: '',
+          instructorId: '',
+          confirmationId: session?.user?.id || '',
+          paymentDate: moment().format('YYYY-MM-DD HH:mm:ss'),
           paymentType: rest.paymentType,
-          confirmationDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-          paymentYearMonth: moment(dateState.paymentDate).format("YYYY-MM"),
+          confirmationDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+          paymentYearMonth: moment(dateState.paymentDate).format('YYYY-MM'),
           amount: rest?.price ?? 0,
           method: paymentMethod,
         };
 
         const lastDay =
-          rest?.regularPayment?.nextDueDate || moment().format("YYYY-MM-DD");
+          rest?.regularPayment?.nextDueDate || moment().format('YYYY-MM-DD');
 
         const studentForm = {
           id,
           regularPayment: {
             lastPaymentDate: lastDay,
-            nextDueDate: moment(lastDay).add(1, "months").format("YYYY-MM-DD"),
+            nextDueDate: moment(lastDay).add(1, 'months').format('YYYY-MM-DD'),
           },
         };
 
-        await db.update("student", studentForm);
+        await db.update('student', studentForm);
         await delay(500);
-        await db.create("payment", paymentForm);
+        await db.create('payment', paymentForm);
         await delay(500);
       }
       getRows();
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
     } catch {
-      toast.error("저장에 실패했습니다.");
+      toast.error('저장에 실패했습니다.');
     }
     handleClose();
 
@@ -165,41 +165,41 @@ const Regular = ({ rows, getRows }: Props) => {
     <>
       <Box
         sx={{
-          minWidth: "90%",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
+          minWidth: '90%',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           mb: 2,
           p: 0,
           // position: "sticky",
           zIndex: 99,
           top: 0,
-          height: "15%",
+          height: '15%',
           background: (theme) => theme.palette.background.default,
         }}
       >
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            height: "100%",
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
           }}
         >
           <Box
             style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
-            sx={{ width: "120px", mt: 1, mb: 2, height: "20px" }}
+            sx={{ width: '120px', mt: 1, mb: 2, height: '20px' }}
           >
             <Button
               fullWidth
               size="medium"
               variant="outlined"
               sx={{
-                color: "text.secondary",
+                color: 'text.secondary',
                 background: (theme) =>
                   isClicked
                     ? theme.palette.primary.main
@@ -218,8 +218,8 @@ const Regular = ({ rows, getRows }: Props) => {
                   isClicked
                     ? rows
                     : target.filter(
-                        ({ rowStatus }) => rowStatus === "needCharge"
-                      )
+                        ({ rowStatus }) => rowStatus === 'needCharge',
+                      ),
                 );
               }}
             >
@@ -228,7 +228,7 @@ const Regular = ({ rows, getRows }: Props) => {
                   width: 10,
                   height: 10,
                   borderRadius: 50,
-                  color: "background.default",
+                  color: 'background.default',
                   background: (theme) => theme.palette.warning.main,
                   mr: 1,
                 }}
@@ -248,10 +248,10 @@ const Regular = ({ rows, getRows }: Props) => {
                   acc += `#${item} `;
                   // if (key === "district" && !value.length) acc += "#전체 ";
                   return acc;
-                }, "")}
+                }, '')}
               </Typography>
             ) : (
-              ""
+              ''
             )}
           </Box>
         </Box>
@@ -259,7 +259,7 @@ const Regular = ({ rows, getRows }: Props) => {
           <Box>
             <FormControl
               size="small"
-              style={{ marginLeft: "auto", maxWidth: "300px" }}
+              style={{ marginLeft: 'auto', maxWidth: '300px' }}
             >
               <OutlinedInput
                 id="search"
@@ -268,7 +268,7 @@ const Regular = ({ rows, getRows }: Props) => {
                 sx={{
                   borderRadius: 8,
                   border: (theme) => `2px solid ${theme.palette.primary.main}`,
-                  "> fieldset": { border: 0 },
+                  '> fieldset': { border: 0 },
                 }}
                 type="text"
                 onKeyDown={handleKeyDownSearch}
@@ -283,8 +283,8 @@ const Regular = ({ rows, getRows }: Props) => {
                             rows.filter(
                               ({ name }) =>
                                 name ===
-                                (searchKeywordRef.current?.value as string)
-                            )
+                                (searchKeywordRef.current?.value as string),
+                            ),
                           );
                       }}
                       onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
@@ -301,7 +301,7 @@ const Regular = ({ rows, getRows }: Props) => {
           </Box>
         )}
       </Box>
-      <Box sx={{ height: "85%" }}>
+      <Box sx={{ height: '85%' }}>
         {target.length ? (
           <>
             <AnimatePresence>
@@ -318,23 +318,23 @@ const Regular = ({ rows, getRows }: Props) => {
                   >
                     <Card
                       onClick={() => {
-                        if (item.rowStatus !== "needCharge") return;
+                        if (item.rowStatus !== 'needCharge') return;
                         handleButtonClick(item.id, item.name as string);
                       }}
                       sx={{
                         cursor:
-                          item.rowStatus === "needCharge" ? "pointer" : "",
-                        "&:hover": {
+                          item.rowStatus === 'needCharge' ? 'pointer' : '',
+                        '&:hover': {
                           background: (theme) =>
-                            item.rowStatus === "needCharge"
+                            item.rowStatus === 'needCharge'
                               ? event[item.id as string]
                                 ? `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.success.light})`
                                 : `linear-gradient(to right, ${theme.palette.info.main}, ${theme.palette.secondary.main})`
                               : alpha(theme.palette.grey[400], 0.8),
                         },
-                        maxWidth: "100%",
+                        maxWidth: '100%',
                         background: (theme) =>
-                          item.rowStatus === "needCharge"
+                          item.rowStatus === 'needCharge'
                             ? event[item.id as string]
                               ? `linear-gradient(to right, ${theme.palette.primary.main}, ${theme.palette.success.main})`
                               : `linear-gradient(to right, ${theme.palette.info.main}, ${theme.palette.secondary.dark})`
@@ -351,9 +351,9 @@ const Regular = ({ rows, getRows }: Props) => {
                           //     ? theme.palette.secondary.light
                           //     : theme.palette.background.default,
                           borderRadius: 3,
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between',
                         }}
                       >
                         <Typography
@@ -366,21 +366,21 @@ const Regular = ({ rows, getRows }: Props) => {
                         </Typography>
                         <Box
                           sx={{
-                            display: "flex",
+                            display: 'flex',
                             mt: 0.5,
-                            flexDirection: "row",
+                            flexDirection: 'row',
                           }}
                         >
                           <Chip
                             sx={{
                               borderWidth: 2,
                               mr: 1,
-                              color: "white",
-                              borderColor: "white",
+                              color: 'white',
+                              borderColor: 'white',
                             }}
                             size="small"
                             variant="outlined"
-                            label={item.type === "lesson" ? "레슨" : "수업"}
+                            label={item.type === 'lesson' ? '레슨' : '수업'}
                             // color={
                             //   item.type === "lesson" ? "primary" : "success"
                             // }
@@ -389,20 +389,20 @@ const Regular = ({ rows, getRows }: Props) => {
                             sx={{
                               borderWidth: 2,
                               color:
-                                item.paymentType === "regular"
-                                  ? "white"
-                                  : "warning.main",
+                                item.paymentType === 'regular'
+                                  ? 'white'
+                                  : 'warning.main',
                               borderColor:
-                                item.paymentType === "regular"
-                                  ? "white"
-                                  : "warning.main",
+                                item.paymentType === 'regular'
+                                  ? 'white'
+                                  : 'warning.main',
                             }}
                             size="small"
                             variant="outlined"
                             label={
-                              item.paymentType === "regular"
-                                ? "정기결제"
-                                : "회차결제"
+                              item.paymentType === 'regular'
+                                ? '정기결제'
+                                : '회차결제'
                             }
                             // color={
                             //   item.paymentType === "regular"
@@ -415,8 +415,8 @@ const Regular = ({ rows, getRows }: Props) => {
                       <Box sx={{ p: 1, pl: 2 }}>
                         <Box
                           sx={{
-                            display: "flex",
-                            alignItems: "center",
+                            display: 'flex',
+                            alignItems: 'center',
                           }}
                         >
                           <Typography
@@ -425,18 +425,18 @@ const Regular = ({ rows, getRows }: Props) => {
                             color="white"
                             sx={{ mr: 1.5 }}
                           >
-                            최근 결제일{" "}
+                            최근 결제일{' '}
                           </Typography>
                           <Typography
                             component="span"
                             variant="subtitle2"
                             color="white"
                           >
-                            {item.regularPayment.lastPaymentDate || "-"}
+                            {item.regularPayment.lastPaymentDate || '-'}
                           </Typography>
                         </Box>
                         <Box
-                          sx={{ my: 1, display: "flex", alignItems: "center" }}
+                          sx={{ my: 1, display: 'flex', alignItems: 'center' }}
                         >
                           <Typography
                             component="span"
@@ -444,23 +444,23 @@ const Regular = ({ rows, getRows }: Props) => {
                             color="white"
                             sx={{ mr: 1.5 }}
                           >
-                            다음 예상일{" "}
+                            다음 예상일{' '}
                           </Typography>
                           <Typography
                             component="span"
                             variant="subtitle2"
                             color={
-                              moment().format("YYYY-MM-DD") ===
+                              moment().format('YYYY-MM-DD') ===
                               item.regularPayment.nextDueDate
-                                ? "error.main"
-                                : "white"
+                                ? 'error.main'
+                                : 'white'
                             }
                           >
-                            {item.regularPayment.nextDueDate || "-"}
+                            {item.regularPayment.nextDueDate || '-'}
                           </Typography>
                         </Box>
                       </Box>
-                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button
                           fullWidth
                           size="medium"
@@ -475,29 +475,29 @@ const Regular = ({ rows, getRows }: Props) => {
                           }}
                           sx={{
                             width: 150,
-                            "&:hover": {
+                            '&:hover': {
                               backgroundColor: (theme) =>
                                 theme.palette.warning.dark,
                               border: (theme) =>
-                                `2px solid ${item.rowStatus === "needCharge" ? theme.palette.warning.dark : theme.palette.grey[200]}`,
+                                `2px solid ${item.rowStatus === 'needCharge' ? theme.palette.warning.dark : theme.palette.grey[200]}`,
                             },
                             pointerEvents:
-                              item.rowStatus === "needCharge" ? "auto" : "none",
-                            color: "primary.contrastText",
+                              item.rowStatus === 'needCharge' ? 'auto' : 'none',
+                            color: 'primary.contrastText',
                             background: (theme) =>
-                              item.rowStatus === "needCharge"
+                              item.rowStatus === 'needCharge'
                                 ? theme.palette.warning.main
                                 : theme.palette.text.disabled,
                             borderRadius: 1,
                             pr: 1,
                             pl: 1,
                             border: (theme) =>
-                              `2px solid ${item.rowStatus === "needCharge" ? theme.palette.warning.main : theme.palette.grey[200]}`,
+                              `2px solid ${item.rowStatus === 'needCharge' ? theme.palette.warning.main : theme.palette.grey[200]}`,
                           }}
                         >
-                          {item.rowStatus === "completed"
-                            ? `${moment(dateState.paymentDate).format("M월")} 결제완료`
-                            : "결제하기"}
+                          {item.rowStatus === 'completed'
+                            ? `${moment(dateState.paymentDate).format('M월')} 결제완료`
+                            : '결제하기'}
                         </Button>
                       </Box>
                     </Card>
@@ -517,13 +517,13 @@ const Regular = ({ rows, getRows }: Props) => {
         <Box
           sx={{
             background: (theme) => theme.palette.background.default,
-            display: "flex",
-            justifyContent: "start",
+            display: 'flex',
+            justifyContent: 'start',
             // position: "sticky",
             bottom: 0,
             mt: 2,
             p: 1,
-            width: "100%",
+            width: '100%',
             height: 40,
           }}
         >
@@ -539,8 +539,8 @@ const Regular = ({ rows, getRows }: Props) => {
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "success.main",
-                color: "success.main",
+                borderColor: 'success.main',
+                color: 'success.main',
               }}
               onClick={() => setOpen(true)}
             >
@@ -552,7 +552,7 @@ const Regular = ({ rows, getRows }: Props) => {
                   sx={{
                     mr: 1,
                     background: (theme) => theme.palette.success.main,
-                    color: "background.default",
+                    color: 'background.default',
                     borderRadius: 50,
                   }}
                 />
@@ -567,7 +567,7 @@ const Regular = ({ rows, getRows }: Props) => {
         open={open}
         handleClose={handleClose}
         onClickCheck={() => handleSubmit(Object.entries(event).length > 1)}
-        title={`${Object.entries(event).length < 2 ? data?.name : "다중"} 수강생 결제처리`}
+        title={`${Object.entries(event).length < 2 ? data?.name : '다중'} 수강생 결제처리`}
         content={`아래의 결제 방식을 선택해주세요`}
         processing={processing}
       >

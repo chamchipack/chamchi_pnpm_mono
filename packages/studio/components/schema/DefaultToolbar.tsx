@@ -1,35 +1,35 @@
-import { Button, ButtonBase, Modal, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import { forwardRef, useEffect, useRef, useState } from "react";
-import InfoIcon from "@mui/icons-material/Info";
-import ConstructionIcon from "@mui/icons-material/Construction";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import DocumentScannerIcon from "@mui/icons-material/DocumentScanner";
-import QueueIcon from "@mui/icons-material/Queue";
-import AddIcon from "@mui/icons-material/Add";
-import { useSession } from "next-auth/react";
-import { ButtonOptions, OpenType } from "@/components/v2/Student/hooks";
-import { studentDataModel } from "@/config/type/default/students";
-import db from "@/api/module";
-import json2xlsx from "@/config/utils/xlsx";
-import AlertModal from "@/components/v2/Alert/Modal";
+import { Button, ButtonBase, Modal, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { forwardRef, useEffect, useRef, useState } from 'react';
+import InfoIcon from '@mui/icons-material/Info';
+import ConstructionIcon from '@mui/icons-material/Construction';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
+import QueueIcon from '@mui/icons-material/Queue';
+import AddIcon from '@mui/icons-material/Add';
+import { useSession } from 'next-auth/react';
+import { ButtonOptions, OpenType } from '@/components/v2/Student/hooks';
+import { studentDataModel } from '@/config/type/default/students';
+import db from '@/api/module';
+import json2xlsx from '@/config/utils/xlsx';
+import AlertModal from 'package/src/Modal/AlertModal';
 import BulkRegister, {
   BulkRegisterHandle,
-} from "@/components/v2/Student/lib/BulkRegister";
+} from '@/components/v2/Student/lib/BulkRegister';
 
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import { usePathname } from "next/navigation";
-import { getIsEditable } from "@/config/menu-configure/menu-config";
-import { useRecoilValue } from "recoil";
-import EditAccessAtom from "@/config/type/access/state";
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { usePathname } from 'next/navigation';
+import { getIsEditable } from '@/config/menu-configure/menu-config';
+import { useRecoilValue } from 'recoil';
+import EditAccessAtom from '@/config/type/access/state';
 type Schema =
-  | "student"
-  | "session"
-  | "class"
-  | "attendance"
-  | "payment"
-  | "instructor";
+  | 'student'
+  | 'session'
+  | 'class'
+  | 'attendance'
+  | 'payment'
+  | 'instructor';
 
 interface Props {
   buttonOptions: ButtonOptions;
@@ -77,13 +77,13 @@ const DefaultToolbar = forwardRef(
       controlDialog(type);
     };
 
-    function flattenObject(obj: any, parentKey = "", result: any = {}): any {
+    function flattenObject(obj: any, parentKey = '', result: any = {}): any {
       for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
           const newKey = parentKey ? `${parentKey}.${key}` : key;
 
           if (
-            typeof obj[key] === "object" &&
+            typeof obj[key] === 'object' &&
             obj[key] !== null &&
             !Array.isArray(obj[key])
           ) {
@@ -100,7 +100,7 @@ const DefaultToolbar = forwardRef(
       const { data = [] } = await db.search(schema, { options: {} });
       if (!data.length) return;
 
-      const exception = ["id"];
+      const exception = ['id'];
 
       const result = data.map((item: any, index: number) => {
         const form: any = { 순번: index + 1 };
@@ -109,18 +109,18 @@ const DefaultToolbar = forwardRef(
         Object.entries(flat).forEach(([k, v]: [string, any]) => {
           if (studentDataModel[k] && !exception.includes(k)) {
             switch (k) {
-              case "currentStatus":
-                form[studentDataModel[k]] = v ? "재원" : "퇴원";
+              case 'currentStatus':
+                form[studentDataModel[k]] = v ? '재원' : '퇴원';
                 break;
-              case "paymentType":
+              case 'paymentType':
                 form[studentDataModel[k]] =
-                  v === "lesson" ? "회차결제" : "정기결제";
+                  v === 'lesson' ? '회차결제' : '정기결제';
                 break;
-              case "lessonBasedPayment.isPaid":
-                form[studentDataModel[k]] = v ? "결제됨" : "미결제";
+              case 'lessonBasedPayment.isPaid':
+                form[studentDataModel[k]] = v ? '결제됨' : '미결제';
                 break;
-              case "type":
-                form[studentDataModel[k]] = v === "lesson" ? "레슨" : "수업";
+              case 'type':
+                form[studentDataModel[k]] = v === 'lesson' ? '레슨' : '수업';
                 break;
               default:
                 form[studentDataModel[k]] = v;
@@ -130,7 +130,7 @@ const DefaultToolbar = forwardRef(
         return form;
       });
 
-      json2xlsx(result, "수강생엑셀");
+      json2xlsx(result, '수강생엑셀');
     };
 
     const onClickDelete = async (id: string) => {
@@ -138,7 +138,7 @@ const DefaultToolbar = forwardRef(
 
       if (relatedSessions.length)
         return toast.error(
-          "연결된 수업이 있어 삭제가 불가능합니다. 먼저 수업을 삭제해주세요"
+          '연결된 수업이 있어 삭제가 불가능합니다. 먼저 수업을 삭제해주세요',
         );
       setLoading(true);
 
@@ -149,31 +149,31 @@ const DefaultToolbar = forwardRef(
         setLoading(false);
         handleClose();
         setRelatedSessions([]);
-        toast.success("정상적으로 처리 되었습니다.");
+        toast.success('정상적으로 처리 되었습니다.');
       } catch (e) {}
     };
 
     const onClickDeleteSession = async (session: any) => {
-      const { id = "" } = session;
+      const { id = '' } = session;
 
       if (!id) return;
 
       try {
-        await db.delete("session", id);
-        await db.update("student", { id: selectedRowId, sessionId: [] });
+        await db.delete('session', id);
+        await db.update('student', { id: selectedRowId, sessionId: [] });
         await delay(1000);
         setRelatedSessions(
-          relatedSessions.filter(({ id: _id = [] }) => _id !== id)
+          relatedSessions.filter(({ id: _id = [] }) => _id !== id),
         );
 
-        toast.success("정상적으로 세션이 삭제되었습니다.");
+        toast.success('정상적으로 세션이 삭제되었습니다.');
       } catch {}
     };
 
     const fetchRelatedSessions = async () => {
       if (selectedRowId && open) {
-        const { data: items = [] } = await db.search("session", {
-          options: { "studentId.like": selectedRowId },
+        const { data: items = [] } = await db.search('session', {
+          options: { 'studentId.like': selectedRowId },
         });
         setRelatedSessions(items);
       }
@@ -187,9 +187,9 @@ const DefaultToolbar = forwardRef(
       <>
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "flex-end",
-            width: "100%",
+            display: 'flex',
+            justifyContent: 'flex-end',
+            width: '100%',
             mt: 1,
           }}
         >
@@ -204,8 +204,8 @@ const DefaultToolbar = forwardRef(
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "success.main",
-                color: "success.main",
+                borderColor: 'success.main',
+                color: 'success.main',
               }}
               onClick={writeExcelFile}
             >
@@ -214,7 +214,7 @@ const DefaultToolbar = forwardRef(
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.success.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />
@@ -233,8 +233,8 @@ const DefaultToolbar = forwardRef(
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "warning.main",
-                color: "warning.main",
+                borderColor: 'warning.main',
+                color: 'warning.main',
               }}
               onClick={() => {
                 handleBulkOpen();
@@ -246,7 +246,7 @@ const DefaultToolbar = forwardRef(
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.warning.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />
@@ -265,8 +265,8 @@ const DefaultToolbar = forwardRef(
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "info.main",
-                color: "info.main",
+                borderColor: 'info.main',
+                color: 'info.main',
               }}
               onClick={() => {
                 onClickDialog(OpenType.create);
@@ -277,7 +277,7 @@ const DefaultToolbar = forwardRef(
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.info.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />
@@ -296,8 +296,8 @@ const DefaultToolbar = forwardRef(
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "primary.main",
-                color: "primary.main",
+                borderColor: 'primary.main',
+                color: 'primary.main',
               }}
               onClick={() => {
                 onClickDialog(OpenType.update);
@@ -308,7 +308,7 @@ const DefaultToolbar = forwardRef(
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.primary.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />
@@ -327,8 +327,8 @@ const DefaultToolbar = forwardRef(
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "error.main",
-                color: "error.main",
+                borderColor: 'error.main',
+                color: 'error.main',
               }}
               onClick={handleOpen}
             >
@@ -337,7 +337,7 @@ const DefaultToolbar = forwardRef(
                 sx={{
                   mr: 1,
                   background: (theme) => theme.palette.error.main,
-                  color: "background.default",
+                  color: 'background.default',
                   borderRadius: 50,
                 }}
               />
@@ -376,14 +376,14 @@ const DefaultToolbar = forwardRef(
             <Box
               sx={{
                 my: 2,
-                display: "flex",
-                justifyContent: "center",
+                display: 'flex',
+                justifyContent: 'center',
               }}
             >
               {relatedSessions.length > 0 && (
                 <Box
                   sx={{
-                    maxWidth: "100%",
+                    maxWidth: '100%',
                   }}
                 >
                   <Typography variant="caption" color="text.secondary">
@@ -395,7 +395,7 @@ const DefaultToolbar = forwardRef(
                     variant="caption"
                     color="text.secondary"
                   >
-                    아래 삭제버튼 클릭시{" "}
+                    아래 삭제버튼 클릭시{' '}
                     <Typography
                       component="span"
                       variant="caption"
@@ -408,10 +408,10 @@ const DefaultToolbar = forwardRef(
                   <Box
                     sx={{
                       mt: 1,
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                       background: (theme) => theme.palette.info.light,
                       p: 1,
                       pl: 2,
@@ -435,7 +435,7 @@ const DefaultToolbar = forwardRef(
                         }}
                       >
                         <DeleteForeverIcon
-                          sx={{ color: "error.main", fontSize: 18 }}
+                          sx={{ color: 'error.main', fontSize: 18 }}
                         />
                       </ButtonBase>
                     </Box>
@@ -447,7 +447,7 @@ const DefaultToolbar = forwardRef(
         )}
       </>
     );
-  }
+  },
 );
 
 export default DefaultToolbar;

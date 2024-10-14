@@ -16,28 +16,28 @@ import {
   Typography,
   alpha,
   useTheme,
-} from "@mui/material";
-import { AttendStatus, AttendStatusTemplate, Rows, AttendEnums } from ".";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import WatchLaterIcon from "@mui/icons-material/WatchLater";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import DangerousIcon from "@mui/icons-material/Dangerous";
-import MoreIcon from "@mui/icons-material/More";
-import AddTaskIcon from "@mui/icons-material/AddTask";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import AttendanceDataAtom from "./state";
-import { useRecoilState, useRecoilValue } from "recoil";
-import moment from "moment";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import { AttendStatus, AttendStatusTemplate, Rows, AttendEnums } from '.';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import WatchLaterIcon from '@mui/icons-material/WatchLater';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import DangerousIcon from '@mui/icons-material/Dangerous';
+import MoreIcon from '@mui/icons-material/More';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import AttendanceDataAtom from './state';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import moment from 'moment';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-import db from "@/api/module";
-import { useSession } from "next-auth/react";
-import AlertModal from "../../Alert/Modal";
-import EditAccessAtom from "@/config/type/access/state";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
+import db from '@/api/module';
+import { useSession } from 'next-auth/react';
+import AlertModal from 'package/src/Modal/AlertModal';
+import EditAccessAtom from '@/config/type/access/state';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
 interface Props {
   rows: Rows[];
@@ -56,7 +56,7 @@ type ClickTimeEvent = {
 const AttendanceCheck = ({ rows, loading, load }: Props) => {
   const { data: session, status } = useSession();
   const theme = useTheme();
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
 
   const [target, setTarget] = useState<Rows[]>(rows);
   const [event, setEvent] = useState<ClickEvent>({}); // 초기값을 빈 객체로 설정
@@ -72,13 +72,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
   const editAccessState = useRecoilValue(EditAccessAtom);
 
   const getColor = (color: string) => {
-    const [palette, shade] = color.split(".") as [
+    const [palette, shade] = color.split('.') as [
       keyof typeof theme.palette,
       string,
     ];
     const ptColor = theme.palette[palette];
 
-    if (ptColor && typeof ptColor === "object" && shade in ptColor)
+    if (ptColor && typeof ptColor === 'object' && shade in ptColor)
       return ptColor[shade as keyof typeof ptColor];
 
     return undefined;
@@ -115,7 +115,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
   const onClickSaveAttendinfo = async () => {
     if (!Object.entries(event).length)
-      return toast.error("출석 대상자의 내용을 선택해주세요");
+      return toast.error('출석 대상자의 내용을 선택해주세요');
 
     setProcessing(true);
 
@@ -125,39 +125,39 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
     const attendTarget = target.filter(({ isEditable = false }) => isEditable);
     try {
       for (let i = 0; i < attendTarget.length; i++) {
-        const { id = "", ...rest } = attendTarget[i];
+        const { id = '', ...rest } = attendTarget[i];
         if (!event[id]) continue;
 
-        let status = "";
-        let excusedTime = "";
+        let status = '';
+        let excusedTime = '';
 
         if (event[id]) status = event[id];
 
         if (eventTime[id]) excusedTime = eventTime[id];
 
         const form = {
-          sessionId: rest.sessionId[0] || "",
-          sessionName: "",
-          classId: rest.classId[0] || "",
-          className: "",
+          sessionId: rest.sessionId[0] || '',
+          sessionName: '',
+          classId: rest.classId[0] || '',
+          className: '',
           studentId: id,
-          studentName: rest.name || "",
-          paymentType: rest.paymentType || "",
-          instructorId: rest.instructorId[0] || "",
-          confirmationId: session?.user?.id || "",
-          dayOfWeek: moment(dateState.attendanceDate).format("d"),
+          studentName: rest.name || '',
+          paymentType: rest.paymentType || '',
+          instructorId: rest.instructorId[0] || '',
+          confirmationId: session?.user?.id || '',
+          dayOfWeek: moment(dateState.attendanceDate).format('d'),
           attendanceDate: moment(
-            `${dateState.attendanceDate} ${rest?.lessonTime?.stime}`
-          ).format("YYYY-MM-DD HH:mm:ss"),
+            `${dateState.attendanceDate} ${rest?.lessonTime?.stime}`,
+          ).format('YYYY-MM-DD HH:mm:ss'),
           status,
-          confirmationDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+          confirmationDate: moment().format('YYYY-MM-DD HH:mm:ss'),
           excusedDate: excusedTime,
         };
 
         if (status) {
-          await db.create("attendance", form);
+          await db.create('attendance', form);
 
-          if (rest.paymentType === "package") {
+          if (rest.paymentType === 'package') {
             const {
               total,
               remaining = 0,
@@ -174,7 +174,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
               },
             };
 
-            await db.update("student", studentForm);
+            await db.update('student', studentForm);
           }
 
           await delay(500);
@@ -182,12 +182,12 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
       }
       load();
     } catch {
-      toast.error("오류가 발생했습니다.");
+      toast.error('오류가 발생했습니다.');
     }
 
     setProcessing(false);
     setOpen(false);
-    toast.success("정상적으로 처리 되었습니다.");
+    toast.success('정상적으로 처리 되었습니다.');
   };
 
   useEffect(() => {
@@ -201,18 +201,18 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
         sx={{
           // border: (theme) => `1px solid ${theme.palette.grey[100]}`,
           borderRadius: 2,
-          height: "100%",
+          height: '100%',
         }}
       >
-        <Box sx={{ mt: 1, p: 1, height: "100%" }}>
+        <Box sx={{ mt: 1, p: 1, height: '100%' }}>
           {loading ? (
             <>
               {[...Array(3)].map((_, index) => (
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
                   }}
                 >
                   <Skeleton
@@ -227,9 +227,9 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "start",
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'start',
                 }}
               >
                 <Skeleton
@@ -264,7 +264,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                 <>
                   <Box sx={{ mb: 2, minHeight: 40 }}>
                     <Typography variant="subtitle1" color="info.main">
-                      {moment(dateState?.attendanceDate).format("MM월 DD일")}{" "}
+                      {moment(dateState?.attendanceDate).format('MM월 DD일')}{' '}
                       <Typography
                         component="span"
                         variant="body2"
@@ -276,29 +276,29 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     {!isMobile && (
                       <Box
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flexShrink: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
-                        sx={{ width: "120px", mt: 2, mb: 2, height: "30px" }}
+                        sx={{ width: '120px', mt: 2, mb: 2, height: '30px' }}
                       >
                         <Button
                           fullWidth
                           size="medium"
                           variant="outlined"
                           sx={{
-                            color: "text.secondary",
+                            color: 'text.secondary',
                             background: (theme) =>
                               isClicked
-                                ? getColor("primary.main")
+                                ? getColor('primary.main')
                                 : theme.palette.grey[100],
                             borderRadius: 3,
                             pr: 1,
                             pl: 1,
                             border: (theme) =>
                               isClicked
-                                ? getColor("primary.main")
+                                ? getColor('primary.main')
                                 : theme.palette.grey[100],
                           }}
                           onClick={() => {
@@ -306,8 +306,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                             else
                               setTarget(
                                 target.filter(
-                                  ({ rowStatus }) => rowStatus === "standby"
-                                )
+                                  ({ rowStatus }) => rowStatus === 'standby',
+                                ),
                               );
                             setIsClicked(!isClicked);
                           }}
@@ -317,7 +317,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               width: 10,
                               height: 10,
                               borderRadius: 50,
-                              color: "background.default",
+                              color: 'background.default',
                               background: (theme) => theme.palette.warning.main,
                               mr: 1,
                             }}
@@ -332,7 +332,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                   </Alert>
                 </>
               ) : (
-                <Box sx={{ height: "100%" }}>
+                <Box sx={{ height: '100%' }}>
                   <Box
                     sx={{
                       mb: 2,
@@ -340,7 +340,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     }}
                   >
                     <Typography variant="subtitle1" color="info.main">
-                      {moment(dateState?.attendanceDate).format("MM월 DD일")}{" "}
+                      {moment(dateState?.attendanceDate).format('MM월 DD일')}{' '}
                       <Typography
                         component="span"
                         variant="body2"
@@ -360,36 +360,36 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     {!isMobile && (
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
                         }}
                       >
                         <Box
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flexShrink: 0,
-                            justifyContent: "center",
-                            alignItems: "center",
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
-                          sx={{ width: "120px", mt: 2, mb: 2, height: "30px" }}
+                          sx={{ width: '120px', mt: 2, mb: 2, height: '30px' }}
                         >
                           <Button
                             fullWidth
                             size="medium"
                             variant="outlined"
                             sx={{
-                              color: "text.secondary",
+                              color: 'text.secondary',
                               background: (theme) =>
                                 isClicked
-                                  ? getColor("primary.main")
+                                  ? getColor('primary.main')
                                   : theme.palette.grey[100],
                               borderRadius: 3,
                               pr: 1,
                               pl: 1,
                               border: (theme) =>
                                 isClicked
-                                  ? getColor("primary.main")
+                                  ? getColor('primary.main')
                                   : theme.palette.grey[100],
                             }}
                             onClick={() => {
@@ -397,10 +397,10 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               else
                                 setTarget(
                                   target.filter(({ rowStatus }) =>
-                                    ["standby", "needCharge"].includes(
-                                      rowStatus
-                                    )
-                                  )
+                                    ['standby', 'needCharge'].includes(
+                                      rowStatus,
+                                    ),
+                                  ),
                                 );
                               setIsClicked(!isClicked);
                             }}
@@ -410,13 +410,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                 width: 10,
                                 height: 10,
                                 borderRadius: 50,
-                                color: "background.default",
+                                color: 'background.default',
                                 background: (theme) =>
                                   theme.palette.warning.main,
                                 mr: 1,
                               }}
                             />
-                            {isClicked ? "전체 표시하기" : "미출석만 표시"}
+                            {isClicked ? '전체 표시하기' : '미출석만 표시'}
                           </Button>
                         </Box>
                       </Box>
@@ -426,8 +426,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     container
                     spacing={2}
                     sx={{
-                      overflowY: "auto",
-                      height: isMobile ? "90%" : "85%",
+                      overflowY: 'auto',
+                      height: isMobile ? '90%' : '85%',
                     }}
                   >
                     {target.map((item, index) => (
@@ -443,9 +443,9 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                         <Card
                           sx={{
                             p: 1,
-                            maxWidth: "100%",
+                            maxWidth: '100%',
                             background: (theme) =>
-                              item.rowStatus === "needCharge"
+                              item.rowStatus === 'needCharge'
                                 ? alpha(theme.palette.grey[300], 0.6)
                                 : `linear-gradient(to right, ${theme.palette.info.main}, ${theme.palette.secondary.dark})`,
                             boxShadow: 2,
@@ -459,17 +459,17 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               //     ? theme.palette.background.default
                               //     : theme.palette.secondary.light,
                               borderRadius: 3,
-                              display: "flex",
-                              flexDirection: "column",
-                              justifyContent: "space-between",
+                              display: 'flex',
+                              flexDirection: 'column',
+                              justifyContent: 'space-between',
                             }}
                           >
                             <Box
                               sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                                 height: 30,
                               }}
                             >
@@ -492,14 +492,14 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                       선택됨
                                     </Typography>
                                   ) : (
-                                    ""
+                                    ''
                                   )
                                 }
                                 control={
                                   <Checkbox
                                     color="warning"
                                     sx={{
-                                      "& .MuiSvgIcon-root": { fontSize: 16 }, // 아이콘 크기 조정
+                                      '& .MuiSvgIcon-root': { fontSize: 16 }, // 아이콘 크기 조정
                                     }}
                                     checked={Boolean(event[item.id as string])}
                                   />
@@ -508,10 +508,10 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                             </Box>
                             <Box
                               sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "space-between",
-                                alignItems: "center",
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
                               }}
                             >
                               <Box>
@@ -519,13 +519,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                   sx={{
                                     borderWidth: 2,
                                     mr: 1,
-                                    color: "white",
-                                    borderColor: "white",
+                                    color: 'white',
+                                    borderColor: 'white',
                                   }}
                                   size="small"
                                   variant="outlined"
                                   label={
-                                    item.type === "lesson" ? "레슨" : "수업"
+                                    item.type === 'lesson' ? '레슨' : '수업'
                                   }
                                   // color={
                                   //   item.type === "lesson"
@@ -537,20 +537,20 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                   sx={{
                                     borderWidth: 2,
                                     color:
-                                      item.paymentType === "regular"
-                                        ? "white"
-                                        : "warning.main",
+                                      item.paymentType === 'regular'
+                                        ? 'white'
+                                        : 'warning.main',
                                     borderColor:
-                                      item.paymentType === "regular"
-                                        ? "white"
-                                        : "warning.main",
+                                      item.paymentType === 'regular'
+                                        ? 'white'
+                                        : 'warning.main',
                                   }}
                                   size="small"
                                   variant="outlined"
                                   label={
-                                    item.paymentType === "regular"
-                                      ? "정기결제"
-                                      : "회차결제"
+                                    item.paymentType === 'regular'
+                                      ? '정기결제'
+                                      : '회차결제'
                                   }
                                   // color={
                                   //   item.paymentType === "regular"
@@ -560,11 +560,11 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                 />
                               </Box>
                               <Box>
-                                {item.paymentType === "package" ? (
+                                {item.paymentType === 'package' ? (
                                   <Box
                                     sx={{
-                                      display: "flex",
-                                      flexDirection: "row",
+                                      display: 'flex',
+                                      flexDirection: 'row',
                                     }}
                                   >
                                     <Typography
@@ -592,13 +592,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
                           <Box
                             sx={{
-                              display: "flex",
-                              flexDirection: "row",
-                              justifyContent: "space-between",
+                              display: 'flex',
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
                               mt: 1,
                             }}
                           >
-                            <Box sx={{ width: "100%", p: 1 }}>
+                            <Box sx={{ width: '100%', p: 1 }}>
                               <Grid container spacing={2}>
                                 {Object.entries(AttendStatusTemplate).map(
                                   ([k, v]) => (
@@ -612,14 +612,14 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                     >
                                       <Box
                                         style={{
-                                          display: "flex",
+                                          display: 'flex',
                                           flexShrink: 0,
-                                          justifyContent: "center",
-                                          alignItems: "center",
+                                          justifyContent: 'center',
+                                          alignItems: 'center',
                                         }}
                                         sx={{ px: 0.5 }}
                                       >
-                                        {item.rowStatus === "standby" ? (
+                                        {item.rowStatus === 'standby' ? (
                                           <Button
                                             fullWidth
                                             size="medium"
@@ -628,25 +628,25 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                             onClick={() =>
                                               handleButtonClick(
                                                 item.id,
-                                                k as AttendStatus
+                                                k as AttendStatus,
                                               )
                                             }
                                             sx={{
                                               maxWidth: 60,
                                               height: 60,
-                                              display: "flex",
-                                              flexDirection: "column",
-                                              "&:hover": {
-                                                "&:hover": {
+                                              display: 'flex',
+                                              flexDirection: 'column',
+                                              '&:hover': {
+                                                '&:hover': {
                                                   background: getColor(v.color),
                                                   border: `2px solid ${getColor(v.color)}`,
                                                 },
                                               },
                                               pointerEvents:
-                                                k === "needCharge"
-                                                  ? "none"
-                                                  : "auto",
-                                              color: "primary.contrastText",
+                                                k === 'needCharge'
+                                                  ? 'none'
+                                                  : 'auto',
+                                              color: 'primary.contrastText',
                                               background:
                                                 event[item.id as string] &&
                                                 event[item.id as string] === k
@@ -659,13 +659,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                             }}
                                           >
                                             <Box>
-                                              {k === "present" ? (
+                                              {k === 'present' ? (
                                                 <CheckCircleOutlineIcon />
-                                              ) : k === "late" ? (
+                                              ) : k === 'late' ? (
                                                 <WatchLaterIcon />
-                                              ) : k === "excused" ? (
+                                              ) : k === 'excused' ? (
                                                 <AddTaskIcon />
-                                              ) : k === "absent" ? (
+                                              ) : k === 'absent' ? (
                                                 <DangerousIcon />
                                               ) : (
                                                 <MoreIcon />
@@ -675,7 +675,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                           </Button>
                                         ) : (
                                           <>
-                                            {item.rowStatus === "needCharge" ? (
+                                            {item.rowStatus === 'needCharge' ? (
                                               <Button
                                                 fullWidth
                                                 size="medium"
@@ -683,23 +683,23 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                                 onClick={() =>
                                                   handleButtonClick(
                                                     item.id,
-                                                    k as AttendStatus
+                                                    k as AttendStatus,
                                                   )
                                                 }
                                                 sx={{
-                                                  "&:hover": {
+                                                  '&:hover': {
                                                     background: getColor(
-                                                      v.color
+                                                      v.color,
                                                     ),
                                                     border: `2px solid ${getColor(v.color)}`,
                                                   },
                                                   maxWidth: 80,
                                                   height: 60,
-                                                  display: "flex",
-                                                  flexDirection: "column",
+                                                  display: 'flex',
+                                                  flexDirection: 'column',
                                                   // pointerEvents: "none",
                                                   // pointerEvents: item.paymentType === "regular" ? "auto" : "none", // 결제처리 가능성 존재하여 none으로 안둠
-                                                  color: "primary.contrastText",
+                                                  color: 'primary.contrastText',
                                                   background:
                                                     event[item.id as string] ===
                                                     k
@@ -713,13 +713,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                                 }}
                                               >
                                                 <Box>
-                                                  {k === "present" ? (
+                                                  {k === 'present' ? (
                                                     <CheckCircleOutlineIcon />
-                                                  ) : k === "late" ? (
+                                                  ) : k === 'late' ? (
                                                     <WatchLaterIcon />
-                                                  ) : k === "excused" ? (
+                                                  ) : k === 'excused' ? (
                                                     <AddTaskIcon />
-                                                  ) : k === "absent" ? (
+                                                  ) : k === 'absent' ? (
                                                     <DangerousIcon />
                                                   ) : (
                                                     <MoreIcon />
@@ -733,19 +733,19 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                                 size="medium"
                                                 variant="outlined"
                                                 sx={{
-                                                  "&:hover": {
+                                                  '&:hover': {
                                                     background: getColor(
-                                                      v.color
+                                                      v.color,
                                                     ),
                                                     border: `2px solid ${getColor(v.color)}`,
                                                   },
                                                   maxWidth: 80,
                                                   height: 60,
-                                                  display: "flex",
-                                                  flexDirection: "column",
-                                                  pointerEvents: "none",
+                                                  display: 'flex',
+                                                  flexDirection: 'column',
+                                                  pointerEvents: 'none',
                                                   // pointerEvents: item.rowStatus !== k ? "none" : "auto", // 결제처리 가능성 존재하여 none으로 안둠
-                                                  color: "primary.contrastText",
+                                                  color: 'primary.contrastText',
                                                   background:
                                                     item.rowStatus === k
                                                       ? getColor(v.color)
@@ -758,13 +758,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                                 }}
                                               >
                                                 <Box>
-                                                  {k === "present" ? (
+                                                  {k === 'present' ? (
                                                     <CheckCircleOutlineIcon />
-                                                  ) : k === "late" ? (
+                                                  ) : k === 'late' ? (
                                                     <WatchLaterIcon />
-                                                  ) : k === "excused" ? (
+                                                  ) : k === 'excused' ? (
                                                     <AddTaskIcon />
-                                                  ) : k === "absent" ? (
+                                                  ) : k === 'absent' ? (
                                                     <DangerousIcon />
                                                   ) : (
                                                     <MoreIcon />
@@ -777,28 +777,28 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                         )}
                                       </Box>
                                     </Grid>
-                                  )
+                                  ),
                                 )}
                               </Grid>
                               <Box
                                 sx={{
-                                  display: "flex",
-                                  flexDirection: "row",
-                                  justifyContent: "space-between",
-                                  alignItems: "center",
-                                  height: "40px",
+                                  display: 'flex',
+                                  flexDirection: 'row',
+                                  justifyContent: 'space-between',
+                                  alignItems: 'center',
+                                  height: '40px',
                                 }}
                               >
                                 <Box>
-                                  {event[item.id as string] === "excused" ||
+                                  {event[item.id as string] === 'excused' ||
                                   item.excusedDate ? (
                                     <Box sx={{ mt: 1.5 }}>
                                       <Box
                                         sx={{
-                                          display: "flex",
-                                          flexDirection: "row",
-                                          justifyContent: "start",
-                                          alignItems: "center",
+                                          display: 'flex',
+                                          flexDirection: 'row',
+                                          justifyContent: 'start',
+                                          alignItems: 'center',
                                         }}
                                       >
                                         <Typography
@@ -813,7 +813,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                           type="date"
                                           disabled={Boolean(item.excusedDate)}
                                           value={
-                                            eventTime[item.id as string] ?? ""
+                                            eventTime[item.id as string] ?? ''
                                           }
                                           onChange={(e) => {
                                             setEventTime((prev) => ({
@@ -823,14 +823,14 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                             }));
                                           }}
                                           sx={{
-                                            borderColor: "#d2d2d2",
+                                            borderColor: '#d2d2d2',
                                             borderRadius: 1,
                                             height: 20,
                                             fontSize: 12,
                                           }}
                                           InputProps={{
                                             style: {
-                                              color: "white",
+                                              color: 'white',
                                               height: 20,
                                               fontSize: 12,
                                             },
@@ -842,24 +842,24 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                 </Box>
                                 <Box
                                   sx={{
-                                    display: "flex",
-                                    justifyContent: "end",
+                                    display: 'flex',
+                                    justifyContent: 'end',
                                     p: 1,
                                   }}
                                 >
                                   <Typography
                                     variant="caption"
                                     color={
-                                      item.rowStatus === "needCharge"
-                                        ? "error.main"
-                                        : "background.default"
+                                      item.rowStatus === 'needCharge'
+                                        ? 'error.main'
+                                        : 'background.default'
                                     }
                                   >
-                                    {item.rowStatus === "needCharge"
-                                      ? "결제가 필요합니다"
-                                      : item.rowStatus === "standby"
-                                        ? ""
-                                        : "출석완료"}
+                                    {item.rowStatus === 'needCharge'
+                                      ? '결제가 필요합니다'
+                                      : item.rowStatus === 'standby'
+                                        ? ''
+                                        : '출석완료'}
                                   </Typography>
                                 </Box>
                               </Box>
@@ -874,7 +874,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
             </>
           )}
           {target.length && editAccessState ? (
-            <Box sx={{ display: "flex", justifyContent: "start", mt: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'start', mt: 1 }}>
               <Button
                 variant="outlined"
                 size="medium"
@@ -886,12 +886,12 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                   mb: 1,
                   borderRadius: 1,
                   border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                  borderColor: "success.main",
-                  color: "success.main",
+                  borderColor: 'success.main',
+                  color: 'success.main',
                 }}
                 onClick={() => {
                   if (!Object.entries(event).length)
-                    return toast.error("출석 대상자의 내용을 선택해주세요");
+                    return toast.error('출석 대상자의 내용을 선택해주세요');
                   setOpen(true);
                 }}
               >
@@ -903,7 +903,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     sx={{
                       mr: 1,
                       background: (theme) => theme.palette.success.main,
-                      color: "background.default",
+                      color: 'background.default',
                       borderRadius: 50,
                     }}
                   />

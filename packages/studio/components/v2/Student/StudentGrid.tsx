@@ -1,6 +1,6 @@
-"use client";
-import { useCallback, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
+'use client';
+import { useCallback, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 import {
   Box,
   Card,
@@ -10,25 +10,25 @@ import {
   Grid,
   Skeleton,
   Typography,
-} from "@mui/material";
-import CheckIcon from "@mui/icons-material/Check";
-import NotificationImportantIcon from "@mui/icons-material/NotificationImportant";
-import DefaultGrid from "@/components/schema/v2/DefaultGrid";
-import DefaultToolbar from "./lib/DefaultToolbar";
-import CustomNoRowsOverlay from "@/components/common/layout/overlay/DatagridOverlay";
-import AntSwitch from "package/src/Interactive/AntSwitch";
-import { GridColDef } from "@mui/x-data-grid";
-import { useStudentData } from "./hooks/hook";
-import { OpenType, DrawerType, buttonOptions } from "./hooks";
-import EditAccessAtom from "@/config/type/access/state";
-import { initialStudentData } from "@/config/type/default/students";
-import Form from "./drawer/DrawerForm";
-import db from "@/api/module";
-import { useClientSize } from "package/src/hooks/useMediaQuery";
-import StudentMobile from "./lib/StudentMobile";
+} from '@mui/material';
+import CheckIcon from '@mui/icons-material/Check';
+import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
+import DefaultGrid from '@/components/schema/DefaultGrid';
+import DefaultToolbar from './lib/DefaultToolbar';
+import CustomNoRowsOverlay from 'package/src/Overlay/DatagridOverlay';
+import AntSwitch from 'package/src/Interactive/AntSwitch';
+import { GridColDef } from '@mui/x-data-grid';
+import { useStudentData } from './hooks/hook';
+import { OpenType, DrawerType, buttonOptions } from './hooks';
+import EditAccessAtom from '@/config/type/access/state';
+import { initialStudentData } from '@/config/type/default/students';
+import Form from './drawer/DrawerForm';
+import db from '@/api/module';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
+import StudentMobile from './lib/StudentMobile';
 
 const StudentGrid = ({ total = 0 }) => {
-  const isMobile = useClientSize("sm");
+  const isMobile = useClientSize('sm');
 
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
   const [selectedRow, setSelectedRow] = useState(initialStudentData);
@@ -41,7 +41,7 @@ const StudentGrid = ({ total = 0 }) => {
     data = { rows: [], total },
     isLoading,
     refetch,
-  } = useStudentData("student", pagination);
+  } = useStudentData('student', pagination);
 
   const handlePageChange = (newPage: number) => {
     setPagination((prev) => ({ ...prev, page: newPage }));
@@ -51,9 +51,9 @@ const StudentGrid = ({ total = 0 }) => {
     setDrawertype(toggle);
     if (toggle !== OpenType.none) setDrawerState(DrawerType.form);
 
-    if (toggle === "update") {
+    if (toggle === 'update') {
       const row =
-        data.rows.find(({ id = "" }) => selectedRow.id === id) ??
+        data.rows.find(({ id = '' }) => selectedRow.id === id) ??
         initialStudentData;
       setSelectedRow(row);
     }
@@ -73,73 +73,73 @@ const StudentGrid = ({ total = 0 }) => {
   );
 
   const NoRowsMessageOverlay = () => (
-    <CustomNoRowsOverlay message={"데이터가 존재하지 않습니다!"} />
+    <CustomNoRowsOverlay message={'데이터가 존재하지 않습니다!'} />
   );
 
   const columns = useMemo<GridColDef[]>(
     () => [
       {
-        field: "name",
-        headerName: "이름",
+        field: 'name',
+        headerName: '이름',
         width: 100,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
       },
       {
-        field: "enrollmentDate",
-        headerName: "등록일",
+        field: 'enrollmentDate',
+        headerName: '등록일',
         width: 150,
-        headerAlign: "center",
-        align: "left",
+        headerAlign: 'center',
+        align: 'left',
       },
       {
-        field: "type",
-        headerName: "수강 타입",
+        field: 'type',
+        headerName: '수강 타입',
         width: 100,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => (
           <Chip
             sx={{ borderWidth: 2 }}
             size="small"
             variant="outlined"
-            label={params.row.type === "lesson" ? "레슨" : "클래스"}
-            color={params.row.type === "lesson" ? "primary" : "success"}
+            label={params.row.type === 'lesson' ? '레슨' : '클래스'}
+            color={params.row.type === 'lesson' ? 'primary' : 'success'}
           />
         ),
       },
       {
-        field: "paymentType",
-        headerName: "수강정보",
+        field: 'paymentType',
+        headerName: '수강정보',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: (params) => (
           <Chip
             sx={{ borderWidth: 2 }}
             size="small"
             variant="outlined"
             label={
-              params.row.paymentType === "regular" ? "정기결제" : "회차결제"
+              params.row.paymentType === 'regular' ? '정기결제' : '회차결제'
             }
-            color={params.row.paymentType === "regular" ? "info" : "warning"}
+            color={params.row.paymentType === 'regular' ? 'info' : 'warning'}
           />
         ),
       },
       {
-        field: "currentStatus",
-        headerName: "등록상태",
-        type: "string",
+        field: 'currentStatus',
+        headerName: '등록상태',
+        type: 'string',
         width: 100,
-        headerAlign: "left",
-        align: "center",
-        renderCell: ({ row: { id, currentStatus = "" } = {} }) => (
+        headerAlign: 'left',
+        align: 'center',
+        renderCell: ({ row: { id, currentStatus = '' } = {} }) => (
           <AntSwitch
             trackColor="text.disabled"
             checked={currentStatus}
             onClick={async () => {
               try {
-                await db.update("student", {
+                await db.update('student', {
                   id,
                   currentStatus: currentStatus ? false : true,
                 });
@@ -152,45 +152,45 @@ const StudentGrid = ({ total = 0 }) => {
         ),
       },
       {
-        field: "lastPaymentDate",
-        headerName: "최근결제일",
+        field: 'lastPaymentDate',
+        headerName: '최근결제일',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: ({ row: { regularPayment = {} } = {} }) => {
-          return regularPayment?.lastPaymentDate ?? "-";
+          return regularPayment?.lastPaymentDate ?? '-';
         },
       },
       {
-        field: "regularPayment",
-        headerName: "다음 예상결제일",
+        field: 'regularPayment',
+        headerName: '다음 예상결제일',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: ({ row: { regularPayment = {} } = {} }) => {
-          return regularPayment?.nextDueDate ?? "-";
+          return regularPayment?.nextDueDate ?? '-';
         },
       },
       {
-        field: "lessonBasePayment",
-        headerName: "회차 결제여부",
+        field: 'lessonBasePayment',
+        headerName: '회차 결제여부',
         width: 150,
-        headerAlign: "center",
-        align: "center",
+        headerAlign: 'center',
+        align: 'center',
         renderCell: ({
           row: { paymentType, lessonBasedPayment = {} } = {},
         }) => {
-          if (paymentType === "package")
+          if (paymentType === 'package')
             return lessonBasedPayment?.isPaid ? (
-              <CheckIcon sx={{ color: "success.main" }} />
+              <CheckIcon sx={{ color: 'success.main' }} />
             ) : (
-              <NotificationImportantIcon sx={{ color: "error.main" }} />
+              <NotificationImportantIcon sx={{ color: 'error.main' }} />
             );
-          else return "";
+          else return '';
         },
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -207,7 +207,7 @@ const StudentGrid = ({ total = 0 }) => {
             </Typography>
           </Box>
           {isLoading ? (
-            <Skeleton sx={{ width: "100%", height: 250 }} />
+            <Skeleton sx={{ width: '100%', height: 250 }} />
           ) : (
             <DefaultGrid
               slots={{
@@ -228,10 +228,10 @@ const StudentGrid = ({ total = 0 }) => {
                 setDrawertype(OpenType.update);
                 setDrawerState(DrawerType.form);
               }}
-              onRowSelectionModelChange={([rowId = ""]) => {
+              onRowSelectionModelChange={([rowId = '']) => {
                 if (!rowId) return;
                 const row =
-                  data.rows.find(({ id = "" }) => rowId === id) ??
+                  data.rows.find(({ id = '' }) => rowId === id) ??
                   initialStudentData;
                 setSelectedRow(row);
               }}
@@ -252,8 +252,8 @@ const StudentGrid = ({ total = 0 }) => {
       )}
       <Drawer
         open={DrawerType.none !== drawerState}
-        onClose={(e, reason: "backdropClick" | "escapeKeyDown") => {
-          if (["backdropClick", "escapeKeyDown"].includes(reason)) {
+        onClose={(e, reason: 'backdropClick' | 'escapeKeyDown') => {
+          if (['backdropClick', 'escapeKeyDown'].includes(reason)) {
             setDrawerState(DrawerType.none);
           }
         }}
@@ -262,9 +262,9 @@ const StudentGrid = ({ total = 0 }) => {
         {DrawerType.none !== drawerState && (
           <Box
             sx={{
-              background: "white",
+              background: 'white',
               width: isMobile ? 350 : 400,
-              height: "100%",
+              height: '100%',
             }}
           >
             <Form

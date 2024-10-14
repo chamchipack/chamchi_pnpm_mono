@@ -1,7 +1,7 @@
-import { Student } from "@/config/type/default/students";
-import CloseIcon from "@mui/icons-material/Close";
-import { DrawerType, OpenType } from "../hooks";
-import React, { useEffect, useRef, useState } from "react";
+import { Student } from '@/config/type/default/students';
+import CloseIcon from '@mui/icons-material/Close';
+import { DrawerType, OpenType } from '../hooks';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Stepper,
   Step,
@@ -13,17 +13,17 @@ import {
   ButtonBase,
   FormControl,
   InputLabel,
-} from "@mui/material";
-import StudentForm from "./StudentForm";
-import SessionForm from "./SessionForm";
-import AntSwitch from "package/src/Interactive/AntSwitch";
-import { Assemble, SessionSubmit, StudentSubmit, SubmitForm } from ".";
-import moment from "moment";
+} from '@mui/material';
+import StudentForm from './StudentForm';
+import SessionForm from './SessionForm';
+import AntSwitch from 'package/src/Interactive/AntSwitch';
+import { Assemble, SessionSubmit, StudentSubmit, SubmitForm } from '.';
+import moment from 'moment';
 
-import db from "@/api/module";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import AlertModal from "../../Alert/Modal";
+import db from '@/api/module';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import AlertModal from 'package/src/Modal/AlertModal';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -33,11 +33,11 @@ interface SearchResponse {
   message: string;
 }
 enum Status {
-  success = "success",
-  failed = "failed",
+  success = 'success',
+  failed = 'failed',
 }
 
-const steps = ["인원 정보", "세션 정보"];
+const steps = ['인원 정보', '세션 정보'];
 
 interface Props {
   row: Student;
@@ -68,14 +68,14 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
 
   const onSetupSessionData = async (
     session: SessionSubmit,
-    dataset: { classID: string[]; name: string }
+    dataset: { classID: string[]; name: string },
   ): Promise<string> => {
     const { regularDays, lessonTimes } = session;
 
     const sessionData = {
       name: dataset.name,
       classId: dataset.classID ?? [],
-      type: classDivision ? "lesson" : "class",
+      type: classDivision ? 'lesson' : 'class',
       instructorId: [],
       regularDays,
       lessonTimes,
@@ -86,13 +86,13 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
     let result: SearchResponse;
 
     if (!sessionData?.name || !sessionData.regularDays?.length) {
-      toast.error("빈칸을 작성해주세요!");
+      toast.error('빈칸을 작성해주세요!');
       return Status.failed as string;
     }
 
     try {
-      if (session?.id) result = await db.update("session", sessionData);
-      else result = await db.create("session", sessionData);
+      if (session?.id) result = await db.update('session', sessionData);
+      else result = await db.create('session', sessionData);
 
       return session?.id || result?.data?.id;
     } catch {
@@ -102,22 +102,22 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
 
   const onSetupStudentData = async (
     student: StudentSubmit,
-    sessionId: string
+    sessionId: string,
   ) => {
     const {
-      paymentType = "",
-      lastPaymentDate = moment().format("YYYY-MM-DD"),
+      paymentType = '',
+      lastPaymentDate = moment().format('YYYY-MM-DD'),
       total,
       remaining = 0,
-      enrollmentDate = moment().format("YYYY-MM-DD"),
-      sessionId: sId = "",
+      enrollmentDate = moment().format('YYYY-MM-DD'),
+      sessionId: sId = '',
       ...rest
     } = student;
 
     const data = {
-      enrollmentDate: moment(enrollmentDate).format("YYYY-MM-DD"),
+      enrollmentDate: moment(enrollmentDate).format('YYYY-MM-DD'),
       instructorId: [],
-      type: classDivision ? "lesson" : "class",
+      type: classDivision ? 'lesson' : 'class',
       sessionId: [sessionId || sId],
       paymentType,
       ...rest,
@@ -126,14 +126,14 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
 
     if (!student?.id) Object.assign(data, { currentStatus: true });
 
-    if (paymentType === "regular") {
+    if (paymentType === 'regular') {
       Object.assign(data, {
         lessonBasedPayment: {},
         regularPayment: {
           lastPaymentDate,
           nextDueDate: lastPaymentDate
-            ? moment(lastPaymentDate).add(1, "months").format("YYYY-MM-DD")
-            : "",
+            ? moment(lastPaymentDate).add(1, 'months').format('YYYY-MM-DD')
+            : '',
         },
       });
     } else {
@@ -151,10 +151,10 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
     let result: SearchResponse;
 
     try {
-      if (student?.id) result = await db.update("student", data);
-      else result = await db.create("student", data);
+      if (student?.id) result = await db.update('student', data);
+      else result = await db.create('student', data);
 
-      return type === "create" ? result?.data?.id : student?.id;
+      return type === 'create' ? result?.data?.id : student?.id;
     } catch {
       return Status.failed as string;
     }
@@ -166,29 +166,29 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
     const { student = {}, session = {} } = submitdata;
 
     if (!student?.paymentType) {
-      toast.error("빈칸을 채워주세요!");
+      toast.error('빈칸을 채워주세요!');
       setLoading(false);
       return;
     }
 
-    if (student.paymentType === "package" && !student.total) {
-      toast.error("빈칸을 채워주세요!");
+    if (student.paymentType === 'package' && !student.total) {
+      toast.error('빈칸을 채워주세요!');
       setLoading(false);
       return;
     }
 
     const dataset: { classID: string[]; name: string } = {
       classID: student?.classId ?? [],
-      name: student?.name || "",
+      name: student?.name || '',
     };
     const sessionId = await onSetupSessionData(session, dataset);
 
-    if (sessionId === Status.failed) return toast.error("저장에 실패했습니다");
+    if (sessionId === Status.failed) return toast.error('저장에 실패했습니다');
     const studentId = await onSetupStudentData(student, sessionId);
 
     if (student?.id && session?.id) {
       getRows();
-      toast.success("성공적으로 저장되었습니다");
+      toast.success('성공적으로 저장되었습니다');
       setDrawerState(DrawerType.none);
       setLoading(false);
       return;
@@ -196,13 +196,13 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
     await delay(1000);
 
     try {
-      await db.update("session", { id: sessionId, studentId: [studentId] });
+      await db.update('session', { id: sessionId, studentId: [studentId] });
 
-      toast.success("성공적으로 저장되었습니다");
+      toast.success('성공적으로 저장되었습니다');
       await delay(500);
       getRows();
     } catch {
-      toast.error("저장에 실패했습니다.");
+      toast.error('저장에 실패했습니다.');
     }
 
     setDrawerState(DrawerType.none);
@@ -211,7 +211,7 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
 
   const getSessionRow = async (id: string): Promise<SessionSubmit> => {
     try {
-      const { data = {} } = await db.single("session", id);
+      const { data = {} } = await db.single('session', id);
       return data;
     } catch (e) {
       return {};
@@ -220,12 +220,12 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const sessionRow = await getSessionRow(row.sessionId[0] || "");
+      const sessionRow = await getSessionRow(row.sessionId[0] || '');
       setSubmitdata((prev) => ({
         ...prev,
         student: {
-          id: row.id || "",
-          name: row.name || "",
+          id: row.id || '',
+          name: row.name || '',
           classId: row.classId ?? [],
           paymentType: row.paymentType,
           lastPaymentDate: row.regularPayment.lastPaymentDate,
@@ -243,7 +243,7 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
           ...prev,
           session: {
             id: sessionRow.id,
-            classId: sessionRow.classId ?? "",
+            classId: sessionRow.classId ?? '',
             instructorId: sessionRow.instructorId,
             name: sessionRow.name,
             studentId: sessionRow.studentId,
@@ -262,20 +262,20 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
   const handleExternalSubmit = () => {
     if (formRef.current) {
       formRef.current.dispatchEvent(
-        new Event("submit", { bubbles: true, cancelable: true })
+        new Event('submit', { bubbles: true, cancelable: true }),
       );
     }
   };
 
   return (
     <>
-      <Box sx={{ width: "100%", p: 3, height: "90%" }}>
+      <Box sx={{ width: '100%', p: 3, height: '90%' }}>
         <Box
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "5%",
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '5%',
           }}
         >
           <ButtonBase
@@ -283,26 +283,26 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
               setDrawerState(DrawerType.none);
             }}
           >
-            <CloseIcon sx={{ flexShrink: 0, fontSize: "20px" }} />
+            <CloseIcon sx={{ flexShrink: 0, fontSize: '20px' }} />
           </ButtonBase>
           <Typography
             variant="subtitle1"
             sx={{
-              color: "text.primary",
-              textAlign: "center",
+              color: 'text.primary',
+              textAlign: 'center',
               flexGrow: 1,
-              width: "100%",
+              width: '100%',
             }}
           >
-            {row?.id ? "인원 및 세션 수정" : "인원 및 세션 등록"}
+            {row?.id ? '인원 및 세션 수정' : '인원 및 세션 등록'}
           </Typography>
-          <Box sx={{ flexGrow: 1 }} />{" "}
+          <Box sx={{ flexGrow: 1 }} />{' '}
         </Box>
         <Box
           sx={{
             mt: 2,
             borderBottom: (theme) => `3px solid ${theme.palette.grey[100]}`,
-            height: "5%",
+            height: '5%',
           }}
         >
           <Stepper activeStep={activeStep}>
@@ -313,7 +313,7 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
                     variant="subtitle2"
                     sx={{
                       color:
-                        index !== activeStep ? "text.disabled" : "text.primary",
+                        index !== activeStep ? 'text.disabled' : 'text.primary',
                     }}
                   >
                     {label}
@@ -323,19 +323,19 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
             ))}
           </Stepper>
         </Box>
-        <Box sx={{ mt: 4, height: "80%" }}>
+        <Box sx={{ mt: 4, height: '80%' }}>
           <Box
             component="form"
             onSubmit={handleOpen}
             ref={formRef}
-            sx={{ p: 1, width: "100%" }}
+            sx={{ p: 1, width: '100%' }}
           >
             {!activeStep && (
-              <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                 <Typography
                   variant="body2"
                   sx={{
-                    color: classDivision ? "text.disabled" : "text.primary",
+                    color: classDivision ? 'text.disabled' : 'text.primary',
                   }}
                 >
                   일반 수업
@@ -352,7 +352,7 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
                 <Typography
                   variant="body2"
                   sx={{
-                    color: classDivision ? "text.primary" : "text.disabled",
+                    color: classDivision ? 'text.primary' : 'text.disabled',
                   }}
                 >
                   개인 레슨
@@ -377,23 +377,23 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
         </Box>
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "row",
+            display: 'flex',
+            flexDirection: 'row',
             pt: 2,
-            justifyContent: "space-between",
+            justifyContent: 'space-between',
           }}
         >
           <Button
             variant="contained"
             sx={{
               background: (theme) => theme.palette.background.default,
-              height: "40px",
-              width: "40%",
+              height: '40px',
+              width: '40%',
             }}
             disabled={activeStep === 0 || loading}
             onClick={handleBack}
           >
-            <Box style={{ width: "100%", justifyContent: "center" }}>
+            <Box style={{ width: '100%', justifyContent: 'center' }}>
               <Typography variant="h5" color="text.primary" fontWeight="bold">
                 이전
               </Typography>
@@ -413,13 +413,13 @@ const Form = ({ row, setDrawerState, type, getRows }: Props) => {
                 activeStep === steps.length - 1
                   ? theme.palette.success.main
                   : theme.palette.primary.main,
-              height: "40px",
-              width: "40%",
+              height: '40px',
+              width: '40%',
             }}
           >
-            <Box style={{ width: "100%", justifyContent: "center" }}>
+            <Box style={{ width: '100%', justifyContent: 'center' }}>
               <Typography variant="h5" fontWeight="bold">
-                {activeStep === steps.length - 1 ? "저장" : "다음"}
+                {activeStep === steps.length - 1 ? '저장' : '다음'}
               </Typography>
             </Box>
           </Button>

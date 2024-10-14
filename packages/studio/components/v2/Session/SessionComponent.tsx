@@ -1,29 +1,29 @@
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import timeGridPlugin from "@fullcalendar/timegrid";
-import interactionPlugin from "@fullcalendar/interaction";
-import listPlugin from "@fullcalendar/list";
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import db from "@/api/module";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { getColorForType } from "@/config/utils/hashColor/getHashColor";
-import { Box, Button, ButtonBase, Typography } from "@mui/material";
-import moment from "moment";
-import DaySession from "./DaySession";
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import db from '@/api/module';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { getColorForType } from '@/config/utils/hashColor/getHashColor';
+import { Box, Button, ButtonBase, Typography } from '@mui/material';
+import moment from 'moment';
+import DaySession from './DaySession';
 import {
   Session,
   initialSessionData,
   LessionTime,
   Day,
-} from "@/config/type/default/session";
-import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
-import SessionForm from "./SessionForm";
-import AlertModal from "../Alert/Modal";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import { useRecoilValue } from "recoil";
-import EditAccessAtom from "@/config/type/access/state";
+} from '@/config/type/default/session';
+import { DateSelectArg, EventClickArg } from '@fullcalendar/core';
+import SessionForm from './SessionForm';
+import AlertModal from 'package/src/Modal/AlertModal';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { useRecoilValue } from 'recoil';
+import EditAccessAtom from '@/config/type/access/state';
 
 interface CalendarDataType {
   id: string;
@@ -57,18 +57,18 @@ const SessionComponent = () => {
     try {
       const todayData: Session[] = [];
 
-      const { data } = await db.search("session", { options: {} });
+      const { data } = await db.search('session', { options: {} });
       setSession(data);
 
       const events: CalendarDataType[] = data.reduce(
         (acc: CalendarDataType[], item: any) => {
           const { id, name, regularDays = [], lessonTimes = {} } = item;
-          if (regularDays.includes(moment().format("d"))) todayData.push(item);
+          if (regularDays.includes(moment().format('d'))) todayData.push(item);
 
           regularDays.forEach((day: string) => {
             const times = lessonTimes[day];
             if (times) {
-              const { stime = "", etime = "" } = times;
+              const { stime = '', etime = '' } = times;
 
               if (stime && etime) {
                 acc.push({
@@ -85,19 +85,19 @@ const SessionComponent = () => {
 
           return acc;
         },
-        []
+        [],
       );
 
       setTodaySession(todayData);
 
       setCalendarData(events);
     } catch (error) {
-      console.error("Error loading sessions:", error);
+      console.error('Error loading sessions:', error);
     }
   }, [setCalendarData]);
 
   const handleDateSelect = (selectInfo: DateSelectArg) => {
-    const { startStr = "", endStr = "" } = selectInfo;
+    const { startStr = '', endStr = '' } = selectInfo;
 
     // 날짜 차이가 1일 이상이면 false 반환
     const diffInDays =
@@ -106,22 +106,22 @@ const SessionComponent = () => {
 
     if (diffInDays > 1) return;
 
-    console.log("Single day or single period selected.");
+    console.log('Single day or single period selected.');
     return true;
   };
 
   const onClickEventRow = (clickInfo: EventClickArg) => {
     setIsClicked(true);
     setIsFormChanged(false);
-    const { event: { id = "", title = "" } = {} } = clickInfo;
+    const { event: { id = '', title = '' } = {} } = clickInfo;
     const selection: Session =
-      session.find(({ id: _id = "" }) => id === _id) || initialSessionData;
+      session.find(({ id: _id = '' }) => id === _id) || initialSessionData;
 
     if (selection?.id) setSelectedData(selection);
   };
 
   const onClickSave = async () => {
-    if (!selectedData?.id) return toast.error("선택된 세션이 없습니다!");
+    if (!selectedData?.id) return toast.error('선택된 세션이 없습니다!');
 
     const { regularDays = [], lessonTimes = {} } = selectedData;
 
@@ -138,9 +138,9 @@ const SessionComponent = () => {
     };
 
     try {
-      await db.update("session", submitForm);
+      await db.update('session', submitForm);
 
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
 
       handleClose();
 
@@ -149,7 +149,7 @@ const SessionComponent = () => {
 
       onLoadData();
     } catch {
-      toast.error("저장에 실패했습니다!");
+      toast.error('저장에 실패했습니다!');
     }
   };
 
@@ -159,16 +159,16 @@ const SessionComponent = () => {
     setProcessing(true);
 
     try {
-      await db.delete("session", selectedData?.id);
+      await db.delete('session', selectedData?.id);
 
       setProcessing(false);
       handleCloseDelete();
       setSelectedData(initialSessionData);
       setIsClicked(false);
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
       onLoadData();
     } catch (e) {
-      toast.error("오류가 발생했습니다.");
+      toast.error('오류가 발생했습니다.');
     }
   };
 
@@ -188,14 +188,14 @@ const SessionComponent = () => {
         height="100%"
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin]}
         headerToolbar={{
-          right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+          right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
         }}
         buttonText={{
-          today: "오늘로 이동",
-          month: "월",
-          week: "주",
-          day: "일",
-          list: "리스트",
+          today: '오늘로 이동',
+          month: '월',
+          week: '주',
+          day: '일',
+          list: '리스트',
         }}
         dayMaxEvents={3}
         editable={false}
@@ -216,20 +216,20 @@ const SessionComponent = () => {
     <>
       <Box
         sx={{
-          height: "75vh",
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          overflow: "hidden",
+          height: '75vh',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          overflow: 'hidden',
           p: 1,
         }}
       >
         <Box
           sx={{
-            width: "70%",
-            transition: "width 0.5s ease-in-out",
-            overflow: "hidden",
-            position: "relative",
+            width: '70%',
+            transition: 'width 0.5s ease-in-out',
+            overflow: 'hidden',
+            position: 'relative',
             border: (theme) => `2px solid ${theme.palette.grey[100]}`,
             borderRadius: 5,
             p: 3,
@@ -241,8 +241,8 @@ const SessionComponent = () => {
 
         <Box
           sx={{
-            width: "30%",
-            height: "100%",
+            width: '30%',
+            height: '100%',
             border: (theme) => `2px solid ${theme.palette.grey[100]}`,
             borderRadius: 5,
             p: 3,
@@ -250,17 +250,17 @@ const SessionComponent = () => {
         >
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
               mb: 2,
             }}
           >
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "end",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'end',
               }}
             >
               {isClicked && (
@@ -271,15 +271,15 @@ const SessionComponent = () => {
                     // setSelectedData(initialSessionData);
                   }}
                 >
-                  <DeleteForeverIcon sx={{ color: "error.main" }} />
+                  <DeleteForeverIcon sx={{ color: 'error.main' }} />
                 </ButtonBase>
               )}
             </Box>
             <Box
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "end",
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'end',
               }}
             >
               {isClicked && (
@@ -295,8 +295,8 @@ const SessionComponent = () => {
             </Box>
           </Box>
           {isClicked ? (
-            <Box sx={{ height: "100%" }}>
-              <Box sx={{ height: "80%" }}>
+            <Box sx={{ height: '100%' }}>
+              <Box sx={{ height: '80%' }}>
                 <SessionForm form={selectedData} setForm={setSelectedData} />
               </Box>
               <Button
@@ -304,12 +304,12 @@ const SessionComponent = () => {
                 variant="contained"
                 sx={{
                   background: (theme) => theme.palette.primary.main,
-                  height: "40px",
-                  width: "100%",
+                  height: '40px',
+                  width: '100%',
                 }}
                 onClick={handleOpen}
               >
-                <Box style={{ width: "100%", justifyContent: "center" }}>
+                <Box style={{ width: '100%', justifyContent: 'center' }}>
                   <Typography variant="h5" color="inherit" fontWeight="bold">
                     확인
                   </Typography>

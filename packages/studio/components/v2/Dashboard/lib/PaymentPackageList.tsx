@@ -1,11 +1,11 @@
-import EditAccessAtom from "@/config/type/access/state";
-import { useSession } from "next-auth/react";
-import { useCallback, useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { PaymentRows } from ".";
-import db from "@/api/module";
-import { Class } from "@/config/type/default/class";
-import { Student } from "@/config/type/default/students";
+import EditAccessAtom from '@/config/type/access/state';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import { PaymentRows } from '.';
+import db from '@/api/module';
+import { Class } from '@/config/type/default/class';
+import { Student } from '@/config/type/default/students';
 import {
   Alert,
   Box,
@@ -17,15 +17,15 @@ import {
   Skeleton,
   Typography,
   alpha,
-} from "@mui/material";
-import { AnimatePresence, motion } from "framer-motion";
-import LightTooltip from "@/components/common/Tooltip/LightTooltip";
-import ErrorIcon from "@mui/icons-material/Error";
-import { CircleSharp } from "@mui/icons-material";
-import AlertModal from "../../Alert/Modal";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
-import moment from "moment";
+} from '@mui/material';
+import { AnimatePresence, motion } from 'framer-motion';
+import LightTooltip from 'package/src/Tooltip/LightTooltip';
+import ErrorIcon from '@mui/icons-material/Error';
+import { CircleSharp } from '@mui/icons-material';
+import AlertModal from 'package/src/Modal/AlertModal';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 type ClassData = {
   [key: string]: { name: string; price: number };
@@ -41,8 +41,8 @@ const PaymentPackageList = () => {
   const [classData, setClassData] = useState<ClassData>({});
   const [loading, setLoading] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [selectedId, setSelectedId] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [selectedId, setSelectedId] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const handleChange = (event: any) => {
     setPaymentMethod(event.target.value);
@@ -53,7 +53,7 @@ const PaymentPackageList = () => {
   const handleClose = () => setOpen(false);
 
   const onLoadClassData = useCallback(async (): Promise<ClassData> => {
-    const { data: items } = await db.search("class", { options: {} });
+    const { data: items } = await db.search('class', { options: {} });
     const result = items.reduce((acc: ClassData, item: Class) => {
       acc = {
         ...acc,
@@ -76,10 +76,10 @@ const PaymentPackageList = () => {
       ...v,
     }));
 
-    const { data: studentItems } = await db.search("student", {
+    const { data: studentItems } = await db.search('student', {
       options: {
-        "lessonBasedPayment.isPaid.equal": false,
-        "currentStatus.like": true,
+        'lessonBasedPayment.isPaid.equal': false,
+        'currentStatus.like': true,
       },
     });
     await delay(100);
@@ -90,7 +90,7 @@ const PaymentPackageList = () => {
 
     const result: PaymentRows[] = studentItems.map((data: Student) => ({
       ...data,
-      rowStatus: "needCharge",
+      rowStatus: 'needCharge',
       price:
         classArray.find(({ id: cid }) => data?.classId.includes(cid))?.price ||
         0,
@@ -101,31 +101,31 @@ const PaymentPackageList = () => {
   }, []);
 
   const handleSubmit = async () => {
-    if (!paymentMethod) return toast.error("결제 방식을 선택해주세요");
+    if (!paymentMethod) return toast.error('결제 방식을 선택해주세요');
     setProcessing(true);
 
     const row: PaymentRows | undefined = rows.find(
-      ({ id = "" }) => id === selectedId
+      ({ id = '' }) => id === selectedId,
     );
 
     if (!row?.id) return;
 
     try {
-      const { id = "", ...rest } = row;
+      const { id = '', ...rest } = row;
 
       const paymentForm = {
-        studentId: id || "",
+        studentId: id || '',
         studentName: rest.name,
-        sessionId: rest.sessionId[0] || "",
-        sessionName: "",
-        classId: rest.classId[0] || "",
-        className: "",
-        instructorId: "",
-        confirmationId: session?.user?.id || "",
-        paymentDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+        sessionId: rest.sessionId[0] || '',
+        sessionName: '',
+        classId: rest.classId[0] || '',
+        className: '',
+        instructorId: '',
+        confirmationId: session?.user?.id || '',
+        paymentDate: moment().format('YYYY-MM-DD HH:mm:ss'),
         paymentType: rest.paymentType,
-        confirmationDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-        paymentYearMonth: moment().format("YYYY-MM"),
+        confirmationDate: moment().format('YYYY-MM-DD HH:mm:ss'),
+        paymentYearMonth: moment().format('YYYY-MM'),
         amount: rest?.price ?? 0,
         method: paymentMethod, // cash, card, account
       };
@@ -146,23 +146,23 @@ const PaymentPackageList = () => {
       const delay = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
 
-      await db.update("student", studentForm);
+      await db.update('student', studentForm);
 
       await delay(500);
 
-      await db.create("payment", paymentForm);
+      await db.create('payment', paymentForm);
 
       // await delay(500);
 
-      const left = rows.filter(({ id: _id = "" }) => _id !== row.id);
+      const left = rows.filter(({ id: _id = '' }) => _id !== row.id);
       setRows(left);
-      toast.success("정상적으로 처리 되었습니다.");
+      toast.success('정상적으로 처리 되었습니다.');
     } catch {
-      toast.error("저장에 실패했습니다.");
+      toast.error('저장에 실패했습니다.');
     }
 
     handleClose();
-    setSelectedId("");
+    setSelectedId('');
 
     setProcessing(false);
   };
@@ -195,9 +195,9 @@ const PaymentPackageList = () => {
               <AnimatePresence>
                 {rows.map(
                   ({
-                    id = "",
-                    name = "",
-                    rowStatus = "",
+                    id = '',
+                    name = '',
+                    rowStatus = '',
                     lessonBasedPayment = {},
                   }) => (
                     <Box
@@ -211,15 +211,15 @@ const PaymentPackageList = () => {
                       }}
                       animate={{
                         opacity: processing && selectedId === id ? 0 : 1,
-                        x: processing && selectedId === id ? "-100%" : 0,
+                        x: processing && selectedId === id ? '-100%' : 0,
                         transition: { duration: 0.2 },
                       }}
                     >
                       <Box
                         style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          justifyContent: "space-between",
+                          display: 'flex',
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
                         }}
                         sx={{
                           py: 1,
@@ -233,7 +233,7 @@ const PaymentPackageList = () => {
                             variant="subtitle2"
                             sx={{ color: (theme) => theme.palette.grey[800] }}
                           >
-                            {name}{" "}
+                            {name}{' '}
                             <Typography
                               component="span"
                               variant="caption"
@@ -245,8 +245,8 @@ const PaymentPackageList = () => {
 
                           <Box
                             style={{
-                              display: "flex",
-                              alignItems: "center",
+                              display: 'flex',
+                              alignItems: 'center',
                             }}
                           >
                             <Box>
@@ -254,7 +254,7 @@ const PaymentPackageList = () => {
                                 variant="caption"
                                 color="text.secondary"
                               >
-                                기준 레슨 횟수{" "}
+                                기준 레슨 횟수{' '}
                                 <Typography variant="caption" color="info.main">
                                   {lessonBasedPayment?.total}
                                 </Typography>
@@ -273,10 +273,10 @@ const PaymentPackageList = () => {
 
                         <Box
                           style={{
-                            display: "flex",
+                            display: 'flex',
                             flexShrink: 0,
-                            justifyContent: "center",
-                            alignItems: "center",
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
                           sx={{ px: 0.5 }}
                         >
@@ -285,12 +285,12 @@ const PaymentPackageList = () => {
                               <Box sx={{ p: 1 }}>
                                 <Box
                                   style={{
-                                    display: "flex",
-                                    alignItems: "center",
+                                    display: 'flex',
+                                    alignItems: 'center',
                                   }}
                                 >
                                   <ErrorIcon
-                                    sx={{ color: "info.main", mr: 1 }}
+                                    sx={{ color: 'info.main', mr: 1 }}
                                   />
                                   <Typography variant="h5" color="info.main">
                                     결제처리
@@ -313,23 +313,23 @@ const PaymentPackageList = () => {
                               variant="outlined"
                               disabled={id === selectedId || !editAccessState}
                               onClick={() => {
-                                if (rowStatus === "completed") return;
+                                if (rowStatus === 'completed') return;
                                 setSelectedId(id);
                                 setOpen(true);
                               }}
                               sx={{
-                                color: "secondary.dark",
+                                color: 'secondary.dark',
                                 pl: 1,
                                 pr: 1,
                                 borderRadius: 4,
                                 border: (theme) =>
-                                  `1px solid ${theme.palette.grey["A200"]}`,
+                                  `1px solid ${theme.palette.grey['A200']}`,
                               }}
                             >
                               <CircleSharp
                                 style={{ fontSize: 6 }}
                                 sx={{
-                                  color: "secondary.dark",
+                                  color: 'secondary.dark',
                                   mr: 1,
                                 }}
                               />
@@ -339,7 +339,7 @@ const PaymentPackageList = () => {
                         </Box>
                       </Box>
                     </Box>
-                  )
+                  ),
                 )}
               </AnimatePresence>
             </>

@@ -1,5 +1,4 @@
-import { Button, Modal, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Box, Button, Modal, Typography } from '@mui/material';
 
 interface Props {
   open: boolean;
@@ -8,7 +7,7 @@ interface Props {
   title: string;
   content: string;
   children?: React.ReactNode;
-  processing: boolean
+  processing: boolean;
 }
 
 const AlertModal = ({
@@ -18,7 +17,7 @@ const AlertModal = ({
   title,
   content,
   children,
-  processing
+  processing,
 }: Props) => {
   return (
     <Modal
@@ -29,15 +28,15 @@ const AlertModal = ({
     >
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100vh',
         }}
       >
         <Box
           sx={{
-            margin: "0 auto",
+            margin: '0 auto',
             width: 350,
             background: (theme) => theme.palette.background.default,
             p: 3,
@@ -48,36 +47,36 @@ const AlertModal = ({
           <Typography
             id="modal-modal-title"
             variant="subtitle1"
-            color={processing ? "info.main" : "text.primary"}
+            color={processing ? 'info.main' : 'text.primary'}
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               mb: 3,
             }}
           >
-            {processing ? "처리 진행중" : title || ""}
+            {processing ? '처리 진행중' : title || ''}
           </Typography>
           <Typography
             variant="caption"
             color="text.secondary"
             sx={{
               mb: 3,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
           >
-            {processing ? "잠시만 기다려주세요! 곧 완료됩니다." : content || ""}
+            {processing ? '잠시만 기다려주세요! 곧 완료됩니다.' : content || ''}
           </Typography>
 
           <Box>{children}</Box>
 
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}
           >
             <Button
@@ -85,12 +84,12 @@ const AlertModal = ({
               variant="contained"
               sx={{
                 background: (theme) => theme.palette.background.default,
-                height: "40px",
-                width: "40%",
+                height: '40px',
+                width: '40%',
               }}
               onClick={handleClose}
             >
-              <Box style={{ width: "100%", justifyContent: "center" }}>
+              <Box style={{ width: '100%', justifyContent: 'center' }}>
                 <Typography variant="h5" color="text.primary" fontWeight="bold">
                   취소
                 </Typography>
@@ -101,12 +100,12 @@ const AlertModal = ({
               variant="contained"
               sx={{
                 background: (theme) => theme.palette.primary.main,
-                height: "40px",
-                width: "40%",
+                height: '40px',
+                width: '40%',
               }}
               onClick={onClickCheck}
             >
-              <Box style={{ width: "100%", justifyContent: "center" }}>
+              <Box style={{ width: '100%', justifyContent: 'center' }}>
                 <Typography variant="h5" color="inherit" fontWeight="bold">
                   확인
                 </Typography>

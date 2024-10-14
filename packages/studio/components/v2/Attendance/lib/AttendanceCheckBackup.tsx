@@ -9,22 +9,22 @@ import {
   Typography,
   alpha,
   useTheme,
-} from "@mui/material";
-import { AttendStatus, AttendStatusTemplate, Rows, AttendEnums } from ".";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
-import CreditCardIcon from "@mui/icons-material/CreditCard";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import AttendanceDataAtom from "./state";
-import { useRecoilState } from "recoil";
-import moment from "moment";
-import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import "react-toastify/dist/ReactToastify.css";
-import { toast } from "react-toastify";
+} from '@mui/material';
+import { AttendStatus, AttendStatusTemplate, Rows, AttendEnums } from '.';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
+import { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import AttendanceDataAtom from './state';
+import { useRecoilState } from 'recoil';
+import moment from 'moment';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
-import db from "@/api/module";
-import { useSession } from "next-auth/react";
-import AlertModal from "../../Alert/Modal";
+import db from '@/api/module';
+import { useSession } from 'next-auth/react';
+import AlertModal from 'package/src/Modal/AlertModal';
 
 interface Props {
   rows: Rows[];
@@ -57,13 +57,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
   const [dateState, setDateState] = useRecoilState(AttendanceDataAtom);
 
   const getColor = (color: string) => {
-    const [palette, shade] = color.split(".") as [
+    const [palette, shade] = color.split('.') as [
       keyof typeof theme.palette,
       string,
     ];
     const ptColor = theme.palette[palette];
 
-    if (ptColor && typeof ptColor === "object" && shade in ptColor)
+    if (ptColor && typeof ptColor === 'object' && shade in ptColor)
       return ptColor[shade as keyof typeof ptColor];
 
     return undefined;
@@ -99,7 +99,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
   const onClickSaveAttendinfo = async () => {
     if (!Object.entries(event).length)
-      return toast.error("출석 대상자의 내용을 선택해주세요");
+      return toast.error('출석 대상자의 내용을 선택해주세요');
 
     setProcessing(true);
 
@@ -110,37 +110,37 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
     try {
       for (let i = 0; i < attendTarget.length; i++) {
-        const { id = "", ...rest } = attendTarget[i];
-        let status = "";
-        let excusedTime = "";
+        const { id = '', ...rest } = attendTarget[i];
+        let status = '';
+        let excusedTime = '';
 
         if (event[id]) status = event[id];
 
         if (eventTime[id]) excusedTime = eventTime[id];
 
         const form = {
-          sessionId: rest.sessionId[0] || "",
-          sessionName: "",
-          classId: rest.classId[0] || "",
-          className: "",
+          sessionId: rest.sessionId[0] || '',
+          sessionName: '',
+          classId: rest.classId[0] || '',
+          className: '',
           studentId: id,
-          studentName: rest.name || "",
-          paymentType: rest.paymentType || "",
-          instructorId: rest.instructorId[0] || "",
-          confirmationId: session?.user?.id || "",
-          dayOfWeek: moment(dateState.attendanceDate).format("d"),
+          studentName: rest.name || '',
+          paymentType: rest.paymentType || '',
+          instructorId: rest.instructorId[0] || '',
+          confirmationId: session?.user?.id || '',
+          dayOfWeek: moment(dateState.attendanceDate).format('d'),
           attendanceDate: moment(dateState.attendanceDate).format(
-            "YYYY-MM-DD HH:mm:ss"
+            'YYYY-MM-DD HH:mm:ss',
           ),
           status,
-          confirmationDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+          confirmationDate: moment().format('YYYY-MM-DD HH:mm:ss'),
           excusedDate: excusedTime,
         };
 
         if (status) {
-          await db.create("attendance", form);
+          await db.create('attendance', form);
 
-          if (rest.paymentType === "package") {
+          if (rest.paymentType === 'package') {
             const {
               total,
               remaining = 0,
@@ -162,13 +162,13 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
         }
       }
     } catch {
-      return toast.error("오류가 발생했습니다.");
+      return toast.error('오류가 발생했습니다.');
     }
 
     load();
     setProcessing(false);
     setOpen(false);
-    toast.success("정상적으로 처리 되었습니다.");
+    toast.success('정상적으로 처리 되었습니다.');
   };
 
   return (
@@ -178,7 +178,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
           mx: 1,
           border: (theme) => `1px solid ${theme.palette.grey[100]}`,
           borderRadius: 2,
-          height: "100%",
+          height: '100%',
         }}
       >
         <Box
@@ -196,9 +196,9 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
               {[...Array(3)].map((_, index) => (
                 <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    width: "100%",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    width: '100%',
                   }}
                 >
                   <Skeleton
@@ -217,7 +217,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                 <>
                   <Box sx={{ mb: 2 }}>
                     <Typography variant="subtitle1" color="info.main">
-                      {moment(dateState?.attendanceDate).format("MM월 DD일")}{" "}
+                      {moment(dateState?.attendanceDate).format('MM월 DD일')}{' '}
                       <Typography
                         component="span"
                         variant="body2"
@@ -229,29 +229,29 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
                     <Box
                       style={{
-                        display: "flex",
+                        display: 'flex',
                         flexShrink: 0,
-                        justifyContent: "center",
-                        alignItems: "center",
+                        justifyContent: 'center',
+                        alignItems: 'center',
                       }}
-                      sx={{ width: "120px", mt: 2, mb: 2, height: "30px" }}
+                      sx={{ width: '120px', mt: 2, mb: 2, height: '30px' }}
                     >
                       <Button
                         fullWidth
                         size="medium"
                         variant="outlined"
                         sx={{
-                          color: "text.secondary",
+                          color: 'text.secondary',
                           background: (theme) =>
                             isClicked
-                              ? getColor("primary.main")
+                              ? getColor('primary.main')
                               : theme.palette.grey[100],
                           borderRadius: 3,
                           pr: 1,
                           pl: 1,
                           border: (theme) =>
                             isClicked
-                              ? getColor("primary.main")
+                              ? getColor('primary.main')
                               : theme.palette.grey[100],
                         }}
                         onClick={() => {
@@ -259,8 +259,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                           else
                             setTarget(
                               target.filter(
-                                ({ isEditable = false }) => isEditable
-                              )
+                                ({ isEditable = false }) => isEditable,
+                              ),
                             );
                           setIsClicked(!isClicked);
                         }}
@@ -270,7 +270,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                             width: 10,
                             height: 10,
                             borderRadius: 50,
-                            color: "background.default",
+                            color: 'background.default',
                             background: (theme) => theme.palette.warning.main,
                             mr: 1,
                           }}
@@ -291,7 +291,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                     }}
                   >
                     <Typography variant="subtitle1" color="info.main">
-                      {moment(dateState?.attendanceDate).format("MM월 DD일")}{" "}
+                      {moment(dateState?.attendanceDate).format('MM월 DD일')}{' '}
                       <Typography
                         component="span"
                         variant="body2"
@@ -303,36 +303,36 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
                       }}
                     >
                       <Box
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flexShrink: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
-                        sx={{ width: "120px", mt: 2, mb: 2, height: "30px" }}
+                        sx={{ width: '120px', mt: 2, mb: 2, height: '30px' }}
                       >
                         <Button
                           fullWidth
                           size="medium"
                           variant="outlined"
                           sx={{
-                            color: "text.secondary",
+                            color: 'text.secondary',
                             background: (theme) =>
                               isClicked
-                                ? getColor("primary.main")
+                                ? getColor('primary.main')
                                 : theme.palette.grey[100],
                             borderRadius: 3,
                             pr: 1,
                             pl: 1,
                             border: (theme) =>
                               isClicked
-                                ? getColor("primary.main")
+                                ? getColor('primary.main')
                                 : theme.palette.grey[100],
                           }}
                           onClick={() => {
@@ -340,8 +340,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                             else
                               setTarget(
                                 target.filter(
-                                  ({ isEditable = false }) => isEditable
-                                )
+                                  ({ isEditable = false }) => isEditable,
+                                ),
                               );
                             setIsClicked(!isClicked);
                           }}
@@ -351,7 +351,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               width: 10,
                               height: 10,
                               borderRadius: 50,
-                              color: "background.default",
+                              color: 'background.default',
                               background: (theme) => theme.palette.warning.main,
                               mr: 1,
                             }}
@@ -362,17 +362,17 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
 
                       <Box
                         style={{
-                          display: "flex",
+                          display: 'flex',
                           flexShrink: 0,
-                          justifyContent: "center",
-                          alignItems: "center",
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}
                         sx={{
-                          width: "90px",
+                          width: '90px',
                           ml: 2,
                           mt: 2,
                           mb: 2,
-                          height: "30px",
+                          height: '30px',
                         }}
                       >
                         <Button
@@ -380,23 +380,23 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                           size="medium"
                           variant="outlined"
                           sx={{
-                            "&:hover": {
+                            '&:hover': {
                               background: (theme) =>
                                 isChargeClicked
-                                  ? getColor("warning.main")
+                                  ? getColor('warning.main')
                                   : theme.palette.grey[100],
                             },
-                            color: "text.secondary",
+                            color: 'text.secondary',
                             background: (theme) =>
                               isChargeClicked
-                                ? getColor("warning.main")
+                                ? getColor('warning.main')
                                 : theme.palette.grey[100],
                             borderRadius: 3,
                             pr: 1,
                             pl: 1,
                             border: (theme) =>
                               isChargeClicked
-                                ? getColor("warning.main")
+                                ? getColor('warning.main')
                                 : theme.palette.grey[100],
                           }}
                           onClick={() => {
@@ -404,8 +404,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                             else
                               setTarget(
                                 target.filter(
-                                  ({ rowStatus }) => "needCharge" === rowStatus
-                                )
+                                  ({ rowStatus }) => 'needCharge' === rowStatus,
+                                ),
                               );
                             setIsChargeClicked(!isChargeClicked);
                           }}
@@ -415,7 +415,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               width: 10,
                               height: 10,
                               borderRadius: 50,
-                              color: "background.default",
+                              color: 'background.default',
                               background: (theme) => theme.palette.warning.main,
                               mr: 1,
                             }}
@@ -425,12 +425,12 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                       </Box>
                     </Box>
                   </Box>
-                  <Box sx={{ overflowY: "auto", maxHeight: "500px", mt: 2 }}>
+                  <Box sx={{ overflowY: 'auto', maxHeight: '500px', mt: 2 }}>
                     {target.map((item, index) => (
                       <Box
                         key={item.id}
                         sx={{
-                          maxHeight: "50px",
+                          maxHeight: '50px',
                           mb: 4,
                           p: 2,
                           // background: (theme) => alpha(theme.palette.info.light, 0.3),
@@ -440,17 +440,17 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                       >
                         <Box
                           sx={{
-                            display: "flex",
-                            flexDirection: "column",
+                            display: 'flex',
+                            flexDirection: 'column',
                           }}
                         >
                           <Box
                             sx={{
-                              display: "flex",
-                              flexDirection: "row ",
+                              display: 'flex',
+                              flexDirection: 'row ',
                             }}
                           >
-                            <Box sx={{ width: "40px" }}>
+                            <Box sx={{ width: '40px' }}>
                               <Typography
                                 variant="subtitle2"
                                 color="text.primary"
@@ -459,33 +459,33 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                               </Typography>
                             </Box>
 
-                            <Box sx={{ width: "60px" }}>
+                            <Box sx={{ width: '60px' }}>
                               <Typography
                                 variant="subtitle2"
                                 color="text.primary"
                               >
-                                {item.type === "lesson" ? "레슨" : "수업"}
+                                {item.type === 'lesson' ? '레슨' : '수업'}
                               </Typography>
                             </Box>
 
-                            <Box sx={{ width: "80px" }}>
+                            <Box sx={{ width: '80px' }}>
                               <Typography
                                 variant="subtitle2"
                                 color="text.primary"
                               >
-                                {item.paymentType === "regular"
-                                  ? "정기결제"
-                                  : "회차결제"}
+                                {item.paymentType === 'regular'
+                                  ? '정기결제'
+                                  : '회차결제'}
                               </Typography>
                             </Box>
 
-                            <Box sx={{ width: "100px" }}>
+                            <Box sx={{ width: '100px' }}>
                               <Typography
                                 variant="subtitle2"
                                 color={
-                                  item.rowStatus === "standby"
-                                    ? "error.main"
-                                    : "text.primary"
+                                  item.rowStatus === 'standby'
+                                    ? 'error.main'
+                                    : 'text.primary'
                                 }
                               >
                                 {item.name}
@@ -496,14 +496,14 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                 <Box
                                   key={k} // key prop 추가
                                   style={{
-                                    display: "flex",
+                                    display: 'flex',
                                     flexShrink: 0,
-                                    justifyContent: "center",
-                                    alignItems: "center",
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
                                   }}
                                   sx={{ px: 0.5 }}
                                 >
-                                  {item.rowStatus === "standby" ? (
+                                  {item.rowStatus === 'standby' ? (
                                     <Button
                                       fullWidth
                                       size="medium"
@@ -512,11 +512,11 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                       onClick={() =>
                                         handleButtonClick(
                                           item.id,
-                                          k as AttendStatus
+                                          k as AttendStatus,
                                         )
                                       }
                                       sx={{
-                                        "&:hover": {
+                                        '&:hover': {
                                           background:
                                             event[item.id as string] &&
                                             event[item.id as string] === k
@@ -524,8 +524,8 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                               : getColor(v.color),
                                         },
                                         pointerEvents:
-                                          k === "needCharge" ? "none" : "auto",
-                                        color: "primary.contrastText",
+                                          k === 'needCharge' ? 'none' : 'auto',
+                                        color: 'primary.contrastText',
                                         background:
                                           event[item.id as string] &&
                                           event[item.id as string] === k
@@ -545,9 +545,9 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                       size="medium"
                                       variant="outlined"
                                       sx={{
-                                        pointerEvents: "none",
+                                        pointerEvents: 'none',
                                         // pointerEvents: item.rowStatus !== k ? "none" : "auto", // 결제처리 가능성 존재하여 none으로 안둠
-                                        color: "primary.contrastText",
+                                        color: 'primary.contrastText',
                                         background:
                                           item.rowStatus === k
                                             ? getColor(v.color)
@@ -562,25 +562,25 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                     </Button>
                                   )}
                                 </Box>
-                              )
+                              ),
                             )}
                             <Box
                               sx={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "start",
-                                height: "40px",
+                                display: 'flex',
+                                flexDirection: 'row',
+                                justifyContent: 'start',
+                                height: '40px',
                               }}
                             >
-                              {event[item.id as string] === "excused" ||
+                              {event[item.id as string] === 'excused' ||
                               item.excusedDate ? (
                                 <Box sx={{ mt: 1.5 }}>
                                   <Box
                                     sx={{
-                                      display: "flex",
-                                      flexDirection: "row",
-                                      justifyContent: "start",
-                                      alignItems: "center",
+                                      display: 'flex',
+                                      flexDirection: 'row',
+                                      justifyContent: 'start',
+                                      alignItems: 'center',
                                     }}
                                   >
                                     <Typography
@@ -594,7 +594,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                       id="schedule-end"
                                       type="date"
                                       disabled={Boolean(item.excusedDate)}
-                                      value={eventTime[item.id as string] ?? ""}
+                                      value={eventTime[item.id as string] ?? ''}
                                       onChange={(e) => {
                                         setEventTime((prev) => ({
                                           ...prev,
@@ -603,7 +603,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                         }));
                                       }}
                                       sx={{
-                                        borderColor: "#d2d2d2",
+                                        borderColor: '#d2d2d2',
                                         borderRadius: 1,
                                         height: 20,
                                         fontSize: 12,
@@ -615,7 +615,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                                   </Box>
                                 </Box>
                               ) : (
-                                ""
+                                ''
                               )}
                             </Box>
                           </Box>
@@ -629,7 +629,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
           )}
         </Box>
         {target.length ? (
-          <Box sx={{ display: "flex", justifyContent: "start", ml: 1, p: 2 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'start', ml: 1, p: 2 }}>
             <Button
               variant="outlined"
               size="medium"
@@ -641,12 +641,12 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                 mb: 1,
                 borderRadius: 1,
                 border: (theme) => `1.5px solid ${theme.palette.grey[100]}`,
-                borderColor: "success.main",
-                color: "success.main",
+                borderColor: 'success.main',
+                color: 'success.main',
               }}
               onClick={() => {
                 if (!Object.entries(event).length)
-                  return toast.error("출석 대상자의 내용을 선택해주세요");
+                  return toast.error('출석 대상자의 내용을 선택해주세요');
                 setOpen(true);
               }}
             >
@@ -658,7 +658,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
                   sx={{
                     mr: 1,
                     background: (theme) => theme.palette.success.main,
-                    color: "background.default",
+                    color: 'background.default',
                     borderRadius: 50,
                   }}
                 />

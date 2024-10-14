@@ -11,10 +11,10 @@ read -p "Enter the number (1 or 2): " selection
 # 입력 값에 따라 studio 또는 voca workspace 실행
 if [ "$selection" -eq 1 ]; then
   echo "Running 'studio' project in dev mode..."
-  pnpm --filter studio dev
+  pnpm --filter studio dev --port 7676
 elif [ "$selection" -eq 2 ]; then
   echo "Running 'voca' project in dev mode..."
-  pnpm --filter voca dev
+  pnpm --filter studio dev --port 7500
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1
