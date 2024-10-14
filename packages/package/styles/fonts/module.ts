@@ -1,17 +1,25 @@
-import "../styles.css";
+import '../styles.css';
 
 export const kboFont = {
-  fontFamily: "kbo",
+  fontFamily: 'kbo',
 };
 
 export const pretendardFont = {
-  fontFamily: "pretendard",
+  fontFamily: 'pretendard',
 };
 
 export const nanumFont = {
-  fontFamily: "nanum",
+  fontFamily: 'nanum',
 };
 
 export const tmoneyFont = {
-  fontFamily: "tmoney",
+  fontFamily: 'tmoney',
+};
+
+export const spoca1 = {
+  fontFamily: 'spoca1',
+};
+
+export const spoca2 = {
+  fontFamily: 'spoca2',
 };
