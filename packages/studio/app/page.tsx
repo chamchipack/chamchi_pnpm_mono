@@ -1,4 +1,4 @@
-import Good from './Good';
+import Good from '@/app/Good';
 
 const page = () => {
   return (

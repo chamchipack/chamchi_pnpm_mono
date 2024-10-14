@@ -10,9 +10,12 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@mui/*": ["./node_modules/@mui/*"]
+      "package/*": ["./*"]
     },
+    // "paths": {
+    //   "@mui/*": ["./node_modules/@mui/*"]
+    // },
     "outDir": "dist"
   },
-  "include": ["src"]
+  "include": ["./"]
 }

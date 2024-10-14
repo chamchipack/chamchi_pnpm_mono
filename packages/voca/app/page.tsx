@@ -4,7 +4,7 @@ const page = () => {
   return (
     <div>
       <Good />
-      dddd
+      ddddㅁㄴㅇㄻㄴㅇㄹ
     </div>
   );
 };
