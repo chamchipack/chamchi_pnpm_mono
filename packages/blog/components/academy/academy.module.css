@@ -1,29 +1,39 @@
-/* Full Size */
 .responsive-container {
-  width: 70%;
+  display: flex;
+  width: 100%; /* 전체 너비 사용 */
+  flex-direction: row;
+}
+
+.responsive-side {
+  flex-basis: 50%;
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1540px) {
-  .responsive-container {
-    width: 80%;
-  }
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1280px) {
-  .responsive-container {
-    width: 85%;
+  .responsive-side {
+    flex-basis: 70%;
   }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-  .responsive-container {
-    width: 88%;
+  .responsive-side {
+    flex-basis: 100%;
   }
 }
 
 /* Mobile */
 @media only screen and (max-width: 767px) {
   .responsive-container {
-    width: 90%;
+    flex-direction: column;
+  }
+
+  .responsive-side {
+    flex-basis: 100%;
+  }
+
+  .responsive-side {
+    display: none;
   }
 }
