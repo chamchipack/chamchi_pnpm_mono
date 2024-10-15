@@ -16,7 +16,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "package/*": ["../package/*"]   // packages/package/src 폴더의 별칭 설정
+      "@/*": ["./*"],
+      "package/*": ["../package/*"] // packages/package/src 폴더의 별칭 설정
     },
     "plugins": [
       {
