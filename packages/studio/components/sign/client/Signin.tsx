@@ -1,12 +1,12 @@
-"use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
-import Alert from "@mui/material/Alert";
+import Alert from '@mui/material/Alert';
 
-import ProgressDialog from "package/src/Modal/ProgressModal";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import ProgressDialog from 'package/src/Modal/ProgressModal';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {
   Button,
   Avatar,
@@ -18,9 +18,9 @@ import {
   createTheme,
   ThemeProvider,
   AlertTitle,
-} from "@mui/material";
-import { motion } from "framer-motion";
-import AlertModal from "../../modal/AlertModal";
+} from '@mui/material';
+import { motion } from 'framer-motion';
+import AlertModal from 'package/src/Modal/AlertModal';
 
 const defaultTheme = createTheme();
 
@@ -38,21 +38,21 @@ const Signin = () => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get('email');
+    const password = formData.get('password');
 
     // const instance = loginSchema.safeParse({ id: email, password });
     // if (!instance.success) return alert("아이디 혹은 비밀번호를 입력해주세요");
 
     try {
       handleOpen();
-      const result = await signIn("credentials", {
+      const result = await signIn('credentials', {
         redirect: false,
         username: email,
         password: password,
       });
 
-      if (result?.ok) router.push("/workspace/student");
+      if (result?.ok) router.push('/workspace/student');
       else {
         handleClose();
         setOpenAlert(true);
@@ -68,42 +68,38 @@ const Signin = () => {
     <Box
       sx={{
         opacity: 0.95,
-        backgroundColor: "secondary.main",
+        backgroundColor: 'secondary.main',
         borderRadius: 5,
         boxShadow: 3,
         p: 2,
-        maxWidth: "23rem",
-        margin: "auto",
+        maxWidth: '23rem',
+        margin: 'auto',
       }}
     >
       <ProgressDialog open={openModal} onClose={handleClose} />
 
-      <AlertModal open={openAlert} onClose={onCloseAlert}>
-        <Alert
-          severity="error"
-          onClose={onCloseAlert}
-          sx={{
-            background: (theme) => theme.palette.error.light,
-            p: 2,
-          }}
-        >
-          <AlertTitle sx={{ mb: 2 }}>Authorization Failed</AlertTitle>
-          <Typography sx={{ color: "text.primary" }}>
-            아이디와 비밀번호를 확인해주세요.
-          </Typography>
-        </Alert>
-      </AlertModal>
+      <AlertModal
+        open={openAlert}
+        handleClose={() => {
+          setOpenAlert(false);
+        }}
+        isAlertModal={true}
+        processing={false}
+        onClickCheck={() => {}}
+        title={`Authorization Failed`}
+        content={`아이디와 비밀번호를 확인해주세요.`}
+      ></AlertModal>
 
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs" sx={{ width: "100%" }}>
+        <Container component="main" maxWidth="xs" sx={{ width: '100%' }}>
           <CssBaseline />
           <Box
             sx={{
               marginTop: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%", // Container 최대 너비에 맞춰 조정
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '100%', // Container 최대 너비에 맞춰 조정
             }}
           >
             <Box
@@ -113,21 +109,21 @@ const Signin = () => {
                 transition: { duration: 2, repeat: Infinity },
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                 <LockOutlinedIcon />
               </Avatar>
             </Box>
             <Typography
               component="h1"
               variant="h5"
-              sx={{ color: "background.paper", fontWeight: "bold" }}
+              sx={{ color: 'background.paper', fontWeight: 'bold' }}
             >
               STUDIO CHAMCHI
             </Typography>
             <Box
               component="form"
               onSubmit={onSubmit}
-              sx={{ mt: 1, width: "100%" }}
+              sx={{ mt: 1, width: '100%' }}
             >
               <TextField
                 margin="normal"
@@ -140,12 +136,12 @@ const Signin = () => {
                 autoFocus
                 sx={{
                   mb: 1,
-                  "& .MuiOutlinedInput-root": {
+                  '& .MuiOutlinedInput-root': {
                     borderRadius: 3,
-                    backgroundColor: "background.default",
+                    backgroundColor: 'background.default',
                   },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "background.default",
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'background.default',
                   },
                 }}
               />
@@ -161,12 +157,12 @@ const Signin = () => {
                 autoComplete="current-password"
                 sx={{
                   mb: 2,
-                  "& .MuiOutlinedInput-root": {
+                  '& .MuiOutlinedInput-root': {
                     borderRadius: 3,
-                    backgroundColor: "background.default",
+                    backgroundColor: 'background.default',
                   },
-                  "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "background.default",
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'background.default',
                   },
                 }}
               />
@@ -175,10 +171,10 @@ const Signin = () => {
                 fullWidth
                 variant="contained"
                 style={{
-                  marginTop: "12px",
-                  marginBottom: "8px",
-                  fontWeight: "bold",
-                  backgroundColor: "primary.main",
+                  marginTop: '12px',
+                  marginBottom: '8px',
+                  fontWeight: 'bold',
+                  backgroundColor: 'primary.main',
                   opacity: 0.7,
                 }}
                 // onClick={(e) => onClickLogin(e, { email, password })}
@@ -192,8 +188,8 @@ const Signin = () => {
               align="center"
               sx={{ mt: 5 }}
             >
-              {"Copyright © "} {new Date().getFullYear()}{" "}
-              {" Chamchi Company. "}
+              {'Copyright © '} {new Date().getFullYear()}{' '}
+              {' Chamchi Company. '}
             </Typography>
             <Typography
               variant="subtitle2"
@@ -201,7 +197,7 @@ const Signin = () => {
               align="center"
               sx={{ mt: 5 }}
             >
-              {"All rights reserved."}
+              {'All rights reserved.'}
             </Typography>
           </Box>
         </Container>

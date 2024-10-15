@@ -8,6 +8,7 @@ interface Props {
   content: string;
   children?: React.ReactNode;
   processing: boolean;
+  isAlertModal?: boolean;
 }
 
 const AlertModal = ({
@@ -18,6 +19,7 @@ const AlertModal = ({
   content,
   children,
   processing,
+  isAlertModal = false,
 }: Props) => {
   return (
     <Modal
@@ -79,38 +81,67 @@ const AlertModal = ({
               justifyContent: 'space-between',
             }}
           >
-            <Button
-              disabled={processing}
-              variant="contained"
-              sx={{
-                background: (theme) => theme.palette.background.default,
-                height: '40px',
-                width: '40%',
-              }}
-              onClick={handleClose}
-            >
-              <Box style={{ width: '100%', justifyContent: 'center' }}>
-                <Typography variant="h5" color="text.primary" fontWeight="bold">
-                  취소
-                </Typography>
-              </Box>
-            </Button>
-            <Button
-              disabled={processing}
-              variant="contained"
-              sx={{
-                background: (theme) => theme.palette.primary.main,
-                height: '40px',
-                width: '40%',
-              }}
-              onClick={onClickCheck}
-            >
-              <Box style={{ width: '100%', justifyContent: 'center' }}>
-                <Typography variant="h5" color="inherit" fontWeight="bold">
-                  확인
-                </Typography>
-              </Box>
-            </Button>
+            {isAlertModal ? (
+              <Button
+                disabled={processing}
+                variant="contained"
+                sx={{
+                  background: (theme) => theme.palette.background.default,
+                  height: '40px',
+                  width: '100%',
+                }}
+                onClick={handleClose}
+              >
+                <Box style={{ width: '100%', justifyContent: 'center' }}>
+                  <Typography
+                    variant="h5"
+                    color="text.primary"
+                    fontWeight="bold"
+                  >
+                    닫기
+                  </Typography>
+                </Box>
+              </Button>
+            ) : (
+              <>
+                <Button
+                  disabled={processing}
+                  variant="contained"
+                  sx={{
+                    background: (theme) => theme.palette.background.default,
+                    height: '40px',
+                    width: '40%',
+                  }}
+                  onClick={handleClose}
+                >
+                  <Box style={{ width: '100%', justifyContent: 'center' }}>
+                    <Typography
+                      variant="h5"
+                      color="text.primary"
+                      fontWeight="bold"
+                    >
+                      취소
+                    </Typography>
+                  </Box>
+                </Button>
+                <Button
+                  disabled={processing}
+                  variant="contained"
+                  sx={{
+                    background: (theme) => theme.palette.primary.main,
+                    height: '40px',
+                    width: '40%',
+                  }}
+                  onClick={onClickCheck}
+                >
+                  <Box style={{ width: '100%', justifyContent: 'center' }}>
+                    <Typography variant="h5" color="inherit" fontWeight="bold">
+                      확인
+                    </Typography>
+                  </Box>
+                </Button>
+              </>
+            )}
           </Box>
         </Box>
       </Box>
