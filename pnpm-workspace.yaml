@@ -1,4 +1,4 @@
 packages:
   - "packages/studio"
   - "packages/package"
-  - "packages/voca"
+  - "packages/blog"
