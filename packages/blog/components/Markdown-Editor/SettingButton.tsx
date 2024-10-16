@@ -1,13 +1,16 @@
 import { Box, Button } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
-import { SetStateAction } from 'react';
+import { useRecoilState } from 'recoil';
+import isEditPageon from '../academy/state';
 
 interface Props {
   setPreview: React.Dispatch<React.SetStateAction<boolean>>;
+  onClickSave: () => void;
 }
 
-export default function SettingButton({ setPreview }: Props) {
+export default function SettingButton({ setPreview, onClickSave }: Props) {
   const isMobile = useClientSize('sm');
+  const [, setIsEditPageon] = useRecoilState(isEditPageon);
 
   return (
     <Box
@@ -59,6 +62,7 @@ export default function SettingButton({ setPreview }: Props) {
             background: (theme) => `${theme.palette.warning.dark}`,
           },
         }}
+        onClick={() => setIsEditPageon(false)}
       >
         취소하기
       </Button>
@@ -79,6 +83,7 @@ export default function SettingButton({ setPreview }: Props) {
             background: (theme) => `${theme.palette.primary.dark}`,
           },
         }}
+        onClick={onClickSave}
       >
         글 저장하기
       </Button>

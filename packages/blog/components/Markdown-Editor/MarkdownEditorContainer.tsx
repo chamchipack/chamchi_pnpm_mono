@@ -5,17 +5,23 @@ import MarkdownInput from './MarkdownInput';
 import SettingButton from './SettingButton';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
-const test = '';
 export default function MarkdownEditorContainer() {
   const isMobile = useClientSize('sm');
+
   const [title, setTitle] = useState<string>('');
   const [markdownText, setMarkdownText] = useState<string>('');
   const [tags, setTags] = useState<string[]>([]);
   const [preview, setPreview] = useState(false);
 
+  const onClickSave = async () => {
+    console.info(title);
+    console.info(markdownText);
+    console.info(tags);
+  };
+
   return (
     <>
-      <SettingButton setPreview={setPreview} />
+      <SettingButton setPreview={setPreview} onClickSave={onClickSave} />
 
       <Box
         sx={{
