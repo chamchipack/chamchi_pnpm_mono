@@ -4,7 +4,7 @@ import { useRecoilState } from 'recoil';
 import { contents, isDetailPage } from '../state';
 import { useRouter } from 'next/navigation';
 
-const Title = ({ item }) => {
+const Title = ({ item, path }: { item: any; path: string }) => {
   const router = useRouter();
   const [, setDetailPage] = useRecoilState(isDetailPage);
   const [, setContents] = useRecoilState(contents);
@@ -23,7 +23,7 @@ const Title = ({ item }) => {
           // setDetailPage(true);
 
           if (!item?.id) return;
-          router.push(`/pinetree/academy/${item?.id}`);
+          router.push(`/pinetree/${path}/${item?.id}`);
         }}
       >
         {item.markdown_title}

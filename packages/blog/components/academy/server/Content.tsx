@@ -1,4 +1,4 @@
-import pb from '@/api/pocketbase';
+import pb from '@/api/server/db/pocketbase';
 import MarkdownPreview from '@/components/Markdown-Editor/MarkdownPreview';
 import styles from '../academy.module.css';
 

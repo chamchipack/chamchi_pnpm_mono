@@ -1,11 +1,11 @@
 import Content from '@/components/academy/server/Content';
 
 interface Props {
-  params: { academy_id: string };
+  params: { academy: string };
 }
 
 const page = async ({ params }: Props) => {
-  return <Content id={params?.academy_id} />;
+  return <Content id={params?.academy} />;
 };
 
 export default page;

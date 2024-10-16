@@ -4,6 +4,7 @@ import MarkdownPreview from './MarkdownPreview';
 import MarkdownInput from './MarkdownInput';
 import SettingButton from './SettingButton';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
+import ModalWrapper from 'package/src/Modal/ModalWrapper';
 
 export default function MarkdownEditorContainer() {
   const isMobile = useClientSize('sm');
@@ -61,12 +62,7 @@ export default function MarkdownEditorContainer() {
         />
       </Box>
 
-      <Modal
-        open={preview}
-        onClose={() => setPreview(false)}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-      >
+      <ModalWrapper open={preview} onClose={() => setPreview(false)}>
         <>
           {isMobile && (
             <Box
@@ -88,7 +84,7 @@ export default function MarkdownEditorContainer() {
             </Box>
           )}
         </>
-      </Modal>
+      </ModalWrapper>
     </>
   );
 }

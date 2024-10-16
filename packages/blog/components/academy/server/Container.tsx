@@ -4,7 +4,7 @@ import List from './List';
 import EditPageServerWrapper from '../EditPageServerWrapper';
 import ImageWrapper from './ImageWrapper';
 
-export default async function Container() {
+export default async function Container({ path }: { path: string }) {
   return (
     <>
       <EditPageServerWrapper>
@@ -12,7 +12,7 @@ export default async function Container() {
 
         <ListButtonComponent />
 
-        <List />
+        <List path={path} />
       </EditPageServerWrapper>
     </>
   );

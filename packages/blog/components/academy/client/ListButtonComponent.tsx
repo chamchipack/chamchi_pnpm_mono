@@ -3,8 +3,11 @@
 import { Box, Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../state';
+import { usePathname } from 'next/navigation';
 
 export default function ListButtonComponent() {
+  const path = usePathname();
+  console.info(path);
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
   return (
     <Box

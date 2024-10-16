@@ -1,5 +1,6 @@
 import Container from '@/components/academy/server/Container';
 
 export default function Page() {
-  return <Container />;
+  const path = 'academy';
+  return <Container path={path} />;
 }
