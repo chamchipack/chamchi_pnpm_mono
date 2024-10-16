@@ -1,20 +1,17 @@
 import { Box, Divider, IconButton, InputBase, Typography } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import styles from '../academy.module.css';
+import pb from '@/api/pocketbase';
+import Title from '../client/Title';
 
-export default function List() {
-  console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
-  const items = Array(6).fill({
-    title: '토스 피플 #2: UX 라이팅의 새로운 기준',
-    description:
-      '오늘은 토스에서 UX Writing Team Leader로 근무하고 있는 김자유님의 인터뷰를 공유드려요. 자유님은 푸시 알림을 포함해 토스 앱 안에 보이는 모든 메시지의 보이스톤을 일관되게 통일하는 업무를 하고 있어요.',
-    date: '2024-10-15',
-  });
+export default async function List() {
+  const resultList = await pb.collection('academy').getList(1, 20); // 페이지 1, 20개의 아이템 가져오기
+  const list = resultList?.items || [];
 
   return (
     <div className={styles['responsive-container']}>
-      <div className={styles['reponsive-content']}>
-        {items.map((item, index) => (
+      <div className={styles['reponsive-content']} style={{ width: '100%' }}>
+        {list.map((item, index) => (
           <Box sx={{ width: '100%', minHeight: 140, mt: 4 }} key={index}>
             <Box
               sx={{
@@ -36,15 +33,7 @@ export default function List() {
                   height: '100%',
                 }}
               >
-                <Box>
-                  <Typography
-                    fontSize={18}
-                    fontWeight={500}
-                    sx={{ '&:hover': { color: 'info.dark' } }}
-                  >
-                    {item.title}
-                  </Typography>
-                </Box>
+                <Title item={item} />
 
                 <Box sx={{ mt: 1, flexGrow: 1, width: '100%' }}>
                   <Typography
@@ -53,18 +42,18 @@ export default function List() {
                     lineHeight={1.3}
                     sx={{ wordBreak: 'break-word' }}
                   >
-                    {item.description}
+                    {item.summary}
                   </Typography>
                 </Box>
 
                 <Box>
                   <Typography fontSize={12} color="text.secondary">
-                    날짜: {item.date}
+                    날짜: {item.timestamp}
                   </Typography>
                 </Box>
               </Box>
 
-              <Box sx={{ width: '30%', maxWidth: 220, height: '100%' }}>
+              <Box sx={{ width: '30%', maxWidth: 200, height: '100%' }}>
                 <Box
                   sx={{
                     width: '100%',
@@ -73,6 +62,7 @@ export default function List() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    borderRadius: 3,
                   }}
                 >
                   <Typography fontSize={12} color="white">

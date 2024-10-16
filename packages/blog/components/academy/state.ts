@@ -7,4 +7,14 @@ const isEditPageon = atom<boolean>({
   default: defaultValue,
 });
 
+export const isDetailPage = atom<boolean>({
+  key: 'isDetailPage',
+  default: false,
+});
+
+export const contents = atom<any>({
+  key: 'contents',
+  default: {},
+});
+
 export default isEditPageon;

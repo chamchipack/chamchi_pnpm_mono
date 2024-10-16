@@ -4,22 +4,39 @@
   flex-direction: row;
 }
 
+.responsive-content-box {
+  width: 60%;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+
 .responsive-side {
   flex-basis: 50%;
 }
 
 @media only screen and (min-width: 1281px) and (max-width: 1540px) {
+  .responsive-content-box {
+    width: 70%;
+  }
 }
 
 @media only screen and (min-width: 1025px) and (max-width: 1280px) {
   .responsive-side {
     flex-basis: 70%;
   }
+
+  .responsive-content-box {
+    width: 85%;
+  }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .responsive-side {
     flex-basis: 100%;
+  }
+  .responsive-content-box {
+    width: 90%;
   }
 }
 
@@ -31,9 +48,10 @@
 
   .responsive-side {
     flex-basis: 100%;
+    display: none;
   }
 
-  .responsive-side {
-    display: none;
+  .responsive-content-box {
+    width: 100%;
   }
 }

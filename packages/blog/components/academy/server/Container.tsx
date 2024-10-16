@@ -1,10 +1,10 @@
+'use server';
 import { Box } from '@mui/material';
 import ListButtonComponent from '../client/ListButtonComponent';
 import List from './List';
 import EditPageServerWrapper from '../EditPageServerWrapper';
 
-export default function Container() {
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+export default async function Container() {
   return (
     <>
       <EditPageServerWrapper>

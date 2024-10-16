@@ -1,7 +1,7 @@
 'use client';
-import { Box, Skeleton } from '@mui/material';
 import { useRecoilValue } from 'recoil';
 import isEditPageon from './state';
+import MarkdownEditorContainer from '@/components/Markdown-Editor/MarkdownEditorContainer';
 
 interface Props {
   children: React.ReactNode;
@@ -11,6 +11,6 @@ interface Props {
 export default function EditPageServerWrapper({ children }: Props) {
   const isEditPage = useRecoilValue(isEditPageon);
 
-  if (isEditPage) return <Box />;
+  if (isEditPage) return <MarkdownEditorContainer />;
   else return <>{children}</>;
 }
