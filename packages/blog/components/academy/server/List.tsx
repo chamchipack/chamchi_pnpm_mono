@@ -3,10 +3,13 @@ import SearchIcon from '@mui/icons-material/Search';
 import styles from '../academy.module.css';
 import pb from '@/api/server/db/pocketbase';
 import Title from '../client/Title';
+import { getData } from '@/api/module/fetch';
 
 export default async function List({ path }: { path: string }) {
-  const resultList = await pb.collection(path).getList(1, 20); // 페이지 1, 20개의 아이템 가져오기
-  const list = resultList?.items || [];
+  const params = { target: 'academy', type: 'search', options: {}, sort: {} };
+  const result = await getData(params);
+  // const resultList = await pb.collection(path).getList(1, 100); // 페이지 1, 20개의 아이템 가져오기
+  const list: any[] = result?.data?.items || [];
 
   return (
     <div className={styles['responsive-container']}>

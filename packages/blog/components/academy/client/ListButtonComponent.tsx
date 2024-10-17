@@ -4,11 +4,15 @@ import { Box, Button } from '@mui/material';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../state';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function ListButtonComponent() {
+  const { data } = useSession();
   const path = usePathname();
-  console.info(path);
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
+
+  if (!data) return <></>;
+
   return (
     <Box
       sx={{
@@ -18,7 +22,7 @@ export default function ListButtonComponent() {
         mt: 3,
       }}
     >
-      <Button
+      {/* <Button
         variant="outlined"
         size="medium"
         sx={{
@@ -36,7 +40,7 @@ export default function ListButtonComponent() {
         }}
       >
         글 수정하기
-      </Button>
+      </Button> */}
 
       <Button
         variant="outlined"

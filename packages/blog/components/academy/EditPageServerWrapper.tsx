@@ -11,6 +11,14 @@ interface Props {
 export default function EditPageServerWrapper({ children }: Props) {
   const isEditPage = useRecoilValue(isEditPageon);
 
-  if (isEditPage) return <MarkdownEditorContainer />;
+  if (isEditPage)
+    return (
+      <MarkdownEditorContainer
+        contentId={''}
+        markdown_contents={''}
+        markdown_tag={[]}
+        markdown_title={''}
+      />
+    );
   else return <>{children}</>;
 }

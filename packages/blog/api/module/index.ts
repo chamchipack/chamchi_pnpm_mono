@@ -1,7 +1,7 @@
-import { getSession, signIn } from "next-auth/react";
+import { getSession, signIn } from 'next-auth/react';
 
 interface Headers {
-  "Content-Type": string;
+  'Content-Type': string;
 }
 
 interface FetchOptions extends RequestInit {
@@ -22,34 +22,35 @@ interface SearchResponse {
 }
 
 type Schema =
-  | "student"
-  | "session"
-  | "class"
-  | "attendance"
-  | "payment"
-  | "instructor";
+  | 'student'
+  | 'session'
+  | 'class'
+  | 'attendance'
+  | 'payment'
+  | 'instructor'
+  | 'academy';
 
 interface Session {
   user?: any;
 }
 
 enum Target {
-  route = "/api/route",
-  v2 = "/api/v2",
+  route = '/api/route',
+  v2 = '/api/v2',
 }
 
-const headers: Headers = { "Content-Type": "application/json" };
+const headers: Headers = { 'Content-Type': 'application/json' };
 
 class ApiClient {
   private headers: Headers;
 
   constructor() {
-    this.headers = { "Content-Type": "application/json" };
+    this.headers = { 'Content-Type': 'application/json' };
   }
 
   private async fetchWithAccessToken(
     url: string,
-    options: FetchOptions
+    options: FetchOptions,
   ): Promise<CustomResponse> {
     const response: Response = await fetch(url, options);
     return {
@@ -61,11 +62,11 @@ class ApiClient {
   }
 
   private async handleResponse(
-    response: CustomResponse
+    response: CustomResponse,
   ): Promise<SearchResponse | unknown> {
     if (response.status === 402) {
       return this.fetchWithAccessToken(response.url, response.options).then(
-        this.handleResponse.bind(this)
+        this.handleResponse.bind(this),
       );
     }
 
@@ -86,15 +87,15 @@ class ApiClient {
     };
 
     return this.fetchWithAccessToken(url, options).then(
-      this.handleResponse.bind(this)
+      this.handleResponse.bind(this),
     );
   }
 
   private removeEmptyValues(obj: any) {
     return Object.fromEntries(
       Object.entries(obj).filter(
-        ([key, value]) => value !== "" && value !== null
-      )
+        ([key, value]) => value !== '' && value !== null,
+      ),
     );
   }
 
@@ -110,44 +111,48 @@ class ApiClient {
    */
   public async search(
     url: Schema,
-    { pagination, options, sort = { key: "", method: "desc" } }: SearchParams = {}
+    {
+      pagination,
+      options,
+      sort = { key: '', method: 'desc' },
+    }: SearchParams = {},
   ): Promise<SearchResponse> {
     const setOptions = this.removeEmptyValues(options);
     const body = {
       pagination,
       options: setOptions,
-      type: "search",
+      type: 'search',
       target: url,
-      sort
+      sort,
     };
-    return this.request("/api/route", "POST", body);
+    return this.request('/api/route', 'POST', body);
   }
 
   public async single(url: Schema, id: string): Promise<SearchResponse> {
-    const body = { type: "single", target: url, id };
-    return this.request("/api/route", "POST", body);
+    const body = { type: 'single', target: url, id };
+    return this.request('/api/route', 'POST', body);
   }
 
   public async create(url: Schema, data: any): Promise<SearchResponse> {
-    const body = { data, type: "create", target: url };
-    return this.request("/api/route", "POST", body);
+    const body = { data, type: 'create', target: url };
+    return this.request('/api/route', 'POST', body);
   }
 
   public async update(url: Schema, data: any): Promise<SearchResponse> {
-    const body = { data, type: "update", target: url };
-    return this.request("/api/route", "PUT", body);
+    const body = { data, type: 'update', target: url };
+    return this.request('/api/route', 'PUT', body);
   }
 
   public async deleteFetch(url: Schema, id: string): Promise<any> {
-    const body = { type: "delete", id, target: url };
-    return this.request("/api/route", "DELETE", body);
+    const body = { type: 'delete', id, target: url };
+    return this.request('/api/route', 'DELETE', body);
   }
 }
 
 interface SearchParams {
   pagination?: { page: number; perPage: number };
   options?: any;
-  sort?: { key: string; method: "asc" | "desc"; }
+  sort?: { key: string; method: 'asc' | 'desc' };
 }
 
 const apiClient = new ApiClient();

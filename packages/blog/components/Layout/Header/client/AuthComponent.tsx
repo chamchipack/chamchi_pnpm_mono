@@ -9,12 +9,14 @@ import Signin from './auth/Signin';
 import UserInfo from './auth/UserInfo';
 
 const AuthComponent = () => {
-  const { data = {} } = useSession();
+  const { data } = useSession();
   const [modal, setModal] = useState(false);
   return (
     <>
       <IconButton color="inherit" onClick={() => setModal(true)}>
-        <AccountCircleIcon sx={{ color: 'text.disabled' }} />
+        <AccountCircleIcon
+          sx={{ color: data?.user?.id ? 'info.main' : 'text.disabled' }}
+        />
       </IconButton>
 
       <ModalWrapper
@@ -30,7 +32,7 @@ const AuthComponent = () => {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: 400,
-            height: '50vh', // 모달 창의 고정 높이 설정 (뷰포트의 70%)
+            height: data ? '20vh' : '50vh', // 모달 창의 고정 높이 설정 (뷰포트의 70%)
             bgcolor: 'background.default',
             borderRadius: 2,
             boxShadow: 24,

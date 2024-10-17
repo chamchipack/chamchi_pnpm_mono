@@ -1,6 +1,8 @@
-import { Box, Typography, Button } from '@mui/material';
-import { signOut } from 'next-auth/react';
+import { Box, Typography, Button, Avatar } from '@mui/material';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import ProgressDialog from 'package/src/Modal/ProgressModal';
+import { useState } from 'react';
 
 interface Props {
   setModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,33 +10,75 @@ interface Props {
 
 const UserInfo = ({ setModal }: Props) => {
   const router = useRouter();
+  const { data } = useSession();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
+
   const handleLogout = async () => {
-    await signOut({ redirect: false });
-    setModal(false);
-    router.push('/pinetree/academy'); // 로그아웃 후 리디렉션 경로 설정
+    handleOpen();
+
+    try {
+      await signOut({ redirect: false });
+      router.push('/pinetree/academy'); // 로그아웃 후 리디렉션 경로 설정
+
+      handleClose();
+    } catch {
+      handleClose();
+    }
   };
 
   return (
     <>
-      <Box sx={{ width: '100%', mb: 2 }}>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-          유저명: {'ㄴㅇㄹㄴㅇㄹ'}
-        </Typography>
-        <Typography variant="subtitle1" sx={{ mb: 1 }}>
-          유저 ID: {'test'}
-        </Typography>
-        <Typography variant="subtitle1">작성 글 수: {30}</Typography>
-      </Box>
+      <ProgressDialog open={openModal} onClose={handleClose} />
 
-      <Box sx={{ mt: 'auto', width: '100%' }}>
-        <Button
-          variant="contained"
-          color="error"
-          fullWidth
-          onClick={handleLogout}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between', // 위 아래에 공간을 균등하게 배치
+          height: '100%',
+        }}
+      >
+        {/* 유저 정보 */}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
         >
-          로그아웃
-        </Button>
+          <Avatar
+            alt={data?.user?.username}
+            src="/static/images/avatar/1.jpg"
+            sx={{ width: 56, height: 56, mr: 2 }}
+          />
+
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              {data?.user?.username}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {data?.user?.name}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* 로그아웃 버튼 */}
+        <Box sx={{ width: '100%' }}>
+          <Button
+            variant="contained"
+            color="error"
+            fullWidth
+            onClick={handleLogout}
+            disabled={openModal}
+            sx={{ height: 30 }}
+          >
+            로그아웃
+          </Button>
+        </Box>
       </Box>
     </>
   );

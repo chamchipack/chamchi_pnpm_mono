@@ -5,24 +5,75 @@ import MarkdownInput from './MarkdownInput';
 import SettingButton from './SettingButton';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import ModalWrapper from 'package/src/Modal/ModalWrapper';
+import db from '@/api/module/index';
+import { useSession } from 'next-auth/react';
+import moment from 'moment';
+import { useRouter } from 'next/navigation';
 
-export default function MarkdownEditorContainer() {
+interface Props {
+  contentId: string;
+  markdown_contents: string;
+  markdown_title: string;
+  markdown_tag: string[];
+  setEditPage?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function MarkdownEditorContainer({ ...props }: Props) {
   const isMobile = useClientSize('sm');
+  const router = useRouter();
+  const { data } = useSession();
 
-  const [title, setTitle] = useState<string>('');
-  const [markdownText, setMarkdownText] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [title, setTitle] = useState<string>(props?.markdown_title || '');
+  const [markdownText, setMarkdownText] = useState<string>(
+    props?.markdown_contents || '',
+  );
+  const [tags, setTags] = useState<string[]>(props?.markdown_tag || []);
   const [preview, setPreview] = useState(false);
 
+  const extractSummary = (str: string) => {
+    const splitByHr = str.split('\n---')[0];
+    const splitByBlockquote = splitByHr.split('\n>')[0];
+    const trimmedSummary = splitByBlockquote.trim();
+
+    if (trimmedSummary.length > 50) {
+      return trimmedSummary.slice(0, 100) + '...';
+    }
+
+    return trimmedSummary;
+  };
+
   const onClickSave = async () => {
-    console.info(title);
-    console.info(markdownText);
-    console.info(tags);
+    const form = {
+      userName: data?.user?.name,
+      userId: data?.user?.username,
+      markdown_title: title,
+      markdown_contents: markdownText,
+      timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
+      tag: tags,
+      summary: extractSummary(markdownText),
+    };
+
+    if (props?.contentId) Object.assign(form, { id: props?.contentId });
+
+    try {
+      let result;
+      if (props?.contentId) result = await db.update('academy', form);
+      else result = await db.create('academy', form);
+
+      router.refresh();
+      if (props?.setEditPage) props?.setEditPage(false);
+      console.info(result);
+    } catch {}
   };
 
   return (
     <>
-      <SettingButton setPreview={setPreview} onClickSave={onClickSave} />
+      <SettingButton
+        setPreview={setPreview}
+        onClickSave={onClickSave}
+        id={props?.contentId}
+        setEditPage={props?.setEditPage ? props?.setEditPage : () => {}}
+      />
 
       <Box
         sx={{

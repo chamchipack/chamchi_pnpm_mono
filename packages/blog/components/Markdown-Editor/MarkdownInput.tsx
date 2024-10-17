@@ -1,6 +1,6 @@
 import { Box, TextField, Chip, Autocomplete } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface MarkdownInputProps {
   title: string;
@@ -21,6 +21,18 @@ export default function MarkdownInput({
 }: MarkdownInputProps) {
   const [inputValue, setInputValue] = React.useState<string>('');
   const isMobile = useClientSize('sm');
+
+  const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref 추가
+
+  useEffect(() => {
+    if (markdownText) setMarkdownText(markdownText);
+
+    // textarea가 마운트된 이후 높이를 조정
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto'; // 높이 초기화
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`; // 텍스트 길이에 맞게 높이 조정
+    }
+  }, []);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -102,6 +114,7 @@ export default function MarkdownInput({
 
       {/* 내용 입력 */}
       <TextField
+        inputRef={textareaRef}
         multiline
         rows={16}
         variant="outlined"
