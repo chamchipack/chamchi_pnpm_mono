@@ -9,6 +9,8 @@ import db from '@/api/module/index';
 import { useSession } from 'next-auth/react';
 import moment from 'moment';
 import { useRouter } from 'next/navigation';
+import { Schema } from '@/config/schema';
+import ProgressDialog from 'package/src/Modal/ProgressModal';
 
 interface Props {
   contentId: string;
@@ -16,6 +18,7 @@ interface Props {
   markdown_title: string;
   markdown_tag: string[];
   setEditPage?: React.Dispatch<React.SetStateAction<boolean>>;
+  path: Schema;
 }
 
 export default function MarkdownEditorContainer({ ...props }: Props) {
@@ -59,15 +62,15 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
 
     try {
       let result;
-      if (props?.contentId) result = await db.update('academy', form);
-      else result = await db.create('academy', form);
+      if (props?.contentId) result = await db.update(props?.path, form);
+      else result = await db.create(props?.path, form);
 
       if (props?.contentId) {
         router.refresh();
         if (props?.setEditPage) props?.setEditPage(false);
         setLoading(false);
       } else {
-        router.push(`/pinetree/academy/${result?.data?.id}`);
+        router.push(`/pinetree/${props?.path}/${result?.data?.id}`);
         setLoading(false);
       }
     } catch {
@@ -77,6 +80,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
 
   return (
     <>
+      <ProgressDialog open={loading} onClose={() => setLoading(false)} />
+
       <SettingButton
         setPreview={setPreview}
         onClickSave={onClickSave}
@@ -97,7 +102,11 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
         {/* 마크다운 결과 */}
         {!isMobile && (
           <>
-            <MarkdownPreview title={title} markdownText={markdownText} />
+            <MarkdownPreview
+              title={title}
+              markdownText={markdownText}
+              path={props?.path}
+            />
             <Divider
               orientation="vertical"
               flexItem
@@ -141,7 +150,11 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
                 overflowY: 'auto', // 콘텐츠가 넘칠 경우 스크롤
               }}
             >
-              <MarkdownPreview title={title} markdownText={markdownText} />
+              <MarkdownPreview
+                title={title}
+                markdownText={markdownText}
+                path={props?.path}
+              />
             </Box>
           )}
         </>

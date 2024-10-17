@@ -1,5 +1,5 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box, IconButton, Typography } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { markdownHeaderStyles } from './markdownStyles';
@@ -8,6 +8,9 @@ import TagDateComponent from './Tag-DateComponent';
 import DetailButton from './DetailButton';
 import { useState } from 'react';
 import MarkdownEditorContainer from './MarkdownEditorContainer';
+import { Schema } from '@/config/schema';
+import DeleteButton from './DeleteButton';
+import styles from './container.module.css';
 
 interface MarkdownPreviewProps {
   title: string;
@@ -17,6 +20,7 @@ interface MarkdownPreviewProps {
   timestamp?: string;
   userId?: string;
   contentId?: string;
+  path: Schema;
 }
 
 export default function MarkdownPreview({
@@ -27,6 +31,7 @@ export default function MarkdownPreview({
   timestamp = '',
   userId = '',
   contentId = '',
+  path,
 }: MarkdownPreviewProps) {
   const isMobile = useClientSize('sm');
   const [editPage, setEditPage] = useState(false);
@@ -40,18 +45,31 @@ export default function MarkdownPreview({
           markdown_tag={tag}
           markdown_title={title}
           setEditPage={setEditPage}
+          path={path}
         />
       ) : (
         <Box
+          className={styles['responsive-container']}
           sx={{
-            width: isMobile ? '100%' : '50%',
-            p: 2,
+            padding: 2,
             textAlign: 'left',
             ...markdownHeaderStyles,
             margin: '0 auto',
           }}
         >
-          <DetailButton userId={userId} setEditPage={setEditPage} />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              mb: 1,
+            }}
+          >
+            <DeleteButton userId={userId} path={path} id={contentId} />
+            <DetailButton userId={userId} setEditPage={setEditPage} />
+          </Box>
           <TagDateComponent tag={tag} timestamp={timestamp} />
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {`# ${title}\n${markdownText}`}

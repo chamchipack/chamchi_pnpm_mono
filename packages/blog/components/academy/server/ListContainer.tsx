@@ -1,11 +1,12 @@
-import { Box, Divider, IconButton, InputBase, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
 import styles from '../academy.module.css';
 import { getData } from '@/api/module/fetch';
 import List from '../client/List';
 import SearchFilter from '../client/SearchFilter';
+import { Schema } from '@/config/schema';
 
-export default async function ListContainer({ path }: { path: string }) {
-  const params = { target: 'academy', type: 'search', options: {}, sort: {} };
+export default async function ListContainer({ path }: { path: Schema }) {
+  const params = { target: path, type: 'search', options: {}, sort: {} };
   const result = await getData(params);
   const list: any[] = result?.data?.items || [];
 

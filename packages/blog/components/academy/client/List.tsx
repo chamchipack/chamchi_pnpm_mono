@@ -5,10 +5,11 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import SearchFilterAtom from './state';
 import db from '@/api/module';
+import { Schema } from '@/config/schema';
 
 interface Props {
   rows: any[];
-  path: string;
+  path: Schema;
 }
 
 const List = ({ ...props }: Props) => {

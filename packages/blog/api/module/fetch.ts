@@ -37,11 +37,11 @@ export const getData = async ({ target, type, options, sort }) => {
 
   const userId = session?.user?.id || '';
 
-  if (!userId)
-    return {
-      message: 'unauthorized',
-      status: 401,
-    };
+  // if (!userId)
+  //   return {
+  //     message: 'unauthorized',
+  //     status: 401,
+  //   };
 
   const setOptions = removeEmptyValues(options);
 

@@ -1,5 +1,5 @@
 import { getSession, signIn } from 'next-auth/react';
-
+import { Schema } from '@/config/schema';
 interface Headers {
   'Content-Type': string;
 }
@@ -20,15 +20,6 @@ interface SearchResponse {
   data: any;
   message: string;
 }
-
-type Schema =
-  | 'student'
-  | 'session'
-  | 'class'
-  | 'attendance'
-  | 'payment'
-  | 'instructor'
-  | 'academy';
 
 interface Session {
   user?: any;
@@ -77,8 +68,8 @@ class ApiClient {
   }
 
   private async request(url: string, method: string, body: any): Promise<any> {
-    const session: Session | null = await getSession();
-    if (!session) return signIn();
+    // const session: Session | null = await getSession();
+    // if (!session) return signIn();
 
     const options: FetchOptions = {
       method: method,
