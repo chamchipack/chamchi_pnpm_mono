@@ -1,7 +1,7 @@
-import { Box, TextField, Chip, Autocomplete } from '@mui/material';
+import { Box, TextField, Chip, Autocomplete, Button } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import React, { useEffect, useRef } from 'react';
-
+import ClearIcon from '@mui/icons-material/Clear';
 interface MarkdownInputProps {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -43,6 +43,10 @@ export default function MarkdownInput({
   };
 
   const handleTagsChange = (event: React.SyntheticEvent, newTags: string[]) => {
+    if (newTags.length > 5) {
+      alert('안돼');
+      return; // 태그가 5개 이상일 경우 태그 추가 중지
+    }
     setTags(newTags);
   };
 
@@ -69,7 +73,6 @@ export default function MarkdownInput({
         sx={{
           minWidth: 500,
           mb: 2,
-          px: 2,
           border: 'none',
           outline: 'none',
           '& input': {
@@ -79,38 +82,69 @@ export default function MarkdownInput({
         }}
       />
 
-      {/* 태그 입력 */}
-      <Autocomplete
-        multiple
-        freeSolo
-        options={[]}
-        value={tags}
-        inputValue={inputValue}
-        onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
-        onChange={handleTagsChange}
-        renderTags={(value: string[], getTagProps) =>
-          value.map((option: string, index: number) => (
-            <Chip
-              variant="outlined"
-              label={option}
-              {...getTagProps({ index })}
+      <Box sx={{ height: 40, width: '100%' }}>
+        <Autocomplete
+          multiple
+          freeSolo
+          options={[]}
+          value={tags}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) => setInputValue(newInputValue)}
+          onChange={handleTagsChange}
+          renderTags={(value: string[], getTagProps) =>
+            value.map((option: string, index: number) => (
+              <Chip
+                variant="outlined"
+                label={option}
+                {...getTagProps({ index })}
+                sx={{
+                  background: (theme) => theme.palette.grey[100],
+                  borderColor: (theme) => theme.palette.grey[100],
+                  color: 'text.primary',
+                  fontWeight: 'bold',
+                }}
+                deleteIcon={
+                  <Button
+                    sx={{
+                      width: 18, // 버튼의 가로 세로 크기
+                      height: 18,
+                      minWidth: 0, // 기본 최소 너비를 없애서 동그랗게 만듦
+                      background: (theme) => theme.palette.grey[400], // 테두리 추가
+                      borderRadius: '50%', // 완전히 동그란 모양
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      '&: hover': {
+                        background: (theme) => theme.palette.grey[600], // 테두리 추가
+                      },
+                    }}
+                  >
+                    <ClearIcon
+                      sx={{ fontSize: 16, color: 'background.default' }}
+                    />{' '}
+                  </Button>
+                }
+              />
+            ))
+          }
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              placeholder="태그 입력 후 엔터를 눌러보세요"
+              variant="standard"
+              onKeyDown={handleKeyDown}
+              InputProps={{
+                ...params.InputProps,
+                disableUnderline: true,
+              }}
+              sx={{
+                mb: 2,
+                minWidth: 500,
+              }}
             />
-          ))
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            placeholder="태그를 입력 후 쉼표로 구분하세요"
-            variant="standard"
-            onKeyDown={handleKeyDown}
-            InputProps={{
-              ...params.InputProps,
-              disableUnderline: true,
-            }}
-            sx={{ mb: 2, pl: 2, minWidth: 500 }}
-          />
-        )}
-      />
+          )}
+        />
+      </Box>
 
       {/* 내용 입력 */}
       <TextField

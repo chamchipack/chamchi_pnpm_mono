@@ -4,8 +4,6 @@ import { Box, Button } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../academy/state';
-import { useRouter } from 'next/navigation';
-import EditPageAtom from './state';
 import { useState } from 'react';
 import AlertModal from 'package/src/Modal/AlertModal';
 
@@ -14,6 +12,7 @@ interface Props {
   onClickSave: () => void;
   id?: string;
   setEditPage: React.Dispatch<React.SetStateAction<boolean>>;
+  loading: boolean;
 }
 
 export default function SettingButton({
@@ -21,6 +20,7 @@ export default function SettingButton({
   onClickSave,
   id = '',
   setEditPage,
+  loading,
 }: Props) {
   const isMobile = useClientSize('sm');
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
@@ -110,10 +110,13 @@ export default function SettingButton({
       <AlertModal
         open={modal}
         handleClose={() => setModal(false)}
-        onClickCheck={onClickSave}
+        onClickCheck={() => {
+          onClickSave();
+          setModal(false);
+        }}
         title="글 저장하기"
         content="저장하시겠습니까?"
-        processing={false}
+        processing={loading}
         isAlertModal={false}
       ></AlertModal>
     </>

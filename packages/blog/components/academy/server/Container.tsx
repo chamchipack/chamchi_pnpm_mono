@@ -1,6 +1,6 @@
 'use server';
 import ListButtonComponent from '../client/ListButtonComponent';
-import List from './List';
+import ListContainer from './ListContainer';
 import EditPageServerWrapper from '../EditPageServerWrapper';
 import ImageWrapper from './ImageWrapper';
 
@@ -12,7 +12,7 @@ export default async function Container({ path }: { path: string }) {
 
         <ListButtonComponent />
 
-        <List path={path} />
+        <ListContainer path={path} />
       </EditPageServerWrapper>
     </>
   );

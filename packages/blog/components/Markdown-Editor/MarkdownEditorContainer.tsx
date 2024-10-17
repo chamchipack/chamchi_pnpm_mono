@@ -29,6 +29,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   );
   const [tags, setTags] = useState<string[]>(props?.markdown_tag || []);
   const [preview, setPreview] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const extractSummary = (str: string) => {
     const splitByHr = str.split('\n---')[0];
@@ -43,6 +44,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   };
 
   const onClickSave = async () => {
+    setLoading(true);
     const form = {
       userName: data?.user?.name,
       userId: data?.user?.username,
@@ -60,10 +62,17 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       if (props?.contentId) result = await db.update('academy', form);
       else result = await db.create('academy', form);
 
-      router.refresh();
-      if (props?.setEditPage) props?.setEditPage(false);
-      console.info(result);
-    } catch {}
+      if (props?.contentId) {
+        router.refresh();
+        if (props?.setEditPage) props?.setEditPage(false);
+        setLoading(false);
+      } else {
+        router.push(`/pinetree/academy/${result?.data?.id}`);
+        setLoading(false);
+      }
+    } catch {
+      setLoading(false);
+    }
   };
 
   return (
@@ -73,6 +82,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
         onClickSave={onClickSave}
         id={props?.contentId}
         setEditPage={props?.setEditPage ? props?.setEditPage : () => {}}
+        loading={loading}
       />
 
       <Box
