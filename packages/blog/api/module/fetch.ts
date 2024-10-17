@@ -47,6 +47,7 @@ export const getData = async ({ target, type, options, sort }) => {
 
   const finder = new PocketbaseFinder({ collection: target });
   const controller = (finder as any)[type];
+  console.log(setOptions);
 
   const data = {
     target,

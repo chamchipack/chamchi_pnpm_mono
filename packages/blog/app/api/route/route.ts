@@ -31,9 +31,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const cookies = req.cookies;
   const access = cookies.get('next-auth.access-token')?.value || '';
   const refresh = cookies.get('next-auth.refresh-token')?.value || '';
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
-  console.log(access);
-  console.log('@@@@@@@@@@@@@@@@@@@@@@@@@');
 
   // if (!access || !refresh)
   //   return NextResponse.json<ResponseType<null>>({

@@ -6,8 +6,8 @@ import SearchFilter from '../client/SearchFilter';
 import { Schema } from '@/config/schema';
 
 export default async function ListContainer({ path }: { path: Schema }) {
-  const params = { target: path, type: 'search', options: {}, sort: {} };
-  const result = await getData(params);
+  const parameter = { target: path, type: 'search', options: {}, sort: {} };
+  const result = await getData(parameter);
   const list: any[] = result?.data?.items || [];
 
   return (

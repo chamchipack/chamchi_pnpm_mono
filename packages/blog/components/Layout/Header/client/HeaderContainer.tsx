@@ -53,10 +53,10 @@ const HeaderContainer = () => {
       <Box
         component={motion.div}
         initial={{ height: 0 }}
-        animate={{ height: toggle ? 150 : 0 }} // 메뉴 리스트가 나타날 때 높이 변경
+        animate={{ height: toggle ? '100%' : 0 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
         sx={{
-          overflow: 'hidden', // 높이가 0일 때 리스트 숨기기
+          overflow: 'hidden',
         }}
       >
         {toggle && <MenuList />}
