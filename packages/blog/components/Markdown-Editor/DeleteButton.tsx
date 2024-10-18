@@ -6,19 +6,23 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useRouter } from 'next/navigation';
 import db from '@/api/module';
 import AlertModal from 'package/src/Modal/AlertModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import isEditPageon from '../academy/state';
 
 interface Props {
   id: string;
   path: Schema;
   userId: string;
+  isEditon: boolean;
 }
 
-export default function DeleteButton({ id, path, userId }: Props) {
+export default function DeleteButton({ id, path, userId, isEditon }: Props) {
   const { data } = useSession();
   const router = useRouter();
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const isEditPage = useRecoilValue(isEditPageon);
 
   const onClickDelete = async () => {
     setLoading(true);
@@ -34,9 +38,11 @@ export default function DeleteButton({ id, path, userId }: Props) {
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-        <IconButton onClick={() => router.back()}>
-          <ArrowBackIosNewIcon />
-        </IconButton>
+        {!isEditon ? (
+          <IconButton onClick={() => router.back()}>
+            <ArrowBackIosNewIcon />
+          </IconButton>
+        ) : null}
 
         {data?.user?.username !== userId || !data ? null : (
           <IconButton onClick={() => setModal(true)}>

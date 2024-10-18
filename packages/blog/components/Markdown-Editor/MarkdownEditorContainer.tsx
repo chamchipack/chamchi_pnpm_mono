@@ -106,6 +106,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
               title={title}
               markdownText={markdownText}
               path={props?.path}
+              isEditon={true}
             />
             <Divider
               orientation="vertical"
@@ -154,6 +155,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
                 title={title}
                 markdownText={markdownText}
                 path={props?.path}
+                isEditon={true}
               />
             </Box>
           )}

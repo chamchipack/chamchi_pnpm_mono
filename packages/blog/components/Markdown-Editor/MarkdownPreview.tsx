@@ -6,7 +6,7 @@ import { markdownHeaderStyles } from './markdownStyles';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import TagDateComponent from './Tag-DateComponent';
 import DetailButton from './DetailButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MarkdownEditorContainer from './MarkdownEditorContainer';
 import { Schema } from '@/config/schema';
 import DeleteButton from './DeleteButton';
@@ -21,6 +21,7 @@ interface MarkdownPreviewProps {
   userId?: string;
   contentId?: string;
   path: Schema;
+  isEditon?: boolean;
 }
 
 export default function MarkdownPreview({
@@ -32,9 +33,14 @@ export default function MarkdownPreview({
   userId = '',
   contentId = '',
   path,
+  isEditon = false,
 }: MarkdownPreviewProps) {
   const isMobile = useClientSize('sm');
   const [editPage, setEditPage] = useState(false);
+
+  useEffect(() => {
+    console.info(editPage);
+  }, [editPage]);
 
   return (
     <>
@@ -67,7 +73,12 @@ export default function MarkdownPreview({
               mb: 1,
             }}
           >
-            <DeleteButton userId={userId} path={path} id={contentId} />
+            <DeleteButton
+              userId={userId}
+              path={path}
+              id={contentId}
+              isEditon={isEditon}
+            />
             <DetailButton userId={userId} setEditPage={setEditPage} />
           </Box>
           <TagDateComponent tag={tag} timestamp={timestamp} />
