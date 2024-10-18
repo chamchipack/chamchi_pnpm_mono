@@ -1,7 +1,6 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { getServerSession } from 'next-auth';
 import PocketbaseFinder from '../server/db/convert';
-import pb from '../server/db/pocketbase';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 type Collection =
   | 'student'
@@ -47,7 +46,6 @@ export const getData = async ({ target, type, options, sort }) => {
 
   const finder = new PocketbaseFinder({ collection: target });
   const controller = (finder as any)[type];
-  console.log(setOptions);
 
   const data = {
     target,

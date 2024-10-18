@@ -1,3 +1,4 @@
+import { menuItems } from '@/config/menu/menu';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
@@ -6,11 +7,6 @@ import ToggleStateAtom from '../state';
 const MenuList = () => {
   const router = useRouter();
   const [toggle, setToggle] = useRecoilState(ToggleStateAtom);
-
-  const menuItems = [
-    { label: '배움터', path: '/pinetree/academy' },
-    { label: '자유시장', path: '/pinetree/free-world' },
-  ];
 
   const handleClick = (path: string) => {
     router.push(path);

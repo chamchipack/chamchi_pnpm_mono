@@ -1,11 +1,12 @@
 'use client';
 
+import { menuItems } from '@/config/menu/menu';
 import { Box, Button, Typography } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../state';
-import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { useState } from 'react';
 import SearchFilterAtom from './state';
 
 export default function ListButtonComponent() {
@@ -24,11 +25,8 @@ export default function ListButtonComponent() {
     setValue(newValue);
   };
 
-  const buttons = [
-    { label: '전체', toggle: '' },
-    { label: 'NEXT', toggle: 'next' },
-    { label: '디비', toggle: 'post' },
-  ];
+  const buttons =
+    menuItems.find(({ path: _path = '' }) => _path === path)?.category || [];
 
   return (
     <Box
@@ -50,21 +48,20 @@ export default function ListButtonComponent() {
       >
         {buttons.map((button) => (
           <Button
-            key={button.toggle}
+            key={button.label}
             sx={{
               mr: 2,
-              borderBottom:
-                value === button.toggle ? '2px solid black' : 'none',
+              borderBottom: value === button.label ? '2px solid black' : 'none',
               borderRadius: 0,
             }}
             onClick={() => {
-              handleChange(button.toggle);
+              handleChange(button.label);
             }}
           >
             <Typography
-              sx={{ color: value === button.toggle ? 'black' : 'gray' }}
+              sx={{ color: value === button.label ? 'black' : 'gray' }}
             >
-              {button.label}
+              {button.name}
             </Typography>
           </Button>
         ))}

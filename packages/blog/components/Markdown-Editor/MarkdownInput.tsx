@@ -1,7 +1,8 @@
-import { Box, TextField, Chip, Autocomplete, Button } from '@mui/material';
+import ClearIcon from '@mui/icons-material/Clear';
+import { Autocomplete, Box, Button, Chip, TextField } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import React, { useEffect, useRef } from 'react';
-import ClearIcon from '@mui/icons-material/Clear';
+import ModernSelectBox from './selectbox';
 interface MarkdownInputProps {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -9,6 +10,8 @@ interface MarkdownInputProps {
   setMarkdownText: React.Dispatch<React.SetStateAction<string>>;
   tags: string[];
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
+  category: string;
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function MarkdownInput({
@@ -18,6 +21,8 @@ export default function MarkdownInput({
   setMarkdownText,
   tags,
   setTags,
+  category,
+  setCategory,
 }: MarkdownInputProps) {
   const [inputValue, setInputValue] = React.useState<string>('');
   const isMobile = useClientSize('sm');
@@ -81,6 +86,8 @@ export default function MarkdownInput({
           },
         }}
       />
+
+      <ModernSelectBox category={category} setCategory={setCategory} />
 
       <Box sx={{ height: 40, width: '100%' }}>
         <Autocomplete

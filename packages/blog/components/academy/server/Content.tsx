@@ -1,7 +1,5 @@
-import pb from '@/api/server/db/pocketbase';
-import MarkdownPreview from '@/components/Markdown-Editor/MarkdownPreview';
-import styles from '../academy.module.css';
 import { getData } from '@/api/module/fetch';
+import MarkdownPreview from '@/components/Markdown-Editor/MarkdownPreview';
 import { Schema } from '@/config/schema';
 
 interface Props {
@@ -24,6 +22,7 @@ export default async function Content({ id, path }: Props) {
       readonly={true}
       tag={record?.tag}
       timestamp={record?.timestamp}
+      category={record?.category}
       contentId={id}
       userId={record?.userId}
       path={path}

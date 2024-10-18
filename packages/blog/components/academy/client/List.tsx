@@ -1,11 +1,11 @@
 'use client';
-import { Box, Button, Typography } from '@mui/material';
-import Title from './Title';
+import db from '@/api/module';
+import { Schema } from '@/config/schema';
+import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import SearchFilterAtom from './state';
-import db from '@/api/module';
-import { Schema } from '@/config/schema';
+import Title from './Title';
 
 interface Props {
   rows: any[];
@@ -13,7 +13,6 @@ interface Props {
 }
 
 const List = ({ ...props }: Props) => {
-  console.info(props?.rows);
   const [rows, setRows] = useState(props?.rows || []);
   const filterState = useRecoilValue(SearchFilterAtom);
 

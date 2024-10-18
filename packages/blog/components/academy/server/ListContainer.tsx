@@ -1,11 +1,17 @@
+export const dynamic = 'force-dynamic';
+
+import { getData } from '@/api/module/fetch';
+import { Schema } from '@/config/schema';
 import { Box, Divider, Typography } from '@mui/material';
 import styles from '../academy.module.css';
-import { getData } from '@/api/module/fetch';
 import List from '../client/List';
 import SearchFilter from '../client/SearchFilter';
-import { Schema } from '@/config/schema';
 
-export default async function ListContainer({ path }: { path: Schema }) {
+export default async function ListContainer({
+  path,
+}: {
+  path: Schema;
+}): Promise<React.ReactElement> {
   const parameter = { target: path, type: 'search', options: {}, sort: {} };
   const result = await getData(parameter);
   const list: any[] = result?.data?.items || [];

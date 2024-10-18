@@ -1,16 +1,16 @@
-import { Box, Divider, Modal } from '@mui/material';
-import { useEffect, useState } from 'react';
-import MarkdownPreview from './MarkdownPreview';
-import MarkdownInput from './MarkdownInput';
-import SettingButton from './SettingButton';
+import db from '@/api/module/index';
+import { Schema } from '@/config/schema';
+import { Box, Divider } from '@mui/material';
+import moment from 'moment';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import ModalWrapper from 'package/src/Modal/ModalWrapper';
-import db from '@/api/module/index';
-import { useSession } from 'next-auth/react';
-import moment from 'moment';
-import { useRouter } from 'next/navigation';
-import { Schema } from '@/config/schema';
 import ProgressDialog from 'package/src/Modal/ProgressModal';
+import { useState } from 'react';
+import MarkdownInput from './MarkdownInput';
+import MarkdownPreview from './MarkdownPreview';
+import SettingButton from './SettingButton';
 
 interface Props {
   contentId: string;
@@ -19,6 +19,7 @@ interface Props {
   markdown_tag: string[];
   setEditPage?: React.Dispatch<React.SetStateAction<boolean>>;
   path: Schema;
+  category: string;
 }
 
 export default function MarkdownEditorContainer({ ...props }: Props) {
@@ -30,6 +31,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   const [markdownText, setMarkdownText] = useState<string>(
     props?.markdown_contents || '',
   );
+  const [_category, setCategory] = useState(props?.category);
   const [tags, setTags] = useState<string[]>(props?.markdown_tag || []);
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -53,6 +55,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       userId: data?.user?.username,
       markdown_title: title,
       markdown_contents: markdownText,
+      category: _category,
       timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
       tag: tags,
       summary: extractSummary(markdownText),
@@ -128,6 +131,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
           setTitle={setTitle}
           markdownText={markdownText}
           setMarkdownText={setMarkdownText}
+          category={_category}
+          setCategory={setCategory}
           tags={tags}
           setTags={setTags}
         />

@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import { authMiddleware } from '@/api/server/auth/middleware';
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { ResponseType, ResponseMessage, ResponseStatus } from '@/api/type/type';
 import PocketbaseFinder from '@/api/server/db/convert';
+import { ResponseMessage, ResponseType } from '@/api/type/type';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { getServerSession } from 'next-auth/next';
 
 type APIType = 'search' | 'create' | 'update' | 'delete' | 'single';
 
@@ -92,11 +92,11 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   const access = cookies.get('next-auth.access-token')?.value || '';
   const refresh = cookies.get('next-auth.refresh-token')?.value || '';
 
-  if (!access || !refresh)
-    return NextResponse.json<ResponseType<null>>({
-      message: ResponseMessage.auth,
-      status: 401,
-    });
+  // if (!access || !refresh)
+  //   return NextResponse.json<ResponseType<null>>({
+  //     message: ResponseMessage.auth,
+  //     status: 401,
+  //   });
 
   const res = NextResponse.next();
   const token = { access, refresh };
@@ -104,21 +104,21 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
   const userId = session?.user?.id || '';
   const username = session?.user?.username || '';
 
-  if (!userId)
-    return NextResponse.json<ResponseType<null>>({
-      message: ResponseMessage.auth,
-      status: 401,
-    });
+  // if (!userId)
+  //   return NextResponse.json<ResponseType<null>>({
+  //     message: ResponseMessage.auth,
+  //     status: 401,
+  //   });
 
   const data = await req.json();
 
-  const authResult = await authMiddleware(token, userId, username);
-  if (authResult !== true) {
-    return NextResponse.json<ResponseType<null>>({
-      message: ResponseMessage.auth,
-      status: 401,
-    });
-  }
+  // const authResult = await authMiddleware(token, userId, username);
+  // if (authResult !== true) {
+  //   return NextResponse.json<ResponseType<null>>({
+  //     message: ResponseMessage.auth,
+  //     status: 401,
+  //   });
+  // }
 
   // const { type = "search" }: { type: APIType } = data;
   // const controller = controllerMap[type as keyof typeof controllerMap];

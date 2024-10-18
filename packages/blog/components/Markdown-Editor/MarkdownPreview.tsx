@@ -1,16 +1,15 @@
 'use client';
-import { Box, IconButton, Typography } from '@mui/material';
+import { Schema } from '@/config/schema';
+import { Box } from '@mui/material';
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { markdownHeaderStyles } from './markdownStyles';
-import { useClientSize } from 'package/src/hooks/useMediaQuery';
-import TagDateComponent from './Tag-DateComponent';
-import DetailButton from './DetailButton';
-import { useEffect, useState } from 'react';
-import MarkdownEditorContainer from './MarkdownEditorContainer';
-import { Schema } from '@/config/schema';
-import DeleteButton from './DeleteButton';
 import styles from './container.module.css';
+import DeleteButton from './DeleteButton';
+import DetailButton from './DetailButton';
+import MarkdownEditorContainer from './MarkdownEditorContainer';
+import { markdownHeaderStyles } from './markdownStyles';
+import TagDateComponent from './Tag-DateComponent';
 
 interface MarkdownPreviewProps {
   title: string;
@@ -22,6 +21,7 @@ interface MarkdownPreviewProps {
   contentId?: string;
   path: Schema;
   isEditon?: boolean;
+  category?: string;
 }
 
 export default function MarkdownPreview({
@@ -34,6 +34,7 @@ export default function MarkdownPreview({
   contentId = '',
   path,
   isEditon = false,
+  category = '',
 }: MarkdownPreviewProps) {
   const [editPage, setEditPage] = useState(false);
 
@@ -45,6 +46,7 @@ export default function MarkdownPreview({
           markdown_contents={markdownText}
           markdown_tag={tag}
           markdown_title={title}
+          category={category}
           setEditPage={setEditPage}
           path={path}
         />
