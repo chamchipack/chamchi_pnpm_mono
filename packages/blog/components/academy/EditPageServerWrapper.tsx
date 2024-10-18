@@ -9,8 +9,9 @@ interface Props {
   path: Schema;
 }
 
-// 서버컴포넌트 mobile 확인 감싸기
+// 서버컴포넌트에서 글 수정 컴포넌트인지 확인
 export default function EditPageServerWrapper({ children, path }: Props) {
+  // ListButtonComponent.tsx => 글 등록하기 버튼
   const isEditPage = useRecoilValue(isEditPageon);
 
   if (isEditPage)

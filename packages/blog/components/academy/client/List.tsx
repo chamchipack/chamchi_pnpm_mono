@@ -13,6 +13,7 @@ interface Props {
 }
 
 const List = ({ ...props }: Props) => {
+  console.info(props?.rows);
   const [rows, setRows] = useState(props?.rows || []);
   const filterState = useRecoilValue(SearchFilterAtom);
 

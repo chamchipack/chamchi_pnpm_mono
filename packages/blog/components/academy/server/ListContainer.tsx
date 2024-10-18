@@ -35,6 +35,7 @@ export default async function ListContainer({ path }: { path: Schema }) {
         )}
       </div>
 
+      {/* 웹 사이즈일때 출력되는 필터 */}
       <div className={styles['responsive-side']} style={{}}>
         <Box
           sx={{

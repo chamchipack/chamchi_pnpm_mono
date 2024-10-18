@@ -35,12 +35,7 @@ export default function MarkdownPreview({
   path,
   isEditon = false,
 }: MarkdownPreviewProps) {
-  const isMobile = useClientSize('sm');
   const [editPage, setEditPage] = useState(false);
-
-  useEffect(() => {
-    console.info(editPage);
-  }, [editPage]);
 
   return (
     <>

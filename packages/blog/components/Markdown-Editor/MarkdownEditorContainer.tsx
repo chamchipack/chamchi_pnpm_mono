@@ -99,7 +99,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
           overflowX: 'hidden',
         }}
       >
-        {/* 마크다운 결과 */}
+        {/* 웹 사이즈일때 Preview & Divider 출력 */}
         {!isMobile && (
           <>
             <MarkdownPreview
@@ -114,8 +114,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
               sx={{
                 position: 'sticky',
                 top: 0,
-                height: 'auto', // 컨텐츠에 맞게 높이를 자동으로 설정
-                alignSelf: 'stretch', //
+                height: 'auto',
+                alignSelf: 'stretch',
                 mr: 3,
               }}
             />
@@ -133,9 +133,9 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
         />
       </Box>
 
-      <ModalWrapper open={preview} onClose={() => setPreview(false)}>
-        <>
-          {isMobile && (
+      {isMobile && (
+        <ModalWrapper open={preview} onClose={() => setPreview(false)}>
+          <>
             <Box
               sx={{
                 position: 'absolute',
@@ -143,12 +143,12 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 width: 400,
-                height: '70vh', // 모달 창의 고정 높이 설정 (뷰포트의 70%)
+                height: '70vh',
                 bgcolor: 'background.default',
                 borderRadius: 2,
                 boxShadow: 24,
                 p: 4,
-                overflowY: 'auto', // 콘텐츠가 넘칠 경우 스크롤
+                overflowY: 'auto',
               }}
             >
               <MarkdownPreview
@@ -158,9 +158,9 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
                 isEditon={true}
               />
             </Box>
-          )}
-        </>
-      </ModalWrapper>
+          </>
+        </ModalWrapper>
+      )}
     </>
   );
 }

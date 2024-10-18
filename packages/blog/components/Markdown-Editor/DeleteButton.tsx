@@ -7,8 +7,9 @@ import { useRouter } from 'next/navigation';
 import db from '@/api/module';
 import AlertModal from 'package/src/Modal/AlertModal';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../academy/state';
+import SearchFilterAtom from '../academy/client/state';
 
 interface Props {
   id: string;
@@ -22,16 +23,20 @@ export default function DeleteButton({ id, path, userId, isEditon }: Props) {
   const router = useRouter();
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
-  const isEditPage = useRecoilValue(isEditPageon);
+  const [, setIsEditPageon] = useRecoilState(isEditPageon);
+  const [, setFilterState] = useRecoilState(SearchFilterAtom);
 
   const onClickDelete = async () => {
     setLoading(true);
 
     try {
       await db.delete(path, id);
-
+      setIsEditPageon(false);
       router.push(`/pinetree/${path}`);
+
       setLoading(false);
+      setFilterState({ 'category.like': '' });
+      console.info('@@@');
     } catch {}
   };
 
@@ -39,7 +44,13 @@ export default function DeleteButton({ id, path, userId, isEditon }: Props) {
     <>
       <Box sx={{ display: 'flex', flexDirection: 'row' }}>
         {!isEditon ? (
-          <IconButton onClick={() => router.back()}>
+          <IconButton
+            onClick={() => {
+              setIsEditPageon(false);
+              router.push(`/pinetree/${path}`);
+              setFilterState({ 'category.like': '' });
+            }}
+          >
             <ArrowBackIosNewIcon />
           </IconButton>
         ) : null}
