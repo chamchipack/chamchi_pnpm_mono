@@ -3,9 +3,17 @@ import { Box, Typography } from '@mui/material';
 interface Props {
   tag: string[];
   timestamp: string;
+  category: string;
 }
 
-const TagDateComponent = ({ tag = [], timestamp = '' }: Props) => {
+const TagDateComponent = ({ tag = [], timestamp = '', category = "" }: Props) => {
+  // const path = usePathname();
+  // const buttons =
+  // menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
+  // [];
+
+  // const result = buttons.find(({ label = "" }) => category === label)
+  
   return (
     <Box
       sx={{
@@ -15,6 +23,15 @@ const TagDateComponent = ({ tag = [], timestamp = '' }: Props) => {
       }}
     >
       <Box>
+        {/* <Typography
+            component="span"
+            variant="subtitle2"
+            color="secondary.dark"
+            sx={{ mr: 1}}
+          >
+            #{result?.name}
+        </Typography> */}
+          
         {tag.length ? (
           <Typography
             component="span"

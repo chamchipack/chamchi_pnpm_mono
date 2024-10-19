@@ -30,7 +30,7 @@ export default function ModernSelectBox({ ...props }: Props) {
     menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
     [];
 
-  const [value, setValue] = React.useState(props.category);
+  const [value, setValue] = React.useState(props.category || "");
 
   const handleChange = (event: any) => {
     props?.setCategory(event.target.value);
@@ -38,7 +38,7 @@ export default function ModernSelectBox({ ...props }: Props) {
   };
 
   return (
-    <FormControl variant="standard">
+    <FormControl variant="standard" sx={{ minWidth: 200}}>
       <CustomSelect
         value={value}
         onChange={handleChange}
@@ -48,11 +48,13 @@ export default function ModernSelectBox({ ...props }: Props) {
         renderValue={
           value !== ''
             ? undefined
-            : () => <span style={{ color: '#aaa' }}>카테고리를 선택하세요</span>
+            : () => <span style={{ color: '#aaa' }}>선택 없음</span>
         }
       >
         {buttons.map((button) => (
-          <MenuItem key={button.label} value={button.label}>
+          <MenuItem key={button.label} value={button.label} sx={{
+            background: "white",
+          }}>
             {button.name}
           </MenuItem>
         ))}

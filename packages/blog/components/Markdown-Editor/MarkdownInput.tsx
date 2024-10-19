@@ -2,6 +2,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import { Autocomplete, Box, Button, Chip, TextField } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import React, { useEffect, useRef } from 'react';
+import MarkdownButtonGroup from './MarkdownButtonGroup';
 import ModernSelectBox from './selectbox';
 interface MarkdownInputProps {
   title: string;
@@ -62,6 +63,37 @@ export default function MarkdownInput({
       event.preventDefault(); // 쉼표 입력 방지
     }
   };
+
+  const handleInsertMarkdown = (markdown: string) => {
+    if (markdown === "bold") return handleBoldClick()
+    setMarkdownText((prev) => prev + markdown);
+    textareaRef.current?.focus()
+  };
+
+  const handleBoldClick = () => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+
+    // 선택된 텍스트를 가져옴
+    const selectedText = markdownText.slice(start, end);
+
+    // 선택된 텍스트를 **으로 감싸서 업데이트
+    const updatedText =
+      markdownText.slice(0, start) +
+      `**${selectedText}**` +
+      markdownText.slice(end);
+
+    setMarkdownText(updatedText);
+
+    // 감싼 후, 텍스트 필드에 다시 포커스를 맞춰서 커서를 위치
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + 2, end + 2); // 감싼 텍스트 사이에 커서를 위치
+    }, 0);
+  }
 
   return (
     <Box sx={{ width: isMobile ? '100%' : '50%' }}>
@@ -152,6 +184,8 @@ export default function MarkdownInput({
           )}
         />
       </Box>
+
+      <MarkdownButtonGroup onInsertMarkdown={handleInsertMarkdown} />
 
       {/* 내용 입력 */}
       <TextField

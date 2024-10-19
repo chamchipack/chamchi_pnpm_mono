@@ -78,7 +78,7 @@ export default function MarkdownPreview({
             />
             <DetailButton userId={userId} setEditPage={setEditPage} />
           </Box>
-          <TagDateComponent tag={tag} timestamp={timestamp} />
+          <TagDateComponent tag={tag} timestamp={timestamp} category={category} />
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {`# ${title}\n${markdownText}`}
           </ReactMarkdown>
