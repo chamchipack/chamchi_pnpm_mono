@@ -1,9 +1,10 @@
 import ClearIcon from '@mui/icons-material/Clear';
 import { Autocomplete, Box, Button, Chip, TextField } from '@mui/material';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MarkdownButtonGroup from './MarkdownButtonGroup';
 import ModernSelectBox from './selectbox';
+
 interface MarkdownInputProps {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
@@ -26,8 +27,8 @@ export default function MarkdownInput({
   setCategory,
 }: MarkdownInputProps) {
   const [inputValue, setInputValue] = React.useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string | null>(null); // 이미지 미리보기 URL 상태
   const isMobile = useClientSize('sm');
-
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref 추가
 
   useEffect(() => {
@@ -65,9 +66,9 @@ export default function MarkdownInput({
   };
 
   const handleInsertMarkdown = (markdown: string) => {
-    if (markdown === "bold") return handleBoldClick()
+    if (markdown === 'bold') return handleBoldClick();
     setMarkdownText((prev) => prev + markdown);
-    textareaRef.current?.focus()
+    textareaRef.current?.focus();
   };
 
   const handleBoldClick = () => {
@@ -93,7 +94,23 @@ export default function MarkdownInput({
       textarea.focus();
       textarea.setSelectionRange(start + 2, end + 2); // 감싼 텍스트 사이에 커서를 위치
     }, 0);
-  }
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    const maxFileSize = 5 * 1024 * 1024; // 5MB로 제한
+      
+    if (file) {
+      if (file.size > maxFileSize) {
+        alert('파일 크기가 5MB를 초과합니다.');
+        return;
+      }
+      
+      const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환
+      // setPreviewImage(imageUrl); // 미리보기 URL 설정
+      setMarkdownText((prev) => prev + `\n![이미지 설명](${imageUrl})`); // 마크다운에 이미지 추가
+    }
+  };
 
   return (
     <Box sx={{ width: isMobile ? '100%' : '50%' }}>
@@ -186,6 +203,26 @@ export default function MarkdownInput({
       </Box>
 
       <MarkdownButtonGroup onInsertMarkdown={handleInsertMarkdown} />
+
+      <input
+  accept=".jpg,.jpeg,.png" // JPG와 PNG 파일 형식만 허용
+  type="file"
+  onChange={handleImageUpload}
+  style={{ display: 'none' }}
+  id="upload-button"
+/>
+<label htmlFor="upload-button">
+  <Button variant="contained" component="span" sx={{ mt: 2 }}>
+    이미지 업로드
+  </Button>
+</label>
+
+
+      {previewImage && (
+        <Box mt={2}>
+          <img src={previewImage} alt="미리보기" style={{ maxWidth: '100%' }} />
+        </Box>
+      )}
 
       {/* 내용 입력 */}
       <TextField

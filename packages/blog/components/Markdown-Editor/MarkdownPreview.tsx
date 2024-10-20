@@ -79,7 +79,23 @@ export default function MarkdownPreview({
             <DetailButton userId={userId} setEditPage={setEditPage} />
           </Box>
           <TagDateComponent tag={tag} timestamp={timestamp} category={category} />
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}
+          urlTransform={(url, type) => {
+            if (type === 'image' && url.startsWith('blob:')) {
+              return url;
+            }
+            return url;
+          }}
+          components={{
+            img: ({ node, ...props }) => (
+              <img
+                {...props}
+                style={{ maxWidth: '100%', height: 'auto', objectFit: 'contain' }} // 이미지 크기 조절
+                alt={props.alt || '이미지'}
+              />
+            ),
+          }}
+          >
             {`# ${title}\n${markdownText}`}
           </ReactMarkdown>
         </Box>
