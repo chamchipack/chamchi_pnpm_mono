@@ -1,20 +1,20 @@
-import pb from "./pocketbase";
+import pb from './pocketbase';
 
-import { ResponseMessage, ResponseType } from "@/api/type/type";
+import { ResponseMessage, ResponseType } from '@/api/type/type';
 
 type Collection =
-  | "student"
-  | "session"
-  | "class"
-  | "attendance"
-  | "payment"
-  | "instructor";
+  | 'student'
+  | 'session'
+  | 'class'
+  | 'attendance'
+  | 'payment'
+  | 'instructor';
 
 type Constructor = {
   collection: Collection;
 };
 
-type SortOption = { key: string; method: "asc" | "desc" }
+type SortOption = { key: string; method: 'asc' | 'desc' };
 
 interface SearchOptions {
   pagination?: { page: number; perPage: number };
@@ -53,65 +53,65 @@ class PocketbaseFinder {
   // const filterString = createOrFilterString(sessionIds);
 
   private buildFilterCondition(key: string, value: any) {
-    if (key === "query") return value;
-    const [field, type, late = ""] = key.split(".");
-    if ((!value && typeof value !== "boolean") || field === "_id") return "";
+    if (key === 'query') return value;
+    const [field, type, late = ''] = key.split('.');
+    if ((!value && typeof value !== 'boolean') || field === '_id') return '';
 
     const gbn = late ? late : type;
     const _field = late ? `${field}.${type}` : field;
     switch (gbn) {
-      case "like":
-        return typeof value === "string"
+      case 'like':
+        return typeof value === 'string'
           ? `${_field}~"${value}"`
           : `${_field}~${value}`;
-      case "equal":
-        return typeof value === "string"
+      case 'equal':
+        return typeof value === 'string'
           ? `${_field}="${value}"`
           : `${_field}=${value}`;
-      case "or":
+      case 'or':
         return Array.isArray(value)
-          ? `(${value.map((i) => `${_field}~"${i}"`).join("||")})`
-          : "";
-      case "not":
+          ? `(${value.map((i) => `${_field}~"${i}"`).join('||')})`
+          : '';
+      case 'not':
         return `${_field}!~"${value}"`;
-      case "lte":
+      case 'lte':
         return `${_field}?<="${value}"`;
-      case "gte":
+      case 'gte':
         return `${_field}?>="${value}"`;
       default:
-        return "";
+        return '';
     }
   }
 
   private buildFilterParams(filter: any) {
-    if (!filter) return "";
+    if (!filter) return '';
     const filterEntries = Object.entries(filter);
-    if (filterEntries.length === 0) return "";
+    if (filterEntries.length === 0) return '';
 
     return filterEntries
       .map(([key, value], index) => this.buildFilterCondition(key, value))
-      .filter((condition) => condition !== "")
-      .join("&&");
+      .filter((condition) => condition !== '')
+      .join('&&');
   }
 
-  private buildSortParams({ key = "", method = "desc" }: SortOption) {
-    if (!key) return ""
+  private buildSortParams({ key = '', method = 'desc' }: SortOption) {
+    if (!key) return '-created';
 
-    return method === "desc" ? `-${key}` : key
+    return method === 'desc' ? `-${key}` : key;
   }
 
   async search(req: SearchOptions): Promise<ResponseType<any>> {
-    const { pagination = {}, options = {}, target = "", sort } = req;
+    const { pagination = {}, options = {}, target = '', sort } = req;
 
     const {
       page = 1,
       perPage = Infinity,
     }: { page?: number; perPage?: number } = pagination;
 
-    if (!page || !perPage) throw new Error("Pagination not found");
+    if (!page || !perPage) throw new Error('Pagination not found');
 
     const filterParams = this.buildFilterParams(options);
-    const sortOption: string = this.buildSortParams(sort) || ""
+    const sortOption: string = this.buildSortParams(sort) || '';
 
     try {
       let result: any = {};
@@ -131,17 +131,17 @@ class PocketbaseFinder {
       };
     } catch (err: any) {
       if (err.response) {
-        throw new Error("Error fetching data");
+        throw new Error('Error fetching data');
       } else if (err.request) {
-        throw new Error("No response from serve");
+        throw new Error('No response from serve');
       } else {
-        throw new Error("Problem with request");
+        throw new Error('Problem with request');
       }
     }
   }
 
   async single(req: SingleOptions): Promise<ResponseType<any>> {
-    const { id = "", target = "" } = req;
+    const { id = '', target = '' } = req;
 
     try {
       const data = (await pb.collection(target).getOne(id)) ?? {};
@@ -149,11 +149,11 @@ class PocketbaseFinder {
       return { data, status: 200 as const, message: ResponseMessage.suc };
     } catch (err: any) {
       if (err.response) {
-        throw new Error("Error fetching data");
+        throw new Error('Error fetching data');
       } else if (err.request) {
-        throw new Error("No response from serve");
+        throw new Error('No response from serve');
       } else {
-        throw new Error("Problem with request");
+        throw new Error('Problem with request');
       }
     }
   }
@@ -173,19 +173,19 @@ class PocketbaseFinder {
       };
     } catch (err: any) {
       if (err.response) {
-        throw new Error("Error fetching data");
+        throw new Error('Error fetching data');
       } else if (err.request) {
-        throw new Error("No response from server");
+        throw new Error('No response from server');
       } else {
-        throw new Error("Request failedt");
+        throw new Error('Request failedt');
       }
     }
   }
 
   async update(req: CreateOptions) {
-    const { target, data: { id = "", ...rest } = {} } = req;
+    const { target, data: { id = '', ...rest } = {} } = req;
 
-    if (!id) throw new Error("Id is required");
+    if (!id) throw new Error('Id is required');
 
     try {
       const record = await pb.collection(target).update(id, rest);
@@ -193,19 +193,19 @@ class PocketbaseFinder {
       return { status: 201, message: ResponseMessage.suc };
     } catch (err: any) {
       if (err.response) {
-        throw new Error("Error fetching data");
+        throw new Error('Error fetching data');
       } else if (err.request) {
-        throw new Error("No response from server");
+        throw new Error('No response from server');
       } else {
-        throw new Error("Request failedt");
+        throw new Error('Request failedt');
       }
     }
   }
 
   async delete(req: SingleOptions) {
-    const { target, id = "" } = req;
+    const { target, id = '' } = req;
 
-    if (!id) throw new Error("Id is required");
+    if (!id) throw new Error('Id is required');
 
     try {
       const record = await pb.collection(target).delete(id);
@@ -213,11 +213,11 @@ class PocketbaseFinder {
       return { status: 204, message: ResponseMessage.suc };
     } catch (err: any) {
       if (err.response) {
-        throw new Error("Error fetching data");
+        throw new Error('Error fetching data');
       } else if (err.request) {
-        throw new Error("No response from server");
+        throw new Error('No response from server');
       } else {
-        throw new Error("Request failedt");
+        throw new Error('Request failedt');
       }
     }
   }

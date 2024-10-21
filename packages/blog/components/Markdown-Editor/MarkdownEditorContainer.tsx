@@ -12,6 +12,9 @@ import MarkdownInput from './MarkdownInput';
 import MarkdownPreview from './MarkdownPreview';
 import SettingButton from './SettingButton';
 import pb from '@/api/server/db/pocketbase';
+import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
+import { kboFont } from 'package/styles/fonts/module';
 
 interface Props {
   contentId: string;
@@ -91,6 +94,12 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   };
 
   const onClickSave = async () => {
+    if (!title)
+      return toast.error(<p style={{ ...kboFont }}>제목을 입력해주세요</p>);
+
+    if (!markdownText)
+      return toast.error(<p style={{ ...kboFont }}>글을 입력해주세요</p>);
+
     setLoading(true);
     const { recordIds = [], updatedMarkdown } =
       await processMarkdownImages(markdownText);

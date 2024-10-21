@@ -7,11 +7,12 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../state';
-import SearchFilterAtom from './state';
+import { PaginationAtom, SearchFilterAtom } from './state';
 
 export default function ListButtonComponent() {
   const { data } = useSession();
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
+  const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
   const path = usePathname();
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
 
@@ -56,6 +57,7 @@ export default function ListButtonComponent() {
             }}
             onClick={() => {
               handleChange(button.label);
+              setPaginationState({ page: 1, perPage: 5 });
             }}
           >
             <Typography
@@ -68,20 +70,18 @@ export default function ListButtonComponent() {
       </Box>
       {data && (
         <Button
-          variant="outlined"
+          variant="contained"
           size="medium"
           sx={{
             height: 30,
-            px: 1,
+            px: 1.5,
             py: 0.5,
-            mr: 2,
-            borderRadius: 1,
-            background: (theme) => `${theme.palette.info.main}`,
-            borderColor: 'info.main',
+            mr: 1,
+            borderRadius: 2,
+            background: (theme) => `${theme.palette.common.black}`,
             color: 'background.paper',
             '&:hover': {
-              borderColor: 'info.dark',
-              background: (theme) => `${theme.palette.info.dark}`,
+              background: (theme) => `${theme.palette.grey[400]}`,
             },
           }}
           onClick={() => {

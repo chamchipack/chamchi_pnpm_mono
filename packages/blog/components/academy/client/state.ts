@@ -8,9 +8,12 @@ interface SearchType {
   'category.like'?: string;
 }
 
-const SearchFilterAtom = atom<SearchType>({
+export const SearchFilterAtom = atom<SearchType>({
   key: 'SearchFilterAtom',
   default: defaultValue,
 });
 
-export default SearchFilterAtom;
+export const PaginationAtom = atom<any>({
+  key: 'PaginationAtom',
+  default: {},
+});

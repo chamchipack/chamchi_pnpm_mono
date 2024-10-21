@@ -20,12 +20,13 @@ export default async function ListContainer({
   };
   const result = await getData(parameter);
   const list: any[] = result?.data?.items || [];
+  const total = result?.data?.totalItems || 0;
 
   return (
     <div className={styles['responsive-container']}>
       <div className={styles['reponsive-content']} style={{ width: '100%' }}>
         {list.length ? (
-          <List rows={list} path={path} />
+          <List rows={list} path={path} total={total} />
         ) : (
           <Box
             sx={{

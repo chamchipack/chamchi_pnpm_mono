@@ -1,5 +1,11 @@
 import { Box, Button, ButtonGroup } from '@mui/material';
 import { kboFont } from 'package/styles/fonts/module';
+import ImageIcon from '@mui/icons-material/Image';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import CodeIcon from '@mui/icons-material/Code';
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
 interface MarkdownButtonGroupProps {
   onInsertMarkdown: (markdown: string) => void;
@@ -10,7 +16,7 @@ export default function MarkdownButtonGroup({
   onInsertMarkdown,
   handleImageUpload,
 }: MarkdownButtonGroupProps) {
-  // 버튼 클릭 시 마크다운 구문을 삽입하는 함수
+  const isMobile = useClientSize('sm');
   const handleButtonClick = (markdown: string) => {
     onInsertMarkdown(markdown);
   };
@@ -38,19 +44,19 @@ export default function MarkdownButtonGroup({
           h3
         </Button>
         <Button sx={buttonStyles} onClick={() => handleButtonClick('---\n')}>
-          구분선
+          {isMobile ? <HorizontalRuleIcon /> : '구분선'}
         </Button>
         <Button sx={buttonStyles} onClick={() => handleButtonClick('> ')}>
-          인용구
+          {isMobile ? <FormatQuoteIcon /> : '인용구'}
         </Button>
         <Button
           sx={buttonStyles}
           onClick={() => handleButtonClick('```\n\n```')}
         >
-          코드블럭
+          {isMobile ? <CodeIcon /> : '코드블럭'}
         </Button>
         <Button sx={buttonStyles} onClick={() => handleButtonClick('bold')}>
-          굵게
+          {isMobile ? <FormatBoldIcon /> : '굵게'}
         </Button>
 
         {/* 이미지 업로드 버튼 */}
@@ -63,7 +69,7 @@ export default function MarkdownButtonGroup({
         />
         <label htmlFor="upload-button">
           <Button sx={buttonStyles} variant="outlined" component="span">
-            이미지 업로드
+            {isMobile ? <ImageIcon /> : '이미지 업로드'}
           </Button>
         </label>
       </ButtonGroup>

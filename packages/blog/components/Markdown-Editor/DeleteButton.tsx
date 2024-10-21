@@ -9,7 +9,7 @@ import AlertModal from 'package/src/Modal/AlertModal';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../academy/state';
-import SearchFilterAtom from '../academy/client/state';
+import { SearchFilterAtom } from '../academy/client/state';
 
 interface Props {
   id: string;

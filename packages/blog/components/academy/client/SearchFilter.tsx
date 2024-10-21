@@ -4,7 +4,7 @@ import { Box, IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import SearchFilterAtom from './state';
+import { SearchFilterAtom } from './state';
 
 export default function SearchFilter() {
   const searchKeywordRef = useRef<HTMLInputElement>(null);

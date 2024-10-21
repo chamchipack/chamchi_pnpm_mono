@@ -71,13 +71,15 @@ const UserInfo = ({ setModal }: Props) => {
         <Box sx={{ width: '100%' }}>
           <Button
             variant="contained"
-            color="error"
+            sx={{
+              background: (theme) => theme.palette.common.black,
+              height: 30,
+            }}
             fullWidth
             onClick={handleLogout}
             disabled={openModal}
-            sx={{ height: 30 }}
           >
-            로그아웃
+            <Typography variant="subtitle2">로그아웃</Typography>
           </Button>
         </Box>
       </Box>

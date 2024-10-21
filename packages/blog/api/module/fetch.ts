@@ -49,7 +49,7 @@ export const getData = async ({ target, type, options, sort }) => {
 
   const data = {
     target,
-    pagination: { page: 1, perPage: 10 },
+    pagination: { page: 1, perPage: 5 },
     options: setOptions,
     sort: {},
   };

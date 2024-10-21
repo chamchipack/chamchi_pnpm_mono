@@ -39,8 +39,8 @@ export default function ImageBox({
       }
       setLoading(false); // 로딩 완료 시 상태 업데이트
     };
-
-    fetchImageUrl(); // 비동기 함수 호출
+    setLoading(false);
+    // fetchImageUrl(); // 비동기 함수 호출
   }, [collectionId, recordId, imageName, path]);
 
   return (
@@ -101,7 +101,7 @@ export default function ImageBox({
           }}
         >
           <Typography fontSize={12} color="text.primary">
-            저장된 이미지가 <br />
+            저장된 썸네일이 <br />
             없습니다
           </Typography>
         </Box>
