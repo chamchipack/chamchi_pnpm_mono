@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authMiddleware } from '@/api/server/auth/middleware';
 import PocketbaseFinder from '@/api/server/db/convert';
 import { ResponseMessage, ResponseType } from '@/api/type/type';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { getServerSession } from 'next-auth/next';
+// import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+// import { getServerSession } from 'next-auth/next';
 
 type APIType = 'search' | 'create' | 'update' | 'delete' | 'single';
 
@@ -40,9 +40,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const res = NextResponse.next();
   const token = { access, refresh };
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id || '';
-  const username = session?.user?.username || '';
+  // const session = await getServerSession(authOptions);
+  // const userId = session?.user?.id || '';
+  // const username = session?.user?.username || '';
 
   // if (!userId)
   //   return NextResponse.json<ResponseType<null>>({
@@ -100,9 +100,9 @@ export async function PUT(req: NextRequest): Promise<NextResponse> {
 
   const res = NextResponse.next();
   const token = { access, refresh };
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id || '';
-  const username = session?.user?.username || '';
+  // const session = await getServerSession(authOptions);
+  // const userId = session?.user?.id || '';
+  // const username = session?.user?.username || '';
 
   // if (!userId)
   //   return NextResponse.json<ResponseType<null>>({
@@ -162,25 +162,25 @@ export async function DELETE(req: NextRequest): Promise<NextResponse> {
 
   const res = NextResponse.next();
   const token = { access, refresh };
-  const session = await getServerSession(authOptions);
-  const userId = session?.user?.id || '';
-  const username = session?.user?.username || '';
+  // const session = await getServerSession(authOptions);
+  // const userId = session?.user?.id || '';
+  // const username = session?.user?.username || '';
 
-  if (!userId)
-    return NextResponse.json<ResponseType<null>>({
-      message: ResponseMessage.auth,
-      status: 401,
-    });
+  // if (!userId)
+  //   return NextResponse.json<ResponseType<null>>({
+  //     message: ResponseMessage.auth,
+  //     status: 401,
+  //   });
 
   const data = await req.json();
 
-  const authResult = await authMiddleware(token, userId, username);
-  if (authResult !== true) {
-    return NextResponse.json<ResponseType<null>>({
-      message: ResponseMessage.auth,
-      status: 401,
-    });
-  }
+  // const authResult = await authMiddleware(token, userId, username);
+  // if (authResult !== true) {
+  //   return NextResponse.json<ResponseType<null>>({
+  //     message: ResponseMessage.auth,
+  //     status: 401,
+  //   });
+  // }
 
   // const { type = "search" }: { type: APIType } = data;
   // const controller = controllerMap[type as keyof typeof controllerMap];

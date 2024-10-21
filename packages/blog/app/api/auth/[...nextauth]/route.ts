@@ -1,14 +1,14 @@
-import { cookies } from "next/headers";
-import { NextApiRequest, NextApiResponse } from "next";
+import { cookies } from 'next/headers';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-import NextAuth, { NextAuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import AuthService from "@/api/server/auth";
+import AuthService from '@/api/server/auth';
 
 const authService = new AuthService();
 
-declare module "next-auth" {
+declare module 'next-auth' {
   interface Session {
     user: {
       id: string;
@@ -35,7 +35,7 @@ declare module "next-auth" {
   }
 }
 
-declare module "next-auth/jwt" {
+declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
     name: string;
@@ -50,11 +50,11 @@ declare module "next-auth/jwt" {
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        username: { label: "Username", type: "text" },
-        password: { label: "Password", type: "password" },
-        csrfToken: { label: "token", type: "token" },
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' },
+        csrfToken: { label: 'token', type: 'token' },
       },
       authorize: async (credentials) => {
         if (!credentials?.username) return null;
@@ -70,10 +70,10 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/sign/login",
-    signOut: "/sign/login",
-    newUser: "/sign/login",
-    error: "/error",
+    signIn: '/sign/login',
+    signOut: '/sign/login',
+    newUser: '/sign/login',
+    error: '/error',
   },
   session: {
     maxAge: 60 * 120,
@@ -115,29 +115,29 @@ export const authOptions: NextAuthOptions = {
     },
     async signIn({ user, account, profile, email, credentials }) {
       try {
-        if (account?.type === "credentials") {
+        if (account?.type === 'credentials') {
           const accessToken = (user as any).accessToken;
           const refreshToken = (user as any).refreshToken;
 
-          cookies().set("next-auth.access-token", accessToken, {
+          cookies().set('next-auth.access-token', accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === 'production',
             // maxAge: 60,
             maxAge: parseInt(
-              process.env.NEXT_PUBLIC_REFRESH_EXPIRE_C || "3600",
-              10
+              process.env.NEXT_PUBLIC_REFRESH_EXPIRE_C || '3600',
+              10,
             ),
-            path: "/",
+            path: '/',
           });
 
-          cookies().set("next-auth.refresh-token", refreshToken, {
+          cookies().set('next-auth.refresh-token', refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === 'production',
             maxAge: parseInt(
-              process.env.NEXT_PUBLIC_REFRESH_EXPIRE_C || "3600",
-              10
+              process.env.NEXT_PUBLIC_REFRESH_EXPIRE_C || '3600',
+              10,
             ),
-            path: "/",
+            path: '/',
           });
         }
       } catch (e) {
@@ -154,21 +154,21 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   events: {
     async signOut(message) {
-      const { username = "", id = "" } = message?.token;
+      const { username = '', id = '' } = message?.token;
       await authService.signout(id, username);
 
-      cookies().set("next-auth.access-token", "", {
+      cookies().set('next-auth.access-token', '', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === 'production',
         maxAge: -1, // 쿠키 삭제를 위한 설정
-        path: "/",
+        path: '/',
       });
 
-      cookies().set("next-auth.refresh-token", "", {
+      cookies().set('next-auth.refresh-token', '', {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: process.env.NODE_ENV === 'production',
         maxAge: -1,
-        path: "/",
+        path: '/',
       });
     },
   },

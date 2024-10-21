@@ -21,10 +21,10 @@ fi
 # 명령 인자에 따라 build 또는 start 실행
 if [ "$1" == "build" ]; then
   echo "Running build for $PROJECT..."
-  pnpm run build --filter=$PROJECT
+  pnpm --filter=$PROJECT build
 elif [ "$1" == "start" ]; then
   echo "Running start for $PROJECT..."
-  pnpm run start --filter=$PROJECT
+  pnpm --filter=$PROJECT start
 else
   echo "Invalid command. Use 'build' or 'start'."
   exit 1

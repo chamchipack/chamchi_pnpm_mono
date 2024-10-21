@@ -43,7 +43,11 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   const [loading, setLoading] = useState(false);
 
   const extractSummary = (str: string) => {
-    const splitByHr = str.split('\n---')[0];
+    // 이미지 태그를 제거하는 정규식 (이미지 태그는 '![alt](url)' 형식)
+    const withoutImages = str.replace(/!\[.*?\]\(.*?\)/g, '');
+
+    // 다른 처리 (예: 구분선을 기준으로 나누기)
+    const splitByHr = withoutImages.split('\n---')[0];
     const splitByBlockquote = splitByHr.split('\n>')[0];
     const trimmedSummary = splitByBlockquote.trim();
 

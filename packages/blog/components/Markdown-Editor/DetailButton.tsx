@@ -23,18 +23,16 @@ const DetailButton = ({ userId, setEditPage }: Props) => {
       }}
     >
       <Button
-        variant="outlined"
+        variant="contained"
         size="medium"
         sx={{
           px: 1,
           py: 0.5,
           borderRadius: 1,
-          background: (theme) => `${theme.palette.primary.main}`,
-          borderColor: 'primary.main',
+          background: (theme) => `${theme.palette.common.black}`,
           color: 'background.paper',
           '&:hover': {
-            borderColor: 'primary.dark',
-            background: (theme) => `${theme.palette.primary.dark}`,
+            background: (theme) => `${theme.palette.grey[400]}`,
           },
         }}
         onClick={() => setEditPage(true)}

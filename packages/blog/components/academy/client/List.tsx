@@ -39,6 +39,7 @@ const List = ({ ...props }: Props) => {
     ) {
       onLoadData();
     }
+    console.info(rows);
   }, [filterState, paginationState]);
 
   return (
@@ -77,6 +78,12 @@ const List = ({ ...props }: Props) => {
                       sx={{ wordBreak: 'break-word' }}
                     >
                       {item.summary}
+                    </Typography>
+                  </Box>
+
+                  <Box>
+                    <Typography fontSize={12} color="text.secondary">
+                      작성자: {item?.userName}
                     </Typography>
                   </Box>
 
