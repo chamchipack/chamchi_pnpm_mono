@@ -1,7 +1,19 @@
+'use client';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
+import { menuItems } from '@/config/menu/menu';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 const ImageWrapper = () => {
+  const path = usePathname();
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    const item = menuItems.find(({ path: _path }) => path === _path);
+    setTitle(item?.label as string);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -39,7 +51,7 @@ const ImageWrapper = () => {
           zIndex: 1,
         }}
       >
-        이미지 위 텍스트
+        {title}
       </Typography>
     </Box>
   );

@@ -8,7 +8,7 @@ interface Props {
 }
 export default async function Content({ id, path }: Props) {
   const params = {
-    target: path,
+    target: 'library',
     type: 'single',
     options: { id },
     sort: {},

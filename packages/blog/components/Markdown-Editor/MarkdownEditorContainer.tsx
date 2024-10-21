@@ -11,6 +11,7 @@ import { useState } from 'react';
 import MarkdownInput from './MarkdownInput';
 import MarkdownPreview from './MarkdownPreview';
 import SettingButton from './SettingButton';
+import pb from '@/api/server/db/pocketbase';
 
 interface Props {
   contentId: string;
@@ -28,6 +29,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   const { data } = useSession();
 
   const [title, setTitle] = useState<string>(props?.markdown_title || '');
+  const [previewImage, setPreviewImage] = useState<string>(''); // 이미지 미리보기 URL 상태
+
   const [markdownText, setMarkdownText] = useState<string>(
     props?.markdown_contents || '',
   );
@@ -48,25 +51,69 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     return trimmedSummary;
   };
 
+  const processMarkdownImages = async (markdownText: string) => {
+    // 1. blob URL 찾기 (정규식 사용)
+    const blobUrlRegex = /!\[.*?\]\((blob:[^)]+)\)/g;
+    // const blobUrlRegex = /!\[.*?\]\((blob:[^)]+|http:\/\/127\.0\.0\.1:8090\/api\/files\/[^)]+)\)/g;
+
+    let match;
+    const blobUrls: string[] = [];
+
+    // blob URL을 배열에 저장
+    while ((match = blobUrlRegex.exec(markdownText)) !== null) {
+      blobUrls.push(match[1]);
+    }
+
+    let updatedMarkdown = markdownText;
+    const recordIds: string[] = [];
+
+    // 2. blob URL을 PocketBase URL로 교체
+    for (const blobUrl of blobUrls) {
+      const file = await fetch(blobUrl).then((res) => res.blob());
+
+      // 3. PocketBase에 파일 업로드 (이미지를 업로드하고 URL 받기)
+      const formData = new FormData();
+      formData.append('image', file);
+      formData.append('route', props?.path); // route 추가
+
+      try {
+        const record = await pb.collection('images').create(formData);
+        recordIds.push(record?.id);
+        const pocketBaseImageUrl = pb.files.getUrl(record, record.image); // PocketBase URL 가져오기
+
+        updatedMarkdown = updatedMarkdown.replace(blobUrl, pocketBaseImageUrl);
+      } catch (error) {
+        console.error('이미지 업로드 실패:', error);
+      }
+    }
+
+    return { recordIds, updatedMarkdown };
+  };
+
   const onClickSave = async () => {
     setLoading(true);
+    const { recordIds = [], updatedMarkdown } =
+      await processMarkdownImages(markdownText);
+
     const form = {
       userName: data?.user?.name,
       userId: data?.user?.username,
       markdown_title: title,
-      markdown_contents: markdownText,
+      markdown_contents: updatedMarkdown,
       category: _category,
       timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
       tag: tags,
       summary: extractSummary(markdownText),
+      theme: props?.path,
+      imageId: recordIds,
     };
 
     if (props?.contentId) Object.assign(form, { id: props?.contentId });
 
     try {
       let result;
-      if (props?.contentId) result = await db.update(props?.path, form);
-      else result = await db.create(props?.path, form);
+      if (props?.contentId) result = await db.update('library', form);
+      else result = await db.create('library', form);
 
       if (props?.contentId) {
         router.refresh();
@@ -135,6 +182,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
           setCategory={setCategory}
           tags={tags}
           setTags={setTags}
+          previewImage={previewImage}
+          setPreviewImage={setPreviewImage}
         />
       </Box>
 

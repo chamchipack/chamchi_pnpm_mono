@@ -30,13 +30,14 @@ export default function DeleteButton({ id, path, userId, isEditon }: Props) {
     setLoading(true);
 
     try {
-      await db.delete(path, id);
+      await db.delete('library', id);
       setIsEditPageon(false);
       router.push(`/pinetree/${path}`);
 
       setLoading(false);
       setFilterState({ 'category.like': '' });
-      console.info('@@@');
+
+      setModal(false);
     } catch {}
   };
 

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import SearchFilterAtom from './state';
 import Title from './Title';
+import ListImage from './ListImage';
 
 interface Props {
   rows: any[];
@@ -17,8 +18,8 @@ const List = ({ ...props }: Props) => {
   const filterState = useRecoilValue(SearchFilterAtom);
 
   const onLoadData = async () => {
-    const { data = [] } = await db.search(props?.path, {
-      options: { ...filterState },
+    const { data = [] } = await db.search('library', {
+      options: { ...filterState, 'theme.like': props?.path },
     });
 
     setRows(data);
@@ -48,7 +49,7 @@ const List = ({ ...props }: Props) => {
               >
                 <Box
                   sx={{
-                    width: '70%',
+                    width: '70%', //"70%"
                     pr: 2,
                     display: 'flex',
                     flexDirection: 'column',
@@ -76,25 +77,12 @@ const List = ({ ...props }: Props) => {
                   </Box>
                 </Box>
 
-                <Box sx={{ width: '30%', maxWidth: 200, height: '100%' }}>
-                  <Box
-                    sx={{
-                      width: '100%',
-                      height: '100%',
-                      background: '#e2e2e2',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center',
-                      borderRadius: 3,
-                    }}
-                  >
-                    <Typography fontSize={12} color="text.primary">
-                      저장된 이미지가 <br />
-                      없습니다
-                    </Typography>
-                  </Box>
-                </Box>
+                <ListImage
+                  collectionId={item?.collectionId}
+                  recordId={item?.id}
+                  imageName={item?.thumbnail}
+                  path={props?.path}
+                />
               </Box>
             </Box>
           ))}

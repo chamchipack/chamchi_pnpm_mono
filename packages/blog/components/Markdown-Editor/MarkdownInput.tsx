@@ -14,6 +14,8 @@ interface MarkdownInputProps {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   category: string;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
+  previewImage: string;
+  setPreviewImage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function MarkdownInput({
@@ -25,9 +27,10 @@ export default function MarkdownInput({
   setTags,
   category,
   setCategory,
+  previewImage,
+  setPreviewImage,
 }: MarkdownInputProps) {
   const [inputValue, setInputValue] = React.useState<string>('');
-  const [previewImage, setPreviewImage] = useState<string | null>(null); // 이미지 미리보기 URL 상태
   const isMobile = useClientSize('sm');
   const textareaRef = useRef<HTMLTextAreaElement>(null); // Ref 추가
 
@@ -89,25 +92,25 @@ export default function MarkdownInput({
 
     setMarkdownText(updatedText);
 
-    // 감싼 후, 텍스트 필드에 다시 포커스를 맞춰서 커서를 위치
     setTimeout(() => {
       textarea.focus();
-      textarea.setSelectionRange(start + 2, end + 2); // 감싼 텍스트 사이에 커서를 위치
+      textarea.setSelectionRange(start + 2, end + 2);
     }, 0);
   };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     const maxFileSize = 5 * 1024 * 1024; // 5MB로 제한
-      
+
     if (file) {
       if (file.size > maxFileSize) {
         alert('파일 크기가 5MB를 초과합니다.');
         return;
       }
-      
-      const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환
-      // setPreviewImage(imageUrl); // 미리보기 URL 설정
+
+      const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환\
+      setPreviewImage(imageUrl); // 미리보기 URL 설정
+
       setMarkdownText((prev) => prev + `\n![이미지 설명](${imageUrl})`); // 마크다운에 이미지 추가
     }
   };
@@ -202,27 +205,10 @@ export default function MarkdownInput({
         />
       </Box>
 
-      <MarkdownButtonGroup onInsertMarkdown={handleInsertMarkdown} />
-
-      <input
-  accept=".jpg,.jpeg,.png" // JPG와 PNG 파일 형식만 허용
-  type="file"
-  onChange={handleImageUpload}
-  style={{ display: 'none' }}
-  id="upload-button"
-/>
-<label htmlFor="upload-button">
-  <Button variant="contained" component="span" sx={{ mt: 2 }}>
-    이미지 업로드
-  </Button>
-</label>
-
-
-      {previewImage && (
-        <Box mt={2}>
-          <img src={previewImage} alt="미리보기" style={{ maxWidth: '100%' }} />
-        </Box>
-      )}
+      <MarkdownButtonGroup
+        onInsertMarkdown={handleInsertMarkdown}
+        handleImageUpload={handleImageUpload}
+      />
 
       {/* 내용 입력 */}
       <TextField

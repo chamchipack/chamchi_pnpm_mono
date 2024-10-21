@@ -1,6 +1,6 @@
 import Container from '@/components/academy/server/Container';
+import { Path } from '@/config/schema';
 
 export default function Page() {
-  const path = 'freeworld';
-  return <Container path={path} />;
+  return <Container path={Path.freeworld} />;
 }

@@ -12,7 +12,12 @@ export default async function ListContainer({
 }: {
   path: Schema;
 }): Promise<React.ReactElement> {
-  const parameter = { target: path, type: 'search', options: {}, sort: {} };
+  const parameter = {
+    target: 'library',
+    type: 'search',
+    options: { 'theme.like': path },
+    sort: {},
+  };
   const result = await getData(parameter);
   const list: any[] = result?.data?.items || [];
 

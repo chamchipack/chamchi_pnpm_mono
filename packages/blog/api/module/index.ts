@@ -30,6 +30,8 @@ enum Target {
   v2 = '/api/v2',
 }
 
+type Address = 'library';
+
 const headers: Headers = { 'Content-Type': 'application/json' };
 
 class ApiClient {
@@ -101,7 +103,7 @@ class ApiClient {
    * @returns
    */
   public async search(
-    url: Schema,
+    url: Address,
     {
       pagination,
       options,
@@ -119,22 +121,22 @@ class ApiClient {
     return this.request('/api/route', 'POST', body);
   }
 
-  public async single(url: Schema, id: string): Promise<SearchResponse> {
+  public async single(url: Address, id: string): Promise<SearchResponse> {
     const body = { type: 'single', target: url, id };
     return this.request('/api/route', 'POST', body);
   }
 
-  public async create(url: Schema, data: any): Promise<SearchResponse> {
+  public async create(url: Address, data: any): Promise<SearchResponse> {
     const body = { data, type: 'create', target: url };
     return this.request('/api/route', 'POST', body);
   }
 
-  public async update(url: Schema, data: any): Promise<SearchResponse> {
+  public async update(url: Address, data: any): Promise<SearchResponse> {
     const body = { data, type: 'update', target: url };
     return this.request('/api/route', 'PUT', body);
   }
 
-  public async deleteFetch(url: Schema, id: string): Promise<any> {
+  public async deleteFetch(url: Address, id: string): Promise<any> {
     const body = { type: 'delete', id, target: url };
     return this.request('/api/route', 'DELETE', body);
   }
