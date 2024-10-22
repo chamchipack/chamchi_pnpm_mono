@@ -124,9 +124,7 @@ const List = ({ ...props }: Props) => {
             borderRadius: 3,
           }}
         >
-          <Typography color="text.secondary">
-            조회된 데이터가 없어요!
-          </Typography>
+          <Typography color="text.secondary">조회된 글이 없어요!</Typography>
         </Box>
       )}
     </>
