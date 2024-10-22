@@ -22,7 +22,7 @@ const UserInfo = ({ setModal }: Props) => {
 
     try {
       await signOut({ redirect: false });
-      router.push('/pinetree/academy'); // 로그아웃 후 리디렉션 경로 설정
+      router.push('/pinetree'); // 로그아웃 후 리디렉션 경로 설정
       setModal(false);
 
       handleClose();

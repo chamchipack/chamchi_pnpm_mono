@@ -5,6 +5,15 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/pinetree',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

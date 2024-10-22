@@ -47,11 +47,31 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     // 이미지 태그를 제거하는 정규식 (이미지 태그는 '![alt](url)' 형식)
     const withoutImages = str.replace(/!\[.*?\]\(.*?\)/g, '');
 
+    // 헤더 (#, ##, ###) 문법 제거
+    const withoutHeaders = withoutImages.replace(/^#{1,6}\s+/gm, '');
+
+    // 링크 문법 제거 (예: [링크 텍스트](URL))
+    const withoutLinks = withoutHeaders.replace(/\[.*?\]\(.*?\)/g, '');
+
+    // 강조 문법 제거 (예: **bold**, *italic*, ~~strikethrough~~)
+    const withoutEmphasis = withoutLinks
+      .replace(/(\*\*|__)(.*?)\1/g, '$2')
+      .replace(/(\*|_)(.*?)\1/g, '$2')
+      .replace(/~~(.*?)~~/g, '$1');
+
+    // 나머지 마크다운 요소들 제거 (예: 리스트, 구분선 등)
+    const withoutMarkdown = withoutEmphasis
+      .replace(/^-{3,}/gm, '') // 구분선
+      .replace(/^\s*[-*+]\s+/gm, '') // 리스트
+      .replace(/`{1,3}[^`]*`{1,3}/g, ''); // 코드 블럭 제거
+
     // 다른 처리 (예: 구분선을 기준으로 나누기)
-    const splitByHr = withoutImages.split('\n---')[0];
+
+    const splitByHr = withoutMarkdown.split('\n---')[0];
     const splitByBlockquote = splitByHr.split('\n>')[0];
     const trimmedSummary = splitByBlockquote.trim();
 
+    // 요약 길이 조절
     if (trimmedSummary.length > 50) {
       return trimmedSummary.slice(0, 100) + '...';
     }
