@@ -6,14 +6,18 @@ interface Props {
   category: string;
 }
 
-const TagDateComponent = ({ tag = [], timestamp = '', category = "" }: Props) => {
+const TagDateComponent = ({
+  tag = [],
+  timestamp = '',
+  category = '',
+}: Props) => {
   // const path = usePathname();
   // const buttons =
   // menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
   // [];
 
   // const result = buttons.find(({ label = "" }) => category === label)
-  
+
   return (
     <Box
       sx={{
@@ -31,8 +35,8 @@ const TagDateComponent = ({ tag = [], timestamp = '', category = "" }: Props) =>
           >
             #{result?.name}
         </Typography> */}
-          
-        {tag.length ? (
+
+        {Array.isArray(tag) && tag.length ? (
           <Typography
             component="span"
             variant="subtitle2"

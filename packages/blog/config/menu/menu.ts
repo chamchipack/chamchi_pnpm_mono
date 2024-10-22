@@ -4,8 +4,9 @@ export const menuItems = [
     path: '/pinetree/academy',
     category: [
       { label: '', name: '전체' },
-      { label: 'next', name: 'NEXT' },
-      { label: 'db', name: '디비' },
+      { label: 'front', name: '프론트' },
+      { label: 'back', name: '백엔드' },
+      { label: 'infra', name: '인프라' },
     ],
   },
   { label: '자유시장', path: '/pinetree/freeworld' },

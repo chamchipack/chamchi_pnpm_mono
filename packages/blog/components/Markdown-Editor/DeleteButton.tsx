@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useRouter } from 'next/navigation';
 import db from '@/api/module';
-import AlertModal from 'package/src/Modal/AlertModal';
+import SaveModal from 'package/src/Modal/SaveModal';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../academy/state';
@@ -62,7 +62,7 @@ export default function DeleteButton({ id, path, userId, isEditon }: Props) {
           </IconButton>
         )}
       </Box>
-      <AlertModal
+      <SaveModal
         open={modal}
         handleClose={() => setModal(false)}
         title="작성된 글 삭제"

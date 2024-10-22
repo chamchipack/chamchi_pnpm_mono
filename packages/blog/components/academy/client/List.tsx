@@ -94,12 +94,20 @@ const List = ({ ...props }: Props) => {
                   </Box>
                 </Box>
 
-                <ListImage
-                  collectionId={item?.collectionId}
-                  recordId={item?.id}
-                  imageName={item?.thumbnail}
-                  path={props?.path}
-                />
+                <Box
+                  sx={{
+                    width: '30%',
+                    maxWidth: 200,
+                    height: '100%',
+                    position: 'relative',
+                  }}
+                >
+                  <ListImage
+                    collectionId={item?.collectionId}
+                    recordId={item?.id}
+                    imageName={item?.thumbnail}
+                  />
+                </Box>
               </Box>
             </Box>
           ))}

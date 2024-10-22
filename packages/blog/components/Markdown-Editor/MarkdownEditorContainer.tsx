@@ -41,6 +41,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   const [tags, setTags] = useState<string[]>(props?.markdown_tag || []);
   const [preview, setPreview] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [thumbnail, setThumbnail] = useState(null);
 
   const extractSummary = (str: string) => {
     // 이미지 태그를 제거하는 정규식 (이미지 태그는 '![alt](url)' 형식)
@@ -66,17 +67,18 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     let match;
     const blobUrls: string[] = [];
 
-    // blob URL을 배열에 저장
     while ((match = blobUrlRegex.exec(markdownText)) !== null) {
       blobUrls.push(match[1]);
     }
 
     let updatedMarkdown = markdownText;
     const recordIds: string[] = [];
+    let thumbnail;
 
     // 2. blob URL을 PocketBase URL로 교체
     for (const blobUrl of blobUrls) {
       const file = await fetch(blobUrl).then((res) => res.blob());
+      thumbnail = thumbnail ? thumbnail : file;
 
       // 3. PocketBase에 파일 업로드 (이미지를 업로드하고 URL 받기)
       const formData = new FormData();
@@ -94,7 +96,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       }
     }
 
-    return { recordIds, updatedMarkdown };
+    return { recordIds, updatedMarkdown, thumbnail };
   };
 
   const onClickSave = async () => {
@@ -105,8 +107,13 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       return toast.error(<p style={{ ...kboFont }}>글을 입력해주세요</p>);
 
     setLoading(true);
-    const { recordIds = [], updatedMarkdown } =
-      await processMarkdownImages(markdownText);
+    const {
+      recordIds = [],
+      updatedMarkdown,
+      thumbnail,
+    } = await processMarkdownImages(markdownText);
+
+    const formData = new FormData();
 
     const form = {
       userName: data?.user?.name,
@@ -115,25 +122,46 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       markdown_contents: updatedMarkdown,
       category: _category,
       timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
-      tag: tags,
+      tag: tags || [],
       summary: extractSummary(markdownText),
       theme: props?.path,
       imageId: recordIds,
+      thumbnail: thumbnail,
     };
 
     if (props?.contentId) Object.assign(form, { id: props?.contentId });
 
+    Object.entries(form).forEach(([key, value]) => {
+      const isArray = Array.isArray(value);
+      const appendValue = isArray ? value : [value];
+
+      appendValue.forEach((item: any, index) => {
+        const keyName = isArray ? `${key}[${index}]` : key;
+        formData.append(keyName, item);
+      });
+    });
+
+    thumbnail && formData.append('thumbnail', thumbnail);
+
+    await pb.collection('images').create(formData);
+
     try {
       let result;
-      if (props?.contentId) result = await db.update('library', form);
-      else result = await db.create('library', form);
+      // if (props?.contentId) result = await db.update('library', form);
+      // else result = await db.create('library', form);
+
+      if (props?.contentId)
+        result = await pb
+          .collection('library')
+          .update(props?.contentId, formData);
+      else result = await pb.collection('library').create(formData);
 
       if (props?.contentId) {
         router.refresh();
         if (props?.setEditPage) props?.setEditPage(false);
         setLoading(false);
       } else {
-        router.push(`/pinetree/${props?.path}/${result?.data?.id}`);
+        router.push(`/pinetree/${props?.path}/${result?.id}`);
         setLoading(false);
       }
     } catch {

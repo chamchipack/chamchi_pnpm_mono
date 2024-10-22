@@ -5,7 +5,7 @@ import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import { useRecoilState } from 'recoil';
 import isEditPageon from '../academy/state';
 import { useState } from 'react';
-import AlertModal from 'package/src/Modal/AlertModal';
+import SaveModal from 'package/src/Modal/SaveModal';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PreviewIcon from '@mui/icons-material/Preview';
 
@@ -108,7 +108,7 @@ export default function SettingButton({ ...props }: Props) {
         </Box>
       </Box>
 
-      <AlertModal
+      <SaveModal
         open={modal}
         handleClose={() => setModal(false)}
         onClickCheck={() => {
@@ -119,7 +119,7 @@ export default function SettingButton({ ...props }: Props) {
         content="저장하시겠습니까?"
         processing={props?.loading}
         isAlertModal={false}
-      ></AlertModal>
+      ></SaveModal>
     </>
   );
 }

@@ -8,21 +8,19 @@ interface ImageBoxProps {
   collectionId: string;
   recordId: string;
   imageName: string;
-  path: Schema;
 }
 
 export default function ImageBox({
   collectionId,
   recordId,
   imageName,
-  path,
 }: ImageBoxProps) {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // 로딩 상태 관리
 
   const getImageUrl = async () => {
     try {
-      const record = await pb.collection(path).getOne(recordId);
+      const record = await pb.collection('library').getOne(recordId);
       const fileUrl = pb.files.getUrl(record, imageName); // record와 imageName 사용
       return fileUrl;
     } catch (error) {
@@ -40,18 +38,11 @@ export default function ImageBox({
       setLoading(false); // 로딩 완료 시 상태 업데이트
     };
     setLoading(false);
-    // fetchImageUrl(); // 비동기 함수 호출
-  }, [collectionId, recordId, imageName, path]);
+    fetchImageUrl(); // 비동기 함수 호출
+  }, [collectionId, recordId, imageName]);
 
   return (
-    <Box
-      sx={{
-        width: '30%',
-        maxWidth: 200,
-        height: '100%',
-        position: 'relative',
-      }}
-    >
+    <>
       {loading ? ( // 로딩 중일 때 표시
         <Box
           sx={{
@@ -106,6 +97,6 @@ export default function ImageBox({
           </Typography>
         </Box>
       )}
-    </Box>
+    </>
   );
 }
