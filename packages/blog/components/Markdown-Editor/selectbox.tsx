@@ -3,6 +3,8 @@ import { ArrowDropDown } from '@mui/icons-material';
 import { FormControl, MenuItem, Select, styled } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { useRecoilValue } from 'recoil';
+import MenuAtom from '../Layout/Header/client/auth/state';
 
 interface Props {
   category: string;
@@ -26,11 +28,12 @@ const CustomSelect = styled(Select)(({ theme }) => ({
 
 export default function ModernSelectBox({ ...props }: Props) {
   const path = usePathname();
-  const buttons =
-    menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
-    [];
+  const menus = useRecoilValue(MenuAtom);
 
-  const [value, setValue] = React.useState(props.category || "");
+  const buttons =
+    menus.find(({ path: _path = '' }) => path.includes(_path))?.category || [];
+
+  const [value, setValue] = React.useState(props.category || '');
 
   const handleChange = (event: any) => {
     props?.setCategory(event.target.value);
@@ -38,7 +41,7 @@ export default function ModernSelectBox({ ...props }: Props) {
   };
 
   return (
-    <FormControl variant="standard" sx={{ minWidth: 200}}>
+    <FormControl variant="standard" sx={{ minWidth: 200 }}>
       <CustomSelect
         value={value}
         onChange={handleChange}
@@ -51,10 +54,14 @@ export default function ModernSelectBox({ ...props }: Props) {
             : () => <span style={{ color: '#aaa' }}>선택 없음</span>
         }
       >
-        {buttons.map((button) => (
-          <MenuItem key={button.label} value={button.label} sx={{
-            background: "white",
-          }}>
+        {buttons.map((button: any) => (
+          <MenuItem
+            key={button.label}
+            value={button.label}
+            sx={{
+              background: 'white',
+            }}
+          >
             {button.name}
           </MenuItem>
         ))}
