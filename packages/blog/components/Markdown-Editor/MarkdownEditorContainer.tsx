@@ -22,7 +22,7 @@ interface Props {
   markdown_title: string;
   markdown_tag: string[];
   setEditPage?: React.Dispatch<React.SetStateAction<boolean>>;
-  path: Schema;
+  path: string;
   category: string;
 }
 
@@ -72,8 +72,11 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     }
 
     let updatedMarkdown = markdownText;
+    if (!blobUrls.length)
+      return { recordIds: [], updatedMarkdown, thumbnail: null };
+
     const recordIds: string[] = [];
-    let thumbnail;
+    let thumbnail = null;
 
     // 2. blob URL을 PocketBase URL로 교체
     for (const blobUrl of blobUrls) {
@@ -109,7 +112,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     setLoading(true);
     const {
       recordIds = [],
-      updatedMarkdown,
+      updatedMarkdown = '',
       thumbnail,
     } = await processMarkdownImages(markdownText);
 
@@ -122,12 +125,12 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       markdown_contents: updatedMarkdown,
       category: _category,
       timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
-      tag: tags || [],
+      tag: JSON.stringify(tags || []),
       summary: extractSummary(markdownText),
       theme: props?.path,
       imageId: recordIds,
-      thumbnail: thumbnail,
     };
+    if (thumbnail) Object.assign(form, { thumbnail });
 
     if (props?.contentId) Object.assign(form, { id: props?.contentId });
 
@@ -141,9 +144,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       });
     });
 
-    thumbnail && formData.append('thumbnail', thumbnail);
-
-    await pb.collection('images').create(formData);
+    // thumbnail && formData.append('thumbnail', thumbnail);
 
     try {
       let result;

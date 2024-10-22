@@ -1,11 +1,10 @@
 'use server';
-import { Schema } from '@/config/schema';
 import ListButtonComponent from '../client/ListButtonComponent';
 import EditPageServerWrapper from '../EditPageServerWrapper';
 import ImageWrapper from './ImageWrapper';
 import ListContainer from './ListContainer';
 
-export default async function Container({ path }: { path: Schema }) {
+export default async function Container({ path }: { path: string }) {
   return (
     <>
       <EditPageServerWrapper path={path}>

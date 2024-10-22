@@ -1,6 +1,5 @@
 'use client';
 import db from '@/api/module';
-import { Schema } from '@/config/schema';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -11,7 +10,7 @@ import PaginationComponent from './Pagination';
 
 interface Props {
   rows: any[];
-  path: Schema;
+  path: string;
   total: number;
 }
 
@@ -39,7 +38,6 @@ const List = ({ ...props }: Props) => {
     ) {
       onLoadData();
     }
-    console.info(rows);
   }, [filterState, paginationState]);
 
   return (

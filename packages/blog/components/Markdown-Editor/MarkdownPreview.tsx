@@ -19,7 +19,7 @@ interface MarkdownPreviewProps {
   timestamp?: string;
   userId?: string;
   contentId?: string;
-  path: Schema;
+  path: string;
   isEditon?: boolean;
   category?: string;
 }

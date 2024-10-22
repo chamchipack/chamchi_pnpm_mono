@@ -2,11 +2,10 @@
 import { useRecoilValue } from 'recoil';
 import isEditPageon from './state';
 import MarkdownEditorContainer from '@/components/Markdown-Editor/MarkdownEditorContainer';
-import { Schema } from '@/config/schema';
 
 interface Props {
   children: React.ReactNode;
-  path: Schema;
+  path: string;
 }
 
 // 서버컴포넌트에서 글 수정 컴포넌트인지 확인

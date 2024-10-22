@@ -4,15 +4,18 @@ import Image from 'next/image';
 import { menuItems } from '@/config/menu/menu';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { useRecoilValue } from 'recoil';
+import MenuAtom from '@/components/Layout/Header/client/auth/state';
 
 const ImageWrapper = () => {
   const path = usePathname();
   const [title, setTitle] = useState('');
+  const menu = useRecoilValue(MenuAtom);
 
   useEffect(() => {
-    const item = menuItems.find(({ path: _path }) => path === _path);
+    const item = menu.find(({ path: _path }) => path === _path);
     setTitle(item?.label as string);
-  }, []);
+  }, [menu]);
 
   return (
     <Box

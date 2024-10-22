@@ -1,10 +1,9 @@
 import { getData } from '@/api/module/fetch';
 import MarkdownPreview from '@/components/Markdown-Editor/MarkdownPreview';
-import { Schema } from '@/config/schema';
 
 interface Props {
   id: string;
-  path: Schema;
+  path: string;
 }
 export default async function Content({ id, path }: Props) {
   const params = {
@@ -20,7 +19,7 @@ export default async function Content({ id, path }: Props) {
       title={record?.markdown_title}
       markdownText={record?.markdown_contents}
       readonly={true}
-      tag={record?.tag}
+      tag={JSON.parse(record?.tag ?? '')}
       timestamp={record?.timestamp}
       category={record?.category}
       contentId={id}

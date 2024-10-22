@@ -8,10 +8,18 @@ import MenuList from './MenuList';
 import AuthComponent from './AuthComponent';
 import { kboFont } from 'package/styles/fonts/module';
 import { useRouter } from 'next/navigation';
+import { useRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import MenuAtom from './auth/state';
 
-const HeaderContainer = () => {
+const HeaderContainer = ({ ...props }) => {
   const router = useRouter();
   const toggle = useRecoilValue(ToggleStateAtom);
+  const [, setMenu] = useRecoilState(MenuAtom);
+
+  useEffect(() => {
+    setMenu(props?.menu);
+  }, []);
 
   return (
     <>
@@ -70,7 +78,7 @@ const HeaderContainer = () => {
             overflow: 'hidden',
           }}
         >
-          {toggle && <MenuList />}
+          {toggle && <MenuList menu={props?.menu} />}
         </Box>
       </Box>
     </>

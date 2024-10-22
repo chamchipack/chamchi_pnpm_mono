@@ -1,11 +1,10 @@
 import Content from '@/components/academy/server/Content';
-import { Path } from '@/config/schema';
 interface Props {
-  params: { freeworld: string };
+  params: { detail: string; library: string };
 }
 
 const page = async ({ params }: Props) => {
-  return <Content id={params?.freeworld} path={Path.freeworld} />;
+  return <Content id={params?.detail} path={params?.library} />;
 };
 
 export default page;

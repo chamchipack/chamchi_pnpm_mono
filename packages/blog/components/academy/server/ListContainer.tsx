@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic';
 
 import { getData } from '@/api/module/fetch';
-import { Schema } from '@/config/schema';
 import { Box, Divider, Typography } from '@mui/material';
 import styles from '../academy.module.css';
 import List from '../client/List';
@@ -10,7 +9,7 @@ import SearchFilter from '../client/SearchFilter';
 export default async function ListContainer({
   path,
 }: {
-  path: Schema;
+  path: string;
 }): Promise<React.ReactElement> {
   const parameter = {
     target: 'library',

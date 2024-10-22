@@ -14,7 +14,7 @@ if [ "$selection" -eq 1 ]; then
   pnpm --filter studio dev --port 7676
 elif [ "$selection" -eq 2 ]; then
   echo "Running 'blog' project in dev mode..."
-  pnpm --filter blog dev --port 7500
+  pnpm --filter blog dev --port 3500
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1

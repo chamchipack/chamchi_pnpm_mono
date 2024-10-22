@@ -64,7 +64,7 @@ export default function Content({ data }: ContentProps) {
             }}
             onClick={() => {
               if (!data?.id) return;
-              router.push(`/pinetree/academy/${data?.id}`);
+              router.push(`/pinetree/${data?.theme}/${data?.id}`);
             }}
           >
             {data?.markdown_title}

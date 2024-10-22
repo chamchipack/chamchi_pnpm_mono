@@ -13,7 +13,7 @@ import { SearchFilterAtom } from '../academy/client/state';
 
 interface Props {
   id: string;
-  path: Schema;
+  path: string;
   userId: string;
   isEditon: boolean;
 }

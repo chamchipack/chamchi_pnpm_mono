@@ -1,10 +1,9 @@
-import { menuItems } from '@/config/menu/menu';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useRecoilState } from 'recoil';
 import ToggleStateAtom from '../state';
 
-const MenuList = () => {
+const MenuList = ({ ...props }) => {
   const router = useRouter();
   const [toggle, setToggle] = useRecoilState(ToggleStateAtom);
 
@@ -15,7 +14,7 @@ const MenuList = () => {
 
   return (
     <>
-      {menuItems.map((item, index) => (
+      {props?.menu.map((item: any, index: number) => (
         <Box
           key={index}
           sx={{
