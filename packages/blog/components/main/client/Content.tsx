@@ -20,7 +20,7 @@ export default function Content({ data }: ContentProps) {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          height: 250,
+          height: 280,
           my: 2,
           mx: 2,
           background: 'white',
