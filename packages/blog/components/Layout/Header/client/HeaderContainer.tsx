@@ -6,8 +6,11 @@ import { useRecoilValue } from 'recoil';
 import ToggleStateAtom from '../state';
 import MenuList from './MenuList';
 import AuthComponent from './AuthComponent';
+import { kboFont } from 'package/styles/fonts/module';
+import { useRouter } from 'next/navigation';
 
 const HeaderContainer = () => {
+  const router = useRouter();
   const toggle = useRecoilValue(ToggleStateAtom);
 
   return (
@@ -15,7 +18,7 @@ const HeaderContainer = () => {
       <Box
         component={motion.div}
         initial={{ height: 60 }}
-        animate={{ height: toggle ? 180 : 60 }}
+        animate={{ height: toggle ? 220 : 60 }}
         transition={{ duration: 0.2, ease: 'easeOut' }}
         sx={{
           width: '100%',
@@ -40,7 +43,14 @@ const HeaderContainer = () => {
             px: 1,
           }}
         >
-          <div />
+          <div style={{ ...kboFont, marginLeft: 10 }}>
+            <p
+              style={{ cursor: 'pointer' }}
+              onClick={() => router.push('/pinetree')}
+            >
+              블로그 참치
+            </p>
+          </div>
 
           <Box
             sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}

@@ -10,4 +10,5 @@ export const menuItems = [
     ],
   },
   { label: '자유시장', path: '/pinetree/freeworld' },
+  { label: '파트팔리오', path: '/pinetree/portfolio' },
 ];
