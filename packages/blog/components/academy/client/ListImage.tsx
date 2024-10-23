@@ -21,7 +21,7 @@ export default function ImageBox({
   const getImageUrl = async () => {
     try {
       const record = await pb.collection('library').getOne(recordId);
-      const fileUrl = pb.files.getUrl(record, imageName); // record와 imageName 사용
+      const fileUrl = pb.files.getUrl(record, imageName);
       return fileUrl;
     } catch (error) {
       console.error('이미지를 가져오는 중 오류가 발생했습니다:', error);
@@ -31,19 +31,20 @@ export default function ImageBox({
 
   useEffect(() => {
     const fetchImageUrl = async () => {
+      setLoading(false);
+      setImageUrl(null);
+
       const generatedUrl = await getImageUrl();
-      if (generatedUrl) {
-        setImageUrl(generatedUrl);
-      }
-      setLoading(false); // 로딩 완료 시 상태 업데이트
+
+      if (generatedUrl) setImageUrl(generatedUrl);
+      setLoading(false);
     };
-    setLoading(false);
-    fetchImageUrl(); // 비동기 함수 호출
+    fetchImageUrl();
   }, [collectionId, recordId, imageName]);
 
   return (
     <>
-      {loading ? ( // 로딩 중일 때 표시
+      {loading ? (
         <Box
           sx={{
             width: '100%',
@@ -61,7 +62,7 @@ export default function ImageBox({
       ) : imageUrl ? (
         <Box
           sx={{
-            position: 'relative', // 부모 박스에 상대적 위치 설정
+            position: 'relative',
             width: '100%',
             height: '100%',
             display: 'flex',
@@ -75,7 +76,7 @@ export default function ImageBox({
             src={imageUrl}
             alt="저장된 이미지"
             layout="fill"
-            objectFit="cover" // 박스에 맞춰서 이미지를 채움
+            objectFit="cover"
           />
         </Box>
       ) : (

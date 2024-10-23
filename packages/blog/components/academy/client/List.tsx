@@ -17,13 +17,14 @@ interface Props {
 const List = ({ ...props }: Props) => {
   const [rows, setRows] = useState(props?.rows || []);
   const [total, setTotal] = useState(props?.total);
+  const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
+
   const filterState = useRecoilValue(SearchFilterAtom);
-  const paginationState = useRecoilValue(PaginationAtom);
 
   const onLoadData = async () => {
-    const { data = [] } = await db.search('library', {
+    const { data = [], ...rest } = await db.search('library', {
       options: { ...filterState, 'theme.like': props?.path },
-      pagination: { ...paginationState },
+      pagination: { ...pagination },
     });
     setTotal(data?.totalItems);
     const result = Array.isArray(data) ? data : data?.items;
@@ -34,11 +35,11 @@ const List = ({ ...props }: Props) => {
   useEffect(() => {
     if (
       Object.entries(filterState).length ||
-      Object.entries(paginationState).length
+      Object.entries(pagination).length
     ) {
       onLoadData();
     }
-  }, [filterState, paginationState]);
+  }, [filterState, pagination]);
 
   return (
     <>
@@ -109,7 +110,11 @@ const List = ({ ...props }: Props) => {
               </Box>
             </Box>
           ))}
-          <PaginationComponent total={total} />
+          <PaginationComponent
+            total={total}
+            pagination={pagination}
+            setPagination={setPagination}
+          />
         </>
       ) : (
         <Box

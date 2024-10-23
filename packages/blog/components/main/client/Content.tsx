@@ -34,7 +34,7 @@ export default function Content({ data }: ContentProps) {
             alignItems: 'center',
             justifyContent: 'center',
             margin: '0 auto',
-            height: '65%',
+            height: '60%',
             width: '100%',
           }}
         >
@@ -47,8 +47,9 @@ export default function Content({ data }: ContentProps) {
 
         <CardContent
           sx={{
-            height: '35%',
-            padding: 2,
+            height: '40%',
+            px: 1.5,
+            py: 2,
             display: 'flex',
             flexDirection: 'column',
           }}

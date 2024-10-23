@@ -1,6 +1,6 @@
 import { menuItems } from '@/config/menu/menu';
 import { ArrowDropDown } from '@mui/icons-material';
-import { FormControl, MenuItem, Select, styled } from '@mui/material';
+import { Box, FormControl, MenuItem, Select, styled } from '@mui/material';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { useRecoilValue } from 'recoil';

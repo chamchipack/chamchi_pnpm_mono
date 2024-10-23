@@ -75,6 +75,7 @@ export default function MarkdownPreview({
               path={path}
               id={contentId}
               isEditon={isEditon}
+              markdownText={markdownText}
             />
             <DetailButton userId={userId} setEditPage={setEditPage} />
           </Box>

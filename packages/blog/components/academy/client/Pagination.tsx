@@ -1,19 +1,24 @@
 'use client';
 import { Box, Pagination } from '@mui/material';
-import { useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { PaginationAtom } from './state';
 
-export default function PaginationComponent({ total }: { total: number }) {
-  const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
-  const [filterState, setFilterState] = useRecoilState(PaginationAtom);
+interface Props {
+  total: number;
+  pagination: { page: number; perPage: number };
+  setPagination: React.Dispatch<
+    React.SetStateAction<{ page: number; perPage: number }>
+  >;
+}
 
+export default function PaginationComponent({
+  total,
+  pagination,
+  setPagination,
+}: Props) {
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     newPage: number,
   ) => {
     setPagination((prev) => ({ ...prev, page: newPage }));
-    setFilterState({ page: newPage, perPage: pagination.perPage });
   };
 
   return (

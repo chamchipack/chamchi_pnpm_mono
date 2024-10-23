@@ -30,7 +30,7 @@ enum Target {
   v2 = '/api/v2',
 }
 
-type Address = 'library';
+type Address = 'library' | 'images';
 
 const headers: Headers = { 'Content-Type': 'application/json' };
 

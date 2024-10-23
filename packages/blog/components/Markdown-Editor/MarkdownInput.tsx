@@ -69,12 +69,12 @@ export default function MarkdownInput({
   };
 
   const handleInsertMarkdown = (markdown: string) => {
-    if (markdown === 'bold') return handleBoldClick();
+    if (['bold', 'strike'].includes(markdown)) return handleBoldClick(markdown);
     setMarkdownText((prev) => prev + markdown);
     textareaRef.current?.focus();
   };
 
-  const handleBoldClick = () => {
+  const handleBoldClick = (markdown: string) => {
     const textarea = textareaRef.current;
     if (!textarea) return;
 
@@ -87,7 +87,7 @@ export default function MarkdownInput({
     // 선택된 텍스트를 **으로 감싸서 업데이트
     const updatedText =
       markdownText.slice(0, start) +
-      `**${selectedText}**` +
+      (markdown === 'bold' ? `**${selectedText}**` : `~~${selectedText}~~`) +
       markdownText.slice(end);
 
     setMarkdownText(updatedText);
@@ -138,7 +138,6 @@ export default function MarkdownInput({
           },
         }}
       />
-
       <ModernSelectBox category={category} setCategory={setCategory} />
 
       <Box sx={{ height: 40, width: '100%' }}>

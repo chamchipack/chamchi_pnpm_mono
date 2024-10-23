@@ -5,6 +5,7 @@ import FormatBoldIcon from '@mui/icons-material/FormatBold';
 import CodeIcon from '@mui/icons-material/Code';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
+import StrikethroughSIcon from '@mui/icons-material/StrikethroughS';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
 interface MarkdownButtonGroupProps {
@@ -32,7 +33,7 @@ export default function MarkdownButtonGroup({
   };
 
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ mb: 2, width: '100%', overflowX: 'auto', whiteSpace: 'nowrap' }}>
       <ButtonGroup variant="outlined" aria-label="markdown button group">
         <Button sx={buttonStyles} onClick={() => handleButtonClick('# ')}>
           h1
@@ -57,6 +58,10 @@ export default function MarkdownButtonGroup({
         </Button>
         <Button sx={buttonStyles} onClick={() => handleButtonClick('bold')}>
           {isMobile ? <FormatBoldIcon /> : '굵게'}
+        </Button>
+
+        <Button sx={buttonStyles} onClick={() => handleButtonClick('strike')}>
+          {isMobile ? <StrikethroughSIcon /> : '취소선'}
         </Button>
 
         {/* 이미지 업로드 버튼 */}

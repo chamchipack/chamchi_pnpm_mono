@@ -16,9 +16,16 @@ interface Props {
   path: string;
   userId: string;
   isEditon: boolean;
+  markdownText: string;
 }
 
-export default function DeleteButton({ id, path, userId, isEditon }: Props) {
+export default function DeleteButton({
+  id,
+  path,
+  userId,
+  isEditon,
+  markdownText,
+}: Props) {
   const { data } = useSession();
   const router = useRouter();
   const [modal, setModal] = useState(false);
@@ -26,10 +33,35 @@ export default function DeleteButton({ id, path, userId, isEditon }: Props) {
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
   const [, setFilterState] = useRecoilState(SearchFilterAtom);
 
+  const delay = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
+
+  const extractFileIdFromMarkdown = (markdownText: string) => {
+    const regex = /https?:\/\/[^/]+\/api\/files\/[^/]+\/([^/]+)\//g;
+    const matches = [];
+    let match;
+
+    // 정규식을 사용해 고유 ID 부분을 추출
+    while ((match = regex.exec(markdownText)) !== null) {
+      matches.push(match[1]);
+    }
+
+    return matches;
+  };
+
   const onClickDelete = async () => {
+    const fileIds = extractFileIdFromMarkdown(markdownText);
+
     setLoading(true);
 
     try {
+      if (fileIds.length) {
+        for (let filed of fileIds) {
+          await db.delete('images', filed);
+          await delay(200);
+        }
+      }
+
       await db.delete('library', id);
       setIsEditPageon(false);
       router.push(`/pinetree/${path}`);
