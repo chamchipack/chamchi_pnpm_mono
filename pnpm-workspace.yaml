@@ -2,3 +2,4 @@ packages:
   - "packages/studio"
   - "packages/package"
   - "packages/blog"
+  - "packages/voca"
