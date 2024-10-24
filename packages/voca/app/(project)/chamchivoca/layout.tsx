@@ -1,32 +1,33 @@
+import HeaderContainer from '@/components/layout/Header/HeaderContainer';
 import React from 'react';
+import styles from './layout.module.css';
+import FooterContainer from '@/components/layout/Footer/FooterContainer';
+import ServerClientAdapter from './ServerClientAdapter';
 
 const Layout = async ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-      }}
-    >
-      <div>헤더부분</div>
-      <div style={{ flex: 1, height: '100%', width: '100%' }}>{children}</div>
-
-      <footer
+    <ServerClientAdapter>
+      <div
         style={{
-          backgroundColor: '#f1f1f1',
-          padding: '10px 20px',
-          textAlign: 'center',
-          position: 'fixed',
-          bottom: 0,
-          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh',
         }}
       >
-        <p>고정된 푸터 - 여기에 내용을 추가하세요</p>
-      </footer>
-    </div>
+        <div className={styles['responsive-container']}>
+          <HeaderContainer />
+        </div>
+        <div
+          className={styles['responsive-container']}
+          style={{ height: '100%' }}
+        >
+          {children}
+        </div>
+        <FooterContainer />
+      </div>
+    </ServerClientAdapter>
   );
 };
 

@@ -126,7 +126,7 @@ const buttonProperties: Components['MuiButton'] = {
   },
 };
 
-export const DemoThemeData = {
+export const LightThemeData = {
   components: {
     MuiButton: buttonProperties,
   },
@@ -135,8 +135,99 @@ export const DemoThemeData = {
     ...typographyProperties,
   },
   palette: {
+    mode: 'light',
     common: {
-      black: '#222222',
+      black: '#2b2b2b',
+      gray: '#626D81',
+      white: '#F8F8F8',
+    },
+    primary: {
+      light: '#D6EEEE80',
+      main: '#83CBCB',
+      dark: '#30A7A7',
+      contrastText: '#FFFFFF',
+    },
+    secondary: {
+      light: '#EDF1FBB2',
+      main: '#B5C9EF',
+      dark: '#6B92DE',
+      contrastText: '#FFFFFF',
+    },
+    error: {
+      light: '#F9C0C780',
+      main: '#F16979',
+      dark: '#C91A2E',
+      contrastText: '#FFFFFF',
+    },
+    warning: {
+      light: '#F9E3AD80',
+      main: '#F2C85B',
+      dark: '#E08600',
+      contrastText: '#FFFFFF',
+    },
+    info: {
+      light: '#99C2E880',
+      main: '#3385D1',
+      dark: '#005CB1',
+      contrastText: '#FFFFFF',
+    },
+    success: {
+      light: '#A7D7BE4D',
+      main: '#4DAE7E',
+      dark: '#186F46',
+      contrastText: '#FFFFFF',
+    },
+    divider: '#626D8133',
+    background: {
+      default: '#FFFFFF',
+      paper: '#F7F9FB',
+    },
+    text: {
+      primary: '#434C58',
+      secondary: '#626D81',
+      disabled: '#D0D4DA',
+    },
+    grey: {
+      900: '#323D4D',
+      800: '#495261',
+      700: '#606875',
+      600: '#767D88',
+      500: '#8D939C',
+      400: '#A4A9B0',
+      300: '#BBBFC4',
+      200: '#D1D4D7',
+      100: '#E9EAEC',
+      50: '#F3F4F5',
+      A700: '#60687533',
+      A400: '#A4A9B026',
+      A200: '#D1D4D74D',
+      A100: '#E9EAEC80',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 768,
+      md: 1024,
+      lg: 1280,
+      xl: 1520,
+    },
+  },
+};
+
+export const DarkThemeData = {
+  components: {
+    MuiButton: buttonProperties,
+  },
+  typography: {
+    fontFamily: pretendardFont.fontFamily,
+    ...typographyProperties,
+  },
+  palette: {
+    mode: 'dark',
+    common: {
+      black: '#FFFFFF',
+      gray: '#B0B0B0',
       white: '#F8F8F8',
     },
     primary: {
