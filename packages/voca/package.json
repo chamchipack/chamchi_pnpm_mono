@@ -13,7 +13,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@types/react-syntax-highlighter": "^15.5.13",
     "next": "^14.2.15",
     "package": "1.0.0",
     "@emotion/react": "^11.11.1",
@@ -22,10 +21,7 @@
     "@mui/material": "^5.14.15",
     "@mui/system": "^5.14.15",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-markdown": "^9.0.1",
-    "react-syntax-highlighter": "^15.5.0",
-    "remark-gfm": "^4.0.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/node": "^22.7.5",

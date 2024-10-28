@@ -125,6 +125,61 @@ const buttonProperties: Components['MuiButton'] = {
     }),
   },
 };
+const gather = {
+  pink: {
+    light: '#efcfe3',
+    main: '#ea9ab2',
+    dark: '#e27396',
+  },
+  brown: {
+    light: '#f5ebe0',
+    main: '#e3d5ca',
+    dark: '#d5bdaf',
+  },
+  purple: {
+    light: '#ffcfd2',
+    main: '#f1c0e8',
+    dark: '#cfbaf0',
+  },
+  lavender: {
+    light: '#bbd0ff',
+    main: '#b8c0ff',
+    dark: '#c8b6ff',
+  },
+  green: {
+    light: '#bfd8bd',
+    main: '#98c9a3',
+    dark: '#77bfa3',
+  },
+};
+
+const gatherDarkMode = {
+  pink: {
+    light: '#ccacb7',
+    main: '#b97488',
+    dark: '#a55270',
+  },
+  brown: {
+    light: '#cdc1b8',
+    main: '#a89a8c',
+    dark: '#8a7f72',
+  },
+  purple: {
+    light: '#b39fc1',
+    main: '#9d87b0',
+    dark: '#815e99',
+  },
+  lavender: {
+    light: '#9da2cf',
+    main: '#7f85b8',
+    dark: '#676da0',
+  },
+  green: {
+    light: '#91a68f',
+    main: '#738e76',
+    dark: '#596f5f',
+  },
+};
 
 export const LightThemeData = {
   components: {
@@ -151,6 +206,12 @@ export const LightThemeData = {
       light: '#EDF1FBB2',
       main: '#B5C9EF',
       dark: '#6B92DE',
+      contrastText: '#FFFFFF',
+    },
+    tertiary: {
+      light: '#E0BBE4',
+      main: '#9B5DE5',
+      dark: '#6A00F4',
       contrastText: '#FFFFFF',
     },
     error: {
@@ -240,6 +301,12 @@ export const DarkThemeData = {
       light: '#EDF1FBB2',
       main: '#B5C9EF',
       dark: '#6B92DE',
+      contrastText: '#FFFFFF',
+    },
+    tertiary: {
+      light: '#7E57C2',
+      main: '#4A00E0',
+      dark: '#320080',
       contrastText: '#FFFFFF',
     },
     error: {
