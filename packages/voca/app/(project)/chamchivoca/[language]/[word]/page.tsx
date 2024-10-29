@@ -8,7 +8,9 @@ const page = ({ params }: Props) => {
   console.info(params);
   return (
     <>
-      <Detail />
+      <div style={{ height: 60, padding: 10 }}>
+        <Detail />
+      </div>
     </>
   );
 };

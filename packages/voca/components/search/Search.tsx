@@ -4,7 +4,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 
-export default function Search() {
+export default function Search({ ...props }) {
   return (
     <>
       <SearchInput />
@@ -44,7 +44,13 @@ export default function Search() {
           }}
         >
           <Box sx={{ minWidth: 100 }}>
-            <CommonTitle title={'会う'} color="text.primary" variant="h3" />
+            <CommonTitle
+              title={'会う'}
+              color="text.primary"
+              variant="h3"
+              language={props?.language}
+              id="wfuias"
+            />
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <Box>
@@ -60,32 +66,6 @@ export default function Search() {
           </Box>
         </Box>
 
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: 60,
-            p: 2,
-            mb: 2,
-          }}
-        >
-          <Box sx={{ minWidth: 100 }}>
-            <CommonTitle title={'会う'} color="text.primary" variant="h3" />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Box>
-              <Typography variant="caption" color="info.main">
-                あう
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant="subtitle2" color="text.primary">
-                만나다
-              </Typography>
-            </Box>
-          </Box>
-        </Box>
         <Divider sx={{ my: 3 }} />
       </Box>
     </>
