@@ -1,4 +1,5 @@
 import Search from '@/components/search/Search';
+import { good } from '@/config/default';
 
 interface Props {
   searchParams: { value: string };
@@ -7,9 +8,10 @@ interface Props {
 
 const page = ({ searchParams, params }: Props) => {
   const { language = '' } = params;
+  const data = good;
   return (
     <div style={{ height: 60, padding: 10 }}>
-      <Search language={language} />
+      <Search language={language} rows={data} />
     </div>
   );
 };

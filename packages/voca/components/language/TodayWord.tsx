@@ -2,8 +2,11 @@
 import { Box, Typography } from '@mui/material';
 import { kboFont } from 'package/styles/fonts/module';
 import CommonTitle from '../word/CommonTitle';
+import { useState } from 'react';
 
 export default function TodayWord({ ...props }) {
+  const [data, setData] = useState(props?.row);
+
   return (
     <Box
       sx={{
@@ -35,14 +38,14 @@ export default function TodayWord({ ...props }) {
       {/* 내용 부분 */}
       <Box sx={{ textAlign: 'center' }}>
         <CommonTitle
-          title={'会う'}
+          title={data?.jp}
           color="text.secondary"
           variant="h4"
           language={props?.language}
-          id={'awdgfdsftdl'}
+          id={data?.id}
         />
         <Typography color="info.main" variant="caption">
-          만나다
+          {data?.ko}
         </Typography>
       </Box>
     </Box>

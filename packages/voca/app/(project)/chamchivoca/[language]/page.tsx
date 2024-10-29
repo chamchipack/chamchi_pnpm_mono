@@ -5,6 +5,7 @@ interface Props {
 
 const page = ({ params }: Props) => {
   const { language = '' } = params;
+
   return <Main language={language} />;
 };
 

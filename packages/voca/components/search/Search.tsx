@@ -33,38 +33,40 @@ export default function Search({ ...props }) {
       </Box> */}
 
       <Box>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            height: 60,
-            p: 2,
-            mb: 2,
-          }}
-        >
-          <Box sx={{ minWidth: 100 }}>
-            <CommonTitle
-              title={'会う'}
-              color="text.primary"
-              variant="h3"
-              language={props?.language}
-              id="wfuias"
-            />
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <Box>
-              <Typography variant="caption" color="info.main">
-                あう
-              </Typography>
+        {props?.rows.map((item: any) => (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              height: 60,
+              p: 2,
+              mb: 2,
+            }}
+          >
+            <Box sx={{ minWidth: 100 }}>
+              <CommonTitle
+                title={item?.jp}
+                color="text.primary"
+                variant="h3"
+                language={props?.language}
+                id={item?.id}
+              />
             </Box>
-            <Box>
-              <Typography variant="subtitle2" color="text.primary">
-                만나다
-              </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box>
+                <Typography variant="caption" color="info.main">
+                  {item?.kana}
+                </Typography>
+              </Box>
+              <Box>
+                <Typography variant="subtitle2" color="text.primary">
+                  {item?.ko}
+                </Typography>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        ))}
 
         <Divider sx={{ my: 3 }} />
       </Box>
