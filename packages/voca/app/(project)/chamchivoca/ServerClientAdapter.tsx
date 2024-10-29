@@ -11,6 +11,6 @@ interface Props {
 export default function ServerClientAdapter({ children }: Props) {
   const [darkmode, setDarkmode] = useRecoilState(darkModeState);
 
-  if (darkmode) return <div style={{ background: '#2b2b2b' }}>{children}</div>;
+  if (darkmode) return <div style={{ background: '#3b3b3b' }}>{children}</div>;
   else return <>{children}</>;
 }

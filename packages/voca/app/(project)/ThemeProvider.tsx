@@ -7,15 +7,6 @@ import { darkModeState } from '@/config/stylemode';
 import { LightThemeData, DarkThemeData } from '@/config/utils/Theme';
 import { PaletteOptions } from '@mui/material/styles/createPalette';
 
-declare module '@mui/material/styles' {
-  interface Palette {
-    brown: Palette['etc'];
-  }
-  interface PaletteOptions {
-    brown?: PaletteOptions['etc'];
-  }
-}
-
 export default function ThemeProviders({
   children,
 }: {

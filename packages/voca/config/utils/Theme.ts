@@ -3,6 +3,23 @@ import { TypographyOptions } from '@mui/material/styles/createTypography';
 import { Noto_Sans_KR } from 'next/font/google';
 import { spoca2, pretendardFont, spoca1 } from 'package/styles/fonts/module';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    lavender: Palette['etc'];
+    pink: Palette['etc'];
+    brown: Palette['etc'];
+    purple: Palette['etc'];
+    green: Palette['etc'];
+  }
+  interface PaletteOptions {
+    lavender: PaletteOptions['etc'];
+    pink: PaletteOptions['etc'];
+    brown: PaletteOptions['etc'];
+    purple: PaletteOptions['etc'];
+    green: PaletteOptions['etc'];
+  }
+}
+
 const notoSansKR = Noto_Sans_KR({
   subsets: ['latin'],
   variable: '--noto_sans_kr',
@@ -125,62 +142,6 @@ const buttonProperties: Components['MuiButton'] = {
     }),
   },
 };
-const gather = {
-  pink: {
-    light: '#efcfe3',
-    main: '#ea9ab2',
-    dark: '#e27396',
-  },
-  brown: {
-    light: '#f5ebe0',
-    main: '#e3d5ca',
-    dark: '#d5bdaf',
-  },
-  purple: {
-    light: '#ffcfd2',
-    main: '#f1c0e8',
-    dark: '#cfbaf0',
-  },
-  lavender: {
-    light: '#bbd0ff',
-    main: '#b8c0ff',
-    dark: '#c8b6ff',
-  },
-  green: {
-    light: '#bfd8bd',
-    main: '#98c9a3',
-    dark: '#77bfa3',
-  },
-};
-
-const gatherDarkMode = {
-  pink: {
-    light: '#ccacb7',
-    main: '#b97488',
-    dark: '#a55270',
-  },
-  brown: {
-    light: '#cdc1b8',
-    main: '#a89a8c',
-    dark: '#8a7f72',
-  },
-  purple: {
-    light: '#b39fc1',
-    main: '#9d87b0',
-    dark: '#815e99',
-  },
-  lavender: {
-    light: '#9da2cf',
-    main: '#7f85b8',
-    dark: '#676da0',
-  },
-  green: {
-    light: '#91a68f',
-    main: '#738e76',
-    dark: '#596f5f',
-  },
-};
-
 export const LightThemeData = {
   components: {
     MuiButton: buttonProperties,
@@ -264,6 +225,31 @@ export const LightThemeData = {
       A200: '#D1D4D74D',
       A100: '#E9EAEC80',
     },
+    pink: {
+      light: '#efcfe3',
+      main: '#ea9ab2',
+      dark: '#e27396',
+    },
+    brown: {
+      light: '#f5ebe0',
+      main: '#e3d5ca',
+      dark: '#d5bdaf',
+    },
+    purple: {
+      light: '#ffcfd2',
+      main: '#f1c0e8',
+      dark: '#cfbaf0',
+    },
+    lavender: {
+      light: '#bbd0ff',
+      main: '#b8c0ff',
+      dark: '#c8b6ff',
+    },
+    green: {
+      light: '#bfd8bd',
+      main: '#98c9a3',
+      dark: '#77bfa3',
+    },
   },
   breakpoints: {
     values: {
@@ -335,13 +321,13 @@ export const DarkThemeData = {
     },
     divider: '#626D8133',
     background: {
-      default: '#FFFFFF',
-      paper: '#F7F9FB',
+      default: '#121212',
+      paper: '#1d1d1d',
     },
     text: {
-      primary: '#434C58',
-      secondary: '#626D81',
-      disabled: '#D0D4DA',
+      primary: '#FFFFFF',
+      secondary: '#B0B0B0',
+      disabled: '#6B6B6B',
     },
     grey: {
       900: '#323D4D',
@@ -358,6 +344,31 @@ export const DarkThemeData = {
       A400: '#A4A9B026',
       A200: '#D1D4D74D',
       A100: '#E9EAEC80',
+    },
+    pink: {
+      light: '#ccacb7',
+      main: '#b97488',
+      dark: '#a55270',
+    },
+    brown: {
+      light: '#cdc1b8',
+      main: '#a89a8c',
+      dark: '#8a7f72',
+    },
+    purple: {
+      light: '#b39fc1',
+      main: '#9d87b0',
+      dark: '#815e99',
+    },
+    lavender: {
+      light: '#9da2cf',
+      main: '#7f85b8',
+      dark: '#676da0',
+    },
+    green: {
+      light: '#91a68f',
+      main: '#738e76',
+      dark: '#596f5f',
     },
   },
   breakpoints: {
