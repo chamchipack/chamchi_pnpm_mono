@@ -1,5 +1,4 @@
 import Search from '@/components/search/Search';
-import { Box } from '@mui/material';
 
 interface Props {
   searchParams: { value: string };

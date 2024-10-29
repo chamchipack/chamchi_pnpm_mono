@@ -5,7 +5,6 @@ interface Props {
 }
 
 const page = ({ params }: Props) => {
-  console.info(params);
   return (
     <>
       <div style={{ height: 60, padding: 10 }}>
