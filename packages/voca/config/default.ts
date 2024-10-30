@@ -277,51 +277,6 @@ export const katakana = {
   ],
 };
 
-export const logic = [
-  {
-    id: '001',
-    name: '합니다',
-    type: 'present',
-    typeName: '현재형',
-    value: {
-      1: {
-        u: 'i_ma_su',
-        ku: 'ki_ma_su',
-        su: 'shi_ma_su',
-        tsu: 'chi_ma_su',
-        nu: 'ni_ma_su',
-        hu: 'hi_ma_su',
-        mu: 'mi_ma_su',
-        ru: 'ri_ma_su',
-      },
-      '2': {
-        ru: 'ma_su',
-      },
-    },
-  },
-  {
-    id: '002',
-    name: '했습니다',
-    type: 'past',
-    typeName: '과거형',
-    value: {
-      '1': {
-        u: 'i_ma_shi_ta',
-        ku: 'ki_ma_shi_ta',
-        su: 'shi_ma_shi_ta',
-        tsu: 'chi_ma_shi_ta',
-        nu: 'ni_ma_shi_ta',
-        hu: 'hi_ma_shi_ta',
-        mu: 'mi_ma_shi_ta',
-        ru: 'ri_ma_shi_ta',
-      },
-      '2': {
-        ru: 'ma_shi_ta',
-      },
-    },
-  },
-];
-
 // export const onConvert = (data: Verb) => {
 //   const _logic: any = logic.find(({ type = '' }) => type === 'present');
 

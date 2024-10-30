@@ -16,6 +16,7 @@ export default function FooterContainer() {
         padding: '10px 20px',
         textAlign: 'center',
         position: 'fixed',
+        background: (theme) => theme.palette.background.default,
         bottom: 0,
         width: '100%',
         borderTop: (theme) => `1px solid ${theme.palette.grey[200]}`,
