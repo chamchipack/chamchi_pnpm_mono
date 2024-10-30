@@ -19,7 +19,7 @@ export default function CommonTitle({ ...props }: Props) {
       <Typography
         variant={props?.variant}
         color={props?.color}
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: 'pointer', '&: hover': { color: 'info.main' } }}
       >
         {props?.title}
       </Typography>

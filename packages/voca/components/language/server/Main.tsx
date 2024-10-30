@@ -16,13 +16,13 @@ const Main = ({ ...props }) => {
         <TodayWord language={props?.language} row={data[0]} />
       </div>
 
-      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+      {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
         <WordList />
       </div>
 
       <div style={{ height: 200, marginTop: 20, padding: 10 }}>
         <VocaList />
-      </div>
+      </div> */}
     </>
   );
 };

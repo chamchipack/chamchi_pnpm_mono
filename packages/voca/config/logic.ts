@@ -1,4 +1,19 @@
-export const logic = [
+interface Logic {
+  id: string;
+  name: string;
+  type:
+    | 'present'
+    | 'past'
+    | 'present_continuous'
+    | 'future'
+    | 'passive'
+    | 'imperative'
+    | 'etc';
+  typeName: string;
+  value: any;
+}
+
+export const logic: Logic[] = [
   {
     id: '001',
     name: '합니다',

@@ -2,7 +2,7 @@
 // logic
 // example 예문
 
-interface Verb {
+export interface Verb {
   stemjp: string;
   stemro: string;
   endingjp: string;
@@ -13,7 +13,7 @@ interface Verb {
 
 interface Noun {}
 
-interface Word<T> {
+export interface Word<T> {
   id: string;
   ko: string;
   jp: string;
@@ -31,6 +31,13 @@ const nmi: Word<Noun> = {
   ro: '',
   type: 'noun',
   etc: {},
+};
+
+export const typeGbn = {
+  verb: '동사',
+  noun: '명사',
+  adv: '부사',
+  adj: '형용사',
 };
 
 export const good: Word<Verb>[] = [

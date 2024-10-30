@@ -18,6 +18,7 @@ export default function TodayWord({ ...props }) {
         height: '100%',
         boxShadow: 2,
         borderRadius: 4,
+        mx: 1,
         p: 2,
         background: (theme) => theme.palette.background.default,
       }}
