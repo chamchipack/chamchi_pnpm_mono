@@ -17,9 +17,9 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: '127.0.0.1',
-        port: '8090', // PocketBase 서버가 실행 중인 포트
+        protocol: 'https',
+        hostname: 'api.chamchipack.com',
+        // port: '8090', // PocketBase 서버가 실행 중인 포트
         pathname: '/api/files/**', // 파일 경로를 허용하는 패턴
       },
     ],

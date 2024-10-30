@@ -24,7 +24,7 @@ if [ "$1" == "build" ]; then
   pnpm --filter=$PROJECT build
 elif [ "$1" == "start" ]; then
   echo "Running start for $PROJECT..."
-  pnpm --filter=$PROJECT start
+  pnpm --filter=$PROJECT start -p 7500
 else
   echo "Invalid command. Use 'build' or 'start'."
   exit 1

@@ -106,11 +106,11 @@ class AuthService {
     }
   }
   private async findUser(userId: string, pw: string): Promise<User | null> {
-    const keepalive = await this.checkKeepAlive();
-    console.log(keepalive);
-    if (keepalive) return await this.authenticateWithExternalServer(userId, pw);
-    else return await this.authenticateWithLocalServer(userId, pw);
-    // return await this.authenticateWithLocalServer(userId, pw);
+    // const keepalive = await this.checkKeepAlive();
+    // console.log(keepalive);
+    // if (keepalive) return await this.authenticateWithExternalServer(userId, pw);
+    // else return await this.authenticateWithLocalServer(userId, pw);
+    return await this.authenticateWithLocalServer(userId, pw);
   }
 
   private async createToken(userId: string) {
