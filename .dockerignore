@@ -1,0 +1,23 @@
+# Node_modules를 제외하여 이미지 크기 최적화
+**/node_modules
+# 빌드 파일 제외 (이미 빌드된 폴더가 있다면 제외 가능)
+**/dist
+**/build
+# pnpm 캐시 파일 제외
+.pnpm-store
+# Git 관련 파일 및 로컬 환경 파일
+.git
+.gitignore
+# 환경 변수 파일 제외
+.env
+.env.local
+# 로그 파일 제외
+*.log
+
+node_modules
+build
+dist
+.next
+Dockerfile
+.dockerignore
+README.md

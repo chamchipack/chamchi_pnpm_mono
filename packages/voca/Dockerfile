@@ -10,22 +10,22 @@ COPY ./package.json ./
 COPY ./pnpm-lock.yaml ./
 COPY ./pnpm-workspace.yaml ./
 
-# 5. 공통 패키지와 blog 패키지의 package.json 파일 복사
+# 5. 공통 패키지와 voca 패키지의 package.json 파일 복사
 COPY ./packages/package/package.json ./packages/package/
-COPY ./packages/blog/package.json ./packages/blog/
+COPY ./packages/voca/package.json ./packages/voca/
 
 # 6. 의존성 설치 (개발 및 프로덕션 의존성 모두 설치)
 RUN npm install -g pnpm
-RUN pnpm install --filter=blog... --filter=package...
+RUN pnpm install --filter=voca... --filter=package...
 
 # 7. 모든 소스 복사 및 빌드 실행
 COPY ./packages/package ./packages/package
-COPY ./packages/blog ./packages/blog
-COPY ./packages/blog/.env.production ./packages/blog/.env.production
+COPY ./packages/voca ./packages/voca
+COPY ./packages/voca/.env.production ./packages/voca/.env.production
 
 ENV NODE_ENV=production
 
-RUN pnpm --filter=blog run build
+RUN pnpm --filter=voca run build
 
 # 2단계: 실행 단계
 # FROM node:20.12.2 AS runner
@@ -40,16 +40,16 @@ RUN npm install -g pnpm
 ENV NODE_ENV=production
 
 # 빌드 결과물만 복사
-COPY --from=builder /app/packages/blog/.next /app/.next
-COPY --from=builder /app/packages/blog/public /app/public
-COPY --from=builder /app/packages/blog/package.json /app/package.json
+COPY --from=builder /app/packages/voca/.next /app/.next
+COPY --from=builder /app/packages/voca/public /app/public
+COPY --from=builder /app/packages/voca/package.json /app/package.json
 
-# COPY --from=builder /app/packages/blog/.next /app/.next
-# COPY --from=builder /app/packages/blog/public /app/public
-# COPY --from=builder /app/packages/blog/package.json /app/package.json
+# COPY --from=builder /app/packages/voca/.next /app/.next
+# COPY --from=builder /app/packages/voca/public /app/public
+# COPY --from=builder /app/packages/voca/package.json /app/package.json
 # COPY --from=builder /app/packages/package /app/package
-# COPY --from=builder /app/packages/blog /app/blog
-# COPY --from=builder /app/packages/blog/.env.production /app/.env.production
+# COPY --from=builder /app/packages/voca /app/voca
+# COPY --from=builder /app/packages/voca/.env.production /app/.env.production
 
 # 9. 프로덕션 의존성만 설치
 RUN pnpm install --prod
@@ -73,24 +73,24 @@ CMD ["pnpm", "start", "-p", "7575"]
 # COPY ./pnpm-lock.yaml ./
 # COPY ./pnpm-workspace.yaml ./
 
-# # 5. 공통 패키지와 blog 패키지의 package.json 파일 복사
+# # 5. 공통 패키지와 voca 패키지의 package.json 파일 복사
 # COPY ./packages/package/package.json ./packages/package/
-# COPY ./packages/blog/package.json ./packages/blog/
+# COPY ./packages/voca/package.json ./packages/voca/
 
-# # 6. 의존성 설치 (blog 패키지와 package 패키지 모두 설치)
-# RUN pnpm install --filter=blog... --filter=package...
+# # 6. 의존성 설치 (voca 패키지와 package 패키지 모두 설치)
+# RUN pnpm install --filter=voca... --filter=package...
 
 # # 7. 모든 소스 복사
 # COPY ./packages/package ./packages/package
-# COPY ./packages/blog ./packages/blog
-# COPY ./packages/blog/.env.production ./packages/blog/.env.production
+# COPY ./packages/voca ./packages/voca
+# COPY ./packages/voca/.env.production ./packages/voca/.env.production
 
 # # 8. 환경 변수 설정 (Next.js 빌드를 위한 production 모드)
 # ENV NODE_ENV=production
 
-# # 9. blog 패키지 빌드 실행
-# RUN pnpm --filter=blog run build
+# # 9. voca 패키지 빌드 실행
+# RUN pnpm --filter=voca run build
 
 # # 10. 실제 실행
-# CMD ["pnpm", "--filter=blog", "start", "-p", "7575"]
+# CMD ["pnpm", "--filter=voca", "start", "-p", "7575"]
 

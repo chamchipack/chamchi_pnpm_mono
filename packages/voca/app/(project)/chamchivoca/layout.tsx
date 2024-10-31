@@ -8,26 +8,28 @@ const Layout = async ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
   return (
-    <ServerClientAdapter>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          height: '100vh',
-        }}
-      >
-        <div className={styles['responsive-container']}>
-          <HeaderContainer />
-        </div>
+    <>
+      <ServerClientAdapter>
         <div
-          className={styles['responsive-container']}
-          style={{ height: '100%' }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '90vh',
+          }}
         >
-          {children}
+          <div className={styles['responsive-container']}>
+            <HeaderContainer />
+          </div>
+          <div
+            className={styles['responsive-container']}
+            style={{ height: '100%' }}
+          >
+            {children}
+          </div>
+          <FooterContainer />
         </div>
-        <FooterContainer />
-      </div>
-    </ServerClientAdapter>
+      </ServerClientAdapter>
+    </>
   );
 };
 

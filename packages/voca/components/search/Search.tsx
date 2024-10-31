@@ -3,6 +3,7 @@
 import { Box, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
+import { motion } from 'framer-motion';
 
 export default function Search({ ...props }) {
   return (
@@ -35,6 +36,8 @@ export default function Search({ ...props }) {
       <Box>
         {props?.rows.map((item: any) => (
           <Box
+            component={motion.div}
+            whileHover={{ y: -2 }}
             sx={{
               display: 'flex',
               flexDirection: 'row',
