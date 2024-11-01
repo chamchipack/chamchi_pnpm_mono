@@ -9,25 +9,32 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
+import db from '@/api/module';
 
-// 예시 검색 데이터
 const searchResults: { title: string; id: string }[] = [
   { title: '会う', id: 'wfiugbasdbkl' },
 ];
 
-export default function SearchInput() {
+export default function SearchInput({ ...props }) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState(searchResults);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const inputValue = event.target.value.toLowerCase();
     setSearchTerm(inputValue);
-    setFilteredResults(
-      searchResults.filter((result) =>
-        result.title.toLowerCase().includes(inputValue),
-      ),
-    );
+
+    if (!inputValue) return setFilteredResults([]);
+
+    // API 호출하여 검색 결과 가져오기
+    const { data = [] } = await db.search(props?.language, {
+      options: {
+        query: `(jp~"${inputValue}") || (kana~"${inputValue}") || (ko~"${inputValue}") || (ro~"${inputValue}")`,
+      },
+    });
+    setFilteredResults(data); // 검색 결과를 filteredResults 상태로 설정
   };
 
   const onClickSearch = () => {
@@ -40,14 +47,12 @@ export default function SearchInput() {
         sx={{ width: '100%' }}
         freeSolo
         onChange={(event, value: any) => {
-          // value가 객체 형태이므로 id를 추출
           if (value && value.id) {
-            console.info(value.id);
             router.push(`/chamchivoca/japanese/${value.id}`);
           }
         }}
-        options={filteredResults} // 객체 배열을 options으로 전달
-        getOptionLabel={(option) => option.title} // 표시할 레이블을 title로 설정
+        options={filteredResults}
+        getOptionLabel={(option) => option.title || option.ko} // 표시할 레이블을 title 또는 ko로 설정
         renderInput={(params) => (
           <TextField
             {...params}
@@ -77,10 +82,27 @@ export default function SearchInput() {
             key={option.id}
             sx={{ background: (theme) => theme.palette.background.default }}
           >
-            <Typography color="common.black">{option.title}</Typography>
+            <Typography color="common.black" sx={{ mr: 1 }}>
+              {option.jp}
+            </Typography>{' '}
+            <Typography color="info.main" variant="caption" sx={{ mr: 2 }}>
+              {option.kana}
+            </Typography>{' '}
+            <Typography color="common.black" sx={{ mr: 2 }}>
+              {option.ko}
+            </Typography>{' '}
+            <Typography variant="caption" color="text.secondary">
+              {option.ro}
+            </Typography>{' '}
           </Box>
         )}
-        noOptionsText="No results found" // 결과 없을 때 표시
+        noOptionsText={
+          filteredResults.length === 0 ? (
+            <Typography>'검색 결과가 없습니다.'</Typography>
+          ) : (
+            <Typography>'검색 결과가 없습니다.'</Typography>
+          )
+        }
       />
 
       <IconButton

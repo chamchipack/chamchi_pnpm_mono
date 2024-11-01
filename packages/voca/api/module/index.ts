@@ -1,5 +1,7 @@
 import { getSession, signIn } from 'next-auth/react';
-import { Schema } from '@/config/schema';
+
+export type Schema = 'word';
+
 interface Headers {
   'Content-Type': string;
 }
@@ -30,7 +32,7 @@ enum Target {
   v2 = '/api/v2',
 }
 
-type Address = 'library' | 'images';
+type Address = 'word' | 'images';
 
 const headers: Headers = { 'Content-Type': 'application/json' };
 

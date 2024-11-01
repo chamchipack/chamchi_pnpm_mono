@@ -95,7 +95,7 @@ export default function Detail({ ...props }) {
       <SearchInput />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary">
-          {typeGbn[data?.type]}
+          {typeGbn[data?.type]} {data?.etc?.form}형식
         </Typography>
         <Box
           sx={{

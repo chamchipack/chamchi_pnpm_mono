@@ -72,6 +72,8 @@ class PocketbaseFinder {
         return Array.isArray(value)
           ? `(${value.map((i) => `${_field}~"${i}"`).join('||')})`
           : '';
+      // case 'multipleor':
+      //   return console.log(value);
       case 'not':
         return `${_field}!~"${value}"`;
       case 'lte':
@@ -84,6 +86,9 @@ class PocketbaseFinder {
   }
 
   private buildFilterParams(filter: any) {
+    console.log('@@@@@@@@@@@@@@');
+
+    console.log(filter);
     if (!filter) return '';
     const filterEntries = Object.entries(filter);
     if (filterEntries.length === 0) return '';
@@ -110,7 +115,11 @@ class PocketbaseFinder {
 
     if (!page || !perPage) throw new Error('Pagination not found');
 
-    const filterParams = this.buildFilterParams(options);
+    const query = Object.entries(options?.query || {}).length
+      ? options?.query
+      : '';
+
+    const filterParams = query ? query : this.buildFilterParams(options);
     const sortOption: string = this.buildSortParams(sort) || '';
 
     try {
