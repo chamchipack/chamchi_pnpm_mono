@@ -6,6 +6,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useRecoilState } from 'recoil';
 import { darkModeState } from '@/config/stylemode';
+import AuthComponent from './AuthComponent';
 
 export default function FooterContainer() {
   const [darkmode, setDarkmode] = useRecoilState(darkModeState);
@@ -33,9 +34,10 @@ export default function FooterContainer() {
         <IconButton aria-label="font download">
           <FontDownloadIcon />
         </IconButton>
-        <IconButton aria-label="account">
+        <AuthComponent />
+        {/* <IconButton aria-label="account">
           <AccountCircleIcon />
-        </IconButton>
+        </IconButton> */}
         <IconButton aria-label="library">
           <LibraryBooksIcon />
         </IconButton>

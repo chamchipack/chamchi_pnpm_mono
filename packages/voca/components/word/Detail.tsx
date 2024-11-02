@@ -1,14 +1,16 @@
 'use client';
 
 import { Box, Divider, IconButton, Typography } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import SearchInput from '../language/SearchInput';
 import { useState } from 'react';
 import { hiragana, typeGbn, Verb, Word } from '@/config/default';
 import { verbLogic } from '@/config/logic';
 import VerbFormTransformer from './verb/VerbFormTransformer';
+import { useSession } from 'next-auth/react';
+import LikeButton from './common/LikeButton';
 
 export default function Detail({ ...props }) {
+  const { data: session } = useSession();
   const [data, setData] = useState<Word<Verb>>(props?.row);
 
   const verbGroupNamed = (value: number) => {
@@ -55,9 +57,7 @@ export default function Detail({ ...props }) {
             </Box>
           </Box>
 
-          <IconButton>
-            <FavoriteIcon />
-          </IconButton>
+          {session && <LikeButton wordId={data?.id} />}
         </Box>
 
         <Divider sx={{ my: 3 }} />

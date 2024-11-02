@@ -80,6 +80,7 @@ export const verbLogic: any = [
             mu: 'n_de_i_na_i',
             ru: 't_te_i_na_i',
             bu: 'n_de_i_na_i',
+            gu: 'i_de_i_na_i',
           },
           '2': {
             ru: 'te_i_na_i',
@@ -93,6 +94,7 @@ export const verbLogic: any = [
           '1': {
             u: 't_te_i_ru',
             ku: 'i_te_i_ru',
+            gu: 'i_de_i_ru',
             su: 'shi_te_i_ru',
             tsu: 't_te_i_ru',
             nu: 'n_de_i_ru',
@@ -118,6 +120,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ma_su',
             ku: 'ki_ma_su',
+            gu: 'gi_ma_su',
             su: 'shi_ma_su',
             tsu: 'chi_ma_su',
             nu: 'ni_ma_su',
@@ -138,6 +141,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_na_i',
             ku: 'ka_na_i',
+            gu: 'ga_na_i',
             su: 'sa_na_i',
             tsu: 'ta_na_i',
             nu: 'na_na_i',
@@ -157,6 +161,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ma_se_n',
             ku: 'ki_ma_se_n',
+            gu: 'gi_ma_se_n',
             su: 'shi_ma_se_n',
             tsu: 'chi_ma_se_n',
             nu: 'ni_ma_se_n',
@@ -177,6 +182,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ta_i',
             ku: 'ki_ta_i',
+            gu: 'gi_ta_i',
             su: 'shi_ta_i',
             tsu: 'chi_ta_i',
             nu: 'ni_ta_i',
@@ -197,6 +203,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ta_ku_na_i',
             ku: 'ki_ta_ku_na_i',
+            gu: 'gi_ta_ku_na_i',
             su: 'shi_ta_ku_na_i',
             tsu: 'chi_ta_ku_na_i',
             nu: 'ni_ta_ku_na_i',
@@ -217,6 +224,7 @@ export const verbLogic: any = [
           '1': {
             u: 'e_na_i',
             ku: 'ke_na_i',
+            gu: 'ge_na_i',
             su: 'se_na_i',
             tsu: 'te_na_i',
             nu: 'ne_na_i',
@@ -237,6 +245,7 @@ export const verbLogic: any = [
           '1': {
             u: 'e_ru',
             ku: 'ke_ru',
+            gu: 'ge_ru',
             su: 'se_ru',
             tsu: 'te_ru',
             nu: 'ne_ru',
@@ -263,6 +272,7 @@ export const verbLogic: any = [
           '1': {
             u: 't_ta',
             ku: 'i_ta',
+            gu: 'i_da',
             su: 'shi_ta',
             tsu: 't_ta',
             nu: 'n_da',
@@ -282,6 +292,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_na_ka_t_ta',
             ku: 'ka_na_ka_t_ta',
+            gu: 'ga_na_ka_t_ta',
             su: 'sa_na_ka_t_ta',
             tsu: 'ta_na_ka_t_ta',
             nu: 'na_na_ka_t_ta',
@@ -302,6 +313,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ma_shi_ta',
             ku: 'ki_ma_shi_ta',
+            gu: 'gi_ma_shi_ta',
             su: 'shi_ma_shi_ta',
             tsu: 'chi_ma_shi_ta',
             nu: 'ni_ma_shi_ta',
@@ -322,6 +334,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ma_se_n_de_shi_ta',
             ku: 'ki_ma_se_n_de_shi_ta',
+            gu: 'gi_ma_se_n_de_shi_ta',
             su: 'shi_ma_se_n_de_shi_ta',
             tsu: 'chi_ma_se_n_de_shi_ta',
             nu: 'ni_ma_se_n_de_shi_ta',
@@ -342,6 +355,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ta_ka_t_ta',
             ku: 'ki_ta_ka_t_ta',
+            gu: 'gi_ta_ka_t_ta',
             su: 'shi_ta_ka_t_ta',
             tsu: 'chi_ta_ka_t_ta',
             nu: 'ni_ta_ka_t_ta',
@@ -362,6 +376,7 @@ export const verbLogic: any = [
           '1': {
             u: 'i_ta_ku_na_ka_t_ta',
             ku: 'ki_ta_ku_na_ka_t_ta',
+            gu: 'gi_ta_ku_na_ka_t_ta',
             su: 'shi_ta_ku_na_ka_t_ta',
             tsu: 'chi_ta_ku_na_ka_t_ta',
             nu: 'ni_ta_ku_na_ka_t_ta',
@@ -393,6 +408,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_re_ta',
             ku: 'ka_re_ta',
+            gu: 'ga_re_ta',
             su: 'sa_re_ta',
             tsu: 'ta_re_ta',
             nu: 'na_re_ta',
@@ -412,6 +428,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_re_ru',
             ku: 'ka_re_ru',
+            gu: 'ga_re_ru',
             su: 'sa_re_ru',
             tsu: 'ta_re_ru',
             nu: 'na_re_ru',
@@ -437,6 +454,7 @@ export const verbLogic: any = [
           '1': {
             u: 't_te_ha_i_ke_na_i',
             ku: 'i_te_ha_i_ke_na_i',
+            gu: 'i_de_ha_i_ke_na_i',
             su: 'shi_te_ha_i_ke_na_i',
             tsu: 't_te_ha_i_ke_na_i',
             nu: 'n_de_ha_i_ke_na_i',
@@ -456,6 +474,7 @@ export const verbLogic: any = [
           '1': {
             u: 't_te',
             ku: 'i_te',
+            gu: 'i_de',
             su: 'shi_te',
             tsu: 't_te',
             nu: 'n_de',
@@ -481,6 +500,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_na_i_de',
             ku: 'ka_na_i_de',
+            gu: 'ga_na_i_de',
             su: 'sa_na_i_de',
             tsu: 'ta_na_i_de',
             nu: 'na_na_i_de',
@@ -500,6 +520,7 @@ export const verbLogic: any = [
           '1': {
             u: 'wa_na_i_ka_mo_shi_re_na_i',
             ku: 'ka_na_i_ka_mo_shi_re_na_i',
+            gu: 'ga_na_i_ka_mo_shi_re_na_i',
             su: 'sa_na_i_ka_mo_shi_re_na_i',
             tsu: 'ta_na_i_ka_mo_shi_re_na_i',
             nu: 'na_na_i_ka_mo_shi_re_na_i',
@@ -520,6 +541,7 @@ export const verbLogic: any = [
           '1': {
             u: 'u_ka_mo_shi_re_na_i',
             ku: 'ku_ka_mo_shi_re_na_i',
+            gu: 'gu_ka_mo_shi_re_na_i',
             su: 'su_ka_mo_shi_re_na_i',
             tsu: 'tu_ka_mo_shi_re_na_i',
             nu: 'nu_ka_mo_shi_re_na_i',

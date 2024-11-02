@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import db from '@/api/module';
 
 type Address = 'japanese';
@@ -45,6 +46,16 @@ export default function SearchInput({ ...props }: Props) {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      <IconButton
+        sx={{ p: '4px', minWidth: 40 }}
+        aria-label="search"
+        onClick={() => router.back()}
+        onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+          e.preventDefault()
+        }
+      >
+        <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
+      </IconButton>
       <Autocomplete
         sx={{ width: '100%' }}
         freeSolo
