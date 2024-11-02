@@ -31,11 +31,11 @@ const Main = async ({ ...props }) => {
 
       {/* <CreateButton /> */}
 
-      {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-        <WordList />
+      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+        <WordList language={props?.language} />
       </div>
 
-      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+      {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
         <VocaList />
       </div> */}
     </>

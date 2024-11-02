@@ -11,14 +11,16 @@ import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
 import db from '@/api/module';
 
-const searchResults: { title: string; id: string }[] = [
-  { title: '会う', id: 'wfiugbasdbkl' },
-];
+type Address = 'japanese';
 
-export default function SearchInput({ ...props }) {
+interface Props {
+  language: Address;
+}
+
+export default function SearchInput({ ...props }: Props) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredResults, setFilteredResults] = useState(searchResults);
+  const [filteredResults, setFilteredResults] = useState([]);
 
   const handleSearchChange = async (
     event: React.ChangeEvent<HTMLInputElement>,

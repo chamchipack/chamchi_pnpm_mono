@@ -20,7 +20,7 @@ const page = async ({ params }: Props) => {
   return (
     <>
       <div style={{ height: 60, padding: 10 }}>
-        <Detail row={result?.data} />
+        <Detail row={result?.data} language={language} />
       </div>
     </>
   );

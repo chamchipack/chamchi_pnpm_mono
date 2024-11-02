@@ -11,7 +11,7 @@ export interface Verb {
   exception: boolean;
 }
 
-interface Noun {}
+export interface Noun {}
 
 export interface Word<T> {
   id: string;

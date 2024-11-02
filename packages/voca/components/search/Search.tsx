@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 export default function Search({ ...props }) {
   return (
     <>
-      <SearchInput />
+      <SearchInput language={props?.language} />
 
       <Divider sx={{ my: 3 }} />
 

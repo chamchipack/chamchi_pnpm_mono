@@ -29,6 +29,7 @@ export const logic: Logic[] = [
         hu: 'hi_ma_su',
         mu: 'mi_ma_su',
         ru: 'ri_ma_su',
+        bu: 'bi_ma_su',
       },
       '2': {
         ru: 'ma_su',
@@ -50,6 +51,7 @@ export const logic: Logic[] = [
         hu: 'hi_ma_shi_ta',
         mu: 'mi_ma_shi_ta',
         ru: 'ri_ma_shi_ta',
+        bu: 'bi_ma_shi_ta',
       },
       '2': {
         ru: 'ma_shi_ta',
@@ -77,6 +79,7 @@ export const verbLogic: any = [
             nu: 'n_de_i_na_i',
             mu: 'n_de_i_na_i',
             ru: 't_te_i_na_i',
+            bu: 'n_de_i_na_i',
           },
           '2': {
             ru: 'te_i_na_i',
@@ -95,6 +98,7 @@ export const verbLogic: any = [
             nu: 'n_de_i_ru',
             mu: 'n_de_i_ru',
             ru: 't_te_i_ru',
+            bu: 'n_de_i_ru',
           },
           '2': {
             ru: 'te_i_ru',
@@ -120,6 +124,7 @@ export const verbLogic: any = [
             hu: 'hi_ma_su',
             mu: 'mi_ma_su',
             ru: 'ri_ma_su',
+            bu: 'bi_ma_su',
           },
           '2': {
             ru: 'ma_su',
@@ -158,6 +163,7 @@ export const verbLogic: any = [
             hu: 'hi_ma_se_n',
             mu: 'mi_ma_se_n',
             ru: 'ri_ma_se_n',
+            bu: 'bi_ma_se_n',
           },
           '2': {
             ru: 'ma_se_n',
@@ -177,6 +183,7 @@ export const verbLogic: any = [
             hu: 'hi_ta_i',
             mu: 'mi_ta_i',
             ru: 'ri_ta_i',
+            bu: 'bi_ta_i',
           },
           '2': {
             ru: 'ta_i',
@@ -196,6 +203,7 @@ export const verbLogic: any = [
             hu: 'hi_ta_ku_na_i',
             mu: 'mi_ta_ku_na_i',
             ru: 'ri_ta_ku_na_i',
+            bu: 'bi_ta_ku_na_i',
           },
           '2': {
             ru: 'ta_ku_na_i',
@@ -215,6 +223,7 @@ export const verbLogic: any = [
             hu: 'he_na_i',
             mu: 'me_na_i',
             ru: 're_na_i',
+            bu: 'be_na_i',
           },
           '2': {
             ru: 'ra_re_na_i',
@@ -234,6 +243,7 @@ export const verbLogic: any = [
             hu: 'he_ru',
             mu: 'me_ru',
             ru: 're_ru',
+            bu: 'be_ru',
           },
           '2': {
             ru: 'ra_re_ru',
@@ -278,6 +288,7 @@ export const verbLogic: any = [
             hu: 'ha_na_ka_t_ta',
             mu: 'ma_na_ka_t_ta',
             ru: 'ra_na_ka_t_ta',
+            bu: 'ba_na_ka_t_ta',
           },
           '2': {
             ru: 'na_ka_t_ta',
@@ -297,6 +308,7 @@ export const verbLogic: any = [
             hu: 'hi_ma_shi_ta',
             mu: 'mi_ma_shi_ta',
             ru: 'ri_ma_shi_ta',
+            bu: 'bi_ma_shi_ta',
           },
           '2': {
             ru: 'ma_shi_ta',
@@ -316,6 +328,7 @@ export const verbLogic: any = [
             hu: 'hi_ma_se_n_de_shi_ta',
             mu: 'mi_ma_se_n_de_shi_ta',
             ru: 'ri_ma_se_n_de_shi_ta',
+            bu: 'bi_ma_se_n_de_shi_ta',
           },
           '2': {
             ru: 'ma_se_n_de_shi_ta',
@@ -335,6 +348,7 @@ export const verbLogic: any = [
             hu: 'hi_ta_ka_t_ta',
             mu: 'mi_ta_ka_t_ta',
             ru: 'ri_ta_ka_t_ta',
+            bu: 'bi_ta_ka_t_ta',
           },
           '2': {
             ru: 'ta_ka_t_ta',
@@ -354,6 +368,7 @@ export const verbLogic: any = [
             hu: 'hi_ta_ku_na_ka_t_ta',
             mu: 'mi_ta_ku_na_ka_t_ta',
             ru: 'ri_ta_ku_na_ka_t_ta',
+            bu: 'bi_ta_ku_na_ka_t_ta',
           },
           '2': {
             ru: 'ta_ku_na_ka_t_ta',
@@ -383,6 +398,7 @@ export const verbLogic: any = [
             nu: 'na_re_ta',
             mu: 'ma_re_ta',
             ru: 'ra_re_ta',
+            bu: 'ba_re_ta',
           },
           '2': {
             ru: 'ra_re_ta',
@@ -401,6 +417,7 @@ export const verbLogic: any = [
             nu: 'na_re_ru',
             mu: 'ma_re_ru',
             ru: 'ra_re_ru',
+            bu: 'ba_re_ru',
           },
           '2': {
             ru: 'ra_re_ru',
@@ -425,6 +442,7 @@ export const verbLogic: any = [
             nu: 'n_de_ha_i_ke_na_i',
             mu: 'n_de_ha_i_ke_na_i',
             ru: 't_te_ha_i_ke_na_i',
+            bu: 'n_de_ha_i_ke_na_i',
           },
           '2': {
             ru: 'te_ha_i_ke_na_i',
@@ -443,6 +461,7 @@ export const verbLogic: any = [
             nu: 'n_de',
             mu: 'n_de',
             ru: 't_te',
+            bu: 'n_de',
           },
           '2': {
             ru: 'te',
@@ -467,6 +486,7 @@ export const verbLogic: any = [
             nu: 'na_na_i_de',
             mu: 'ma_na_i_de',
             ru: 'ra_na_i_de',
+            bu: 'ba_na_i_de',
           },
           '2': {
             ru: 'na_i_de',
@@ -486,6 +506,7 @@ export const verbLogic: any = [
             hu: 'ha_na_i_ka_mo_shi_re_na_i',
             mu: 'ma_na_i_ka_mo_shi_re_na_i',
             ru: 'ra_na_i_ka_mo_shi_re_na_i',
+            bu: 'ba_na_i_ka_mo_shi_re_na_i',
           },
           '2': {
             ru: 'na_i_ka_mo_shi_re_na_i',
@@ -505,6 +526,7 @@ export const verbLogic: any = [
             hu: 'hu_ka_mo_shi_re_na_i',
             mu: 'mu_ka_mo_shi_re_na_i',
             ru: 'ru_ka_mo_shi_re_na_i',
+            bu: 'bu_ka_mo_shi_re_na_i',
           },
           '2': {
             ru: 'ru_ka_mo_shi_re_na_i',
