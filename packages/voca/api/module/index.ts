@@ -32,7 +32,7 @@ enum Target {
   v2 = '/api/v2',
 }
 
-type Address = 'japanese' | 'word_like';
+type Address = 'japanese' | 'word_like' | 'vocabulary';
 
 const headers: Headers = { 'Content-Type': 'application/json' };
 

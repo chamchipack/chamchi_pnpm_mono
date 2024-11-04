@@ -35,9 +35,9 @@ const Main = async ({ ...props }) => {
         <WordList language={props?.language} />
       </div>
 
-      {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-        <VocaList />
-      </div> */}
+      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+        <VocaList language={props?.language} />
+      </div>
     </>
   );
 };

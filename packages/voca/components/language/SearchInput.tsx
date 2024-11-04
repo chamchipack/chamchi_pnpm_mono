@@ -65,12 +65,18 @@ export default function SearchInput({ ...props }: Props) {
           }
         }}
         options={filteredResults}
-        getOptionLabel={(option) => option.title || option.ko} // 표시할 레이블을 title 또는 ko로 설정
+        getOptionLabel={(option) => option.toString()}
         renderInput={(params) => (
           <TextField
             {...params}
             variant="outlined"
             onChange={handleSearchChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 Enter 동작 방지
+                onClickSearch(); // Enter로 검색 실행
+              }
+            }}
             fullWidth
             sx={{
               height: 40,

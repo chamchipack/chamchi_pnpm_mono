@@ -2,18 +2,21 @@
 import { Box, IconButton } from '@mui/material';
 import FontDownloadIcon from '@mui/icons-material/FontDownload';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import { useRecoilState } from 'recoil';
 import { darkModeState } from '@/config/stylemode';
 import AuthComponent from './AuthComponent';
+import VocabularyContainer from '@/components/vocabulary/server/VocabularyContainer';
+import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function FooterContainer() {
   const [darkmode, setDarkmode] = useRecoilState(darkModeState);
+  const { data: session } = useSession();
+  const path = usePathname().split('/') || 0;
   return (
     <Box
       sx={{
-        // backgroundColor: '#f1f1f1',
         padding: '10px 20px',
         textAlign: 'center',
         position: 'fixed',
@@ -26,21 +29,18 @@ export default function FooterContainer() {
       <Box
         sx={{
           display: 'flex',
-          justifyContent: 'center', // 아이콘을 가운데로 정렬
+          justifyContent: 'center',
           alignItems: 'center',
-          gap: 4, // 아이콘 간의 간격
+          gap: 4,
         }}
       >
         <IconButton aria-label="font download">
           <FontDownloadIcon />
         </IconButton>
         <AuthComponent />
-        {/* <IconButton aria-label="account">
-          <AccountCircleIcon />
-        </IconButton> */}
-        <IconButton aria-label="library">
-          <LibraryBooksIcon />
-        </IconButton>
+
+        {path.length > 2 && session && <VocabularyContainer />}
+
         <IconButton aria-label="library" onClick={() => setDarkmode(!darkmode)}>
           <DarkModeIcon />
         </IconButton>
