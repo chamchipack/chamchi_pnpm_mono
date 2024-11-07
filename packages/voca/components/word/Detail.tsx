@@ -3,7 +3,7 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import { useState } from 'react';
-import { hiragana, typeGbn, Verb, Word } from '@/config/default';
+import { hiragana, Noun, typeGbn, Verb, Word } from '@/config/default';
 import { verbLogic } from '@/config/logic';
 import VerbFormTransformer from './verb/VerbFormTransformer';
 import { useSession } from 'next-auth/react';
@@ -11,9 +11,10 @@ import LikeButton from './common/LikeButton';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
-  const [data, setData] = useState<Word<Verb>>(props?.row);
+  const [data, setData] = useState<Word<Verb | Noun>>(props?.row);
 
-  const verbGroupNamed = (value: number) => {
+  const verbGroupNamed = (data: Word<Verb | Noun>) => {
+    const value: number = data?.etc?.form;
     if (value) return `${value}그룹`;
     else return '';
   };
@@ -23,7 +24,7 @@ export default function Detail({ ...props }) {
       <SearchInput language={props?.language} />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary">
-          {typeGbn[data?.type]} {verbGroupNamed(data?.etc?.form as number)}
+          {typeGbn[data?.type]} {verbGroupNamed(data)}
         </Typography>
         <Box
           sx={{
@@ -62,26 +63,27 @@ export default function Detail({ ...props }) {
 
         <Divider sx={{ my: 3 }} />
 
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="subtitle1" color="text.primary">
-            예문
-          </Typography>
-          <Box sx={{ mt: 3 }}>
-            <Typography color="text.primary">友達ともだちに会あう</Typography>
-            <Typography variant="caption" color="text.secondary">
-              친구와 만나다
-            </Typography>
-          </Box>
+        {data?.example ? (
+          <>
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle1" color="text.primary">
+                예문
+              </Typography>
+              <>
+                {data?.example.map((example, index) => (
+                  <Box sx={{ mt: 3 }} key={index}>
+                    <Typography color="text.primary">{example.jp}</Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {example.ko}
+                    </Typography>
+                  </Box>
+                ))}
+              </>
+            </Box>
 
-          <Box sx={{ mt: 3 }}>
-            <Typography color="text.primary">友達ともだちに会あう</Typography>
-            <Typography variant="caption" color="text.secondary">
-              친구와 만나다
-            </Typography>
-          </Box>
-        </Box>
-
-        <Divider sx={{ my: 3 }} />
+            <Divider sx={{ my: 3 }} />
+          </>
+        ) : null}
 
         {data?.type === 'verb' ? <VerbFormTransformer data={data} /> : null}
       </Box>

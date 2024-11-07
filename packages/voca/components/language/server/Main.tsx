@@ -6,6 +6,7 @@ import WordList from '@/components/language/WordList';
 import { good } from '@/config/default';
 import { Button } from '@mui/material';
 import CreateButton from '../client/CreateButton';
+import SearchComponent from '../SearchInputTest';
 
 const Main = async ({ ...props }) => {
   const data = good; // 더미데이터
@@ -23,6 +24,7 @@ const Main = async ({ ...props }) => {
     <>
       <div style={{ height: 60, padding: 10 }}>
         <SearchInput language={props?.language} />
+        {/* <SearchComponent language={props?.language} /> */}
       </div>
 
       <div style={{ height: 200, marginTop: 20, padding: 10 }}>

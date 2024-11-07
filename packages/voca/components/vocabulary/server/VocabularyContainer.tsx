@@ -4,6 +4,7 @@ import { IconButton } from '@mui/material';
 import ModalWrapper from 'package/src/Modal/ModalWrapper';
 import { useState } from 'react';
 import VocabularyContents from './VocabularyContents';
+import LikedVocabulary from '@/components/liked/LikedVocabulary';
 
 export default function VocabularyContainer() {
   const [open, setOpen] = useState(false);
@@ -17,7 +18,9 @@ export default function VocabularyContainer() {
 
       <ModalWrapper open={open} onClose={onClose}>
         <div style={{ height: 400 }}>
-          <VocabularyContents />
+          <VocabularyContents clickable={false} perPage={3} />
+
+          <LikedVocabulary />
         </div>
       </ModalWrapper>
     </>

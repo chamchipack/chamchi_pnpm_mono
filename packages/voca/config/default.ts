@@ -7,11 +7,19 @@ export interface Verb {
   stemro: string;
   endingjp: string;
   endingro: string;
-  form: number;
+  form?: number;
   exception: boolean;
 }
 
-export interface Noun {}
+export interface Noun {
+  ko: string;
+  jp: string;
+}
+
+export interface Example {
+  jp: string;
+  ko: string;
+}
 
 export interface Word<T> {
   id: string;
@@ -21,7 +29,8 @@ export interface Word<T> {
   ro: string;
   type: 'verb' | 'noun' | 'adv' | 'adj';
   language: string;
-  etc: T;
+  etc?: T;
+  example?: Example[];
 }
 
 export const typeGbn = {
@@ -30,6 +39,191 @@ export const typeGbn = {
   adv: '부사',
   adj: '형용사',
 };
+
+export const noun: Word<Noun>[] = [
+  {
+    id: '',
+    language: 'japanese',
+    ko: '집',
+    jp: '家',
+    kana: 'いえ',
+    ro: 'ie',
+    type: 'noun',
+    example: [
+      { ko: '내 집은 크다.', jp: '私の家は大きいです。' },
+      { ko: '집에 가고 싶어요.', jp: '家に帰りたいです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '책',
+    jp: '本',
+    kana: 'ほん',
+    ro: 'hon',
+    type: 'noun',
+    example: [
+      { ko: '나는 책을 읽습니다.', jp: '私は本を読みます。' },
+      { ko: '그 책은 재미있다.', jp: 'その本は面白いです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '사람',
+    jp: '人',
+    kana: 'ひと',
+    ro: 'hito',
+    type: 'noun',
+    example: [
+      { ko: '사람이 많다.', jp: '人が多いです。' },
+      { ko: '친절한 사람입니다.', jp: '親切な人です。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '학교',
+    jp: '学校',
+    kana: 'がっこう',
+    ro: 'gakkou',
+    type: 'noun',
+    example: [
+      { ko: '나는 학교에 갑니다.', jp: '私は学校に行きます。' },
+      { ko: '학교는 멀어요.', jp: '学校は遠いです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '음식',
+    jp: '食べ物',
+    kana: 'たべもの',
+    ro: 'tabemono',
+    type: 'noun',
+    example: [
+      { ko: '맛있는 음식을 먹고 싶다.', jp: '美味しい食べ物を食べたいです。' },
+      { ko: '음식이 준비되었습니다.', jp: '食べ物が準備できました。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '차',
+    jp: '車',
+    kana: 'くるま',
+    ro: 'kuruma',
+    type: 'noun',
+    example: [
+      { ko: '차를 운전합니다.', jp: '車を運転します。' },
+      { ko: '차가 고장났어요.', jp: '車が故障しました。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '바다',
+    jp: '海',
+    kana: 'うみ',
+    ro: 'umi',
+    type: 'noun',
+    example: [
+      { ko: '바다가 아름답다.', jp: '海が美しいです。' },
+      { ko: '여름에는 바다에 갑니다.', jp: '夏には海に行きます。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '하늘',
+    jp: '空',
+    kana: 'そら',
+    ro: 'sora',
+    type: 'noun',
+    example: [
+      { ko: '하늘이 맑다.', jp: '空が晴れています。' },
+      { ko: '하늘을 봐요.', jp: '空を見ます。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '산',
+    jp: '山',
+    kana: 'やま',
+    ro: 'yama',
+    type: 'noun',
+    example: [
+      { ko: '산에 올라가요.', jp: '山に登ります。' },
+      { ko: '산이 높습니다.', jp: '山が高いです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '시간',
+    jp: '時間',
+    kana: 'じかん',
+    ro: 'jikan',
+    type: 'noun',
+    example: [
+      { ko: '시간이 부족해요.', jp: '時間が足りません。' },
+      { ko: '시간이 빠르다.', jp: '時間が早いです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '친구',
+    jp: '友達',
+    kana: 'ともだち',
+    ro: 'tomodachi',
+    type: 'noun',
+    example: [
+      { ko: '친구와 놀아요.', jp: '友達と遊びます。' },
+      { ko: '친구를 만났어요.', jp: '友達に会いました。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '아침',
+    jp: '朝',
+    kana: 'あさ',
+    ro: 'asa',
+    type: 'noun',
+    example: [
+      { ko: '아침에 일어나요.', jp: '朝に起きます。' },
+      { ko: '아침이 밝아요.', jp: '朝が明るいです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '밤',
+    jp: '夜',
+    kana: 'よる',
+    ro: 'yoru',
+    type: 'noun',
+    example: [
+      { ko: '밤이 깊어요.', jp: '夜が深いです。' },
+      { ko: '밤하늘이 아름답다.', jp: '夜空が美しいです。' },
+    ],
+  },
+  {
+    id: '',
+    language: 'japanese',
+    ko: '꽃',
+    jp: '花',
+    kana: 'はな',
+    ro: 'hana',
+    type: 'noun',
+    example: [
+      { ko: '꽃이 피었어요.', jp: '花が咲きました。' },
+      { ko: '꽃이 예뻐요.', jp: '花がきれいです。' },
+    ],
+  },
+];
 
 export const good: Word<Verb>[] = [
   {

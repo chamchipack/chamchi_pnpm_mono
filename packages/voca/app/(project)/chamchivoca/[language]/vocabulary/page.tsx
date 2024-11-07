@@ -7,7 +7,7 @@ const page = () => {
   return (
     <div style={{ padding: 10 }}>
       <ServerClientAdapter>
-        <VocabularyContents />
+        <VocabularyContents perPage={10} clickable={true} />
       </ServerClientAdapter>
     </div>
   );

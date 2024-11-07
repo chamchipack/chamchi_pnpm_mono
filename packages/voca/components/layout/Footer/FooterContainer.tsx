@@ -9,11 +9,17 @@ import AuthComponent from './AuthComponent';
 import VocabularyContainer from '@/components/vocabulary/server/VocabularyContainer';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useCallback } from 'react';
 
 export default function FooterContainer() {
   const [darkmode, setDarkmode] = useRecoilState(darkModeState);
   const { data: session } = useSession();
   const path = usePathname().split('/') || 0;
+
+  const toggleDarkMode = useCallback(() => {
+    setDarkmode((prev) => !prev);
+  }, [setDarkmode]);
+
   return (
     <Box
       sx={{
@@ -41,7 +47,7 @@ export default function FooterContainer() {
 
         {path.length > 2 && session && <VocabularyContainer />}
 
-        <IconButton aria-label="library" onClick={() => setDarkmode(!darkmode)}>
+        <IconButton aria-label="library" onClick={toggleDarkMode}>
           <DarkModeIcon />
         </IconButton>
       </Box>

@@ -65,7 +65,8 @@ export default function SearchInput({ ...props }: Props) {
           }
         }}
         options={filteredResults}
-        getOptionLabel={(option) => option.toString()}
+        getOptionLabel={(option) => option.jp || ''}
+        filterOptions={(options) => options}
         renderInput={(params) => (
           <TextField
             {...params}

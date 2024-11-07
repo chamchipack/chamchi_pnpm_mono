@@ -1,7 +1,6 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import ModalWrapper from 'package/src/Modal/ModalWrapper';
 import { useEffect, useState } from 'react';
 import db from '@/api/module';
 import { usePathname } from 'next/navigation';
@@ -10,13 +9,21 @@ import { motion } from 'framer-motion';
 import PaginationComponent from 'package/src/Pagination/Pagination';
 import SelectedVocabulary from '../client/SelectedVocabulary';
 
-const VocabularyContents = () => {
+interface Props {
+  perPage: number;
+  clickable: boolean;
+}
+
+const VocabularyContents = ({ ...props }: Props) => {
   const { data: session } = useSession();
   const path = usePathname();
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState([]);
   const [total, setTotal] = useState(0);
-  const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
+  const [pagination, setPagination] = useState({
+    page: 1,
+    perPage: props?.perPage || 10,
+  });
   const [isClicked, setIsClicked] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null); // 선택된 로우 저장
 
@@ -52,6 +59,9 @@ const VocabularyContents = () => {
 
   return (
     <div style={{ padding: 6 }}>
+      <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
+        내 단어장
+      </Typography>
       {isClicked && selectedRow ? (
         <SelectedVocabulary data={selectedRow} onClickReset={onClickReset} />
       ) : rows.length ? (
@@ -60,10 +70,12 @@ const VocabularyContents = () => {
             <div key={item.id}>
               <Box
                 component={motion.div}
-                onClick={() => onClickRow(item)}
-                whileHover={{ y: -2 }}
+                onClick={() => {
+                  if (props?.clickable) onClickRow(item);
+                }}
+                whileHover={{ y: props?.clickable ? -2 : 0 }}
                 sx={{
-                  cursor: 'pointer',
+                  cursor: props?.clickable ? 'pointer' : 'normal',
                   height: 50,
                   p: 1,
                   display: 'flex',

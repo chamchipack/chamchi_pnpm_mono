@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Divider, Typography } from '@mui/material';
+import { Box, Chip, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
@@ -8,6 +8,7 @@ import { Noun, typeGbn, Verb, Word } from '@/config/default';
 import PaginationComponent from 'package/src/Pagination/Pagination';
 import { useEffect, useState } from 'react';
 import db from '@/api/module';
+import { useSession } from 'next-auth/react';
 
 interface Props {
   rows: Word<Verb | Noun>[];
@@ -16,17 +17,30 @@ interface Props {
   type: string;
 }
 export default function VocaList({ ...props }: Props) {
+  const { data: session } = useSession();
   const [rows, setRows] = useState(props?.rows || []);
   const [total, setTotal] = useState(props?.total);
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
+  const [likedButtonClicked, setLikedButtonClicked] = useState(false);
 
-  const onLoadData = async (page: number) => {
+  const onLoadData = async (page: number, clicked?: boolean) => {
     if (!props?.language) return;
+    if (clicked === null || clicked === undefined) clicked = false;
 
     const typeParams = props?.type ? { 'type.like': props?.type } : {};
+    let likeParams = {};
+
+    if (clicked) {
+      const idArray = await onLoadLikedList();
+      likeParams = { 'id.or': idArray || [] };
+    }
 
     const { data = [], ...rest } = await db.search(props?.language, {
-      options: { 'language.like': props?.language, ...typeParams },
+      options: {
+        'language.like': props?.language,
+        ...typeParams,
+        ...likeParams,
+      },
       pagination: { page, perPage: 10 },
     });
     setTotal(data?.totalItems);
@@ -35,16 +49,51 @@ export default function VocaList({ ...props }: Props) {
     setRows(result);
   };
 
+  const handleChipClick = async () => {
+    onLoadData(1, !likedButtonClicked);
+    setLikedButtonClicked(!likedButtonClicked);
+  };
+
+  const onLoadLikedList = async () => {
+    try {
+      const { data = [] } = await db.search('word_like', {
+        options: {
+          userId: session?.user?.id,
+          'language.like': props?.language,
+        },
+      });
+      return data[0]?.wordIds || [];
+    } catch (e) {
+      return [];
+    }
+  };
+
   return (
     <>
       <SearchInput language={props?.language} />
 
       <Divider sx={{ my: 3 }} />
 
-      <Box sx={{ px: 2, mb: 2 }}>
+      <Box
+        sx={{
+          px: 2,
+          mb: 2,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
         <Typography variant="subtitle1" color="text.primary">
-          리스트
+          단어 리스트
         </Typography>
+
+        <Chip
+          sx={{ mx: 2 }}
+          label={likedButtonClicked ? '좋아요 해제' : '좋아요만 보기'}
+          clickable
+          onClick={handleChipClick}
+          color={likedButtonClicked ? 'error' : 'default'}
+        />
       </Box>
 
       <Box>
