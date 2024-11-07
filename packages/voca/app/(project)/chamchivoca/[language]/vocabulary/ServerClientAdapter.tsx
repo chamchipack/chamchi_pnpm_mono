@@ -16,7 +16,7 @@ export default function ServerClientAdapter({ children }: Props) {
     setLoading(false);
   }, []);
 
-  if (loading || !data) return <div>잠시만 기다려주세요!</div>;
+  if (loading && !data) return <div>잠시만 기다려주세요!</div>;
 
   if (data) return <div>{children}</div>;
   else return <div>로그인이 필요한 서비스에요!</div>;

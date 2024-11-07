@@ -1,11 +1,15 @@
 'use client';
+import { Language } from '@/config/defaultType';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { kboFont } from 'package/styles/fonts/module';
 
-export default function WordList({ ...props }) {
+interface Props {
+  language: Language;
+}
+
+export default function WordList({ ...props }: Props) {
   const router = useRouter();
-  // 단어 종류와 색상 배열
   const categories = [
     {
       label: '전체',

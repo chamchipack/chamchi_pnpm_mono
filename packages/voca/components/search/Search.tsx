@@ -4,8 +4,14 @@ import { Box, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
+import { Language, Word, WordBase } from '@/config/defaultType';
 
-export default function Search({ ...props }) {
+interface Props {
+  language: Language;
+  rows: Word<WordBase>[];
+}
+
+export default function Search({ ...props }: Props) {
   return (
     <>
       <SearchInput language={props?.language} />

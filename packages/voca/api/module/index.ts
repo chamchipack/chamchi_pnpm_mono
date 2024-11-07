@@ -1,4 +1,5 @@
 import { getSession, signIn } from 'next-auth/react';
+import { Collection, Language } from '@/config/defaultType';
 
 export type Schema = 'word';
 
@@ -22,17 +23,6 @@ interface SearchResponse {
   data: any;
   message: string;
 }
-
-interface Session {
-  user?: any;
-}
-
-enum Target {
-  route = '/api/route',
-  v2 = '/api/v2',
-}
-
-type Address = 'japanese' | 'word_like' | 'vocabulary';
 
 const headers: Headers = { 'Content-Type': 'application/json' };
 
@@ -105,7 +95,7 @@ class ApiClient {
    * @returns
    */
   public async search(
-    url: Address,
+    url: Collection,
     {
       pagination,
       options,
@@ -123,22 +113,22 @@ class ApiClient {
     return this.request('/api/route', 'POST', body);
   }
 
-  public async single(url: Address, id: string): Promise<SearchResponse> {
+  public async single(url: Collection, id: string): Promise<SearchResponse> {
     const body = { type: 'single', target: url, id };
     return this.request('/api/route', 'POST', body);
   }
 
-  public async create(url: Address, data: any): Promise<SearchResponse> {
+  public async create(url: Collection, data: any): Promise<SearchResponse> {
     const body = { data, type: 'create', target: url };
     return this.request('/api/route', 'POST', body);
   }
 
-  public async update(url: Address, data: any): Promise<SearchResponse> {
+  public async update(url: Collection, data: any): Promise<SearchResponse> {
     const body = { data, type: 'update', target: url };
     return this.request('/api/route', 'PUT', body);
   }
 
-  public async deleteFetch(url: Address, id: string): Promise<any> {
+  public async deleteFetch(url: Collection, id: string): Promise<any> {
     const body = { type: 'delete', id, target: url };
     return this.request('/api/route', 'DELETE', body);
   }

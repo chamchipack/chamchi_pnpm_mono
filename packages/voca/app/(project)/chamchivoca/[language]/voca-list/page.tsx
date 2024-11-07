@@ -1,9 +1,11 @@
 import { getData } from '@/api/module/fetch';
+import PageError from '@/components/Error/PageError';
 import VocaList from '@/components/vocalist/VocaList';
+import { Language, Word, WordBase } from '@/config/defaultType';
 
 interface Props {
   searchParams: { type: string };
-  params: { language: string };
+  params: { language: Language };
 }
 
 const page = async ({ searchParams, params }: Props) => {
@@ -22,8 +24,10 @@ const page = async ({ searchParams, params }: Props) => {
   };
 
   const result = await getData(parameter);
-  const list: any[] = result?.data?.items || [];
+  const list: Word<WordBase>[] = result?.data?.items || [];
   const total = result?.data?.totalItems || 0;
+
+  if (!language) return <PageError />;
 
   return (
     <div style={{ height: 60, padding: 10 }}>

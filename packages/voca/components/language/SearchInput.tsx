@@ -11,11 +11,10 @@ import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import db from '@/api/module';
-
-type Address = 'japanese';
+import { Collection, Language } from '@/config/defaultType';
 
 interface Props {
-  language: Address;
+  language: Language;
 }
 
 export default function SearchInput({ ...props }: Props) {
@@ -31,8 +30,7 @@ export default function SearchInput({ ...props }: Props) {
 
     if (!inputValue) return setFilteredResults([]);
 
-    // API 호출하여 검색 결과 가져오기
-    const { data = [] } = await db.search(props?.language, {
+    const { data = [] } = await db.search(props?.language as Collection, {
       options: {
         query: `(jp~"${inputValue}") || (kana~"${inputValue}") || (ko~"${inputValue}") || (ro~"${inputValue}")`,
       },

@@ -3,13 +3,14 @@ import SearchInput from '@/components/language/SearchInput';
 import TodayWord from '@/components/language/TodayWord';
 import VocaList from '@/components/language/VocaList';
 import WordList from '@/components/language/WordList';
-import { good } from '@/config/default';
-import { Button } from '@mui/material';
 import CreateButton from '../client/CreateButton';
-import SearchComponent from '../SearchInputTest';
+import { Language, Verb, Word, WordBase } from '@/config/defaultType';
 
-const Main = async ({ ...props }) => {
-  const data = good; // 더미데이터
+interface Props {
+  language: Language;
+}
+
+const Main = async ({ ...props }: Props) => {
   const parameter = {
     target: props?.language,
     type: 'search',
@@ -18,13 +19,12 @@ const Main = async ({ ...props }) => {
   };
 
   const result = await getData(parameter);
-  const list: any[] = result?.data?.items || [];
+  const list: Word<WordBase>[] = result?.data?.items || [];
 
   return (
     <>
       <div style={{ height: 60, padding: 10 }}>
         <SearchInput language={props?.language} />
-        {/* <SearchComponent language={props?.language} /> */}
       </div>
 
       <div style={{ height: 200, marginTop: 20, padding: 10 }}>

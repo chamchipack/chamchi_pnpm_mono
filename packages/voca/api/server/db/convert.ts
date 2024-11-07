@@ -86,9 +86,6 @@ class PocketbaseFinder {
   }
 
   private buildFilterParams(filter: any) {
-    console.log('@@@@@@@@@@@@@@');
-
-    console.log(filter);
     if (!filter) return '';
     const filterEntries = Object.entries(filter);
     if (filterEntries.length === 0) return '';

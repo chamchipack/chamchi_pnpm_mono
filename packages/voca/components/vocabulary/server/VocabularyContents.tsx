@@ -4,10 +4,13 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import db from '@/api/module';
 import { usePathname } from 'next/navigation';
-import { Box, Divider, Skeleton, Typography } from '@mui/material';
+import { Box, Divider, IconButton, Skeleton, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import PaginationComponent from 'package/src/Pagination/Pagination';
 import SelectedVocabulary from '../client/SelectedVocabulary';
+import { Vocabulary } from '@/config/defaultType';
+import { useRouter } from 'next/navigation';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 interface Props {
   perPage: number;
@@ -15,10 +18,11 @@ interface Props {
 }
 
 const VocabularyContents = ({ ...props }: Props) => {
+  const router = useRouter();
   const { data: session } = useSession();
   const path = usePathname();
   const [loading, setLoading] = useState(true);
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<Vocabulary[]>([]);
   const [total, setTotal] = useState(0);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -59,9 +63,23 @@ const VocabularyContents = ({ ...props }: Props) => {
 
   return (
     <div style={{ padding: 6 }}>
-      <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
-        내 단어장
-      </Typography>
+      {!isClicked && (
+        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+          {/* <IconButton
+            sx={{ p: '4px', minWidth: 40 }}
+            aria-label="search"
+            onClick={() => router.back()}
+            onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+              e.preventDefault()
+            }
+          >
+            <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
+          </IconButton> */}
+          <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
+            내 단어장
+          </Typography>
+        </Box>
+      )}
       {isClicked && selectedRow ? (
         <SelectedVocabulary data={selectedRow} onClickReset={onClickReset} />
       ) : rows.length ? (

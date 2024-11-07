@@ -3,7 +3,8 @@ import { Box, Chip, Divider, IconButton, Typography } from '@mui/material';
 import { verbLogic } from '@/config/logic';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import { hiragana, Verb, Word } from '@/config/default';
+import { Verb, Word } from '@/config/defaultType';
+import { hiragana } from '@/config/default';
 
 const VerbFormTransformer = ({ ...props }) => {
   const [data, setData] = useState<Word<Verb>>(props?.data);

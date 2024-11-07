@@ -4,21 +4,28 @@ import { Box, Chip, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
-import { Noun, typeGbn, Verb, Word } from '@/config/default';
 import PaginationComponent from 'package/src/Pagination/Pagination';
 import { useEffect, useState } from 'react';
 import db from '@/api/module';
 import { useSession } from 'next-auth/react';
+import {
+  Collection,
+  Language,
+  Word,
+  typeGbn,
+  WordBase,
+} from '@/config/defaultType';
 
 interface Props {
-  rows: Word<Verb | Noun>[];
-  language: 'japanese';
+  rows: Word<WordBase>[];
+  language: Language;
   total: number;
   type: string;
 }
+
 export default function VocaList({ ...props }: Props) {
   const { data: session } = useSession();
-  const [rows, setRows] = useState(props?.rows || []);
+  const [rows, setRows] = useState<Word<WordBase>[]>(props?.rows || []);
   const [total, setTotal] = useState(props?.total);
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
   const [likedButtonClicked, setLikedButtonClicked] = useState(false);
@@ -35,14 +42,17 @@ export default function VocaList({ ...props }: Props) {
       likeParams = { 'id.or': idArray || [] };
     }
 
-    const { data = [], ...rest } = await db.search(props?.language, {
-      options: {
-        'language.like': props?.language,
-        ...typeParams,
-        ...likeParams,
+    const { data = [], ...rest } = await db.search(
+      props?.language as Collection,
+      {
+        options: {
+          'language.like': props?.language,
+          ...typeParams,
+          ...likeParams,
+        },
+        pagination: { page, perPage: 10 },
       },
-      pagination: { page, perPage: 10 },
-    });
+    );
     setTotal(data?.totalItems);
     const result = Array.isArray(data) ? data : data?.items;
 
@@ -99,7 +109,7 @@ export default function VocaList({ ...props }: Props) {
       <Box>
         {rows.length ? (
           <>
-            {rows.map((item: any) => (
+            {rows.map((item) => (
               <Box
                 component={motion.div}
                 whileHover={{ y: -2 }}

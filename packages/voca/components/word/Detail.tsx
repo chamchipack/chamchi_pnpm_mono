@@ -3,20 +3,23 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import { useState } from 'react';
-import { hiragana, Noun, typeGbn, Verb, Word } from '@/config/default';
 import { verbLogic } from '@/config/logic';
 import VerbFormTransformer from './verb/VerbFormTransformer';
 import { useSession } from 'next-auth/react';
 import LikeButton from './common/LikeButton';
+import { Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
-  const [data, setData] = useState<Word<Verb | Noun>>(props?.row);
+  const [data, setData] = useState<Word<WordBase>>(props?.row);
 
-  const verbGroupNamed = (data: Word<Verb | Noun>) => {
-    const value: number = data?.etc?.form;
-    if (value) return `${value}그룹`;
-    else return '';
+  const verbGroupNamed = (data: Word<WordBase>) => {
+    if (data.type === 'verb' && data.etc && 'form' in data.etc) {
+      const value: number = (data.etc as Verb).form!;
+      return `${value}그룹`;
+    } else {
+      return '';
+    }
   };
 
   return (

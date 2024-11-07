@@ -1,7 +1,3 @@
-// word
-// logic
-// example 예문
-
 export interface Verb {
   stemjp: string;
   stemro: string;
