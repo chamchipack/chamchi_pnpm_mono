@@ -45,7 +45,7 @@ export default function FooterContainer() {
         </IconButton>
         <AuthComponent />
 
-        {path.length > 2 && session && <VocabularyContainer />}
+        {path.length > 2 && session && <VocabularyContainer path={path} />}
 
         <IconButton aria-label="library" onClick={toggleDarkMode}>
           <DarkModeIcon />

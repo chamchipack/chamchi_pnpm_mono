@@ -4,13 +4,21 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import db from '@/api/module';
 import { usePathname } from 'next/navigation';
-import { Box, Divider, IconButton, Skeleton, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { motion } from 'framer-motion';
 import PaginationComponent from 'package/src/Pagination/Pagination';
 import SelectedVocabulary from '../client/SelectedVocabulary';
 import { Vocabulary } from '@/config/defaultType';
 import { useRouter } from 'next/navigation';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import RouterBack from '@/components/RouterIcon/RouterBack';
 
 interface Props {
   perPage: number;
@@ -22,6 +30,7 @@ const VocabularyContents = ({ ...props }: Props) => {
   const { data: session } = useSession();
   const path = usePathname();
   const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState<string | 'create' | 'update'>('');
   const [rows, setRows] = useState<Vocabulary[]>([]);
   const [total, setTotal] = useState(0);
   const [pagination, setPagination] = useState({
@@ -63,25 +72,35 @@ const VocabularyContents = ({ ...props }: Props) => {
 
   return (
     <div style={{ padding: 6 }}>
-      {!isClicked && (
+      {!isClicked && props?.clickable && (
         <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          {/* <IconButton
-            sx={{ p: '4px', minWidth: 40 }}
-            aria-label="search"
-            onClick={() => router.back()}
-            onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
-              e.preventDefault()
-            }
-          >
-            <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
-          </IconButton> */}
+          <RouterBack />
           <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
-            내 단어장
+            내 단어장 목록
           </Typography>
+
+          <Button
+            onClick={() => {
+              // setMode('create');
+              const rs = {
+                id: '',
+                name: '새로운 단어장',
+                userId: session?.user?.id,
+                wordId: [] as string[],
+              };
+              setRows([rs, ...rows]);
+            }}
+          >
+            새 단어장 만들기
+          </Button>
         </Box>
       )}
       {isClicked && selectedRow ? (
-        <SelectedVocabulary data={selectedRow} onClickReset={onClickReset} />
+        <SelectedVocabulary
+          data={selectedRow}
+          onClickReset={onClickReset}
+          mode={mode}
+        />
       ) : rows.length ? (
         <>
           {rows.map((item: any) => (
@@ -89,7 +108,9 @@ const VocabularyContents = ({ ...props }: Props) => {
               <Box
                 component={motion.div}
                 onClick={() => {
-                  if (props?.clickable) onClickRow(item);
+                  if (!props?.clickable) return;
+                  setMode('update');
+                  onClickRow(item);
                 }}
                 whileHover={{ y: props?.clickable ? -2 : 0 }}
                 sx={{
