@@ -7,8 +7,10 @@ import { kboFont } from 'package/styles/fonts/module';
 export default function HeaderContainer() {
   const router = useRouter();
   return (
-    <Box sx={{ py: 2, px: 2 }} onClick={() => router.push('/chamchivoca')}>
+    <Box sx={{ py: 2, px: 2 }}>
       <Typography
+        component="span"
+        onClick={() => router.push('/chamchivoca')}
         sx={{
           cursor: 'pointer',
           color: (theme) => theme.palette.common.black, // 다크 모드에 맞는 텍스트 색상

@@ -5,6 +5,7 @@ import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
 import { Language, Word, WordBase } from '@/config/defaultType';
+import { tree } from 'next/dist/build/templates/app-page';
 
 interface Props {
   language: Language;
@@ -14,7 +15,7 @@ interface Props {
 export default function Search({ ...props }: Props) {
   return (
     <>
-      <SearchInput language={props?.language} />
+      <SearchInput language={props?.language} routingStatus={true} />
 
       <Divider sx={{ my: 3 }} />
 

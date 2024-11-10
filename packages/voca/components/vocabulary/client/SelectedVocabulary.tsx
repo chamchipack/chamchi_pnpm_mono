@@ -75,10 +75,11 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
 
   const onClickSave = async (mode: boolean) => {
     if (!mode || !data?.id) return;
+    const result = Array.from(new Set(wordArray));
 
     const form = {
       id: data?.id,
-      wordId: wordArray,
+      wordId: result,
     };
 
     await db.update('vocabulary', form);
@@ -162,10 +163,10 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
 
     // Set을 사용하여 효율적으로 값 존재 여부 확인
     if (arraySet.has(valueToFind)) {
-      console.log(`${valueToFind}는 배열에 존재합니다.`);
+      // console.log(`${valueToFind}는 배열에 존재합니다.`);
     } else {
-      console.log(`${valueToFind}는 배열에 존재하지 않습니다.`);
-      setWordArray([value?.id, ...wordArray]);
+      // console.log(`${valueToFind}는 배열에 존재하지 않습니다.`);
+      if (valueToFind) setWordArray([value?.id, ...wordArray]);
     }
   };
 
@@ -200,7 +201,7 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
         }}
       >
         {editmode ? (
-          <Box my={3} width="90%">
+          <Box my={3} width="80%">
             <SearchInput
               language={language as Language}
               routingStatus={false}

@@ -80,7 +80,7 @@ export default function VocaList({ ...props }: Props) {
 
   return (
     <>
-      <SearchInput language={props?.language} />
+      <SearchInput language={props?.language} routingStatus={true} />
 
       <Divider sx={{ my: 3 }} />
 

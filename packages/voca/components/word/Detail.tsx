@@ -7,13 +7,32 @@ import { verbLogic } from '@/config/logic';
 import VerbFormTransformer from './verb/VerbFormTransformer';
 import { useSession } from 'next-auth/react';
 import LikeButton from './common/LikeButton';
-import { Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
+import { Adj, Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
+import { hiragana } from '@/config/default';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
   const [data, setData] = useState<Word<WordBase>>(props?.row);
 
   const verbGroupNamed = (data: Word<WordBase>) => {
+    if (data?.type === 'adj') {
+      const kind = (data.etc as Adj).kind;
+
+      let result = '';
+
+      Object.values(hiragana).some((group) => {
+        return group.some((item) => {
+          if (item.ro === kind) {
+            result = item.jp;
+            return true; // 내부 루프 종료 및 외부 루프 종료
+          }
+          return false;
+        });
+      });
+
+      return result;
+    }
+    // hiragana
     if (data.type === 'verb' && data.etc && 'form' in data.etc) {
       const value: number = (data.etc as Verb).form!;
       return `${value}그룹`;
@@ -24,7 +43,7 @@ export default function Detail({ ...props }) {
 
   return (
     <>
-      <SearchInput language={props?.language} />
+      <SearchInput language={props?.language} routingStatus={true} />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary">
           {typeGbn[data?.type]} {verbGroupNamed(data)}

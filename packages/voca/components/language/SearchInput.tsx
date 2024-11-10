@@ -15,7 +15,7 @@ import { Collection, Language } from '@/config/defaultType';
 
 interface Props {
   language: Language;
-  routingStatus?: boolean;
+  routingStatus: boolean;
   onAddNewWord?: (value: any) => void;
 }
 

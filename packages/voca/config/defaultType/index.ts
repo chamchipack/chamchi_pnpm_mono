@@ -8,7 +8,10 @@ export interface Example {
 }
 
 export interface Noun {}
-export interface Adj {}
+export interface Adj {
+  kind: 'i' | 'na';
+  exception: boolean;
+}
 export interface Adv {}
 export interface Etc {}
 
@@ -38,7 +41,7 @@ export interface Word<T> {
   ro: string;
   type: TypeGbn;
   language: string;
-  etc?: T extends Verb ? T : {};
+  etc?: T extends Verb | Adj ? T : {};
   example?: Example[];
 }
 
