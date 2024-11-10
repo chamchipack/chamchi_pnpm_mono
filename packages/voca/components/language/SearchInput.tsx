@@ -15,9 +15,15 @@ import { Collection, Language } from '@/config/defaultType';
 
 interface Props {
   language: Language;
+  routingStatus?: boolean;
+  onAddNewWord?: (value: any) => void;
 }
 
-export default function SearchInput({ ...props }: Props) {
+export default function SearchInput({
+  onAddNewWord,
+  language,
+  routingStatus = true,
+}: Props) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
@@ -25,12 +31,13 @@ export default function SearchInput({ ...props }: Props) {
   const handleSearchChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    console.info('!!!!!!');
     const inputValue = event.target.value.toLowerCase();
     setSearchTerm(inputValue);
 
     if (!inputValue) return setFilteredResults([]);
 
-    const { data = [] } = await db.search(props?.language as Collection, {
+    const { data = [] } = await db.search(language as Collection, {
       options: {
         query: `(jp~"${inputValue}") || (kana~"${inputValue}") || (ko~"${inputValue}") || (ro~"${inputValue}")`,
       },
@@ -39,25 +46,28 @@ export default function SearchInput({ ...props }: Props) {
   };
 
   const onClickSearch = () => {
-    router.push(`/chamchivoca/japanese/search/?value=${searchTerm}`);
+    router.push(`/chamchivoca/${language}/search/?value=${searchTerm}`);
   };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-      <IconButton
-        sx={{ p: '4px', minWidth: 40 }}
-        aria-label="search"
-        onClick={() => router.back()}
-        onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
-          e.preventDefault()
-        }
-      >
-        <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
-      </IconButton>
+      {routingStatus && (
+        <IconButton
+          sx={{ p: '4px', minWidth: 40 }}
+          aria-label="search"
+          onClick={() => router.back()}
+          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+            e.preventDefault()
+          }
+        >
+          <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
+        </IconButton>
+      )}
       <Autocomplete
         sx={{ width: '100%' }}
         freeSolo
         onChange={(event, value: any) => {
+          if (!routingStatus && onAddNewWord) return onAddNewWord(value);
           if (value && value.id) {
             router.push(`/chamchivoca/japanese/${value.id}`);
           }

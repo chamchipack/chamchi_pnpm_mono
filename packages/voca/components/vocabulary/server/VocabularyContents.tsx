@@ -19,6 +19,8 @@ import { Vocabulary } from '@/config/defaultType';
 import { useRouter } from 'next/navigation';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import RouterBack from '@/components/RouterIcon/RouterBack';
+import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
+import NoneDataOverlay from 'package/src/Overlay/None-DataOverlay';
 
 interface Props {
   perPage: number;
@@ -26,9 +28,11 @@ interface Props {
 }
 
 const VocabularyContents = ({ ...props }: Props) => {
-  const router = useRouter();
-  const { data: session } = useSession();
   const path = usePathname();
+  const { data: session } = useSession();
+
+  const [, , language] = path.split('/');
+
   const [loading, setLoading] = useState(true);
   const [mode, setMode] = useState<string | 'create' | 'update'>('');
   const [rows, setRows] = useState<Vocabulary[]>([]);
@@ -42,7 +46,6 @@ const VocabularyContents = ({ ...props }: Props) => {
 
   const onLoadVocaList = async (page: number) => {
     setLoading(true);
-    const [, , language] = path.split('/');
     const { data = [] } = await db.search('vocabulary', {
       options: { userId: session?.user?.id, 'language.like': language },
       pagination: { page, perPage: 5 },
@@ -55,12 +58,12 @@ const VocabularyContents = ({ ...props }: Props) => {
   };
 
   const onClickRow = (item: any) => {
-    setSelectedRow(item); // 선택된 로우를 상태에 저장
+    setSelectedRow(item);
     setIsClicked(true);
   };
 
   const onClickReset = () => {
-    setSelectedRow(null); // 선택된 로우를 상태에 저장
+    setSelectedRow(null);
     setIsClicked(false);
   };
 
@@ -73,32 +76,41 @@ const VocabularyContents = ({ ...props }: Props) => {
   return (
     <div style={{ padding: 6 }}>
       {!isClicked && props?.clickable && (
-        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-          <RouterBack />
-          <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
-            내 단어장 목록
-          </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+            <RouterBack />
+            <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
+              내 단어장 목록
+            </Typography>
+          </Box>
 
-          <Button
-            onClick={() => {
-              // setMode('create');
-              const rs = {
-                id: '',
+          <IconButton
+            onClick={async () => {
+              const form = {
                 name: '새로운 단어장',
                 userId: session?.user?.id,
-                wordId: [] as string[],
+                wordId: [],
+                language,
               };
-              setRows([rs, ...rows]);
+              await db.create('vocabulary', form);
+              onLoadVocaList(1);
             }}
           >
-            새 단어장 만들기
-          </Button>
+            <CreateNewFolderIcon />
+          </IconButton>
         </Box>
       )}
       {isClicked && selectedRow ? (
         <SelectedVocabulary
           data={selectedRow}
           onClickReset={onClickReset}
+          onLoadVocaList={onLoadVocaList}
           mode={mode}
         />
       ) : rows.length ? (
@@ -115,7 +127,7 @@ const VocabularyContents = ({ ...props }: Props) => {
                 whileHover={{ y: props?.clickable ? -2 : 0 }}
                 sx={{
                   cursor: props?.clickable ? 'pointer' : 'normal',
-                  height: 50,
+                  height: 70,
                   p: 1,
                   display: 'flex',
                   flexDirection: 'row',
@@ -147,22 +159,7 @@ const VocabularyContents = ({ ...props }: Props) => {
           />
         </>
       ) : (
-        <Box
-          sx={{
-            width: '100%',
-            height: 50,
-            background: '#e2e2e2',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mt: 4,
-            borderRadius: 3,
-          }}
-        >
-          <Typography color="text.secondary">
-            조회된 데이터가 없어요!
-          </Typography>
-        </Box>
+        <NoneDataOverlay mt={3} />
       )}
     </div>
   );

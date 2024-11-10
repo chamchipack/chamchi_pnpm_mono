@@ -1,60 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import db from '@/api/module';
 import { usePathname } from 'next/navigation';
-import {
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Box,
-  Chip,
-  IconButton,
-  Typography,
-  Tooltip,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CommonTitle from '@/components/word/CommonTitle';
+import { Box, Chip, IconButton, Tooltip } from '@mui/material';
 import PaginationComponent from 'package/src/Pagination/Pagination';
-import { kboFont } from 'package/styles/fonts/module';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import VerbFormTransformer from '@/components/word/verb/VerbFormTransformer';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
+import SaveModal from 'package/src/Modal/SaveModal';
 
-import { motion } from 'framer-motion';
-
-const parentVariants = {
-  initial: {},
-  hover: {},
-};
-
-const accordionVariants = {
-  initial: { width: '100%' }, // 초기 너비를 50%로 설정 (원하는 초기 값으로 수정)
-  hover: { width: '90%' }, // 호버 시 너비를 90%로 변경
-};
-
-const ssBoxVariants = {
-  initial: { width: '0%', display: 'none' }, // 초기 너비를 50%로 설정 (원하는 초기 값으로 수정)
-  hover: { width: '10%', display: 'block' }, // 호버 시 너비를 10%로 변경
-};
-
-const arrcodian = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-};
+import VocabularyHeader from './VocabularyHeader';
+import VocabularyItem from './VocabularyItem';
+import { Word, WordBase, Language } from '@/config/defaultType';
+import SearchInput from '@/components/language/SearchInput';
 
 interface Props {
   data: any;
   onClickReset: () => void;
+  onLoadVocaList: (value: number) => void;
   mode: string | 'create' | 'update';
 }
 
-const SelectedVocabulary = ({ data, onClickReset }: Props) => {
+const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
   const path = usePathname();
   const [, , language] = path.split('/');
 
   const [loading, setLoading] = useState(true);
-  const [rows, setRows] = useState<any[]>([]);
+  const [rows, setRows] = useState<Word<WordBase>[]>([]);
   const [total, setTotal] = useState(0);
   const [wordArray, setWordArray] = useState<string[]>(data?.wordId || []);
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
@@ -69,6 +39,10 @@ const SelectedVocabulary = ({ data, onClickReset }: Props) => {
   const [allKanaHidden, setAllKanaHidden] = useState(false);
   const [allKoHidden, setAllKoHidden] = useState(false);
   const [editmode, setEditmode] = useState(false);
+  const [modal, setModal] = useState<boolean>(false);
+  const [modalProcessing, setModalProcessing] = useState<boolean>(false);
+
+  const handleClose = () => setModal(false);
 
   const onLoadData = async (page: number) => {
     setLoading(true);
@@ -99,9 +73,26 @@ const SelectedVocabulary = ({ data, onClickReset }: Props) => {
     setWordArray(result);
   };
 
-  const onClickSave = async () => {
-    console.log(data?.id);
-    console.log(wordArray);
+  const onClickSave = async (mode: boolean) => {
+    if (!mode || !data?.id) return;
+
+    const form = {
+      id: data?.id,
+      wordId: wordArray,
+    };
+
+    await db.update('vocabulary', form);
+    // onLoadVocaList(1);
+  };
+
+  const onClickDeleteVoca = async () => {
+    if (!data.id) return;
+    setModalProcessing(true);
+
+    await db.delete('vocabulary', data?.id);
+    setModalProcessing(false);
+    onLoadVocaList(1);
+    onClickReset();
   };
 
   useEffect(() => {
@@ -163,35 +154,39 @@ const SelectedVocabulary = ({ data, onClickReset }: Props) => {
     });
   };
 
+  const onAddNewWord = (value: any) => {
+    const arraySet = new Set(data?.wordId);
+
+    // 찾고자 하는 값
+    const valueToFind = value?.id;
+
+    // Set을 사용하여 효율적으로 값 존재 여부 확인
+    if (arraySet.has(valueToFind)) {
+      console.log(`${valueToFind}는 배열에 존재합니다.`);
+    } else {
+      console.log(`${valueToFind}는 배열에 존재하지 않습니다.`);
+      setWordArray([value?.id, ...wordArray]);
+    }
+  };
+
   return (
     <>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          mb: 1,
-        }}
-      >
-        <IconButton
-          aria-label="search"
-          onClick={onClickReset}
-          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
-            e.preventDefault()
-          }
-          sx={{ alignSelf: 'center' }}
-        >
-          <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
-        </IconButton>
+      <VocabularyHeader
+        name={data?.name}
+        onClickReset={onClickReset}
+        onLoadVocaList={onLoadVocaList}
+        onDeleteVocabulary={() => setModal(true)}
+      />
 
-        <Typography
-          variant="subtitle1"
-          color="text.secondary"
-          sx={{ ...kboFont, ml: 1, alignSelf: 'center' }}
-        >
-          {data?.name}
-        </Typography>
-      </Box>
+      <SaveModal
+        open={modal}
+        onClickCheck={onClickDeleteVoca}
+        handleClose={handleClose}
+        title="단어장 삭제"
+        content="삭제하시겠습니까?"
+        isAlertModal={false}
+        processing={modalProcessing}
+      />
 
       <Box
         sx={{
@@ -204,149 +199,63 @@ const SelectedVocabulary = ({ data, onClickReset }: Props) => {
           alignItems: 'center',
         }}
       >
-        <Box>
-          <Chip
-            label={allTitlesHidden ? '단어 보이기' : '단어 가리기'}
-            clickable
-            onClick={handleTitleChipClick}
-            color={'default'}
-            sx={{ mr: 1 }}
-          />
-          <Chip
-            label={allKanaHidden ? '발음 보이기' : '발음 가리기'}
-            clickable
-            onClick={handleKanaChipClick}
-            color={'default'}
-            sx={{ mr: 1 }}
-          />
-          <Chip
-            label={allKoHidden ? '뜻 보이기' : '뜻 가리기'}
-            clickable
-            onClick={handleKoChipClick}
-            color={'default'}
-          />
-        </Box>
-        <Tooltip title={editmode ? '수정모드 끄기' : '수정하기'}>
+        {editmode ? (
+          <Box my={3} width="90%">
+            <SearchInput
+              language={language as Language}
+              routingStatus={false}
+              onAddNewWord={onAddNewWord}
+            />
+          </Box>
+        ) : (
+          <Box>
+            <Chip
+              label={allTitlesHidden ? '단어 보이기' : '단어 가리기'}
+              clickable
+              onClick={handleTitleChipClick}
+              color={'default'}
+              sx={{ mr: 1 }}
+            />
+            <Chip
+              label={allKanaHidden ? '발음 보이기' : '발음 가리기'}
+              clickable
+              onClick={handleKanaChipClick}
+              color={'default'}
+              sx={{ mr: 1 }}
+            />
+            <Chip
+              label={allKoHidden ? '뜻 보이기' : '뜻 가리기'}
+              clickable
+              onClick={handleKoChipClick}
+              color={'default'}
+            />
+          </Box>
+        )}
+        <Tooltip title={editmode ? '저장하기' : '수정하기'}>
           <IconButton
             onClick={() => {
-              if (editmode) onClickSave();
+              if (editmode) onClickSave(editmode);
               setEditmode(!editmode);
             }}
           >
-            <EditIcon color={editmode ? 'error' : 'info'} />
+            {!editmode ? (
+              <EditIcon color={'info'} />
+            ) : (
+              <SaveAsIcon color="success" />
+            )}
           </IconButton>
         </Tooltip>
       </Box>
 
       {rows.map((item) => (
-        <Box
-          component={editmode ? motion.div : 'div'}
-          variants={parentVariants}
-          initial="initial"
-          whileHover="hover"
-          sx={editmode ? arrcodian : { mb: 1 }}
-        >
-          <Accordion
-            key={item.id}
-            component={editmode ? motion.div : 'div'}
-            variants={accordionVariants}
-            disabled={!editmode ? false : true}
-            sx={{
-              boxShadow: 'none',
-              borderRadius: 2,
-              mb: 1,
-              border: 'none',
-              '&:before': {
-                display: 'none', // 아코디언 상단의 기본 보더 제거
-              },
-            }}
-          >
-            <AccordionSummary
-              expandIcon={!editmode && <ExpandMoreIcon />}
-              aria-controls={`panel-${item.id}-content`}
-              id={`panel-${item.id}-header`}
-              sx={{
-                borderBottom: 'none', // 하단 보더 제거
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Box sx={{ minWidth: 100 }}>
-                  <Typography
-                    onClick={(e) => {
-                      e.stopPropagation(); // 이벤트 전파 방지
-                      toggleVisibility(item.id, 'titleHidden');
-                    }}
-                    variant="h3"
-                    color="text.primary"
-                    sx={{
-                      cursor: 'pointer',
-                      '&:hover': { color: 'info.main' },
-                    }}
-                  >
-                    {hiddenStates[item.id]?.titleHidden ? '****' : item?.jp}
-                  </Typography>
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      color={
-                        hiddenStates[item.id]?.kanaHidden
-                          ? 'text.disabled'
-                          : 'info.main'
-                      }
-                      onClick={(e) => {
-                        e.stopPropagation(); // 이벤트 전파 방지
-                        toggleVisibility(item.id, 'kanaHidden');
-                      }}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      {hiddenStates[item.id]?.kanaHidden ? '****' : item?.kana}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      variant="subtitle2"
-                      color={
-                        hiddenStates[item.id]?.koHidden
-                          ? 'text.disabled'
-                          : 'text.primary'
-                      }
-                      onClick={(e) => {
-                        e.stopPropagation(); // 이벤트 전파 방지
-                        toggleVisibility(item.id, 'koHidden');
-                      }}
-                      sx={{ cursor: 'pointer' }}
-                    >
-                      {hiddenStates[item.id]?.koHidden ? '****' : item?.ko}
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-            </AccordionSummary>
-            <AccordionDetails
-              sx={{
-                borderTop: 'none', // 상단 보더 제거
-              }}
-            >
-              {/* 감춰진 부분에 다른 콘텐츠 추가 */}
-              {item?.type === 'verb' ? (
-                <VerbFormTransformer data={item} />
-              ) : null}
-            </AccordionDetails>
-          </Accordion>
-          {editmode && (
-            <Box component={motion.div} variants={ssBoxVariants}>
-              <IconButton
-                onClick={() => {
-                  onClickDelete(item.id);
-                }}
-              >
-                <DeleteForeverIcon />
-              </IconButton>
-            </Box>
-          )}
-        </Box>
+        <VocabularyItem
+          key={item.id}
+          item={item}
+          hiddenState={hiddenStates[item.id] || {}}
+          toggleVisibility={toggleVisibility}
+          editmode={editmode}
+          onDelete={onClickDelete}
+        />
       ))}
 
       <PaginationComponent

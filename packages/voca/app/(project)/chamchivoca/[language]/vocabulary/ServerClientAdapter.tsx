@@ -1,23 +1,54 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useSession } from 'next-auth/react';
-import { Skeleton } from '@mui/material';
+import { CircularProgress, Box, Typography, Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import AuthComponent from '@/components/layout/Footer/AuthComponent';
+import NeedAuthOverlay from 'package/src/Overlay/NeedAuthOverlay';
 
 interface Props {
   children: React.ReactNode;
 }
 
-// 서버컴포넌트에서 글 수정 컴포넌트인지 확인
 export default function ServerClientAdapter({ children }: Props) {
-  const [loading, setLoading] = useState(true);
-  const { data } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  if (status === 'loading') {
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <CircularProgress color="secondary" />
+        <Typography variant="h6" mt={2}>
+          잠시만 기다려주세요!
+        </Typography>
+      </Box>
+    );
+  }
 
-  if (loading && !data) return <div>잠시만 기다려주세요!</div>;
+  if (status === 'authenticated') {
+    return <>{children}</>;
+  }
 
-  if (data) return <div>{children}</div>;
-  else return <div>로그인이 필요한 서비스에요!</div>;
+  return (
+    <NeedAuthOverlay>
+      <AuthComponent />
+      <Typography variant="subtitle2" color="text.primary">
+        아이콘을 눌러 로그인을 진행해보세요!
+      </Typography>
+      <Typography
+        component="div"
+        variant="caption"
+        color="text.secondary"
+        sx={{ cursor: 'pointer', my: 4 }}
+        onClick={() => router.back()}
+      >
+        여기를 눌러 이전페이지로 돌아가기
+      </Typography>
+    </NeedAuthOverlay>
+  );
 }
