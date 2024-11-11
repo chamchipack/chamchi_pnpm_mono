@@ -6,6 +6,8 @@ import {
   AccordionDetails,
   IconButton,
   Typography,
+  Checkbox,
+  FormControlLabel,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -47,6 +49,9 @@ interface VocabularyItemProps {
   ) => void;
   editmode: boolean;
   onDelete: (id: string) => void;
+  isMemorized: boolean;
+  setMemorized: React.Dispatch<React.SetStateAction<string[]>>;
+  handleCheckboxChange: (value: string) => void;
 }
 
 const VocabularyItem = ({
@@ -55,6 +60,9 @@ const VocabularyItem = ({
   toggleVisibility,
   editmode,
   onDelete,
+  isMemorized,
+  setMemorized,
+  handleCheckboxChange,
 }: VocabularyItemProps) => {
   return (
     <Box
@@ -70,6 +78,7 @@ const VocabularyItem = ({
         variants={accordionVariants}
         disabled={editmode}
         sx={{
+          background: (theme) => (isMemorized ? theme.palette.brown.main : ''),
           boxShadow: 'none',
           borderRadius: 2,
           mb: 1,
@@ -136,6 +145,34 @@ const VocabularyItem = ({
             </Box>
           </Box>
         </AccordionSummary>
+        <FormControlLabel
+          sx={{ mx: 1, height: 10 }}
+          key={item.id}
+          control={
+            <Checkbox
+              checked={isMemorized}
+              onChange={() => handleCheckboxChange(item.id)}
+              sx={{
+                color: isMemorized ? 'info.main' : 'default',
+                '&.Mui-checked': {
+                  color: 'info.main', // 클릭 시 색상 변경
+                },
+              }}
+            />
+          }
+          label={
+            isMemorized ? (
+              <Typography variant="caption" color="text.secondary">
+                외웠어요!
+              </Typography>
+            ) : (
+              <Typography variant="caption" color="text.secondary">
+                아직 안외웠어요!
+              </Typography>
+            )
+          } // 체크박스 오른쪽에 표시할 텍스트
+        />
+
         <AccordionDetails
           sx={{
             borderTop: 'none',

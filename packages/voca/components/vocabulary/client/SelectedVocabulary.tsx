@@ -12,6 +12,8 @@ import VocabularyItem from './VocabularyItem';
 import { Word, WordBase, Language } from '@/config/defaultType';
 import SearchInput from '@/components/language/SearchInput';
 
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 interface Props {
   data: any;
   onClickReset: () => void;
@@ -25,6 +27,7 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
 
   const [loading, setLoading] = useState(true);
   const [rows, setRows] = useState<Word<WordBase>[]>([]);
+  const [memorized, setMemorized] = useState<string[]>(data?.memorized || []);
   const [total, setTotal] = useState(0);
   const [wordArray, setWordArray] = useState<string[]>(data?.wordId || []);
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
@@ -40,6 +43,7 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
   const [allKoHidden, setAllKoHidden] = useState(false);
   const [editmode, setEditmode] = useState(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(data?.name || '');
   const [modalProcessing, setModalProcessing] = useState<boolean>(false);
 
   const handleClose = () => setModal(false);
@@ -61,6 +65,7 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
     });
 
     const _result = Array.isArray(result) ? result : result?.items;
+
     setRows(_result);
     setTotal(result?.totalItems);
     setLoading(false);
@@ -71,6 +76,11 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
     const result = wordArray.filter((item) => item !== id) || [];
 
     setWordArray(result);
+
+    if (memorized.includes(id)) {
+      await delay(400);
+      handleCheckboxChange(id);
+    }
   };
 
   const onClickSave = async (mode: boolean) => {
@@ -79,6 +89,7 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
 
     const form = {
       id: data?.id,
+      name: title,
       wordId: result,
     };
 
@@ -94,6 +105,21 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
     setModalProcessing(false);
     onLoadVocaList(1);
     onClickReset();
+  };
+
+  const handleCheckboxChange = async (itemId: string) => {
+    const result = memorized.includes(itemId)
+      ? memorized.filter((id) => id !== itemId) // 이미 포함되어 있으면 제거
+      : [...memorized, itemId];
+
+    setMemorized(result);
+
+    const form = {
+      id: data?.id,
+      name: title,
+      memorized: result,
+    };
+    await db.update('vocabulary', form);
   };
 
   useEffect(() => {
@@ -173,10 +199,12 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
   return (
     <>
       <VocabularyHeader
-        name={data?.name}
+        name={title}
+        setTitle={setTitle}
         onClickReset={onClickReset}
         onLoadVocaList={onLoadVocaList}
         onDeleteVocabulary={() => setModal(true)}
+        editmode={editmode}
       />
 
       <SaveModal
@@ -252,10 +280,13 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
         <VocabularyItem
           key={item.id}
           item={item}
+          setMemorized={setMemorized}
+          isMemorized={memorized.includes(item.id)}
           hiddenState={hiddenStates[item.id] || {}}
           toggleVisibility={toggleVisibility}
           editmode={editmode}
           onDelete={onClickDelete}
+          handleCheckboxChange={handleCheckboxChange}
         />
       ))}
 
