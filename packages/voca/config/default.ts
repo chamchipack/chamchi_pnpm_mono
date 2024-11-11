@@ -773,6 +773,9 @@ export const hiragana = {
     { jp: 'す', ro: 'su', ko: '스' },
     { jp: 'せ', ro: 'se', ko: '세' },
     { jp: 'そ', ro: 'so', ko: '소' },
+    { jp: 'しゃ', ro: 'sha', ko: '샤' },
+    { jp: 'しゅ', ro: 'shu', ko: '슈' },
+    { jp: 'しょ', ro: 'sho', ko: '쇼' },
   ],
   ta: [
     { jp: 'た', ro: 'ta', ko: '타' },
@@ -807,6 +810,7 @@ export const hiragana = {
     { jp: 'や', ro: 'ya', ko: '야' },
     { jp: 'ゆ', ro: 'yu', ko: '유' },
     { jp: 'よ', ro: 'yo', ko: '요' },
+    // { jp: 'ょ', ro: 'yo', ko: '요' },
   ],
   ra: [
     { jp: 'ら', ro: 'ra', ko: '라' },
