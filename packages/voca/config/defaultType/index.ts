@@ -9,7 +9,7 @@ export interface Example {
 
 export interface Noun {}
 export interface Adj {
-  kind: 'i' | 'na';
+  form: 'i' | 'na';
   exception: boolean;
 }
 export interface Adv {}

@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import LikeButton from './common/LikeButton';
 import { Adj, Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
 import { hiragana } from '@/config/default';
+import AdjectiveTransformer from './adj/AdjectiveTransformer';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
@@ -16,7 +17,7 @@ export default function Detail({ ...props }) {
 
   const verbGroupNamed = (data: Word<WordBase>) => {
     if (data?.type === 'adj') {
-      const kind = (data.etc as Adj).kind;
+      const kind = (data.etc as Adj).form;
 
       let result = '';
 
@@ -107,7 +108,11 @@ export default function Detail({ ...props }) {
           </>
         ) : null}
 
-        {data?.type === 'verb' ? <VerbFormTransformer data={data} /> : null}
+        {data?.type === 'noun' ? null : data?.type === 'adj' ? (
+          <AdjectiveTransformer data={data} />
+        ) : data?.type === 'verb' ? (
+          <VerbFormTransformer data={data} />
+        ) : null}
       </Box>
     </>
   );
