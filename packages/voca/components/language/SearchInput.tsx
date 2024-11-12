@@ -31,7 +31,6 @@ export default function SearchInput({
   const handleSearchChange = async (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    console.info('!!!!!!');
     const inputValue = event.target.value.toLowerCase();
     setSearchTerm(inputValue);
 

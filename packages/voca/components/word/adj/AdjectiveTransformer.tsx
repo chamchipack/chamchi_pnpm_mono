@@ -39,11 +39,8 @@ const AdjectiveTransformer = ({ ...props }) => {
   };
 
   const onConvertRow = (name: string, value: any) => {
-    const {
-      ko = '',
-      jp = '',
-      etc: { endingro = '', stemjp = '', exception = false, form = '' } = {},
-    } = data;
+    const { ko = '', etc: { stemjp = '', exception = false, form = '' } = {} } =
+      data;
 
     // console.log(value, form);
     const good = value[form];

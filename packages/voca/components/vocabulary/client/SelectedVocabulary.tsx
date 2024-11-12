@@ -184,10 +184,8 @@ const SelectedVocabulary = ({ data, onClickReset, onLoadVocaList }: Props) => {
   const onAddNewWord = (value: any) => {
     const arraySet = new Set(data?.wordId);
 
-    // 찾고자 하는 값
     const valueToFind = value?.id;
 
-    // Set을 사용하여 효율적으로 값 존재 여부 확인
     if (arraySet.has(valueToFind)) {
       // console.log(`${valueToFind}는 배열에 존재합니다.`);
     } else {

@@ -5,6 +5,8 @@ import VocaList from '@/components/language/VocaList';
 import WordList from '@/components/language/WordList';
 import CreateButton from '../client/CreateButton';
 import { Language, Verb, Word, WordBase } from '@/config/defaultType';
+import WordEditor from '../client/WordEditor';
+import ServerClientAdapter from '../client/ServerClientAdapter';
 
 interface Props {
   language: Language;
@@ -32,6 +34,9 @@ const Main = async ({ ...props }: Props) => {
       </div>
 
       {/* <CreateButton /> */}
+      <ServerClientAdapter>
+        <WordEditor language={props?.language} />
+      </ServerClientAdapter>
 
       <div style={{ height: 200, marginTop: 20, padding: 10 }}>
         <WordList language={props?.language} />
