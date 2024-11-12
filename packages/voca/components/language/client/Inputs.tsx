@@ -1,19 +1,42 @@
 import React from 'react';
 import { TextField, Typography, Box } from '@mui/material';
 
-export default function Inputs() {
+interface Props {
+  value: any;
+  label: string;
+  onChangeItem: (key: string, data: any) => void;
+  dataKey: string;
+}
+
+export default function LabelAndInputs({ ...props }: Props) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-      {/* 왼쪽에 위치한 라벨 */}
-      <Typography variant="body1" color="text.primary">
-        라벨
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        my: 1,
+        gap: 1,
+        width: '100%',
+      }}
+    >
+      <Typography
+        variant="caption"
+        color="text.primary"
+        sx={{ flexShrink: 0 }} // 라벨은 고정 크기로 유지
+      >
+        {props?.label}
       </Typography>
 
-      {/* 텍스트 필드 */}
       <TextField
         variant="outlined"
         fullWidth
+        autoFocus
+        value={props?.value}
+        onChange={(e) => props?.onChangeItem(props?.dataKey, e.target.value)}
         sx={{
+          width: '70%',
+          // flexGrow: 1, // 남은 공간을 채우도록 설정
           height: 40,
           backgroundColor: 'grey.200',
           color: 'common.black',
