@@ -1,5 +1,18 @@
-import { Language, TypeGbn, Word, WordBase } from '@/config/defaultType';
-import { Box, Chip, Divider, IconButton, Typography } from '@mui/material';
+import {
+  Example,
+  Language,
+  TypeGbn,
+  Word,
+  WordBase,
+} from '@/config/defaultType';
+import {
+  Box,
+  Button,
+  Chip,
+  Divider,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchInput from '../SearchInput';
 import Chips from './Chips';
@@ -7,6 +20,7 @@ import LabelAndInputs from './Inputs';
 import ExampleInputs from './ExampleInput';
 import AddIcon from '@mui/icons-material/Add';
 import { kboFont } from 'package/styles/fonts/module';
+import AlertModal from 'package/src/Modal/SaveModal';
 
 interface Props {
   language: Language;
@@ -14,7 +28,12 @@ interface Props {
 
 export default function EditorContainer({ language }: Props) {
   const [item, setItem] = useState<Word<WordBase>>();
-  const [example, setExample] = useState(item?.example || []);
+  const [example, setExample] = useState<Example[]>(item?.example || []);
+  const [modal, setModal] = useState(false);
+
+  const onClose = () => setModal(false);
+
+  const onClickSaveWord = async () => {};
 
   const onChangeItem = (key: string, data: any) => {
     setItem((prev: any) => ({
@@ -43,10 +62,29 @@ export default function EditorContainer({ language }: Props) {
 
   useEffect(() => {
     console.info(item);
-    console.info(example);
-  }, [item, example]);
+    if (item?.example) setExample(item?.example);
+  }, [item]);
   return (
     <Box sx={{ height: 500, overflowY: 'auto', p: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
+        <Chip
+          sx={{
+            background: (theme) => theme.palette.info.light,
+            color: 'text.secondary',
+          }}
+          onClick={() => setModal(true)}
+          label={'저장'}
+        ></Chip>
+        <Chip
+          sx={{ background: (theme) => theme.palette.warning.main, mx: 1 }}
+          onClick={() => {
+            setItem({} as Word<WordBase>);
+            setExample([]);
+          }}
+          label={'초기화'}
+        ></Chip>
+      </Box>
+
       <SearchInput
         language={language as Language}
         routingStatus={false}
@@ -64,6 +102,7 @@ export default function EditorContainer({ language }: Props) {
         label="단어 원문"
         onChangeItem={onChangeItem}
         dataKey="jp"
+        languageType={'jp'}
       />
 
       <LabelAndInputs
@@ -71,6 +110,7 @@ export default function EditorContainer({ language }: Props) {
         label="가나"
         onChangeItem={onChangeItem}
         dataKey="kana"
+        languageType={'kana'}
       />
 
       <LabelAndInputs
@@ -78,6 +118,7 @@ export default function EditorContainer({ language }: Props) {
         label="한국어"
         onChangeItem={onChangeItem}
         dataKey="ko"
+        languageType={'ko'}
       />
 
       <LabelAndInputs
@@ -85,6 +126,7 @@ export default function EditorContainer({ language }: Props) {
         label="로마자"
         onChangeItem={onChangeItem}
         dataKey="ro"
+        languageType={'en'}
       />
 
       <Divider sx={{ my: 2 }} />
@@ -138,6 +180,15 @@ export default function EditorContainer({ language }: Props) {
           <AddIcon sx={{ fontSize: 14, mr: 1 }} />
         </Box>
       </Box>
+
+      <AlertModal
+        open={modal}
+        handleClose={onClose}
+        title="데이터 저장"
+        content="데이터를 저장하시겠어요?"
+        processing={false}
+        onClickCheck={() => console.info(item)}
+      />
     </Box>
   );
 }

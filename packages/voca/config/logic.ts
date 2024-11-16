@@ -448,6 +448,26 @@ export const verbLogic: any = [
     key: 'imperative',
     value: [
       {
+        id: '',
+        name: '하지말아주세요',
+        value: {
+          '1': {
+            u: 'wa_na_i_de_ku_da_sa_i',
+            ku: 'ka_na_i_de_ku_da_sa_i',
+            gu: 'ga_na_i_de_ku_da_sa_i',
+            su: 'sa_na_i_de_ku_da_sa_i',
+            tsu: 'ta_na_i_de_ku_da_sa_i',
+            nu: 'na_na_i_de_ku_da_sa_i',
+            mu: 'ma_na_i_de_ku_da_sa_i',
+            ru: 'ra_na_i_de_ku_da_sa_i',
+            bu: 'ba_na_i_de_ku_da_sa_i',
+          },
+          '2': {
+            ru: 'na_i_de_ku_da_sa_i',
+          },
+        },
+      },
+      {
         id: 'e4hkv8111lofy5x',
         name: '하면안된다',
         value: {

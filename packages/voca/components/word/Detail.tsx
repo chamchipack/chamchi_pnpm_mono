@@ -42,6 +42,12 @@ export default function Detail({ ...props }) {
     }
   };
 
+  const handleMouseUp = () => {
+    const selection = window.getSelection()?.toString();
+
+    console.info(selection);
+  };
+
   return (
     <>
       <SearchInput language={props?.language} routingStatus={true} />
@@ -95,7 +101,15 @@ export default function Detail({ ...props }) {
               <>
                 {data?.example.map((example, index) => (
                   <Box sx={{ mt: 3 }} key={index}>
-                    <Typography color="text.primary">{example.jp}</Typography>
+                    <Typography
+                      color="text.primary"
+                      onMouseUp={handleMouseUp}
+                      sx={{
+                        userSelect: 'text',
+                      }}
+                    >
+                      {example.jp}
+                    </Typography>
                     <Typography variant="caption" color="text.secondary">
                       {example.ko}
                     </Typography>

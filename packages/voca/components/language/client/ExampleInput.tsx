@@ -36,9 +36,13 @@ export default function ExampleInputs({ ...props }: Props) {
           fullWidth
           autoFocus
           value={props?.value2}
-          onChange={(e) =>
-            props?.onChangeExample('jp', props?.index, e.target.value)
-          }
+          onChange={(e) => {
+            const inputValue = e.target.value;
+            const japaneseRegex = /^[\u3040-\u30FF\u4E00-\u9FFF]*$/;
+
+            if (japaneseRegex.test(inputValue))
+              props?.onChangeExample('jp', props?.index, inputValue);
+          }}
           sx={{
             width: '70%',
             // flexGrow: 1, // 남은 공간을 채우도록 설정
