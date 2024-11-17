@@ -143,6 +143,7 @@ const StudentGrid = ({ total = 0 }) => {
                   id,
                   currentStatus: currentStatus ? false : true,
                 });
+                refetch();
                 // Refresh data after update
               } catch (e) {
                 console.error(e);

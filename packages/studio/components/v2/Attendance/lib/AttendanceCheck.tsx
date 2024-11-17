@@ -185,6 +185,7 @@ const AttendanceCheck = ({ rows, loading, load }: Props) => {
       toast.error('오류가 발생했습니다.');
     }
 
+    setEvent({});
     setProcessing(false);
     setOpen(false);
     toast.success('정상적으로 처리 되었습니다.');
