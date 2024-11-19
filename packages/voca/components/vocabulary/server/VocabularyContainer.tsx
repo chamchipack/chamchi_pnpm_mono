@@ -27,7 +27,21 @@ export default function VocabularyContainer({ ...props }: Props) {
 
       <ModalWrapper open={open} onClose={onClose}>
         <div style={{ height: 400 }}>
-          <LikedVocabulary />
+          <Box
+            sx={{
+              mt: 1,
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              px: 1,
+            }}
+          >
+            <Typography variant="subtitle1" color="text.primary">
+              좋아요를 표시한 단어
+            </Typography>
+            <LikedVocabulary />
+          </Box>
 
           <Box
             sx={{

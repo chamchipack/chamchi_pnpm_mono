@@ -20,33 +20,37 @@ const Main = async ({ ...props }: Props) => {
     sort: {},
   };
 
-  const result = await getData(parameter);
-  const list: Word<WordBase>[] = result?.data?.items || [];
+  try {
+    const result = await getData(parameter);
+    const list: Word<WordBase>[] = result?.data?.items || [];
 
-  return (
-    <>
-      <div style={{ height: 60, padding: 10 }}>
-        <SearchInput language={props?.language} routingStatus={true} />
-      </div>
+    return (
+      <>
+        <div style={{ height: 60, padding: 10 }}>
+          <SearchInput language={props?.language} routingStatus={true} />
+        </div>
 
-      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-        <TodayWord language={props?.language} row={list[0]} />
-      </div>
+        <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+          <TodayWord language={props?.language} row={list[0]} />
+        </div>
 
-      {/* <CreateButton /> */}
-      <ServerClientAdapter>
-        <WordEditor language={props?.language} />
-      </ServerClientAdapter>
+        {/* <CreateButton /> */}
+        {/* <ServerClientAdapter>
+          <WordEditor language={props?.language} />
+        </ServerClientAdapter> */}
 
-      <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-        <WordList language={props?.language} />
-      </div>
+        <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+          <WordList language={props?.language} />
+        </div>
 
-      {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-        <VocaList language={props?.language} />
-      </div> */}
-    </>
-  );
+        {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+          <VocaList language={props?.language} />
+        </div> */}
+      </>
+    );
+  } catch (e) {
+    return <></>;
+  }
 };
 
 export default Main;

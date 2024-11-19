@@ -1,6 +1,6 @@
 'use client';
 import { Box, Chip, Divider, IconButton, Typography } from '@mui/material';
-import { verbLogic } from '@/config/logic';
+import { verbLogic } from '@/config/transformLogic/verb';
 import { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { Verb, Word } from '@/config/defaultType';
@@ -40,52 +40,56 @@ const VerbFormTransformer = ({ ...props }) => {
   };
 
   const onConvertRow = (name: string, value: any) => {
-    const { ko = '', etc: { form = 0, endingro = '', stemjp = '' } = {} } =
-      data;
+    try {
+      const { ko = '', etc: { form = 0, endingro = '', stemjp = '' } = {} } =
+        data;
 
-    const good = value[form];
-    const romaji = good[endingro].split('_');
+      const good = value[form];
+      const romaji = good[endingro].split('_');
 
-    let result = '';
-    romaji.map((o: string) => {
-      Object.values(hiragana).forEach((data) => {
-        const { jp = '' } = data.find(({ ro: _ro }) => _ro === o) || {};
-        if (jp) result += jp;
+      let result = '';
+      romaji.map((o: string) => {
+        Object.values(hiragana).forEach((data) => {
+          const { jp = '' } = data.find(({ ro: _ro }) => _ro === o) || {};
+          if (jp) result += jp;
+        });
       });
-    });
 
-    return (
-      <>
-        <Box
-          sx={{
-            p: 1,
-            boxShadow: 3,
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            mt: 2,
-            borderRadius: 3,
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            component="span"
-            color="info.main"
-            variant="caption"
-            sx={{ minWidth: 100 }}
+      return (
+        <>
+          <Box
+            sx={{
+              p: 1,
+              boxShadow: 3,
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              mt: 2,
+              borderRadius: 3,
+              alignItems: 'center',
+            }}
           >
-            {`${ko} + ${name}`}
-          </Typography>
-          <Typography component="span" color="text.primary" sx={{ mx: 3 }}>
-            {stemjp}
-            <Typography component="span" color="error.main">
-              {result}
+            <Typography
+              component="span"
+              color="info.main"
+              variant="caption"
+              sx={{ minWidth: 100 }}
+            >
+              {`${ko} + ${name}`}
             </Typography>
-          </Typography>
-        </Box>
-        {/* <Divider /> */}
-      </>
-    );
+            <Typography component="span" color="text.primary" sx={{ mx: 3 }}>
+              {stemjp}
+              <Typography component="span" color="error.main">
+                {result}
+              </Typography>
+            </Typography>
+          </Box>
+          {/* <Divider /> */}
+        </>
+      );
+    } catch {
+      return <></>;
+    }
   };
 
   return (

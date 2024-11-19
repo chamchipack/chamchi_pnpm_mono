@@ -1,18 +1,11 @@
 import {
+  Collection,
   Example,
   Language,
-  TypeGbn,
   Word,
   WordBase,
 } from '@/config/defaultType';
-import {
-  Box,
-  Button,
-  Chip,
-  Divider,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Box, Divider, IconButton, Tooltip, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import SearchInput from '../SearchInput';
 import Chips from './Chips';
@@ -21,6 +14,9 @@ import ExampleInputs from './ExampleInput';
 import AddIcon from '@mui/icons-material/Add';
 import { kboFont } from 'package/styles/fonts/module';
 import AlertModal from 'package/src/Modal/SaveModal';
+import SaveIcon from '@mui/icons-material/Save';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import db from '@/api/module';
 
 interface Props {
   language: Language;
@@ -30,8 +26,11 @@ export default function EditorContainer({ language }: Props) {
   const [item, setItem] = useState<Word<WordBase>>();
   const [example, setExample] = useState<Example[]>(item?.example || []);
   const [modal, setModal] = useState(false);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState<string>('');
 
   const onClose = () => setModal(false);
+  const onAlertClose = () => setAlert(false);
 
   const onClickSaveWord = async () => {};
 
@@ -60,29 +59,92 @@ export default function EditorContainer({ language }: Props) {
     });
   };
 
-  useEffect(() => {
+  const onSetAlert = (value: string) => {
+    setContent(value || '');
+    setAlert(true);
+  };
+
+  const convertSaveForm = (type: string, value: any) => {
+    if (type === 'noun') return null;
+    else if (type === 'verb') return {};
+    else if (type === 'adj') return {};
+    else if (type === 'adv') return {};
+    else return {};
+  };
+
+  const onClickSave = async () => {
+    onClose();
     console.info(item);
+
+    // 하나라도 빼먹지 마세요
+    if (!item?.jp || !item?.ko || !item?.kana || !item?.ro)
+      return onSetAlert('입력하지 않은 칸이 존재합니다');
+
+    if (!item?.type) return onSetAlert('단어의 형태를 선택해주세요. (동사 등)');
+
+    if (item?.id) {
+      // update 대상
+      const form = { ...item, example };
+    } else {
+      //create 대상
+
+      const { data = [] } = await db.search(language as Collection, {
+        options: { 'jp.equal': item.jp },
+      });
+
+      const [{ jp = '', type = '' } = {}] = data;
+
+      // 같은 단어 있는지 여부
+      if (type === item?.type)
+        return onSetAlert('이미 저장된 같은 단어가 존재합니다');
+
+      const convert = {
+        jp: item?.jp,
+        ro: item?.ro,
+        kana: item?.kana,
+      };
+
+      const result = convertSaveForm(item?.type, convert);
+
+      const form = { ...item, example, etc: result };
+      console.log(form);
+
+      // await db.create(language as Collection, form)
+    }
+
+    console.info(item);
+    console.info(example);
+  };
+
+  useEffect(() => {
     if (item?.example) setExample(item?.example);
   }, [item]);
   return (
     <Box sx={{ height: 500, overflowY: 'auto', p: 2 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'row', mb: 1 }}>
-        <Chip
-          sx={{
-            background: (theme) => theme.palette.info.light,
-            color: 'text.secondary',
-          }}
-          onClick={() => setModal(true)}
-          label={'저장'}
-        ></Chip>
-        <Chip
-          sx={{ background: (theme) => theme.palette.warning.main, mx: 1 }}
-          onClick={() => {
-            setItem({} as Word<WordBase>);
-            setExample([]);
-          }}
-          label={'초기화'}
-        ></Chip>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'end',
+          mb: 1,
+        }}
+      >
+        <Tooltip title={'초기화'}>
+          <IconButton
+            onClick={() => {
+              setItem({} as Word<WordBase>);
+              setExample([]);
+            }}
+          >
+            <RestartAltIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title={'저장'}>
+          <IconButton onClick={() => setModal(true)}>
+            <SaveIcon />
+          </IconButton>
+        </Tooltip>
       </Box>
 
       <SearchInput
@@ -94,6 +156,14 @@ export default function EditorContainer({ language }: Props) {
       />
 
       <Divider sx={{ my: 2 }} />
+
+      <Typography
+        variant="caption"
+        color="text.primary"
+        sx={{ flexShrink: 0, ...kboFont, mb: 1 }} // 라벨은 고정 크기로 유지
+      >
+        일반정보
+      </Typography>
 
       <Chips item={item} onChangeItem={onChangeItem} />
 
@@ -187,7 +257,17 @@ export default function EditorContainer({ language }: Props) {
         title="데이터 저장"
         content="데이터를 저장하시겠어요?"
         processing={false}
-        onClickCheck={() => console.info(item)}
+        onClickCheck={onClickSave}
+      />
+
+      <AlertModal
+        open={alert}
+        handleClose={onAlertClose}
+        title="저장실패"
+        content={content || '오류가 발생했습니다'}
+        processing={false}
+        isAlertModal={true}
+        onClickCheck={() => {}}
       />
     </Box>
   );

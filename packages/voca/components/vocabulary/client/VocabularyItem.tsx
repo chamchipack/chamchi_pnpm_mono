@@ -14,6 +14,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import VerbFormTransformer from '@/components/word/verb/VerbFormTransformer';
 import { motion } from 'framer-motion';
 import { Word, WordBase } from '@/config/defaultType';
+import AdjectiveTransformer from '@/components/word/adj/AdjectiveTransformer';
 
 const parentVariants = {
   initial: {},
@@ -178,7 +179,11 @@ const VocabularyItem = ({
             borderTop: 'none',
           }}
         >
-          {item?.type === 'verb' ? <VerbFormTransformer data={item} /> : null}
+          {item?.type === 'noun' ? null : item?.type === 'verb' ? (
+            <VerbFormTransformer data={item} />
+          ) : item?.type === 'adj' ? (
+            <AdjectiveTransformer data={item} />
+          ) : null}
         </AccordionDetails>
       </Accordion>
       {editmode && (
