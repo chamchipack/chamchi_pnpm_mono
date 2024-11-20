@@ -1,8 +1,15 @@
 'use client';
+import { Language } from '@/config/defaultType';
 import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { kboFont } from 'package/styles/fonts/module';
 
-export default function VocaList() {
+interface Props {
+  language: Language;
+}
+
+export default function VocaList({ ...props }: Props) {
+  const router = useRouter();
   // 단어 종류와 색상 배열
   const categories = [
     { label: '1', color: (theme: any) => theme.palette.primary.main },
@@ -25,6 +32,7 @@ export default function VocaList() {
         p: 2,
         background: (theme) => theme.palette.background.default,
       }}
+      onClick={() => router.push(`/chamchivoca/${props?.language}/vocabulary`)}
     >
       <Box
         sx={{

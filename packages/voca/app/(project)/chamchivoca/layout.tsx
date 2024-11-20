@@ -1,5 +1,5 @@
 import HeaderContainer from '@/components/layout/Header/HeaderContainer';
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './layout.module.css';
 import FooterContainer from '@/components/layout/Footer/FooterContainer';
 import ServerClientAdapter from './ServerClientAdapter';
@@ -7,6 +7,11 @@ import ServerClientAdapter from './ServerClientAdapter';
 const Layout = async ({
   children,
 }: Readonly<{ children: React.ReactNode }>) => {
+  // useMemo를 사용하여 children을 메모이제이션
+  const memoizedChildren = useMemo(() => {
+    return <>{children}</>;
+  }, [children]);
+
   return (
     <>
       <ServerClientAdapter>
@@ -24,7 +29,7 @@ const Layout = async ({
             className={styles['responsive-container']}
             style={{ height: '100%' }}
           >
-            {children}
+            {memoizedChildren}
           </div>
           <FooterContainer />
         </div>

@@ -1,3 +1,4 @@
+import { Language } from '@/config/defaultType';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
@@ -5,7 +6,7 @@ interface Props {
   title: string;
   variant: 'subtitle1' | 'subtitle2' | 'h5' | 'h4' | 'h3' | 'h2';
   color: string;
-  language: string;
+  language: Language;
   id: string;
 }
 export default function CommonTitle({ ...props }: Props) {

@@ -1,5 +1,6 @@
 {
   "editor.formatOnSave": true, // 저장 시 포맷팅 실행
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

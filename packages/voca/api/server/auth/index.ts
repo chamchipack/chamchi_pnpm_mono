@@ -1,5 +1,5 @@
-import pb from "@/api/server/db/pocketbase";
-const jwt = require("jsonwebtoken");
+import pb from '@/api/server/db/pocketbase';
+const jwt = require('jsonwebtoken');
 
 export interface User {
   id: string;
@@ -30,12 +30,12 @@ class AuthService {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_AUTH_SERVER}/keep-alive`,
         {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
-            "x-chamchiapi-key": process.env.NEXT_PUBLIC_SECRET_APY_KEY || "",
+            'Content-Type': 'application/json',
+            'x-chamchiapi-key': process.env.NEXT_PUBLIC_SECRET_APY_KEY || '',
           },
-        }
+        },
       );
       const result = await response.json();
       return result.alive;
@@ -46,19 +46,19 @@ class AuthService {
 
   private async authenticateWithExternalServer(
     userId: string,
-    pw: string
+    pw: string,
   ): Promise<User | null> {
     try {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_AUTH_SERVER}/users/signin`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            "x-chamchiapi-key": process.env.NEXT_PUBLIC_SECRET_APY_KEY || "",
+            'Content-Type': 'application/json',
+            'x-chamchiapi-key': process.env.NEXT_PUBLIC_SECRET_APY_KEY || '',
           },
           body: JSON.stringify({ userid: userId, password: pw }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -73,7 +73,7 @@ class AuthService {
         refreshToken: data.refresh_token,
       };
     } catch (e) {
-      console.error("Error authenticating with external server:", e);
+      console.error('Error authenticating with external server:', e);
       return null;
     }
   }
@@ -81,11 +81,11 @@ class AuthService {
   // 로컬 서버에서 사용자 인증을 처리하는 함수
   private async authenticateWithLocalServer(
     userId: string,
-    pw: string
+    pw: string,
   ): Promise<User | null> {
     try {
       const { record }: { record: any } = await pb
-        .collection("instructor")
+        .collection('instructor')
         .authWithPassword(userId, pw);
 
       const { id, isAdmin, name, menuAccess, username } = record;
@@ -101,7 +101,7 @@ class AuthService {
         ...token,
       };
     } catch (e) {
-      console.error("Error authenticating with local server:", e);
+      console.error('Error authenticating with local server:', e);
       return null;
     }
   }
@@ -128,9 +128,9 @@ class AuthService {
   private async findAdmin(id: string) {
     const token = await this.createToken(id);
     const superUser: User = {
-      id: "superaccount",
-      name: "시스템관리자",
-      username: "시스템관리자",
+      id: 'superaccount',
+      name: '시스템관리자',
+      username: '시스템관리자',
       menuAccess: id,
       isAdmin: true,
       isSuperAccount: true,
@@ -158,13 +158,13 @@ class AuthService {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_AUTH_SERVER}/users/signout`,
         {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
-            "x-chamchiapi-key": process.env.NEXT_PUBLIC_SECRET_APY_KEY || "",
+            'Content-Type': 'application/json',
+            'x-chamchiapi-key': process.env.NEXT_PUBLIC_SECRET_APY_KEY || '',
           },
           body: JSON.stringify({ userid: username }),
-        }
+        },
       );
     } catch (e) {
       console.log(e);

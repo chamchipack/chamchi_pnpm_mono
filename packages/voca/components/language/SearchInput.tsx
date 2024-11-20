@@ -9,50 +9,82 @@ import {
 } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import db from '@/api/module';
+import { Collection, Language } from '@/config/defaultType';
 
-// 예시 검색 데이터
-const searchResults: { title: string; id: string }[] = [
-  { title: '会う', id: 'wfiugbasdbkl' },
-];
+interface Props {
+  language: Language;
+  routingStatus: boolean;
+  onAddNewWord?: (value: any) => void;
+}
 
-export default function SearchInput() {
+export default function SearchInput({
+  onAddNewWord,
+  language,
+  routingStatus = true,
+}: Props) {
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredResults, setFilteredResults] = useState(searchResults);
+  const [filteredResults, setFilteredResults] = useState([]);
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const inputValue = event.target.value.toLowerCase();
     setSearchTerm(inputValue);
-    setFilteredResults(
-      searchResults.filter((result) =>
-        result.title.toLowerCase().includes(inputValue),
-      ),
-    );
+
+    if (!inputValue) return setFilteredResults([]);
+
+    const { data = [] } = await db.search(language as Collection, {
+      options: {
+        query: `(jp~"${inputValue}") || (kana~"${inputValue}") || (ko~"${inputValue}") || (ro~"${inputValue}")`,
+      },
+    });
+    setFilteredResults(data); // 검색 결과를 filteredResults 상태로 설정
   };
 
   const onClickSearch = () => {
-    router.push(`/chamchivoca/japanese/search/?value=${searchTerm}`);
+    router.push(`/chamchivoca/${language}/search/?value=${searchTerm}`);
   };
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+      {routingStatus && (
+        <IconButton
+          sx={{ p: '4px', minWidth: 40 }}
+          aria-label="search"
+          onClick={() => router.back()}
+          onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
+            e.preventDefault()
+          }
+        >
+          <ArrowBackIosNewIcon sx={{ color: 'text.primary' }} />
+        </IconButton>
+      )}
       <Autocomplete
         sx={{ width: '100%' }}
         freeSolo
         onChange={(event, value: any) => {
-          // value가 객체 형태이므로 id를 추출
+          if (!routingStatus && onAddNewWord) return onAddNewWord(value);
           if (value && value.id) {
-            console.info(value.id);
             router.push(`/chamchivoca/japanese/${value.id}`);
           }
         }}
-        options={filteredResults} // 객체 배열을 options으로 전달
-        getOptionLabel={(option) => option.title} // 표시할 레이블을 title로 설정
+        options={filteredResults}
+        getOptionLabel={(option) => option.jp || ''}
+        filterOptions={(options) => options}
         renderInput={(params) => (
           <TextField
             {...params}
             variant="outlined"
             onChange={handleSearchChange}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault(); // 기본 Enter 동작 방지
+                onClickSearch(); // Enter로 검색 실행
+              }
+            }}
             fullWidth
             sx={{
               height: 40,
@@ -77,10 +109,27 @@ export default function SearchInput() {
             key={option.id}
             sx={{ background: (theme) => theme.palette.background.default }}
           >
-            <Typography color="common.black">{option.title}</Typography>
+            <Typography color="common.black" sx={{ mr: 1 }}>
+              {option.jp}
+            </Typography>{' '}
+            <Typography color="info.main" variant="caption" sx={{ mr: 2 }}>
+              {option.kana}
+            </Typography>{' '}
+            <Typography color="common.black" sx={{ mr: 2 }}>
+              {option.ko}
+            </Typography>{' '}
+            <Typography variant="caption" color="text.secondary">
+              {option.ro}
+            </Typography>{' '}
           </Box>
         )}
-        noOptionsText="No results found" // 결과 없을 때 표시
+        noOptionsText={
+          filteredResults.length === 0 ? (
+            <Typography>'검색 결과가 없습니다.'</Typography>
+          ) : (
+            <Typography>'검색 결과가 없습니다.'</Typography>
+          )
+        }
       />
 
       <IconButton

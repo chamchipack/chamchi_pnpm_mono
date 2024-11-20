@@ -4,11 +4,18 @@ import { Box, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
+import { Language, Word, WordBase } from '@/config/defaultType';
+import { tree } from 'next/dist/build/templates/app-page';
 
-export default function Search({ ...props }) {
+interface Props {
+  language: Language;
+  rows: Word<WordBase>[];
+}
+
+export default function Search({ ...props }: Props) {
   return (
     <>
-      <SearchInput />
+      <SearchInput language={props?.language} routingStatus={true} />
 
       <Divider sx={{ my: 3 }} />
 

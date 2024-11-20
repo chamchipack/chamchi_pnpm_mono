@@ -1,17 +1,33 @@
+import { getData } from '@/api/module/fetch';
+import PageError from '@/components/Error/PageError';
 import Search from '@/components/search/Search';
-import { good } from '@/config/default';
+import { Language } from '@/config/defaultType';
 
 interface Props {
   searchParams: { value: string };
-  params: { language: string };
+  params: { language: Language };
 }
 
-const page = ({ searchParams, params }: Props) => {
-  const { language = '' } = params;
-  const data = good;
+const page = async ({ searchParams, params }: Props) => {
+  const { value = '' } = searchParams;
+  const { language } = params;
+
+  if (!language) return <PageError />;
+
+  const parameter = {
+    target: language,
+    type: 'search',
+    options: {
+      query: `(jp~"${value}") || (kana~"${value}") || (ko~"${value}") || (ro~"${value}")`,
+    },
+    sort: {},
+  };
+
+  const { data: { items = [] } = {} } = await getData(parameter);
+
   return (
     <div style={{ height: 60, padding: 10 }}>
-      <Search language={language} rows={data} />
+      <Search language={language} rows={items} />
     </div>
   );
 };

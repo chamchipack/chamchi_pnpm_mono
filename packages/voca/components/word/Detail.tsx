@@ -1,101 +1,59 @@
 'use client';
 
-import { Box, Chip, Divider, IconButton, Typography } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Box, Divider, IconButton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import { useState } from 'react';
-import { hiragana, typeGbn, Verb, Word } from '@/config/default';
-import { logic, verbLogic } from '@/config/logic';
-import CloseIcon from '@mui/icons-material/Close';
+import { verbLogic } from '@/config/logic';
+import VerbFormTransformer from './verb/VerbFormTransformer';
+import { useSession } from 'next-auth/react';
+import LikeButton from './common/LikeButton';
+import { Adj, Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
+import { hiragana } from '@/config/default';
+import AdjectiveTransformer from './adj/AdjectiveTransformer';
 
 export default function Detail({ ...props }) {
-  const [data, setData] = useState<Word<Verb>>(props?.row);
-  const [formSelection, setFormSelection] = useState('');
-  const [formArray, setFormArray] = useState([]);
-  const [detailSelection, setDetailSelection] = useState<any[]>([]); // 다중 선택을 위한 배열
+  const { data: session } = useSession();
+  const [data, setData] = useState<Word<WordBase>>(props?.row);
 
-  const handleChipClick = (tense: string) => {
-    if (tense === formSelection) {
-      setDetailSelection([]);
-      setFormArray([]);
-      setFormSelection('');
-      return;
-    }
+  const verbGroupNamed = (data: Word<WordBase>) => {
+    if (data?.type === 'adj') {
+      const kind = (data.etc as Adj).form;
 
-    setDetailSelection([]);
-    setFormSelection(tense);
-    const { value = [] } =
-      verbLogic.find(({ key = '' }) => key === tense) || {};
-    setFormArray(value);
-  };
+      let result = '';
 
-  const handleDetailClick = (name: string, value: any) => {
-    setDetailSelection((prev) => {
-      const exists = prev.some((item) => item.name === name);
-
-      if (exists) {
-        return prev.filter((item) => item.name !== name);
-      } else {
-        return [...prev, { name, value }];
-      }
-    });
-  };
-
-  const onConvertRow = (name: string, value: any) => {
-    const { ko = '', etc: { form = 0, endingro = '', stemjp = '' } = {} } =
-      data;
-
-    const good = value[form];
-    const romaji = good[endingro].split('_');
-
-    let result = '';
-    romaji.map((o: string) => {
-      Object.values(hiragana).forEach((data) => {
-        const { jp = '' } = data.find(({ ro: _ro }) => _ro === o) || {};
-        if (jp) result += jp;
+      Object.values(hiragana).some((group) => {
+        return group.some((item) => {
+          if (item.ro === kind) {
+            result = item.jp;
+            return true; // 내부 루프 종료 및 외부 루프 종료
+          }
+          return false;
+        });
       });
-    });
 
-    return (
-      <>
-        <Box
-          sx={{
-            p: 1,
-            boxShadow: 3,
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            mt: 2,
-            borderRadius: 3,
-            alignItems: 'center',
-          }}
-        >
-          <Typography
-            component="span"
-            color="info.main"
-            variant="caption"
-            sx={{ minWidth: 100 }}
-          >
-            {`${ko} + ${name}`}
-          </Typography>
-          <Typography component="span" color="text.primary" sx={{ mx: 3 }}>
-            {stemjp}
-            <Typography component="span" color="error.main">
-              {result}
-            </Typography>
-          </Typography>
-        </Box>
-        {/* <Divider /> */}
-      </>
-    );
+      return result;
+    }
+    // hiragana
+    if (data.type === 'verb' && data.etc && 'form' in data.etc) {
+      const value: number = (data.etc as Verb).form!;
+      return `${value}그룹`;
+    } else {
+      return '';
+    }
+  };
+
+  const handleMouseUp = () => {
+    const selection = window.getSelection()?.toString();
+
+    console.info(selection);
   };
 
   return (
     <>
-      <SearchInput />
+      <SearchInput language={props?.language} routingStatus={true} />
       <Box sx={{ p: 2 }}>
         <Typography variant="caption" color="text.secondary">
-          {typeGbn[data?.type]}
+          {typeGbn[data?.type]} {verbGroupNamed(data)}
         </Typography>
         <Box
           sx={{
@@ -129,121 +87,45 @@ export default function Detail({ ...props }) {
             </Box>
           </Box>
 
-          <IconButton>
-            <FavoriteIcon />
-          </IconButton>
+          {session && <LikeButton wordId={data?.id} />}
         </Box>
 
         <Divider sx={{ my: 3 }} />
 
-        <Box sx={{ mt: 3 }}>
-          <Typography variant="subtitle1" color="text.primary">
-            예문
-          </Typography>
-          <Box sx={{ mt: 3 }}>
-            <Typography color="text.primary">友達ともだちに会あう</Typography>
-            <Typography variant="caption" color="text.secondary">
-              친구와 만나다
-            </Typography>
-          </Box>
-
-          <Box sx={{ mt: 3 }}>
-            <Typography color="text.primary">友達ともだちに会あう</Typography>
-            <Typography variant="caption" color="text.secondary">
-              친구와 만나다
-            </Typography>
-          </Box>
-        </Box>
-
-        <Divider sx={{ my: 3 }} />
-
-        {data?.type === 'verb' ? (
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="subtitle1" color="text.primary">
-              변화형
-            </Typography>
-            <Box
-              sx={{
-                mt: 3,
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-              }}
-            >
-              {verbLogic.map(({ name = '', key = '' }) => (
-                <Chip
-                  label={name}
-                  clickable
-                  onClick={() => handleChipClick(key)}
-                  color={formSelection === key ? 'warning' : 'default'}
-                  sx={{ mr: 0.5, mb: 0.5 }} // 아래 간격도 추가해줘서 칩들이 다음 줄로 넘어갈 때 간격 확보
-                />
-              ))}
-              {formSelection && (
-                <IconButton
-                  onClick={() => {
-                    setFormSelection('');
-                    setDetailSelection([]);
-                    setFormArray([]);
-                  }}
-                >
-                  <CloseIcon sx={{ fontSize: 16 }} />
-                </IconButton>
-              )}
+        {data?.example ? (
+          <>
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle1" color="text.primary">
+                예문
+              </Typography>
+              <>
+                {data?.example.map((example, index) => (
+                  <Box sx={{ mt: 3 }} key={index}>
+                    <Typography
+                      color="text.primary"
+                      onMouseUp={handleMouseUp}
+                      sx={{
+                        userSelect: 'text',
+                      }}
+                    >
+                      {example.jp}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {example.ko}
+                    </Typography>
+                  </Box>
+                ))}
+              </>
             </Box>
 
-            <Divider sx={{ my: 2 }} />
+            <Divider sx={{ my: 3 }} />
+          </>
+        ) : null}
 
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-              }}
-            >
-              {formArray.map(({ name = '', key = '', value }) => (
-                <Chip
-                  label={name}
-                  clickable
-                  onClick={() => handleDetailClick(name, value)}
-                  color={
-                    detailSelection.map(({ name }) => name).includes(name)
-                      ? 'primary'
-                      : 'default'
-                  }
-                  sx={{ mr: 0.5, mb: 0.5 }}
-                />
-              ))}
-              {formArray.length ? (
-                <IconButton
-                  onClick={() => {
-                    setDetailSelection([]);
-                  }}
-                >
-                  <CloseIcon sx={{ fontSize: 16 }} />
-                </IconButton>
-              ) : null}
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                zIndex: 0,
-              }}
-            >
-              {detailSelection && (
-                <Box sx={{ width: '100%' }}>
-                  {detailSelection.map((item) => (
-                    <>
-                      <Box>{onConvertRow(item?.name, item?.value)}</Box>
-                    </>
-                  ))}
-                </Box>
-              )}
-            </Box>
-          </Box>
+        {data?.type === 'noun' ? null : data?.type === 'adj' ? (
+          <AdjectiveTransformer data={data} />
+        ) : data?.type === 'verb' ? (
+          <VerbFormTransformer data={data} />
         ) : null}
       </Box>
     </>

@@ -3,8 +3,14 @@ import { Box, Typography } from '@mui/material';
 import { kboFont } from 'package/styles/fonts/module';
 import CommonTitle from '../word/CommonTitle';
 import { useState } from 'react';
+import { Language, Word, WordBase } from '@/config/defaultType';
 
-export default function TodayWord({ ...props }) {
+interface Props {
+  language: Language;
+  row: Word<WordBase>;
+}
+
+export default function TodayWord({ ...props }: Props) {
   const [data, setData] = useState(props?.row);
 
   return (
@@ -36,7 +42,6 @@ export default function TodayWord({ ...props }) {
         </Typography>
       </Box>
 
-      {/* 내용 부분 */}
       <Box sx={{ textAlign: 'center' }}>
         <CommonTitle
           title={data?.jp}
