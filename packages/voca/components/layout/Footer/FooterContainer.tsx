@@ -23,6 +23,7 @@ export default function FooterContainer() {
   return (
     <Box
       sx={{
+        flexShrink: 0,
         padding: '10px 20px',
         textAlign: 'center',
         position: 'fixed',

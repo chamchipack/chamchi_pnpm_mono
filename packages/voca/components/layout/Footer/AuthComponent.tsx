@@ -33,8 +33,8 @@ const AuthComponent = () => {
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
-            height: data ? '20vh' : '50vh', // 모달 창의 고정 높이 설정 (뷰포트의 70%)
+            width: 380,
+            // height: data ? '20vh' : '50vh', // 모달 창의 고정 높이 설정 (뷰포트의 70%)
             bgcolor: 'background.default',
             borderRadius: 2,
             boxShadow: 24,

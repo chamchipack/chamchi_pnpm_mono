@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import styles from './layout.module.css';
 import FooterContainer from '@/components/layout/Footer/FooterContainer';
 import ServerClientAdapter from './ServerClientAdapter';
+import { pretendardFont } from 'package/styles/fonts/module';
 
 const Layout = async ({
   children,
@@ -17,9 +18,13 @@ const Layout = async ({
       <ServerClientAdapter>
         <div
           style={{
+            ...pretendardFont,
             display: 'flex',
             flexDirection: 'column',
-            height: '90vh',
+            // background: 'red',
+            // height: '100vh',
+            // height: 'calc(var(--vh, 1vh) * 110)',
+            // background: 'red',
           }}
         >
           <div className={styles['responsive-container']}>
@@ -31,8 +36,8 @@ const Layout = async ({
           >
             {memoizedChildren}
           </div>
-          <FooterContainer />
         </div>
+        <FooterContainer />
       </ServerClientAdapter>
     </>
   );

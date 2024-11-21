@@ -68,7 +68,7 @@ const UserInfo = ({ setModal }: Props) => {
         </Box>
 
         {/* 로그아웃 버튼 */}
-        <Box sx={{ width: '100%' }}>
+        <Box sx={{ width: '100%', mt: 2 }}>
           <Button
             variant="contained"
             sx={{
