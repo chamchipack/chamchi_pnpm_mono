@@ -30,7 +30,7 @@ const page = async ({ searchParams, params }: Props) => {
   if (!language) return <PageError />;
 
   return (
-    <div style={{ height: 60, padding: 10 }}>
+    <div style={{ padding: 10 }}>
       <VocaList language={language} rows={list} total={total} type={type} />
     </div>
   );

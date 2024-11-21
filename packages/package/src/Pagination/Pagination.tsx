@@ -25,7 +25,7 @@ export default function PaginationComponent({
   };
 
   return (
-    <Box sx={{ display: 'flex', mt: 1, justifyContent: 'center' }}>
+    <Box sx={{ height: 100, display: 'flex', mt: 1, justifyContent: 'center' }}>
       <Pagination
         count={Math.ceil(total / pagination.perPage)}
         page={pagination.page}
