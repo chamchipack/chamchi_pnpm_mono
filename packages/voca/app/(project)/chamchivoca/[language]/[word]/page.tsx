@@ -23,7 +23,7 @@ const page = async ({ params }: Props) => {
   const result = await getData(parameter);
   return (
     <>
-      <div style={{ height: 60, padding: 10 }}>
+      <div style={{ padding: 10 }}>
         <Detail row={result?.data} language={language} />
       </div>
     </>

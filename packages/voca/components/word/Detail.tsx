@@ -51,7 +51,7 @@ export default function Detail({ ...props }) {
   return (
     <>
       <SearchInput language={props?.language} routingStatus={true} />
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 2, mb: 5 }}>
         <Typography variant="caption" color="text.secondary">
           {typeGbn[data?.type]} {verbGroupNamed(data)}
         </Typography>
