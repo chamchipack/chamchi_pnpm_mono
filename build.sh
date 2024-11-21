@@ -13,7 +13,7 @@ if [ "$selection" -eq 1 ]; then
   PROJECT="studio"
 elif [ "$selection" -eq 2 ]; then
   PROJECT="blog"
-elif [ "$selection" -eq 2 ]; then
+elif [ "$selection" -eq 3 ]; then
    PROJECT="voca"
 else
   echo "Invalid selection. Please choose 1 or 2."

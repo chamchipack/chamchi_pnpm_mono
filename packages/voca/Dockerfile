@@ -49,14 +49,14 @@ COPY --from=builder /app/packages/voca/package.json /app/package.json
 # COPY --from=builder /app/packages/voca/package.json /app/package.json
 # COPY --from=builder /app/packages/package /app/package
 # COPY --from=builder /app/packages/voca /app/voca
-# COPY --from=builder /app/packages/voca/.env.production /app/.env.production
+COPY --from=builder /app/packages/voca/.env.production /app/.env.production
 
 # 9. 프로덕션 의존성만 설치
 RUN pnpm install --prod
 
 
 # 10. 실제 실행
-CMD ["pnpm", "start", "-p", "7575"]
+CMD ["pnpm", "start", "-p", "8300"]
 
 
 # # 1. 베이스 이미지 설정 (Node 20.12.2)
