@@ -3,7 +3,6 @@
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import { useState } from 'react';
-import { verbLogic } from '@/config/logic';
 import VerbFormTransformer from './verb/VerbFormTransformer';
 import { useSession } from 'next-auth/react';
 import LikeButton from './common/LikeButton';

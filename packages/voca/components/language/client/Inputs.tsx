@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TextField, Typography, Box } from '@mui/material';
 
-type LanguageType = 'ko' | 'jp' | 'en' | 'kana';
+type LanguageType = 'ko' | 'jp' | 'en' | 'kana' | 'none';
 
 interface Props {
   value: any;
@@ -15,6 +15,8 @@ export default function LabelAndInputs({ ...props }: Props) {
   const [inputValue, setInputValue] = useState(props?.value || '');
 
   const validateInput = (type: LanguageType, value: string) => {
+    if (type === 'none') return true;
+
     const regexMap = {
       jp: /^[\u3040-\u30FF\u4E00-\u9FFF]*$/, // 일본어 한자 + 가나
       ko: /^[\uAC00-\uD7A3\u3131-\u318E\u1100-\u11FF]*$/,

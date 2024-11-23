@@ -313,7 +313,7 @@ export default function EditorContainer({
         label="참고 주석"
         onChangeItem={onChangeItem}
         dataKey="desc"
-        languageType={'ko'}
+        languageType={'none'}
       />
 
       {item?.type === 'verb' ? (
