@@ -15,6 +15,7 @@ import VerbFormTransformer from '@/components/word/verb/VerbFormTransformer';
 import { motion } from 'framer-motion';
 import { Word, WordBase } from '@/config/defaultType';
 import AdjectiveTransformer from '@/components/word/adj/AdjectiveTransformer';
+import { useClientSize } from 'package/src/hooks/useMediaQuery';
 
 const parentVariants = {
   initial: {},
@@ -65,6 +66,7 @@ const VocabularyItem = ({
   setMemorized,
   handleCheckboxChange,
 }: VocabularyItemProps) => {
+  const isMobile = useClientSize('sm');
   return (
     <Box
       key={item.id}
@@ -179,6 +181,12 @@ const VocabularyItem = ({
             borderTop: 'none',
           }}
         >
+          {item?.desc ? (
+            <Typography color="text.primary" variant="body2" mt={2}>
+              {item?.desc}
+            </Typography>
+          ) : null}
+
           {item?.type === 'noun' ? null : item?.type === 'verb' ? (
             <VerbFormTransformer data={item} />
           ) : item?.type === 'adj' ? (
@@ -187,7 +195,7 @@ const VocabularyItem = ({
         </AccordionDetails>
       </Accordion>
       {editmode && (
-        <Box component={motion.div} variants={ssBoxVariants}>
+        <Box component={motion.div} variants={isMobile ? {} : ssBoxVariants}>
           <IconButton
             onClick={() => {
               onDelete(item.id);

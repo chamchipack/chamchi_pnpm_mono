@@ -1,5 +1,6 @@
 import React from 'react';
-import { TextField, Typography, Box, IconButton } from '@mui/material';
+import { TextField, Typography, Box, IconButton, Button } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface Props {
   value1: any;
@@ -7,6 +8,7 @@ interface Props {
   index: number;
   //   label: string;
   onChangeExample: (key: string, index: number, value: any) => void;
+  onDeleteExample: (index: number) => void;
   //   dataKey: string;
 }
 
@@ -106,6 +108,17 @@ export default function ExampleInputs({ ...props }: Props) {
           }}
         />
       </Box>
+      <Button
+        sx={{
+          background: (theme) => theme.palette.error.light,
+          '&:hover': { background: (theme) => theme.palette.error.main },
+        }}
+        onClick={() => props?.onDeleteExample(props?.index)}
+      >
+        <Typography color="text.secondary" variant="caption">
+          예시 삭제
+        </Typography>
+      </Button>
     </>
   );
 }

@@ -5,14 +5,27 @@ import { Typography } from '@mui/material';
 import ModalWrapper from 'package/src/Modal/ModalWrapper';
 import { useState } from 'react';
 import EditorContainer from './EditorContainer';
+import AlertModal from 'package/src/Modal/SaveModal';
 
 interface Props {
   language: Language;
 }
 export default function WordEditor({ language }: Props) {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [alert, setAlert] = useState(false);
+  const [content, setContent] = useState<{ title: string; value: string }>({
+    title: '',
+    value: '',
+  });
+
+  const onAlertClose = () => setAlert(false);
 
   const onClose = () => setModalOpen(false);
+
+  const onSetAlert = (title: string, value: string) => {
+    setContent({ title, value });
+    setAlert(true);
+  };
   return (
     <div style={{ padding: 20 }}>
       <Typography
@@ -26,8 +39,22 @@ export default function WordEditor({ language }: Props) {
       </Typography>
 
       <ModalWrapper open={modalOpen} onClose={onClose}>
-        <EditorContainer language={language} />
+        <EditorContainer
+          language={language}
+          setModalOpen={setModalOpen}
+          onSetAlert={onSetAlert}
+        />
       </ModalWrapper>
+
+      <AlertModal
+        open={alert}
+        handleClose={onAlertClose}
+        title={content?.title || '저장실패'}
+        content={content?.value || '오류가 발생했습니다'}
+        processing={false}
+        isAlertModal={true}
+        onClickCheck={() => {}}
+      />
     </div>
   );
 }

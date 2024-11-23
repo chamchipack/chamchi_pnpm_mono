@@ -46,6 +46,7 @@ export interface Word<T> {
   ro: string;
   type: TypeGbn;
   language: string;
+  desc?: string;
   etc?: T extends Verb | Adj ? T : {};
   example?: Example[];
 }
