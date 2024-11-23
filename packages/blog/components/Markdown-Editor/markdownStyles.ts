@@ -1,5 +1,10 @@
 export const markdownHeaderStyles = {
-  '& h1': { marginTop: '25px', marginBottom: '25px' },
+  '& h1': {
+    marginTop: '25px',
+    marginBottom: '25px',
+    lineHeight: '1.2',
+    wordBreak: 'break-word',
+  },
   '& h2': { marginTop: '18px', marginBottom: '18px' },
   '& h3': { marginTop: '16px', marginBottom: '16px' },
   '& h4': { marginTop: '14px', marginBottom: '14px' },
