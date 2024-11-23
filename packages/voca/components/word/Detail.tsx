@@ -92,7 +92,21 @@ export default function Detail({ ...props }) {
 
         <Divider sx={{ my: 3 }} />
 
-        {data?.example ? (
+        {data?.desc ? (
+          <>
+            <Box sx={{ mt: 3 }}>
+              <Typography variant="subtitle1" color="text.primary">
+                참고 주석
+              </Typography>
+              <Typography color="text.primary" variant="body2" mt={2}>
+                {data?.desc}
+              </Typography>
+            </Box>
+            <Divider sx={{ my: 3 }} />
+          </>
+        ) : null}
+
+        {Array.isArray(data?.example) && data?.example?.length ? (
           <>
             <Box sx={{ mt: 3 }}>
               <Typography variant="subtitle1" color="text.primary">

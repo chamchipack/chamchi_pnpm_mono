@@ -35,9 +35,9 @@ const Main = async ({ ...props }: Props) => {
         </div>
 
         {/* <CreateButton /> */}
-        {/* <ServerClientAdapter>
+        <ServerClientAdapter>
           <WordEditor language={props?.language} />
-        </ServerClientAdapter> */}
+        </ServerClientAdapter>
 
         <div style={{ height: 200, marginTop: 20, padding: 10 }}>
           <WordList language={props?.language} />
