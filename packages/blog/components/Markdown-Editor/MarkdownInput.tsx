@@ -116,7 +116,7 @@ export default function MarkdownInput({
   };
 
   return (
-    <Box sx={{ width: isMobile ? '100%' : '50%' }}>
+    <Box sx={{ width: isMobile ? '100%' : '50%', overflowY: 'hidden' }}>
       {/* 제목 입력 */}
       <TextField
         placeholder="제목을 입력해주세요"

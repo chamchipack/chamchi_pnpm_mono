@@ -97,13 +97,15 @@ export default function VocaList({ ...props }: Props) {
           단어 리스트
         </Typography>
 
-        <Chip
-          sx={{ mx: 2 }}
-          label={likedButtonClicked ? '좋아요 해제' : '좋아요만 보기'}
-          clickable
-          onClick={handleChipClick}
-          color={likedButtonClicked ? 'error' : 'default'}
-        />
+        {session && (
+          <Chip
+            sx={{ mx: 2 }}
+            label={likedButtonClicked ? '좋아요 해제' : '좋아요만 보기'}
+            clickable
+            onClick={handleChipClick}
+            color={likedButtonClicked ? 'error' : 'default'}
+          />
+        )}
       </Box>
 
       <Box>

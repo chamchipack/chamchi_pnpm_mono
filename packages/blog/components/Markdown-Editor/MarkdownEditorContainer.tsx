@@ -191,7 +191,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   };
 
   return (
-    <>
+    <Box sx={{ height: '100%' }}>
       <ProgressDialog open={loading} onClose={() => setLoading(false)} />
 
       <SettingButton
@@ -205,10 +205,10 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       <Box
         sx={{
           display: 'flex',
-          height: 'calc(85vh)',
           py: 2,
-          overflowY: 'auto',
           overflowX: 'hidden',
+          // height: 'calc(85vh)',
+          // overflowY: 'auto',
         }}
       >
         {/* 웹 사이즈일때 Preview & Divider 출력 */}
@@ -277,6 +277,6 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
           </>
         </ModalWrapper>
       )}
-    </>
+    </Box>
   );
 }
