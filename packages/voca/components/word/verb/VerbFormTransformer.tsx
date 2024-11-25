@@ -49,10 +49,13 @@ const VerbFormTransformer = ({ ...props }) => {
 
       let result = '';
       romaji.map((o: string) => {
+        let foundation = false;
         Object.values(hiragana).forEach((data) => {
           const { jp = '' } = data.find(({ ro: _ro }) => _ro === o) || {};
           if (jp) result += jp;
+          else foundation = true;
         });
+        if (o && o.includes('$') && foundation) result += o.substring(1);
       });
 
       return (

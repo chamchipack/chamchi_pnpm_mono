@@ -21,6 +21,9 @@ export const verbLogic: any = [
           '2': {
             ru: 'te_i_na_i',
           },
+          '3': {
+            suru: 'shi_te_i_na_i',
+          },
         },
       },
       {
@@ -40,6 +43,9 @@ export const verbLogic: any = [
           },
           '2': {
             ru: 'te_i_ru',
+          },
+          '3': {
+            suru: 'shi_te_i_ru',
           },
         },
       },
@@ -91,6 +97,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'na_i',
           },
+          '3': { suru: 'shi_na_i' },
         },
       },
       {
@@ -112,6 +119,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ma_se_n',
           },
+          '3': { suru: 'shi_ma_se_n' },
         },
       },
       {
@@ -133,6 +141,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ta_i',
           },
+          '3': { suru: 'shi_ta_i' },
         },
       },
       {
@@ -154,6 +163,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ta_ku_na_i',
           },
+          '3': { suru: 'shi_ta_ku_na_i' },
         },
       },
       {
@@ -175,6 +185,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ra_re_na_i',
           },
+          '3': { suru: 'de_ki_na_i' },
         },
       },
       {
@@ -196,6 +207,94 @@ export const verbLogic: any = [
           '2': {
             ru: 'ra_re_ru',
           },
+          '3': { suru: 'de_ki_ru' },
+        },
+      },
+      {
+        id: '',
+        name: '합시다, ~하죠',
+        value: {
+          '1': {
+            u: 'i_ma_sho_u',
+            ku: 'ki_ma_sho_u',
+            gu: 'gi_ma_sho_u',
+            su: 'shi_ma_sho_u',
+            tsu: 'chi_ma_sho_u',
+            nu: 'ni_ma_sho_u',
+            hu: 'hi_ma_sho_u',
+            mu: 'mi_ma_sho_u',
+            ru: 'ri_ma_sho_u',
+            bu: 'bi_ma_sho_u',
+          },
+          '2': {
+            ru: 'ma_sho_u',
+          },
+          '3': { suru: 'shi_ma_sho_u' },
+        },
+      },
+      {
+        id: '',
+        name: '~하기쉽다',
+        value: {
+          '1': {
+            u: 'i_ya_su_i',
+            ku: 'ki_ya_su_i',
+            gu: 'gi_ya_su_i',
+            su: 'shi_ya_su_i',
+            tsu: 'chi_ya_su_i',
+            nu: 'ni_ya_su_i',
+            hu: 'hi_ya_su_i',
+            mu: 'mi_ya_su_i',
+            ru: 'ri_ya_su_i',
+            bu: 'bi_ya_su_i',
+          },
+          '2': {
+            ru: 'ya_su_i',
+          },
+          '3': { suru: 'shi_ya_su_i' },
+        },
+      },
+      {
+        id: '',
+        name: '~하기 어렵다',
+        value: {
+          '1': {
+            u: 'i_ni_ku_i',
+            ku: 'ki_ni_ku_i',
+            gu: 'gi_ni_ku_i',
+            su: 'shi_ni_ku_i',
+            tsu: 'chi_ni_ku_i',
+            nu: 'ni_ni_ku_i',
+            hu: 'hi_ni_ku_i',
+            mu: 'mi_ni_ku_i',
+            ru: 'ri_ni_ku_i',
+            bu: 'bi_ni_ku_i',
+          },
+          '2': {
+            ru: 'ni_ku_i',
+          },
+          '3': { suru: 'shi_ni_ku_i' },
+        },
+      },
+      {
+        id: '',
+        name: '한적이 있습니다',
+        value: {
+          '1': {
+            u: 't_ta_ko_to_ga_a_ri_ma_su',
+            ku: 'i_ta_ko_to_ga_a_ri_ma_su',
+            gu: 'i_da_ko_to_ga_a_ri_ma_su',
+            su: 'shi_ta_ko_to_ga_a_ri_ma_su',
+            tsu: 't_ta_ko_to_ga_a_ri_ma_su',
+            nu: 'n_da_ko_to_ga_a_ri_ma_su',
+            mu: 'n_da_ko_to_ga_a_ri_ma_su',
+            ru: 't_ta_ko_to_ga_a_ri_ma_su',
+            bu: 'n_da_ko_to_ga_a_ri_ma_su',
+          },
+          '2': {
+            ru: 'ta_ko_to_ga_a_ri_ma_su',
+          },
+          '3': { suru: 'shi_ta_ko_to_ga_a_ri_ma_su' },
         },
       },
     ],
@@ -222,6 +321,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ta',
           },
+          '3': { suru: 'shi_ta' },
         },
       },
       {
@@ -243,6 +343,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'na_ka_t_ta',
           },
+          '3': { suru: 'shi_na_ka_t_ta' },
         },
       },
       {
@@ -264,6 +365,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ma_shi_ta',
           },
+          '3': { suru: 'shi_ma_shi_ta' },
         },
       },
       {
@@ -285,6 +387,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ma_se_n_de_shi_ta',
           },
+          '3': { suru: 'shi_ma_se_n_de_shi_ta' },
         },
       },
       {
@@ -306,6 +409,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ta_ka_t_ta',
           },
+          '3': { suru: 'shi_ta_ka_t_ta' },
         },
       },
       {
@@ -327,6 +431,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'ta_ku_na_ka_t_ta',
           },
+          '3': { suru: 'shi_ta_ku_na_ka_t_ta' },
         },
       },
     ],
@@ -404,6 +509,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'na_i_de_ku_da_sa_i',
           },
+          '3': { suru: 'shi_na_i_de_ku_da_sa_i' },
         },
       },
       {
@@ -424,6 +530,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'te_ha_i_ke_na_i',
           },
+          '3': { suru: 'shi_te_ha_i_ke_na_i' },
         },
       },
       {
@@ -444,6 +551,7 @@ export const verbLogic: any = [
           '2': {
             ru: 'te',
           },
+          '3': { suru: 'shi_te' },
         },
       },
     ],
@@ -452,6 +560,27 @@ export const verbLogic: any = [
     name: '기타',
     key: 'etc',
     value: [
+      {
+        id: 'x879qxf8tovrb1w',
+        name: '~하려고 생각합니다',
+        value: {
+          '1': {
+            u: 'o_u_to_$思っています',
+            ku: 'ko_u_to_$思っています',
+            gu: 'go_u_to_$思っています',
+            su: 'so_u_to_$思っています',
+            tsu: 'to_u_to_$思っています',
+            nu: 'no_u_to_$思っています',
+            mu: 'mo_u_to_$思っています',
+            ru: 'ro_u_to_$思っています',
+            bu: 'bo_u_to_$思っています',
+          },
+          '2': {
+            ru: 'yo_u_to_$思っています',
+          },
+          '3': { suru: 'shi_yo_u_to_$思っています' },
+        },
+      },
       {
         id: 'x879qxf8tovrb1w',
         name: '~하지말고',
