@@ -72,11 +72,12 @@ export default function ImageBox({
             overflow: 'hidden',
           }}
         >
-          <Image
+          <img
             src={imageUrl}
             alt="저장된 이미지"
-            layout="fill"
-            objectFit="cover"
+            // layout="fill"
+            // objectFit="cover"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         </Box>
       ) : (
