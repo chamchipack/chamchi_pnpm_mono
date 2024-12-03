@@ -645,4 +645,58 @@ export const verbLogic: any = [
       },
     ],
   },
+  {
+    name: '접속사',
+    key: 'conjunction',
+    value: [
+      {
+        id: '',
+        name: '~이기 때문에", "~니까 (일상)',
+        value: {
+          '1': {
+            u: 'u_$から',
+            ku: 'ku_$から',
+            gu: 'gu_$から',
+            su: 'su_$から',
+            tsu: 'tsu_$から',
+            nu: 'nu_$から',
+            hu: 'hu_$から',
+            mu: 'mu_$から',
+            ru: 'ru_$から',
+            bu: 'bu_$から',
+          },
+          '2': {
+            ru: 'ru_$から',
+          },
+          '3': {
+            suru: 'su_ru_$から',
+          },
+        },
+      },
+      {
+        id: '',
+        name: '~이므로, ~니까 (공손)',
+        value: {
+          '1': {
+            u: 'u_$ので',
+            ku: 'ku_$ので',
+            gu: 'gu_$ので',
+            su: 'su_$ので',
+            tsu: 'tsu_$ので',
+            nu: 'nu_$ので',
+            hu: 'hu_$ので',
+            mu: 'mu_$ので',
+            ru: 'ru_$ので',
+            bu: 'bu_$ので',
+          },
+          '2': {
+            ru: 'ru_$ので',
+          },
+          '3': {
+            suru: 'su_ru_$ので',
+          },
+        },
+      },
+    ],
+  },
 ];

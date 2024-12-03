@@ -98,10 +98,24 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     const recordIds: string[] = [];
     let thumbnail = null;
 
+    const MAX_SIZE = 2 * 1024 * 1024;
+
     // 2. blob URL을 PocketBase URL로 교체
     for (const blobUrl of blobUrls) {
       const file = await fetch(blobUrl).then((res) => res.blob());
       thumbnail = thumbnail ? thumbnail : file;
+
+      if (file.size > MAX_SIZE) {
+        toast.error(
+          <p style={{ ...kboFont }}>
+            업로드하려는 이미지의 크기는 2MB를 초과할 수 없습니다.
+          </p>,
+        );
+        // 이미지 크기가 2MB를 초과하는 경우 업로드 중단 및 에러 메시지 반환
+        throw new Error(
+          '업로드하려는 이미지의 크기는 2MB를 초과할 수 없습니다.',
+        );
+      }
 
       // 3. PocketBase에 파일 업로드 (이미지를 업로드하고 URL 받기)
       const formData = new FormData();

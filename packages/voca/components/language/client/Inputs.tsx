@@ -19,7 +19,7 @@ export default function LabelAndInputs({ ...props }: Props) {
 
     const regexMap = {
       jp: /^[\u3040-\u30FF\u4E00-\u9FFF]*$/, // 일본어 한자 + 가나
-      ko: /^[\uAC00-\uD7A3\u3131-\u318E\u1100-\u11FF]*$/,
+      ko: /^[\uAC00-\uD7A3\u3131-\u318E\u1100-\u11FF\s,]*$/,
       kana: /^[\u3040-\u309F\u30A0-\u30FF]*$/,
       en: /^[a-zA-Z]*$/, // 알파벳
     };

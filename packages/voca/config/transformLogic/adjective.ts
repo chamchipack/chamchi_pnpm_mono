@@ -39,6 +39,36 @@ export const adjLogic: any = [
           na: 'na',
         },
       },
+      {
+        id: '',
+        name: '부사화',
+        value: {
+          i: 'ku',
+          na: 'ni',
+        },
+      },
+    ],
+  },
+  {
+    name: '가능형',
+    key: 'can',
+    value: [
+      {
+        id: '',
+        name: '(~하게)할 수 있습니다',
+        value: {
+          i: 'ku_$できます',
+          na: 'ni_$できます',
+        },
+      },
+      {
+        id: '',
+        name: '(~하게)할 수 없다',
+        value: {
+          i: 'ku_$できません',
+          na: 'ni_$できません',
+        },
+      },
     ],
   },
   {
@@ -119,6 +149,28 @@ export const adjLogic: any = [
         value: {
           i: 'ka_t_ta_de_su',
           na: 'de_shi_ta',
+        },
+      },
+    ],
+  },
+  {
+    name: '접속사',
+    key: 'conjunction',
+    value: [
+      {
+        id: '',
+        name: '~이기 때문에", "~니까 (일상)',
+        value: {
+          i: 'i_$から',
+          na: 'da_$から',
+        },
+      },
+      {
+        id: '0003',
+        name: '~이므로, ~니까 (공손)',
+        value: {
+          i: 'i_$ので',
+          na: 'na_$ので',
         },
       },
     ],
