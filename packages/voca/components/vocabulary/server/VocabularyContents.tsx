@@ -21,10 +21,14 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import RouterBack from '@/components/RouterIcon/RouterBack';
 import CreateNewFolderIcon from '@mui/icons-material/CreateNewFolder';
 import NoneDataOverlay from 'package/src/Overlay/None-DataOverlay';
+import AlertModal from 'package/src/Modal/SaveModal';
 
 interface Props {
   perPage: number;
   clickable: boolean;
+  onClickEvent?: (value: 'error' | 'already' | 'success') => void;
+  selectable: boolean;
+  wordId?: string;
 }
 
 const VocabularyContents = ({ ...props }: Props) => {
@@ -48,7 +52,7 @@ const VocabularyContents = ({ ...props }: Props) => {
     setLoading(true);
     const { data = [] } = await db.search('vocabulary', {
       options: { userId: session?.user?.id, 'language.like': language },
-      pagination: { page, perPage: 5 },
+      pagination: { page, perPage: props?.perPage || 5 },
     });
 
     const result = Array.isArray(data) ? data : data?.items;
@@ -67,6 +71,24 @@ const VocabularyContents = ({ ...props }: Props) => {
     setIsClicked(false);
   };
 
+  const onClickSetList = async (item: any) => {
+    if (!props?.onClickEvent) return;
+
+    if (!props?.wordId || !item?.id) return props?.onClickEvent('error');
+
+    try {
+      if ((item?.wordId as string[]).includes(props?.wordId || ''))
+        return props?.onClickEvent('already');
+      else {
+        const form = { id: item?.id, wordId: [...item?.wordId, props?.wordId] };
+        await db.update('vocabulary', form);
+        return props?.onClickEvent('success');
+      }
+    } catch {
+      return props?.onClickEvent('error');
+    }
+  };
+
   useEffect(() => {
     onLoadVocaList(1);
   }, []);
@@ -74,94 +96,106 @@ const VocabularyContents = ({ ...props }: Props) => {
   if (loading) return <Skeleton sx={{ width: '100%', height: 40 }} />;
 
   return (
-    <div style={{ padding: 6 }}>
-      {!isClicked && props?.clickable && (
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-            <RouterBack />
-            <Typography variant="subtitle1" color="text.primary" sx={{ my: 1 }}>
-              내 단어장 목록
-            </Typography>
-          </Box>
-
-          <IconButton
-            onClick={async () => {
-              const form = {
-                name: '새로운 단어장',
-                userId: session?.user?.id,
-                wordId: [],
-                language,
-              };
-              await db.create('vocabulary', form);
-              onLoadVocaList(1);
+    <>
+      <div style={{ padding: 6 }}>
+        {!isClicked && props?.clickable && (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
             }}
           >
-            <CreateNewFolderIcon />
-          </IconButton>
-        </Box>
-      )}
-      {isClicked && selectedRow ? (
-        <SelectedVocabulary
-          data={selectedRow}
-          onClickReset={onClickReset}
-          onLoadVocaList={onLoadVocaList}
-          mode={mode}
-        />
-      ) : rows.length ? (
-        <>
-          {rows.map((item: any) => (
-            <div key={item.id}>
-              <Box
-                component={motion.div}
-                onClick={() => {
-                  if (!props?.clickable) return;
-                  setMode('update');
-                  onClickRow(item);
-                }}
-                whileHover={{ y: props?.clickable ? -2 : 0 }}
-                sx={{
-                  cursor: props?.clickable ? 'pointer' : 'normal',
-                  height: 70,
-                  p: 1,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                }}
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <RouterBack />
+              <Typography
+                variant="subtitle1"
+                color="text.primary"
+                sx={{ my: 1 }}
               >
-                <Typography color="text.primary">{item?.name}</Typography>
-                <Typography variant="caption" color="text.secondary">
-                  등록된 단어수{' '}
-                  <Typography
-                    component="span"
-                    variant="subtitle2"
-                    color="error.main"
-                  >
-                    {item?.wordId.length}
-                  </Typography>{' '}
-                  개
-                </Typography>
-              </Box>
-              <Divider />
-            </div>
-          ))}
-          <PaginationComponent
-            total={total}
-            pagination={pagination}
-            setPagination={setPagination}
-            onClickSearch={onLoadVocaList}
+                내 단어장 목록
+              </Typography>
+            </Box>
+
+            <IconButton
+              onClick={async () => {
+                const form = {
+                  name: '새로운 단어장',
+                  userId: session?.user?.id,
+                  wordId: [],
+                  language,
+                };
+                await db.create('vocabulary', form);
+                onLoadVocaList(1);
+              }}
+            >
+              <CreateNewFolderIcon />
+            </IconButton>
+          </Box>
+        )}
+        {isClicked && selectedRow ? (
+          <SelectedVocabulary
+            data={selectedRow}
+            onClickReset={onClickReset}
+            onLoadVocaList={onLoadVocaList}
+            mode={mode}
           />
-        </>
-      ) : (
-        <NoneDataOverlay mt={3} />
-      )}
-    </div>
+        ) : rows.length ? (
+          <>
+            {rows.map((item: any) => (
+              <div key={item.id}>
+                <Box
+                  component={motion.div}
+                  onClick={() => {
+                    if (props?.selectable) return onClickSetList(item);
+                    if (!props?.clickable) return;
+                    setMode('update');
+                    onClickRow(item);
+                  }}
+                  whileHover={{
+                    y: props?.clickable || props?.selectable ? -2 : 0,
+                  }}
+                  sx={{
+                    cursor:
+                      props?.clickable || props?.selectable
+                        ? 'pointer'
+                        : 'normal',
+                    height: 70,
+                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Typography color="text.primary">{item?.name}</Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    등록된 단어수{' '}
+                    <Typography
+                      component="span"
+                      variant="subtitle2"
+                      color="error.main"
+                    >
+                      {item?.wordId.length}
+                    </Typography>{' '}
+                    개
+                  </Typography>
+                </Box>
+                <Divider />
+              </div>
+            ))}
+            <PaginationComponent
+              total={total}
+              pagination={pagination}
+              setPagination={setPagination}
+              onClickSearch={onLoadVocaList}
+            />
+          </>
+        ) : (
+          <NoneDataOverlay mt={3} />
+        )}
+      </div>
+    </>
   );
 };
 

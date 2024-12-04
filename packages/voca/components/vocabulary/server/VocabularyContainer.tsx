@@ -65,7 +65,11 @@ export default function VocabularyContainer({ ...props }: Props) {
               <DirectionsIcon />
             </IconButton>
           </Box>
-          <VocabularyContents clickable={false} perPage={3} />
+          <VocabularyContents
+            clickable={false}
+            perPage={3}
+            selectable={false}
+          />
         </div>
       </ModalWrapper>
     </>
