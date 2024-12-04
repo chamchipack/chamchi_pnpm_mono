@@ -9,6 +9,7 @@ import LikeButton from './common/LikeButton';
 import { Adj, Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
 import { hiragana } from '@/config/default';
 import AdjectiveTransformer from './adj/AdjectiveTransformer';
+import AddVocabularyButton from './common/AddVocabularyButton';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
@@ -86,7 +87,10 @@ export default function Detail({ ...props }) {
             </Box>
           </Box>
 
-          {session && <LikeButton wordId={data?.id} />}
+          <Box>
+            {session && <LikeButton wordId={data?.id} />}
+            {session && <AddVocabularyButton wordId={data?.id} />}
+          </Box>
         </Box>
 
         <Divider sx={{ my: 3 }} />

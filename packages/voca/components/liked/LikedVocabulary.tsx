@@ -16,8 +16,7 @@ export default function LikedVocabulary() {
   const [total, setTotal] = useState(0);
   const [, , language] = path.split('/');
 
-  const sdf = useData('japanese', { page: 1, perPage: 10 }, () => {});
-  console.log(sdf);
+  // const sdf = useData('japanese', { page: 1, perPage: 10 }, () => {});
 
   const onLoadLikedList = async () => {
     setLoading(true);
