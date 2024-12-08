@@ -20,6 +20,7 @@ import { PaginationAtom, ParametersAtom } from './state';
 import { useData } from './hook';
 import NoneDataOverlay from 'package/src/Overlay/None-DataOverlay';
 import FetchErrorOverlay from 'package/src/Overlay/FetchErrorOverlay';
+import { pretendardFont } from 'package/styles/fonts/module';
 
 interface Props {
   rows: Word<WordBase>[];
@@ -87,17 +88,8 @@ export default function VocaList({ ...props }: Props) {
     setPgnum(pagination.page);
   }, [pagination.page]);
 
-  if (isLoading || !rows)
+  const HeadComponent = () => {
     return (
-      <div style={{ height: '100%' }}>
-        <Skeleton width="100%" height={60} sx={{ mb: 2 }} />
-      </div>
-    );
-
-  if (isError) return <FetchErrorOverlay />;
-
-  return (
-    <>
       <Box
         sx={{
           px: 2,
@@ -121,7 +113,22 @@ export default function VocaList({ ...props }: Props) {
           />
         )}
       </Box>
+    );
+  };
 
+  if (isLoading || !rows)
+    return (
+      <div style={{ height: '100%' }}>
+        <HeadComponent />
+        <Skeleton width="100%" height={60} sx={{ mb: 2 }} />
+      </div>
+    );
+
+  if (isError) return <FetchErrorOverlay />;
+
+  return (
+    <>
+      <HeadComponent />
       <Box>
         {rows.length ? (
           <>
@@ -162,7 +169,11 @@ export default function VocaList({ ...props }: Props) {
                     </Typography>
                   </Box>
                   <Box>
-                    <Typography variant="subtitle2" color="text.primary">
+                    <Typography
+                      variant="subtitle2"
+                      color="text.primary"
+                      sx={{ ...pretendardFont }}
+                    >
                       {item?.ko}
                     </Typography>
                   </Box>
