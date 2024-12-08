@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Chip, Divider, Typography } from '@mui/material';
+import { Box, Chip, Divider, Skeleton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
@@ -15,6 +15,12 @@ import {
   typeGbn,
   WordBase,
 } from '@/config/defaultType';
+import { useRecoilState } from 'recoil';
+import { PaginationAtom, ParametersAtom } from './state';
+import { useData } from './hook';
+import NoneDataOverlay from 'package/src/Overlay/None-DataOverlay';
+import FetchErrorOverlay from 'package/src/Overlay/FetchErrorOverlay';
+import { pretendardFont } from 'package/styles/fonts/module';
 
 interface Props {
   rows: Word<WordBase>[];
@@ -25,42 +31,37 @@ interface Props {
 
 export default function VocaList({ ...props }: Props) {
   const { data: session } = useSession();
-  const [rows, setRows] = useState<Word<WordBase>[]>(props?.rows || []);
-  const [total, setTotal] = useState(props?.total);
-  const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
+  const [pgnum, setPgnum] = useRecoilState(PaginationAtom);
+  const [pagination, setPagination] = useState({
+    page: pgnum || 1,
+    perPage: 10,
+  });
   const [likedButtonClicked, setLikedButtonClicked] = useState(false);
+  const [, setParameters] = useRecoilState(ParametersAtom);
 
-  const onLoadData = async (page: number, clicked?: boolean) => {
-    if (!props?.language) return;
-    if (clicked === null || clicked === undefined) clicked = false;
-
-    const typeParams = props?.type ? { 'type.like': props?.type } : {};
-    let likeParams = {};
-
-    if (clicked) {
-      const idArray = await onLoadLikedList();
-      likeParams = { 'id.or': idArray || [] };
-    }
-
-    const { data = [], ...rest } = await db.search(
-      props?.language as Collection,
-      {
-        options: {
-          'language.like': props?.language,
-          ...typeParams,
-          ...likeParams,
-        },
-        pagination: { page, perPage: 10 },
-      },
-    );
-    setTotal(data?.totalItems);
-    const result = Array.isArray(data) ? data : data?.items;
-
-    setRows(result);
-  };
+  const {
+    isLoading,
+    isError,
+    data = { rows: [], total: 0 },
+  } = useData(
+    props?.language as Collection,
+    pagination,
+    props?.language,
+    props?.type,
+  );
+  const rows: Word<WordBase>[] = (data?.rows as Word<WordBase>[]) || [];
+  const total = data?.total;
 
   const handleChipClick = async () => {
-    onLoadData(1, !likedButtonClicked);
+    setPagination((prev) => ({ ...prev, page: 1 }));
+    if (!likedButtonClicked) onLoadLikedList();
+    else
+      setParameters((prev) => {
+        const updatedParams = { ...prev }; // 기존 객체 복사
+        delete updatedParams['id.or']; // id.or 키 삭제
+        return updatedParams; // 삭제된 객체 반환
+      });
+
     setLikedButtonClicked(!likedButtonClicked);
   };
 
@@ -72,18 +73,23 @@ export default function VocaList({ ...props }: Props) {
           'language.like': props?.language,
         },
       });
-      return data[0]?.wordIds || [];
+
+      setParameters((prev) => ({
+        ...prev,
+        'id.or': data[0]?.wordIds || [],
+      }));
+      // return data[0]?.wordIds || [];
     } catch (e) {
       return [];
     }
   };
 
-  return (
-    <>
-      <SearchInput language={props?.language} routingStatus={true} />
+  useEffect(() => {
+    setPgnum(pagination.page);
+  }, [pagination.page]);
 
-      <Divider sx={{ my: 3 }} />
-
+  const HeadComponent = () => {
+    return (
       <Box
         sx={{
           px: 2,
@@ -107,12 +113,28 @@ export default function VocaList({ ...props }: Props) {
           />
         )}
       </Box>
+    );
+  };
 
+  if (isLoading || !rows)
+    return (
+      <div style={{ height: '100%' }}>
+        <HeadComponent />
+        <Skeleton width="100%" height={60} sx={{ mb: 2 }} />
+      </div>
+    );
+
+  if (isError) return <FetchErrorOverlay />;
+
+  return (
+    <>
+      <HeadComponent />
       <Box>
         {rows.length ? (
           <>
             {rows.map((item) => (
               <Box
+                key={item?.id}
                 component={motion.div}
                 whileHover={{ y: -2 }}
                 sx={{
@@ -147,7 +169,11 @@ export default function VocaList({ ...props }: Props) {
                     </Typography>
                   </Box>
                   <Box>
-                    <Typography variant="subtitle2" color="text.primary">
+                    <Typography
+                      variant="subtitle2"
+                      color="text.primary"
+                      sx={{ ...pretendardFont }}
+                    >
                       {item?.ko}
                     </Typography>
                   </Box>
@@ -159,28 +185,10 @@ export default function VocaList({ ...props }: Props) {
               total={total}
               pagination={pagination}
               setPagination={setPagination}
-              onClickSearch={onLoadData}
             />
-
-            {/* <Divider sx={{ my: 3 }} /> */}
           </>
         ) : (
-          <Box
-            sx={{
-              width: '100%',
-              height: 50,
-              background: '#e2e2e2',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              my: 2,
-              borderRadius: 3,
-            }}
-          >
-            <Typography color="text.secondary">
-              조회된 데이터가 없어요!
-            </Typography>
-          </Box>
+          <NoneDataOverlay />
         )}
       </Box>
     </>

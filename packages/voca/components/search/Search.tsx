@@ -15,9 +15,9 @@ interface Props {
 export default function Search({ ...props }: Props) {
   return (
     <>
-      <SearchInput language={props?.language} routingStatus={true} />
+      {/* <SearchInput language={props?.language} routingStatus={true} />
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3 }} /> */}
 
       <Box sx={{ px: 2, mb: 2 }}>
         <Typography variant="subtitle1" color="text.primary">
