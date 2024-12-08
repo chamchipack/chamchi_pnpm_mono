@@ -561,6 +561,29 @@ export const verbLogic: any = [
     key: 'etc',
     value: [
       {
+        id: '',
+        name: '제안형 ~할까',
+        value: {
+          '1': {
+            u: '＄おうか',
+            ku: '＄こうか',
+            gu: '＄ごうか',
+            su: '＄そうか',
+            tsu: '＄とうか',
+            nu: '＄のうか',
+            mu: '＄もうか',
+            ru: '＄ろうか',
+            bu: '＄ぼうか',
+          },
+          '2': {
+            ru: '$ようか',
+          },
+          '3': {
+            suru: '＄しょうか',
+          },
+        },
+      },
+      {
         id: 'x879qxf8tovrb1w',
         name: '~하려고 생각합니다',
         value: {

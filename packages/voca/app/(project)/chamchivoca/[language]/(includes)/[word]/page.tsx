@@ -21,13 +21,7 @@ const page = async ({ params }: Props) => {
   };
 
   const result = await getData(parameter);
-  return (
-    <>
-      <div style={{ padding: 10 }}>
-        <Detail row={result?.data} language={language} />
-      </div>
-    </>
-  );
+  return <Detail row={result?.data} language={language} />;
 };
 
 export default page;

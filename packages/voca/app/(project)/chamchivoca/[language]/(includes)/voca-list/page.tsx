@@ -12,28 +12,24 @@ const page = async ({ searchParams, params }: Props) => {
   const { type = '' } = searchParams;
   const { language = '' } = params;
 
-  const typeParams = type ? { 'type.like': type } : {};
+  // const typeParams = type ? { 'type.like': type } : {};
 
-  const parameter = {
-    target: language,
-    type: 'search',
-    options: {
-      ...typeParams,
-    },
-    sort: {},
-  };
+  // const parameter = {
+  //   target: language,
+  //   type: 'search',
+  //   options: {
+  //     ...typeParams,
+  //   },
+  //   sort: {},
+  // };
 
-  const result = await getData(parameter);
-  const list: Word<WordBase>[] = result?.data?.items || [];
-  const total = result?.data?.totalItems || 0;
+  // const result = await getData(parameter);
+  // const list: Word<WordBase>[] = result?.data?.items || [];
+  // const total = result?.data?.totalItems || 0;
 
   if (!language) return <PageError />;
 
-  return (
-    <div style={{ padding: 10 }}>
-      <VocaList language={language} rows={list} total={total} type={type} />
-    </div>
-  );
+  return <VocaList language={language} rows={[]} total={0} type={type} />;
 };
 
 export default page;

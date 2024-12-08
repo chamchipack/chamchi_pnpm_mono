@@ -26,7 +26,7 @@ const page = async ({ searchParams, params }: Props) => {
   const { data: { items = [] } = {} } = await getData(parameter);
 
   return (
-    <div style={{ height: 60, padding: 10 }}>
+    <div style={{ height: 60 }}>
       <Search language={language} rows={items} />
     </div>
   );

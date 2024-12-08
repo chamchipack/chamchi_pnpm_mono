@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   TextField,
   Autocomplete,
@@ -7,11 +7,13 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import db from '@/api/module';
 import { Collection, Language } from '@/config/defaultType';
+import { useRecoilState } from 'recoil';
+import { PaginationAtom } from '../vocalist/state';
 
 interface Props {
   language: Language;
@@ -25,6 +27,8 @@ export default function SearchInput({
   routingStatus = true,
 }: Props) {
   const router = useRouter();
+  const pathname = usePathname();
+  const [pgnum, setPgnum] = useRecoilState(PaginationAtom);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredResults, setFilteredResults] = useState([]);
 
@@ -47,6 +51,16 @@ export default function SearchInput({
   const onClickSearch = () => {
     router.push(`/chamchivoca/${language}/search/?value=${searchTerm}`);
   };
+
+  useEffect(() => {
+    const paginationCheck = () => {
+      if (!pathname.includes('voca-list') && pathname.split('/').length < 4) {
+        setPgnum(1);
+      }
+    };
+
+    if (pathname && pgnum > 1) paginationCheck();
+  }, [pathname]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row' }}>

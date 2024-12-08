@@ -34,14 +34,15 @@ const Main = async ({ ...props }: Props) => {
           <TodayWord language={props?.language} row={list[0]} />
         </div>
 
-        {/* <CreateButton /> */}
+        <div style={{ height: 200, marginTop: 20, padding: 10 }}>
+          <WordList language={props?.language} />
+        </div>
+
         <ServerClientAdapter>
           <WordEditor language={props?.language} />
         </ServerClientAdapter>
 
-        <div style={{ height: 200, marginTop: 20, padding: 10 }}>
-          <WordList language={props?.language} />
-        </div>
+        {/* <CreateButton /> */}
 
         {/* <div style={{ height: 200, marginTop: 20, padding: 10 }}>
           <VocaList language={props?.language} />

@@ -2,7 +2,7 @@
 
 import { Box, Divider, IconButton, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import VerbFormTransformer from './verb/VerbFormTransformer';
 import { useSession } from 'next-auth/react';
 import LikeButton from './common/LikeButton';
@@ -10,10 +10,13 @@ import { Adj, Verb, Word, WordBase, typeGbn } from '@/config/defaultType';
 import { hiragana } from '@/config/default';
 import AdjectiveTransformer from './adj/AdjectiveTransformer';
 import AddVocabularyButton from './common/AddVocabularyButton';
+import { useRecoilState } from 'recoil';
+import { PaginationAtom } from '../vocalist/state';
 
 export default function Detail({ ...props }) {
   const { data: session } = useSession();
   const [data, setData] = useState<Word<WordBase>>(props?.row);
+  const [pgnum, setPgnum] = useRecoilState(PaginationAtom);
 
   const verbGroupNamed = (data: Word<WordBase>) => {
     if (data?.type === 'adj') {
@@ -48,9 +51,13 @@ export default function Detail({ ...props }) {
     console.info(selection);
   };
 
+  useEffect(() => {
+    // console.log(pgnum);
+  }, [pgnum]);
+
   return (
     <>
-      <SearchInput language={props?.language} routingStatus={true} />
+      {/* <SearchInput language={props?.language} routingStatus={true} /> */}
       <Box sx={{ p: 2, mb: 5 }}>
         <Typography variant="caption" color="text.secondary">
           {typeGbn[data?.type]} {verbGroupNamed(data)}
@@ -89,7 +96,9 @@ export default function Detail({ ...props }) {
 
           <Box>
             {session && <LikeButton wordId={data?.id} />}
-            {session && <AddVocabularyButton wordId={data?.id} />}
+            {session?.user?.isSuperAccount && (
+              <AddVocabularyButton wordId={data?.id} />
+            )}
           </Box>
         </Box>
 
