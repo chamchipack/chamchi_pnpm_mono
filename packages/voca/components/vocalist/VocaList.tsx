@@ -35,12 +35,10 @@ export default function VocaList({ ...props }: Props) {
     page: pgnum || 1,
     perPage: 10,
   });
-  const [loading, setLoading] = useState(false);
 
   const onLoadData = async (page: number, clicked?: boolean) => {
     if (!props?.language) return;
 
-    setLoading(true);
     if (clicked === null || clicked === undefined) clicked = false;
 
     const typeParams = props?.type ? { 'type.like': props?.type } : {};
@@ -53,7 +51,6 @@ export default function VocaList({ ...props }: Props) {
       if (!idArray.length) {
         setTotal(0);
         setRows([]);
-        setLoading(false);
         return;
       }
     }
@@ -73,7 +70,6 @@ export default function VocaList({ ...props }: Props) {
     const result = Array.isArray(data) ? data : data?.items;
 
     setRows(result);
-    setLoading(false);
   };
 
   const handleChipClick = async () => {
@@ -134,100 +130,82 @@ export default function VocaList({ ...props }: Props) {
       </Box>
 
       <Box>
-        {loading ? (
-          <Box
-            sx={{
-              width: '100%',
-              height: 50,
-              background: '#e2e2e2',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              my: 2,
-              borderRadius: 3,
-            }}
-          >
-            <Typography color="text.secondary">
-              데이터를 조회하고 있어요!
-            </Typography>
-          </Box>
-        ) : (
-          <>
-            {rows.length ? (
-              <>
-                {rows.map((item) => (
-                  <Box
-                    component={motion.div}
-                    whileHover={{ y: -2 }}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      height: 60,
-                      p: 2,
-                      mb: 2,
-                    }}
-                  >
-                    <Box sx={{ minWidth: 150 }}>
-                      <CommonTitle
-                        title={item?.jp}
-                        color="text.primary"
-                        variant="h3"
-                        language={props?.language}
-                        id={item?.id}
-                      />
+        <>
+          {rows.length ? (
+            <>
+              {rows.map((item) => (
+                <Box
+                  key={item?.id}
+                  component={motion.div}
+                  whileHover={{ y: -2 }}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    height: 60,
+                    p: 2,
+                    mb: 2,
+                  }}
+                >
+                  <Box sx={{ minWidth: 150 }}>
+                    <CommonTitle
+                      title={item?.jp}
+                      color="text.primary"
+                      variant="h3"
+                      language={props?.language}
+                      id={item?.id}
+                    />
+                  </Box>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <Box>
+                      <Typography
+                        variant="caption"
+                        color="info.main"
+                        sx={{ mr: 1 }}
+                      >
+                        {item?.kana}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {typeGbn[item?.type]}
+                      </Typography>
                     </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                      <Box>
-                        <Typography
-                          variant="caption"
-                          color="info.main"
-                          sx={{ mr: 1 }}
-                        >
-                          {item?.kana}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {typeGbn[item?.type]}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="subtitle2" color="text.primary">
-                          {item?.ko}
-                        </Typography>
-                      </Box>
+                    <Box>
+                      <Typography variant="subtitle2" color="text.primary">
+                        {item?.ko}
+                      </Typography>
                     </Box>
                   </Box>
-                ))}
+                </Box>
+              ))}
 
-                <PaginationComponent
-                  total={total}
-                  pagination={pagination}
-                  setPagination={setPagination}
-                  onClickSearch={onLoadData}
-                />
+              <PaginationComponent
+                total={total}
+                pagination={pagination}
+                setPagination={setPagination}
+                onClickSearch={onLoadData}
+              />
 
-                {/* <Divider sx={{ my: 3 }} /> */}
-              </>
-            ) : (
-              <Box
-                sx={{
-                  width: '100%',
-                  height: 50,
-                  background: '#e2e2e2',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  my: 2,
-                  borderRadius: 3,
-                }}
-              >
-                <Typography color="text.secondary">
-                  조회된 데이터가 없어요!
-                </Typography>
-              </Box>
-            )}
-          </>
-        )}
+              {/* <Divider sx={{ my: 3 }} /> */}
+            </>
+          ) : (
+            <Box
+              sx={{
+                width: '100%',
+                height: 50,
+                background: '#e2e2e2',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                my: 2,
+                borderRadius: 3,
+              }}
+            >
+              <Typography color="text.secondary">
+                조회된 데이터가 없어요!
+              </Typography>
+            </Box>
+          )}
+        </>
       </Box>
     </>
   );
