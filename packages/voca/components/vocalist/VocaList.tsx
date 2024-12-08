@@ -1,6 +1,6 @@
 'use client';
 
-import { Box, Chip, Divider, Skeleton, Typography } from '@mui/material';
+import { Box, Chip, Divider, Typography } from '@mui/material';
 import SearchInput from '../language/SearchInput';
 import CommonTitle from '../word/CommonTitle';
 import { motion } from 'framer-motion';
@@ -16,11 +16,7 @@ import {
   WordBase,
 } from '@/config/defaultType';
 import { useRecoilState } from 'recoil';
-import { PaginationAtom, ParametersAtom } from './state';
-import { useData } from './hook';
-import NoneDataOverlay from 'package/src/Overlay/None-DataOverlay';
-import FetchErrorOverlay from 'package/src/Overlay/FetchErrorOverlay';
-import { pretendardFont } from 'package/styles/fonts/module';
+import { PaginationAtom } from './state';
 
 interface Props {
   rows: Word<WordBase>[];
@@ -31,37 +27,57 @@ interface Props {
 
 export default function VocaList({ ...props }: Props) {
   const { data: session } = useSession();
+  const [rows, setRows] = useState<Word<WordBase>[]>(props?.rows || []);
+  const [total, setTotal] = useState(props?.total);
+  const [likedButtonClicked, setLikedButtonClicked] = useState(false);
   const [pgnum, setPgnum] = useRecoilState(PaginationAtom);
   const [pagination, setPagination] = useState({
     page: pgnum || 1,
     perPage: 10,
   });
-  const [likedButtonClicked, setLikedButtonClicked] = useState(false);
-  const [, setParameters] = useRecoilState(ParametersAtom);
+  const [loading, setLoading] = useState(false);
 
-  const {
-    isLoading,
-    isError,
-    data = { rows: [], total: 0 },
-  } = useData(
-    props?.language as Collection,
-    pagination,
-    props?.language,
-    props?.type,
-  );
-  const rows: Word<WordBase>[] = (data?.rows as Word<WordBase>[]) || [];
-  const total = data?.total;
+  const onLoadData = async (page: number, clicked?: boolean) => {
+    if (!props?.language) return;
+
+    setLoading(true);
+    if (clicked === null || clicked === undefined) clicked = false;
+
+    const typeParams = props?.type ? { 'type.like': props?.type } : {};
+    let likeParams = {};
+
+    if (clicked) {
+      const idArray = await onLoadLikedList();
+      likeParams = { 'id.or': idArray || [] };
+
+      if (!idArray.length) {
+        setTotal(0);
+        setRows([]);
+        setLoading(false);
+        return;
+      }
+    }
+
+    const { data = [], ...rest } = await db.search(
+      props?.language as Collection,
+      {
+        options: {
+          'language.like': props?.language,
+          ...typeParams,
+          ...likeParams,
+        },
+        pagination: { page, perPage: 10 },
+      },
+    );
+    setTotal(data?.totalItems);
+    const result = Array.isArray(data) ? data : data?.items;
+
+    setRows(result);
+    setLoading(false);
+  };
 
   const handleChipClick = async () => {
-    setPagination((prev) => ({ ...prev, page: 1 }));
-    if (!likedButtonClicked) onLoadLikedList();
-    else
-      setParameters((prev) => {
-        const updatedParams = { ...prev }; // 기존 객체 복사
-        delete updatedParams['id.or']; // id.or 키 삭제
-        return updatedParams; // 삭제된 객체 반환
-      });
-
+    onLoadData(1, !likedButtonClicked);
     setLikedButtonClicked(!likedButtonClicked);
   };
 
@@ -73,23 +89,26 @@ export default function VocaList({ ...props }: Props) {
           'language.like': props?.language,
         },
       });
-
-      setParameters((prev) => ({
-        ...prev,
-        'id.or': data[0]?.wordIds || [],
-      }));
-      // return data[0]?.wordIds || [];
+      return data[0]?.wordIds || [];
     } catch (e) {
       return [];
     }
   };
 
   useEffect(() => {
+    onLoadData(pgnum || 1, false);
+  }, []);
+
+  useEffect(() => {
     setPgnum(pagination.page);
   }, [pagination.page]);
 
-  const HeadComponent = () => {
-    return (
+  return (
+    <>
+      {/* <SearchInput language={props?.language} routingStatus={true} />
+
+      <Divider sx={{ my: 3 }} /> */}
+
       <Box
         sx={{
           px: 2,
@@ -113,82 +132,101 @@ export default function VocaList({ ...props }: Props) {
           />
         )}
       </Box>
-    );
-  };
 
-  if (isLoading || !rows)
-    return (
-      <div style={{ height: '100%' }}>
-        <HeadComponent />
-        <Skeleton width="100%" height={60} sx={{ mb: 2 }} />
-      </div>
-    );
-
-  if (isError) return <FetchErrorOverlay />;
-
-  return (
-    <>
-      <HeadComponent />
       <Box>
-        {rows.length ? (
+        {loading ? (
+          <Box
+            sx={{
+              width: '100%',
+              height: 50,
+              background: '#e2e2e2',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              my: 2,
+              borderRadius: 3,
+            }}
+          >
+            <Typography color="text.secondary">
+              데이터를 조회하고 있어요!
+            </Typography>
+          </Box>
+        ) : (
           <>
-            {rows.map((item) => (
+            {rows.length ? (
+              <>
+                {rows.map((item) => (
+                  <Box
+                    component={motion.div}
+                    whileHover={{ y: -2 }}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      height: 60,
+                      p: 2,
+                      mb: 2,
+                    }}
+                  >
+                    <Box sx={{ minWidth: 150 }}>
+                      <CommonTitle
+                        title={item?.jp}
+                        color="text.primary"
+                        variant="h3"
+                        language={props?.language}
+                        id={item?.id}
+                      />
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <Box>
+                        <Typography
+                          variant="caption"
+                          color="info.main"
+                          sx={{ mr: 1 }}
+                        >
+                          {item?.kana}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {typeGbn[item?.type]}
+                        </Typography>
+                      </Box>
+                      <Box>
+                        <Typography variant="subtitle2" color="text.primary">
+                          {item?.ko}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                ))}
+
+                <PaginationComponent
+                  total={total}
+                  pagination={pagination}
+                  setPagination={setPagination}
+                  onClickSearch={onLoadData}
+                />
+
+                {/* <Divider sx={{ my: 3 }} /> */}
+              </>
+            ) : (
               <Box
-                key={item?.id}
-                component={motion.div}
-                whileHover={{ y: -2 }}
                 sx={{
+                  width: '100%',
+                  height: 50,
+                  background: '#e2e2e2',
                   display: 'flex',
-                  flexDirection: 'row',
                   alignItems: 'center',
-                  height: 60,
-                  p: 2,
-                  mb: 2,
+                  justifyContent: 'center',
+                  my: 2,
+                  borderRadius: 3,
                 }}
               >
-                <Box sx={{ minWidth: 150 }}>
-                  <CommonTitle
-                    title={item?.jp}
-                    color="text.primary"
-                    variant="h3"
-                    language={props?.language}
-                    id={item?.id}
-                  />
-                </Box>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                  <Box>
-                    <Typography
-                      variant="caption"
-                      color="info.main"
-                      sx={{ mr: 1 }}
-                    >
-                      {item?.kana}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      {typeGbn[item?.type]}
-                    </Typography>
-                  </Box>
-                  <Box>
-                    <Typography
-                      variant="subtitle2"
-                      color="text.primary"
-                      sx={{ ...pretendardFont }}
-                    >
-                      {item?.ko}
-                    </Typography>
-                  </Box>
-                </Box>
+                <Typography color="text.secondary">
+                  조회된 데이터가 없어요!
+                </Typography>
               </Box>
-            ))}
-
-            <PaginationComponent
-              total={total}
-              pagination={pagination}
-              setPagination={setPagination}
-            />
+            )}
           </>
-        ) : (
-          <NoneDataOverlay />
         )}
       </Box>
     </>
