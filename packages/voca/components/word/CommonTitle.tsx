@@ -1,6 +1,7 @@
 import { Language } from '@/config/defaultType';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { pretendardFont } from 'package/styles/fonts/module';
 
 interface Props {
   title: string;
@@ -20,7 +21,11 @@ export default function CommonTitle({ ...props }: Props) {
       <Typography
         variant={props?.variant}
         color={props?.color}
-        sx={{ cursor: 'pointer', '&: hover': { color: 'info.main' } }}
+        sx={{
+          cursor: 'pointer',
+          '&: hover': { color: 'info.main' },
+          ...pretendardFont,
+        }}
       >
         {props?.title}
       </Typography>

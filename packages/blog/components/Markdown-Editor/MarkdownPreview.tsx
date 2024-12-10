@@ -54,6 +54,7 @@ export default function MarkdownPreview({
         <Box
           className={styles['responsive-container']}
           sx={{
+            height: '100%',
             padding: 2,
             textAlign: 'left',
             ...markdownHeaderStyles,

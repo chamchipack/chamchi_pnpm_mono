@@ -70,8 +70,31 @@ export default function MarkdownInput({
 
   const handleInsertMarkdown = (markdown: string) => {
     if (['bold', 'strike'].includes(markdown)) return handleBoldClick(markdown);
-    setMarkdownText((prev) => prev + markdown);
-    textareaRef.current?.focus();
+    // setMarkdownText((prev) => prev + markdown);
+    // textareaRef.current?.focus();
+
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+
+    const start = textarea.selectionStart; // 현재 커서 시작 위치
+    const end = textarea.selectionEnd; // 현재 커서 끝 위치
+
+    const beforeText = markdownText.slice(0, start); // 커서 앞부분 텍스트
+    const afterText = markdownText.slice(end); // 커서 뒷부분 텍스트
+
+    // 커서 위치에 마크다운 삽입
+    const updatedText = `${beforeText}${markdown}${afterText}`;
+
+    setMarkdownText(updatedText);
+
+    // 커서 위치를 마크다운이 추가된 위치로 이동
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(
+        start + markdown.length,
+        start + markdown.length,
+      ); // \n``` 이후에 커서 위치 조정
+    }, 0);
   };
 
   const handleBoldClick = (markdown: string) => {
@@ -111,12 +134,40 @@ export default function MarkdownInput({
       const imageUrl = URL.createObjectURL(file); // 이미지 파일을 URL로 변환\
       setPreviewImage(imageUrl); // 미리보기 URL 설정
 
-      setMarkdownText((prev) => prev + `\n![이미지 설명](${imageUrl})`); // 마크다운에 이미지 추가
+      const textarea = textareaRef.current;
+      if (!textarea) return;
+
+      const start = textarea.selectionStart; // 현재 커서 시작 위치
+      const end = textarea.selectionEnd; // 현재 커서 끝 위치
+
+      const beforeText = markdownText.slice(0, start); // 커서 앞부분 텍스트
+      const afterText = markdownText.slice(end); // 커서 뒷부분 텍스트
+
+      // 커서 위치에 마크다운 삽입
+      const updatedText = `${beforeText}${`\n![이미지 설명](${imageUrl})`}${afterText}`;
+
+      setMarkdownText(updatedText);
+
+      // 커서 위치를 마크다운이 추가된 위치로 이동
+      setTimeout(() => {
+        textarea.focus();
+        textarea.setSelectionRange(start + 1, start + 1); // \n``` 이후에 커서 위치 조정
+      }, 0);
+
+      // setMarkdownText((prev) => prev + `\n![이미지 설명](${imageUrl})`); // 마크다운에 이미지 추가
     }
   };
 
   return (
-    <Box sx={{ width: isMobile ? '100%' : '50%', overflowY: 'hidden' }}>
+    <Box
+      sx={{
+        width: isMobile ? '100%' : '50%',
+        // height: '100%',
+        overflowY: 'hidden',
+        // background: 'red',
+        overflowX: 'hidden',
+      }}
+    >
       {/* 제목 입력 */}
       <TextField
         placeholder="제목을 입력해주세요"

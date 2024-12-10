@@ -52,7 +52,7 @@ export default function MarkdownButtonGroup({
         </Button>
         <Button
           sx={buttonStyles}
-          onClick={() => handleButtonClick('```\n\n```')}
+          onClick={() => handleButtonClick('\n```\n\n```\n')}
         >
           {isMobile ? <CodeIcon /> : '코드블럭'}
         </Button>
