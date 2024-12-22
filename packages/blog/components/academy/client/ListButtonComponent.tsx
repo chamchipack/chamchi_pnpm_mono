@@ -1,10 +1,10 @@
 'use client';
 
 import { menuItems } from '@/config/menu/menu';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Skeleton, Typography } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../state';
 import { PaginationAtom, SearchFilterAtom } from './state';
@@ -13,6 +13,7 @@ import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import MenuAtom from '@/components/Layout/Header/client/auth/state';
 
 export default function ListButtonComponent() {
+  const [isMounted, setIsMounted] = useState(false);
   const { data } = useSession();
   const ismobile = useClientSize('sm');
   const menu = useRecoilValue(MenuAtom);
@@ -34,6 +35,22 @@ export default function ListButtonComponent() {
 
   const buttons =
     menu.find(({ path: _path = '' }) => _path === path)?.category || [];
+
+  useEffect(() => {
+    setFilterState({
+      ...filterState,
+      'category.like': '',
+    });
+    setIsMounted(true); // 클라이언트 사이드에서만 실행
+  }, []);
+
+  if (!isMounted)
+    return (
+      <Box sx={{ mt: 3 }}>
+        <Skeleton sx={{ width: '20%', height: 40 }} />
+        <Skeleton sx={{ width: '100%', height: 40, mt: 1 }} />
+      </Box>
+    );
 
   return (
     <>
