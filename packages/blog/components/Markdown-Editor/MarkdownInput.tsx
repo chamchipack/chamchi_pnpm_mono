@@ -87,6 +87,9 @@ export default function MarkdownInput({
 
     setMarkdownText(updatedText);
 
+    textarea.style.height = 'auto'; // 기존 높이 초기화
+    textarea.style.height = `${textarea.scrollHeight + 80}px`;
+
     // 커서 위치를 마크다운이 추가된 위치로 이동
     setTimeout(() => {
       textarea.focus();

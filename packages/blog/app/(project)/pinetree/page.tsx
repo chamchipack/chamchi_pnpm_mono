@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import ContentListContainer from '@/components/main/server/ContentListContainer';
+import MainContainer from '@/components/main/MainContainer';
 
 export const metadata: Metadata = {
   title: '블로그 참치',
@@ -11,5 +12,10 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <ContentListContainer />;
+  return (
+    <>
+      <MainContainer />
+      <ContentListContainer />
+    </>
+  );
 }
