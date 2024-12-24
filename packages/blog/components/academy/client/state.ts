@@ -15,5 +15,5 @@ export const SearchFilterAtom = atom<SearchType>({
 
 export const PaginationAtom = atom<any>({
   key: 'PaginationAtom',
-  default: {},
+  default: { page: 1, perPage: 5 },
 });
