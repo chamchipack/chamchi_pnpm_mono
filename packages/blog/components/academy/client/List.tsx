@@ -2,7 +2,7 @@
 import db from '@/api/module';
 import { Box, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { PaginationAtom, SearchFilterAtom } from './state';
 import Title from './Title';
 import ListImage from './ListImage';
@@ -20,11 +20,12 @@ const List = ({ ...props }: Props) => {
   const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
 
   const filterState = useRecoilValue(SearchFilterAtom);
+  const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
 
   const onLoadData = async () => {
     const { data = [], ...rest } = await db.search('library', {
       options: { ...filterState, 'theme.like': props?.path },
-      pagination: { ...pagination },
+      pagination: { ...paginationState },
     });
     setTotal(data?.totalItems);
     const result = Array.isArray(data) ? data : data?.items;
@@ -35,11 +36,11 @@ const List = ({ ...props }: Props) => {
   useEffect(() => {
     if (
       Object.entries(filterState).length ||
-      Object.entries(pagination).length
+      Object.entries(paginationState).length
     ) {
       onLoadData();
     }
-  }, [filterState, pagination]);
+  }, [filterState, paginationState]);
 
   return (
     <>
@@ -112,8 +113,8 @@ const List = ({ ...props }: Props) => {
           ))}
           <PaginationComponent
             total={total}
-            pagination={pagination}
-            setPagination={setPagination}
+            pagination={paginationState}
+            setPagination={setPaginationState}
           />
         </>
       ) : (

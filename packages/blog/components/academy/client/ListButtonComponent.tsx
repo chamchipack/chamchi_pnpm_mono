@@ -19,13 +19,17 @@ export default function ListButtonComponent() {
   const menu = useRecoilValue(MenuAtom);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
 
-  // const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
+  const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
   const path = usePathname();
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
 
   const [value, setValue] = useState<string>('');
 
   const handleChange = (newValue: string) => {
+    setPaginationState((prev: any) => ({
+      ...prev,
+      page: 1,
+    }));
     setFilterState({
       ...filterState,
       'category.like': newValue,
