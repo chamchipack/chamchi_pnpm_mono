@@ -7,6 +7,7 @@ import { PaginationAtom, SearchFilterAtom } from './state';
 import Title from './Title';
 import ListImage from './ListImage';
 import PaginationComponent from './Pagination';
+import useIsRendering from 'package/src/hooks/useRenderStatus';
 
 interface Props {
   rows: any[];
@@ -15,6 +16,7 @@ interface Props {
 }
 
 const List = ({ ...props }: Props) => {
+  const renderStatus = useIsRendering();
   const [rows, setRows] = useState(props?.rows || []);
   const [total, setTotal] = useState(props?.total);
   const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
@@ -35,8 +37,9 @@ const List = ({ ...props }: Props) => {
 
   useEffect(() => {
     if (
-      Object.entries(filterState).length ||
-      Object.entries(paginationState).length
+      (Object.entries(filterState).length ||
+        Object.entries(paginationState).length) &&
+      renderStatus
     ) {
       onLoadData();
     }
@@ -47,7 +50,7 @@ const List = ({ ...props }: Props) => {
       {rows.length ? (
         <>
           {rows.map((item, index) => (
-            <Box sx={{ width: '100%', minHeight: 140, mt: 4 }} key={index}>
+            <Box sx={{ width: '100%', minHeight: 140, mt: 4 }} key={item.id}>
               <Box
                 sx={{
                   p: 1,

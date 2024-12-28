@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 
-export const defaultValue = {};
+export const defaultValue = { 'category.like': '' };
 
 interface SearchType {
   'markdown_title.like'?: string;
