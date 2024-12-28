@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import pb from '@/api/server/db/pocketbase';
 import { Schema } from '@/config/schema';
+import db from '@/api/module';
 
 interface ImageBoxProps {
   collectionId: string;
@@ -20,9 +21,12 @@ export default function ImageBox({
 
   const getImageUrl = async () => {
     try {
-      const record = await pb.collection('library').getOne(recordId);
-      const fileUrl = pb.files.getUrl(record, imageName);
-      return fileUrl;
+      if (imageName) {
+        const { data = {} } = await db.single('library', recordId);
+        // const record = await pb.collection('library').getOne(recordId);
+        const fileUrl = pb.files.getUrl(data, imageName);
+        return fileUrl;
+      } else return '';
     } catch (error) {
       console.error('이미지를 가져오는 중 오류가 발생했습니다:', error);
       return null;
@@ -40,7 +44,7 @@ export default function ImageBox({
       setLoading(false);
     };
     fetchImageUrl();
-  }, [collectionId, recordId, imageName]);
+  }, []);
 
   return (
     <>
