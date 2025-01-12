@@ -9,7 +9,7 @@ const CreateButton = () => {
   const onClickCreate = async () => {
     for (const item of noun) {
       await db.create('japanese', item);
-      await sleep(500); // 0.5초 딜레이
+      await sleep(1000); // 0.5초 딜레이
     }
   };
   return (
