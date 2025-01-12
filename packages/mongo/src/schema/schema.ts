@@ -1,25 +1,30 @@
 import { buildSchema } from 'graphql';
 
-// AND와 OR 타입 정의 가져오기
-import { JapaneseTypeAnd, JapaneseInputTypeAnd } from './japanese/wordAndType';
-import { JapaneseTypeOr, JapaneseInputTypeOr } from './japanese/wordOrType';
+import {
+  JapaneseReturnType,
+  JapaneseInputType,
+} from './japanese/japaneseWordType';
+
+import { vocabularyInputType, vocabularyType } from './vocabulary/vocabulary';
 
 // Query 타입 통합
 const QueryType = `
   type Query {
-    getWords(input: JapaneseInput): [Japanese]
+    getWordListAndType(input: JapaneseInput): [Japanese]
+    getWordListOrType(input: JapaneseInput): [Japanese]
+    getOneFromId(input: ID!): Japanese
 
-    getWordListOr(input: JapaneseInputOr): [JapaneseOr]
-
+    getVocaList(input: VocabularyInput): [Vocabulary]
   }
 `;
 
 // 모든 타입을 조합하여 스키마 빌드
 const schema = buildSchema(`
-  ${JapaneseTypeAnd}
-  ${JapaneseInputTypeAnd}
-  ${JapaneseTypeOr}
-  ${JapaneseInputTypeOr}
+  ${JapaneseReturnType}
+  ${JapaneseInputType}
+
+  ${vocabularyType}
+  ${vocabularyInputType}
   ${QueryType}
 `);
 
