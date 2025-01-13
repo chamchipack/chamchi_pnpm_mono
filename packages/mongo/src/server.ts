@@ -4,11 +4,13 @@ import schema from './schema/schema';
 
 import getWordListAndType from './resolvers/japanese/getWordListAndType';
 import getWordListOrType from './resolvers/japanese/getWordListOrType';
-import getOneFromId from './resolvers/japanese/getOneFromId';
+import getOneWordFromId from './resolvers/japanese/getOneWordFromId';
+import getWordListTotalcount from './resolvers/japanese/getWordListTotalcount';
 
 import getVocaList from './resolvers/vocabulary/getVocaList';
 
 import client from './config/mongo';
+import createWord from './resolvers/japanese/createWord';
 
 const app = express();
 const PORT = 4000;
@@ -16,15 +18,18 @@ const PORT = 4000;
 const root = {
   getWordListAndType,
   getWordListOrType,
-  getOneFromId,
+  getOneWordFromId,
+  getWordListTotalcount,
   getVocaList,
+
+  createWord,
 };
 
 app.use('/graphql', (req, res, next) => {
   const apiKey = req.headers['x-api-key']; // 헤더에서 키 추출
   const validApiKey = 'your-secret-key'; // 유효한 키 설정
 
-  console.log(req.headers);
+  // console.log(req.headers);
 
   // if (apiKey !== validApiKey) {
   //   // 키가 유효하지 않으면 403 Forbidden 응답

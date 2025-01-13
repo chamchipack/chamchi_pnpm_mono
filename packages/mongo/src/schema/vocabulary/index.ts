@@ -7,13 +7,22 @@ export const vocabularyType = `
         userId: String
         wordId: [String]
     }
-`;
 
-export const vocabularyInputType = `
     input VocabularyInput {
         id: ID
         language: String
         name: String
         userId: String
     }
+`;
+
+export const types = `
+    ${vocabularyType}
+`;
+
+export const query = `
+    getVocaList(input: VocabularyInput): [Vocabulary]
+`;
+
+export const mutation = `
 `;

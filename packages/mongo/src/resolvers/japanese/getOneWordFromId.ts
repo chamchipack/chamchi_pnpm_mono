@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const database = process.env.DATABASE;
 
-const getOneFromId = async ({
+const getOneWordFromId = async ({
   input,
 }: {
   input?: ObjectId;
@@ -34,4 +34,4 @@ const getOneFromId = async ({
   }
 };
 
-export default getOneFromId;
+export default getOneWordFromId;
