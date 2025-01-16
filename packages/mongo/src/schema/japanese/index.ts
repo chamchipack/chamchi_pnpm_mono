@@ -43,7 +43,9 @@ export const japaneseWordType = `
         jp: String
         ro: String
         type: String
+        kana: String
         etc: EtcType
+        desc: String
         example: [ExampleType]
     }
 
@@ -53,6 +55,7 @@ export const japaneseWordType = `
     jp: String
     ro: String
     type: String
+    kana: String
     etc: EtcInput
   }  
 `;
@@ -73,10 +76,9 @@ export const japaneseWordCreateType = `
 
 export const japaneseWordUpdateType = `
   input JapaneseUpdateInput {
-    _id: String!
-    ko: String!
-    jp: String!
-    ro: String!
+    ko: String
+    jp: String
+    ro: String
     type: String
     desc: String
     example: [ExampleInput]
@@ -84,7 +86,20 @@ export const japaneseWordUpdateType = `
     language: String
     etc: EtcInput
   }
+
+  type UpdateWordResponse {
+    _id: ID
+    status: Int
+  }
 `;
+
+export const japaneseWordDeleteType = `
+  type DeleteWordResponse {
+    deletedCount: Int
+    status: Int
+  }
+`
+
 
 /**
  *
@@ -98,6 +113,8 @@ export const types = `
     ${exampleType}
     ${japaneseWordType}
     ${japaneseWordCreateType}
+    ${japaneseWordDeleteType}
+    ${japaneseWordUpdateType}
 `;
 
 export const query = `
@@ -124,4 +141,12 @@ export const query = `
 
 export const mutation = `
     createWord(input: JapaneseCreateInput): Int
+
+    """
+    """
+    deleteWord(input: ID!): DeleteWordResponse
+
+    """
+    """
+    updateWord(_id: ID!, input: JapaneseUpdateInput): UpdateWordResponse
 `;

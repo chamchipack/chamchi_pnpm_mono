@@ -2,15 +2,17 @@ import express from 'express';
 import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 
+import getOneWordFromId from './resolvers/japanese/getOneWordFromId';
 import getWordListAndType from './resolvers/japanese/getWordListAndType';
 import getWordListOrType from './resolvers/japanese/getWordListOrType';
-import getOneWordFromId from './resolvers/japanese/getOneWordFromId';
 import getWordListTotalcount from './resolvers/japanese/getWordListTotalcount';
 
 import getVocaList from './resolvers/vocabulary/getVocaList';
 
 import client from './config/mongo';
 import createWord from './resolvers/japanese/createWord';
+import deleteWord from './resolvers/japanese/deleteWord';
+import updateWord from './resolvers/japanese/updateWord';
 
 const app = express();
 const PORT = 4000;
@@ -23,6 +25,8 @@ const root = {
   getVocaList,
 
   createWord,
+  deleteWord,
+  updateWord
 };
 
 app.use('/graphql', (req, res, next) => {
