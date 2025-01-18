@@ -14,6 +14,8 @@ import createWord from './resolvers/japanese/createWord';
 import deleteWord from './resolvers/japanese/deleteWord';
 import updateWord from './resolvers/japanese/updateWord';
 
+import { getStartKakaoLogin } from './resolvers/socialLogin/kakao';
+
 const app = express();
 const PORT = 4000;
 
@@ -26,7 +28,9 @@ const root = {
 
   createWord,
   deleteWord,
-  updateWord
+  updateWord,
+
+  getStartKakaoLogin,
 };
 
 app.use('/graphql', (req, res, next) => {
