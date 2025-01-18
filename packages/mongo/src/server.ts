@@ -18,6 +18,8 @@ import updateWord from './resolvers/japanese/updateWord';
 
 import { getStartKakaoLogin } from './resolvers/socialLogin/kakao';
 
+import { graphqlHTTP } from 'express-graphql';
+
 const resolvers = {
   Query: {
     getWordListAndType,
@@ -64,6 +66,13 @@ async function startServer() {
 const app = express() as any;
 const PORT = 4000;
 
+app.use(
+  '/graphqlsss',
+  graphqlHTTP({
+    schema: executableSchema,
+    graphiql: true, // GraphiQL 활성화
+  })
+);
 
 // const corsOptions = {
 //   origin: 'https://studio.apollographql.com',
