@@ -1,7 +1,7 @@
+import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
 import client from '../../config/mongo';
-import { Word, TypeGbn } from './type';
-import dotenv from 'dotenv';
+import { TypeGbn, Word } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
@@ -10,7 +10,7 @@ interface CreateWordResponse {
   status: number;
 }
 
-const createWord = async ({
+const createWord = async (_: undefined, {
   input,
 }: {
   input: Word<TypeGbn>;

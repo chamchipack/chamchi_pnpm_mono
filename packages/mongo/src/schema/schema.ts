@@ -1,20 +1,14 @@
 import { buildSchema } from 'graphql';
 
 import {
-  types as japaneseType,
-  query as japaneseQuery,
-  mutation as japaneseMutation,
+  mutation as japaneseMutation, query as japaneseQuery, types as japaneseType
 } from './japanese';
 import {
-  types as vocabularyType,
-  query as vocabularyQuery,
-  mutation as vocabularyMutation,
+  mutation as vocabularyMutation, query as vocabularyQuery, types as vocabularyType
 } from './vocabulary';
 
 import {
-  types as Kakaotype,
-  query as KakaoQuery,
-  mutation as KakaoMutation,
+  mutation as KakaoMutation, query as KakaoQuery, types as Kakaotype
 } from './socialLogin/kakao';
 
 const schema = buildSchema(`

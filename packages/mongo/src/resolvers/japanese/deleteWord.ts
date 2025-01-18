@@ -9,7 +9,7 @@ interface DeleteWordResponse {
   status: number;       // HTTP 상태 코드
 }
 
-const deleteWord = async ({input: id}: {input: string}): Promise<DeleteWordResponse> => {
+const deleteWord = async (_: undefined, {input: id}: {input: string}): Promise<DeleteWordResponse> => {
   try {
     // MongoDB 연결
 

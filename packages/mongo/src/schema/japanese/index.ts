@@ -72,6 +72,11 @@ export const japaneseWordCreateType = `
     language: String
     etc: EtcInput
   }
+
+  type CreateWordResponse {
+    _id: ID
+    status: Int
+  }
 `;
 
 export const japaneseWordUpdateType = `
@@ -140,7 +145,7 @@ export const query = `
 `;
 
 export const mutation = `
-    createWord(input: JapaneseCreateInput): Int
+    createWord(input: JapaneseCreateInput): CreateWordResponse
 
     """
     """

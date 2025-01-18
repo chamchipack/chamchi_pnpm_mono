@@ -1,11 +1,11 @@
+import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
 import client from '../../config/mongo';
-import { Word, TypeGbn } from './type';
-import dotenv from 'dotenv';
+import { TypeGbn, Word } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
-const getOneWordFromId = async ({
+const getOneWordFromId = async (_: undefined, {
   input,
 }: {
   input?: ObjectId;

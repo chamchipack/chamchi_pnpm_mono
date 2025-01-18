@@ -1,0 +1,158 @@
+"""
+조회용 일본어 타입
+"""
+type EtcType {
+  form: String
+  endingjp: String
+  endingro: String
+  stemjp: String
+  stemro: String
+  exception: Boolean
+}
+
+"""
+인풋용 일본어 타입
+"""
+input EtcInput {
+  form: String
+  endingjp: String
+  endingro: String
+  stemjp: String
+  stemro: String
+  exception: Boolean
+}
+
+"""
+일본어 예문 타입
+"""
+type ExampleType {
+  jp: String
+  ko: String
+}
+
+"""
+일본어 예문 입력 타입
+"""
+input ExampleInput {
+  jp: String
+  ko: String
+}
+
+"""
+일본어 단어 타입
+"""
+type Japanese {
+  _id: ID
+  ko: String
+  jp: String
+  ro: String
+  type: String
+  kana: String
+  etc: EtcType
+  desc: String
+  example: [ExampleType]
+}
+
+"""
+일본어 단어 입력 타입
+"""
+input JapaneseInput {
+  _id: ID
+  ko: String
+  jp: String
+  ro: String
+  type: String
+  kana: String
+  etc: EtcInput
+}
+
+"""
+일본어 단어 생성 입력 타입
+"""
+input JapaneseCreateInput {
+  ko: String!
+  jp: String!
+  ro: String!
+  type: String
+  desc: String
+  example: [ExampleInput]
+  kana: String
+  language: String
+  etc: EtcInput
+}
+
+"""
+일본어 단어 업데이트 입력 타입
+"""
+input JapaneseUpdateInput {
+  ko: String
+  jp: String
+  ro: String
+  type: String
+  desc: String
+  example: [ExampleInput]
+  kana: String
+  language: String
+  etc: EtcInput
+}
+
+"""
+단어 업데이트 응답 타입
+"""
+type UpdateWordResponse {
+  _id: ID
+  status: Int
+}
+
+"""
+단어 삭제 응답 타입
+"""
+type DeleteWordResponse {
+  deletedCount: Int
+  status: Int
+}
+
+"""
+Query 정의
+"""
+type Query {
+  """
+  조건이 AND 조건으로 검색하는 메소드입니다.
+  """
+  getWordListAndType(input: JapaneseInput, offset: Int, limit: Int): [Japanese]
+
+  """
+  조건별로 OR 조건으로 검색하는 메소드입니다.
+  """
+  getWordListOrType(input: JapaneseInput): [Japanese]
+
+  """
+  _id로 단일 문서를 검색합니다.
+  """
+  getOneWordFromId(input: ID!): Japanese
+
+  """
+  input 조건에 맞는 문서의 총 개수를 가져옵니다.
+  """
+  getWordListTotalcount(input: JapaneseInput): Int
+}
+
+"""
+Mutation 정의
+"""
+type Mutation {
+  """
+  일본어 단어를 생성합니다.
+  """
+  createWord(input: JapaneseCreateInput): Int
+
+  """
+  일본어 단어를 삭제합니다.
+  """
+  deleteWord(input: ID!): DeleteWordResponse
+
+  """
+  일본어 단어를 업데이트합니다.
+  """
+  updateWord(_id: ID!, input: JapaneseUpdateInput): UpdateWordResponse
+}

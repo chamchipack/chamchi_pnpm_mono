@@ -1,0 +1,17 @@
+# Kakao 소셜 로그인 관련 타입 정의
+type KakaoStartReturnType {
+  result: Boolean!
+}
+
+# Query 정의
+type Query {
+  # 현재는 Query 정의가 없습니다.
+}
+
+# Mutation 정의
+type Mutation {
+  """
+  카카오 소셜 로그인 진입용 Mutation입니다.
+  """
+  getStartKakaoLogin: KakaoStartReturnType
+}

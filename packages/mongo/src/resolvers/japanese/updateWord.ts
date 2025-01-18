@@ -18,7 +18,7 @@ interface UpdateWordResponse {
   status: number;        // HTTP 상태 코드
 }
 
-const updateWord = async ({
+const updateWord = async (_: undefined, {
     _id,
   input,
 }: {

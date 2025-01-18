@@ -1,8 +1,7 @@
-import { ObjectId } from 'mongodb';
 import dotenv from 'dotenv';
 import client from '../../config/mongo';
 
-import { Word, TypeGbn } from './type';
+import { TypeGbn, Word } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
@@ -27,7 +26,7 @@ interface Japanese {
   };
 }
 
-const getWordListOrType = async ({
+const getWordListOrType = async (_: undefined, {
   input,
 }: {
   input?: Word<TypeGbn>;

@@ -1,5 +1,7 @@
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import { ApolloServer } from 'apollo-server-express';
+
 import express from 'express';
-import { graphqlHTTP } from 'express-graphql';
 import schema from './schema/schema';
 
 import getOneWordFromId from './resolvers/japanese/getOneWordFromId';
@@ -16,45 +18,60 @@ import updateWord from './resolvers/japanese/updateWord';
 
 import { getStartKakaoLogin } from './resolvers/socialLogin/kakao';
 
-const app = express();
-const PORT = 4000;
-
-const root = {
-  getWordListAndType,
-  getWordListOrType,
-  getOneWordFromId,
-  getWordListTotalcount,
-  getVocaList,
-
-  createWord,
-  deleteWord,
-  updateWord,
-
-  getStartKakaoLogin,
+const resolvers = {
+  Query: {
+    getWordListAndType,
+    getWordListOrType,
+    getOneWordFromId,
+    getWordListTotalcount,
+    getVocaList,
+  },
+  Mutation: {
+    createWord,
+    deleteWord,
+    updateWord,
+    getStartKakaoLogin,
+  },
 };
 
-app.use('/graphql', (req, res, next) => {
-  const apiKey = req.headers['x-api-key']; // 헤더에서 키 추출
-  const validApiKey = 'your-secret-key'; // 유효한 키 설정
-
-  // console.log(req.headers);
-
-  // if (apiKey !== validApiKey) {
-  //   // 키가 유효하지 않으면 403 Forbidden 응답
-  //   res.status(403).json({ error: 'Unauthorized: Invalid API Key' });
-  //   return;
-  // }
-  next(); // 유효한 키일 경우 다음 미들웨어로 전달
+const executableSchema = makeExecutableSchema({
+  typeDefs: schema,
+  resolvers,
 });
 
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    rootValue: root,
-    graphiql: true,
-  }),
-);
+const server = new ApolloServer({
+  schema: executableSchema,
+  context: ({ req }) => {
+    // const apiKey = req.headers['x-api-key'];
+    // const validApiKey = 'your-secret-key';
+    // if (apiKey !== validApiKey) {
+    //   throw new Error('Unauthorized: Invalid API Key');
+    // }
+    return { client }; // context에 필요한 값 추가
+  },
+});
+
+async function startServer() {
+  await server.start();
+  server.applyMiddleware({ app, path: '/graphql' });
+
+  app.listen(PORT, () => {
+    console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+    run();
+  });
+}
+
+const app = express() as any;
+const PORT = 4000;
+
+
+// const corsOptions = {
+//   origin: 'https://studio.apollographql.com',
+//   credentials: true, // Credential 설정
+// };
+
+// app.use(cors(corsOptions)); // CORS 미들웨어 추가
+
 
 async function run() {
   try {
@@ -68,7 +85,4 @@ async function run() {
   }
 }
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/graphql`);
-  run().catch(console.dir);
-});
+startServer().catch(error => console.log(error))
