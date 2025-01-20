@@ -16,9 +16,10 @@ import createWord from './resolvers/japanese/createWord';
 import deleteWord from './resolvers/japanese/deleteWord';
 import updateWord from './resolvers/japanese/updateWord';
 
-import { getStartKakaoLogin } from './resolvers/socialLogin/kakao';
+import { kakaoLogin } from './resolvers/socialLogin/kakao';
 
 import { graphqlHTTP } from 'express-graphql';
+import { kakaoInitialCheck } from './resolvers/socialLogin/kakaoInitialCheck';
 
 const resolvers = {
   Query: {
@@ -32,7 +33,8 @@ const resolvers = {
     createWord,
     deleteWord,
     updateWord,
-    getStartKakaoLogin,
+    kakaoLogin,
+    kakaoInitialCheck
   },
 };
 

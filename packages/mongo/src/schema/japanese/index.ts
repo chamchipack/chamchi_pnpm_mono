@@ -131,7 +131,7 @@ export const query = `
     """
     조건별로 or 조건으로 검색하는 메소드 입니다.
     """    
-    getWordListOrType(input: JapaneseInput): [Japanese]
+    getWordListOrType(input: JapaneseInput, offset: Int, limit: Int): [Japanese]
 
     """
     _id로 단일의 문서를 검색합니다.
