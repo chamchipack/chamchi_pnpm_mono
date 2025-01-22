@@ -9,7 +9,7 @@ export const vocabularyType = `
     }
 
     input VocabularyInput {
-        id: ID
+        _id: ID
         language: String
         name: String
         userId: String
@@ -21,7 +21,7 @@ export const types = `
 `;
 
 export const query = `
-    getVocaList(input: VocabularyInput): [Vocabulary]
+    getVocaList(input: VocabularyInput, offset: Int, limit: Int): [Vocabulary]
 `;
 
 export const mutation = `
