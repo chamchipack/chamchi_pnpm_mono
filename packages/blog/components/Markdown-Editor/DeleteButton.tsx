@@ -81,7 +81,7 @@ export default function DeleteButton({
             onClick={() => {
               setIsEditPageon(false);
               router.push(`/pinetree/${path}`);
-              setFilterState({ 'category.like': '' });
+              // setFilterState({ 'category.like': '' });
             }}
           >
             <ArrowBackIosNewIcon />

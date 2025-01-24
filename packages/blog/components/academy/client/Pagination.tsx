@@ -7,17 +7,20 @@ interface Props {
   setPagination: React.Dispatch<
     React.SetStateAction<{ page: number; perPage: number }>
   >;
+  onClickSearch?: (params: number) => void;
 }
 
 export default function PaginationComponent({
   total,
   pagination,
   setPagination,
+  onClickSearch,
 }: Props) {
   const handlePageChange = (
     event: React.ChangeEvent<unknown>,
     newPage: number,
   ) => {
+    if (onClickSearch) onClickSearch(newPage);
     setPagination((prev) => ({ ...prev, page: newPage }));
   };
 

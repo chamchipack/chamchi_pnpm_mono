@@ -1,6 +1,6 @@
 'use client';
 import db from '@/api/module';
-import { Box, Typography } from '@mui/material';
+import { Box, Skeleton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { PaginationAtom, SearchFilterAtom } from './state';
@@ -17,39 +17,38 @@ interface Props {
 
 const List = ({ ...props }: Props) => {
   const renderStatus = useIsRendering();
-  const [rows, setRows] = useState(props?.rows || []);
-  const [total, setTotal] = useState(props?.total);
+  const [rows, setRows] = useState<any>([]);
+  const [total, setTotal] = useState(0);
   const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
+  const [isLoading, setIsLoading] = useState(true);
 
   const filterState = useRecoilValue(SearchFilterAtom);
   const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
 
-  const onLoadData = async () => {
+  const onLoadData = async (pgnum: number) => {
+    setIsLoading(true);
     const { data = [], ...rest } = await db.search('library', {
       options: { ...filterState, 'theme.like': props?.path },
-      pagination: { ...paginationState },
+      pagination: { page: pgnum, perPage: 5 },
     });
     setTotal(data?.totalItems);
     const result = Array.isArray(data) ? data : data?.items;
 
     setRows(result);
+    setIsLoading(false);
   };
 
   useEffect(() => {
-    if (
-      (Object.entries(filterState).length ||
-        Object.entries(paginationState).length) &&
-      renderStatus
-    ) {
-      onLoadData();
-    }
-  }, [filterState, paginationState]);
+    //   (Object.entries(filterState).length ||
+    //     Object.entries(paginationState).length) &&
+    onLoadData(paginationState.page || 1);
+  }, [filterState]);
 
   return (
     <>
       {rows.length ? (
         <>
-          {rows.map((item, index) => (
+          {rows.map((item: any, index: number) => (
             <Box sx={{ width: '100%', minHeight: 140, mt: 4 }} key={item.id}>
               <Box
                 sx={{
@@ -118,23 +117,32 @@ const List = ({ ...props }: Props) => {
             total={total}
             pagination={paginationState}
             setPagination={setPaginationState}
+            onClickSearch={onLoadData}
           />
         </>
       ) : (
-        <Box
-          sx={{
-            width: '100%',
-            height: 50,
-            background: '#e2e2e2',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            mt: 4,
-            borderRadius: 3,
-          }}
-        >
-          <Typography color="text.secondary">조회된 글이 없어요!</Typography>
-        </Box>
+        <>
+          {isLoading ? (
+            <Skeleton sx={{ width: '100%', height: 250 }} />
+          ) : (
+            <Box
+              sx={{
+                width: '100%',
+                height: 50,
+                background: '#e2e2e2',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                mt: 4,
+                borderRadius: 3,
+              }}
+            >
+              <Typography color="text.secondary">
+                조회된 글이 없어요!
+              </Typography>
+            </Box>
+          )}
+        </>
       )}
     </>
   );
