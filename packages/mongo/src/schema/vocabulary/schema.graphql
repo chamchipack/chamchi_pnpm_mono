@@ -1,0 +1,30 @@
+# Vocabulary 타입 정의
+type Vocabulary {
+  _id: ID
+  language: String
+  memorized: [String]
+  name: String
+  userId: String
+  wordId: [String]
+}
+
+# Vocabulary 입력 타입 정의
+input VocabularyInput {
+  id: ID
+  language: String
+  name: String
+  userId: String
+}
+
+# Query 정의
+type Query {
+  """
+  Vocabulary 리스트를 가져옵니다.
+  """
+  getVocaList(input: VocabularyInput): [Vocabulary]
+}
+
+# Mutation 정의
+type Mutation {
+  # 현재는 Mutation 정의가 비어 있습니다.
+}

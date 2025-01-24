@@ -11,22 +11,22 @@ export default async function ListContainer({
 }: {
   path: string;
 }): Promise<React.ReactElement> {
-  const parameter = {
-    target: 'library',
-    type: 'search',
-    options: { 'theme.like': path },
-    sort: {},
-  };
-  const result = await getData(parameter);
-  const list: any[] = result?.data?.items || [];
-  const total = result?.data?.totalItems || 0;
+  // const parameter = {
+  //   target: 'library',
+  //   type: 'search',
+  //   options: { 'theme.like': path },
+  //   sort: {},
+  // };
+  // const result = await getData(parameter);
+  // const list: any[] = result?.data?.items || [];
+  // const total = result?.data?.totalItems || 0;
 
   return (
     <div className={styles['responsive-container']}>
       <div className={styles['reponsive-content']} style={{ width: '100%' }}>
-        {list.length ? (
-          <List rows={list} path={path} total={total} />
-        ) : (
+        {/* {list.length ? ( */}
+        <List rows={[]} path={path} total={0} />
+        {/* ) : (
           <Box
             sx={{
               width: '100%',
@@ -43,7 +43,7 @@ export default async function ListContainer({
               조회된 데이터가 없어요!
             </Typography>
           </Box>
-        )}
+        )} */}
       </div>
 
       {/* 웹 사이즈일때 출력되는 필터 */}

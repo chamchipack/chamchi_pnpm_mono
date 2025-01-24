@@ -72,7 +72,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
     const trimmedSummary = splitByBlockquote.trim();
 
     // 요약 길이 조절
-    if (trimmedSummary.length > 50) {
+    if (trimmedSummary.length > 30) {
       return trimmedSummary.slice(0, 100) + '...';
     }
 

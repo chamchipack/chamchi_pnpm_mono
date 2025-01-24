@@ -1,7 +1,6 @@
 'use client';
 
-import { menuItems } from '@/config/menu/menu';
-import { Box, Button, Skeleton, Typography } from '@mui/material';
+import { Box, Button, Popover, Skeleton, Typography } from '@mui/material';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -18,12 +17,14 @@ export default function ListButtonComponent() {
   const ismobile = useClientSize('sm');
   const menu = useRecoilValue(MenuAtom);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
-
   const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
   const path = usePathname();
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
 
-  const [value, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>(
+    filterState?.['category.like'] || '',
+  );
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleChange = (newValue: string) => {
     setPaginationState((prev: any) => ({
@@ -40,11 +41,21 @@ export default function ListButtonComponent() {
   const buttons =
     menu.find(({ path: _path = '' }) => _path === path)?.category || [];
 
+  const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
+
+  const isPopoverOpen = Boolean(anchorEl);
+
   useEffect(() => {
-    setFilterState({
-      ...filterState,
-      'category.like': '',
-    });
+    // setFilterState({
+    //   ...filterState,
+    //   'category.like': '',
+    // });
     setIsMounted(true); // 클라이언트 사이드에서만 실행
   }, []);
 
@@ -75,7 +86,7 @@ export default function ListButtonComponent() {
             flexDirection: 'row',
           }}
         >
-          {buttons.map((button: any) => (
+          {buttons.slice(0, 2).map((button: any, index: number) => (
             <Button
               key={button.label}
               sx={{
@@ -84,10 +95,7 @@ export default function ListButtonComponent() {
                   value === button.label ? '2px solid black' : 'none',
                 borderRadius: 0,
               }}
-              onClick={() => {
-                handleChange(button.label);
-                // setPaginationState({ page: 1, perPage: 5 });
-              }}
+              onClick={() => handleChange(button.label)}
             >
               <Typography
                 sx={{ color: value === button.label ? 'black' : 'gray' }}
@@ -96,6 +104,57 @@ export default function ListButtonComponent() {
               </Typography>
             </Button>
           ))}
+          {buttons.length > 3 && (
+            <Button
+              sx={{
+                mr: 2,
+                color: 'gray',
+                fontWeight: 'bold',
+              }}
+              onClick={handleOpenPopover}
+            >
+              <Typography sx={{ color: 'black' }}>+ 더보기</Typography>
+            </Button>
+          )}
+          <Popover
+            open={isPopoverOpen}
+            anchorEl={anchorEl}
+            onClose={handleClosePopover}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                p: 1,
+                backgroundColor: 'background.paper',
+              }}
+            >
+              {buttons.slice(2).map((button: any) => (
+                <Button
+                  key={button.label}
+                  sx={{}}
+                  onClick={() => {
+                    handleChange(button.label);
+                    handleClosePopover();
+                  }}
+                >
+                  <Typography
+                    sx={{ color: value === button.label ? 'black' : '#a6a6a6' }}
+                  >
+                    {button.name}
+                  </Typography>
+                </Button>
+              ))}
+            </Box>
+          </Popover>
         </Box>
         {data && (
           <Button
@@ -113,9 +172,7 @@ export default function ListButtonComponent() {
                 background: (theme) => `${theme.palette.grey[400]}`,
               },
             }}
-            onClick={() => {
-              setIsEditPageon(true);
-            }}
+            onClick={() => setIsEditPageon(true)}
           >
             새로운 글 등록
           </Button>
