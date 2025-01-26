@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
 import styles from './container.module.css';
 import DeleteButton from './DeleteButton';
 import DetailButton from './DetailButton';
@@ -86,7 +87,7 @@ export default function MarkdownPreview({
             category={category}
           />
           <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
+            remarkPlugins={[remarkBreaks, remarkGfm]}
             urlTransform={(url, type) => {
               if (type === 'image' && url.startsWith('blob:')) {
                 return url;
