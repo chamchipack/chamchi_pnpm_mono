@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
-import client from '../../config/mongo';
+import client from '../../../config/mongo';
 import { TypeGbn, Word } from './type';
 
 dotenv.config();
@@ -12,21 +12,23 @@ interface UpdateWordInput {
 }
 
 interface UpdateWordResponse {
-    _id: string
-//   matchedCount: number; // 업데이트 대상 문서 수
-//   modifiedCount: number; // 실제 업데이트된 문서 수
-  status: number;        // HTTP 상태 코드
+  _id: string;
+  //   matchedCount: number; // 업데이트 대상 문서 수
+  //   modifiedCount: number; // 실제 업데이트된 문서 수
+  status: number; // HTTP 상태 코드
 }
 
-const updateWord = async (_: undefined, {
+const updateWord = async (
+  _: undefined,
+  {
     _id,
-  input,
-}: {
-    _id: string
-  input: Word<TypeGbn>;
-}): Promise<UpdateWordResponse> => {
+    input,
+  }: {
+    _id: string;
+    input: Word<TypeGbn>;
+  },
+): Promise<UpdateWordResponse> => {
   try {
-
     const db = client.db(database);
     const japaneseCollection = db.collection('japanese');
 
@@ -43,9 +45,9 @@ const updateWord = async (_: undefined, {
 
     // 업데이트 결과 반환
     return {
-    //   matchedCount: result.matchedCount,
-    //   modifiedCount: result.modifiedCount,
-    _id,
+      //   matchedCount: result.matchedCount,
+      //   modifiedCount: result.modifiedCount,
+      _id,
       status: 200, // 200: 성공, 304: 수정되지 않음
     };
   } catch (error) {

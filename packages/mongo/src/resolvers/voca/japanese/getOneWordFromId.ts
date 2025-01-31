@@ -1,15 +1,18 @@
 import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
-import client from '../../config/mongo';
+import client from '../../../config/mongo';
 import { TypeGbn, Word } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
-const getOneWordFromId = async (_: undefined, {
-  input,
-}: {
-  input?: ObjectId;
-}): Promise<Word<TypeGbn>> => {
+const getOneWordFromId = async (
+  _: undefined,
+  {
+    input,
+  }: {
+    input?: ObjectId;
+  },
+): Promise<Word<TypeGbn>> => {
   try {
     // await client.connect();
     const db = client.db(database);

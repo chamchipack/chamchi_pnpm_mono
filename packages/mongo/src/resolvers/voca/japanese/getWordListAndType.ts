@@ -1,15 +1,22 @@
 import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
-import client from '../../config/mongo';
+import client from '../../../config/mongo';
 import { TypeGbn, Word } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
-const getWordListTotalcount = async (_: any, {
-  input,
-}: {
-  input?: Word<TypeGbn>;
-}): Promise<number> => {
+const getWordListAndType = async (
+  _: undefined,
+  {
+    input,
+    offset = 0,
+    limit = 10,
+  }: {
+    input?: Word<TypeGbn>;
+    offset?: number;
+    limit?: number;
+  },
+): Promise<Word<TypeGbn>[]> => {
   try {
     // await client.connect();
     const db = client.db(database);
@@ -27,8 +34,13 @@ const getWordListTotalcount = async (_: any, {
     }
 
     // 데이터 검색
-    const japanese = await japaneseCollection.countDocuments(filter);
+    const japanese = await japaneseCollection
+      .find(filter)
+      .skip(offset)
+      .limit(limit)
+      .toArray();
 
+    // await collection.countDocuments(filter);
     return japanese;
   } catch (error) {
     console.error('Error fetching japanese:', error);
@@ -38,4 +50,4 @@ const getWordListTotalcount = async (_: any, {
   }
 };
 
-export default getWordListTotalcount;
+export default getWordListAndType;

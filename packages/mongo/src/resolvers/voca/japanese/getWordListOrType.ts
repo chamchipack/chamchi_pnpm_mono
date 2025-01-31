@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import client from '../../config/mongo';
+import client from '../../../config/mongo';
 
 import { TypeGbn, Word } from './type';
 dotenv.config();

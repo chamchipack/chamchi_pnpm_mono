@@ -4,17 +4,17 @@ import { ApolloServer } from 'apollo-server-express';
 import express from 'express';
 import schema from './schema/schema';
 
-import getOneWordFromId from './resolvers/japanese/getOneWordFromId';
-import getWordListAndType from './resolvers/japanese/getWordListAndType';
-import getWordListOrType from './resolvers/japanese/getWordListOrType';
-import getWordListTotalcount from './resolvers/japanese/getWordListTotalcount';
+import getOneWordFromId from './resolvers/voca/japanese/getOneWordFromId';
+import getWordListAndType from './resolvers/voca/japanese/getWordListAndType';
+import getWordListOrType from './resolvers/voca/japanese/getWordListOrType';
+import getWordListTotalcount from './resolvers/voca/japanese/getWordListTotalcount';
 
-import getVocaList from './resolvers/vocabulary/getVocaList';
+import getVocaList from './resolvers/voca/vocabulary/getVocaList';
 
 import client from './config/mongo';
-import createWord from './resolvers/japanese/createWord';
-import deleteWord from './resolvers/japanese/deleteWord';
-import updateWord from './resolvers/japanese/updateWord';
+import createWord from './resolvers/voca/japanese/createWord';
+import deleteWord from './resolvers/voca/japanese/deleteWord';
+import updateWord from './resolvers/voca/japanese/updateWord';
 
 import { kakaoLogin } from './resolvers/socialLogin/kakao';
 
@@ -34,7 +34,7 @@ const resolvers = {
     deleteWord,
     updateWord,
     kakaoLogin,
-    kakaoInitialCheck
+    kakaoInitialCheck,
   },
 };
 
@@ -73,7 +73,7 @@ app.use(
   graphqlHTTP({
     schema: executableSchema,
     graphiql: true, // GraphiQL 활성화
-  })
+  }),
 );
 
 // const corsOptions = {
@@ -82,7 +82,6 @@ app.use(
 // };
 
 // app.use(cors(corsOptions)); // CORS 미들웨어 추가
-
 
 async function run() {
   try {
@@ -96,4 +95,4 @@ async function run() {
   }
 }
 
-startServer().catch(error => console.log(error))
+startServer().catch((error) => console.log(error));
