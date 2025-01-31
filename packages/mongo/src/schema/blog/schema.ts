@@ -5,26 +5,89 @@
  */
 
 export const Article = `
-    type ArticleType = {
+    type ArticleType {
         _id: ID
+        category: String
         imageId: String
+        log: Int
         markdown_contents: String
-        title: String
+        markdown_title: String
         summary: String
         tag: [String]
         theme: String
-        created: String
-        updated: String
         userId: String
         userName: String
         thumbnail: String
         isPublic: Boolean
+        created: String
+        updated: String
     }
 
     input ArticleListSearchInput {
-        title: String
+        markdown_title: String
         tag: [String]
+        category: String
+        theme: String
+        isPublic: Boolean
     }
+`;
+
+export const ArticleCreatetype = `
+    input ArticleCreateInput {
+        category: String
+        imageId: String
+        log: Int
+        markdown_contents: String!
+        markdown_title: String!
+        summary: String
+        tag: [String]
+        theme: String
+        userId: String!
+        userName: String!
+        thumbnail: String
+        isPublic: Boolean!
+    }
+
+    type CreateArticleResponse {
+        _id: ID
+        status: Int
+    }
+`;
+
+export const ArticleUpdatetype = `
+    input ArticleUpdateInput {
+        category: String
+        imageId: String
+        log: Int
+        markdown_contents: String!
+        markdown_title: String!
+        summary: String
+        tag: [String]
+        theme: String
+        userId: String!
+        userName: String!
+        thumbnail: String
+        isPublic: Boolean!
+    }
+
+    type UpdateArticleResponse {
+        _id: ID
+        status: Int
+    }
+`;
+
+export const ArticleDeleteType = `
+  type DeleteArticleResponse {
+    deletedCount: Int
+    status: Int
+  }
+`;
+
+export const types = `
+    ${Article}
+    ${ArticleCreatetype}
+    ${ArticleUpdatetype}
+    ${ArticleDeleteType}
 `;
 
 export const query = `
@@ -32,6 +95,25 @@ export const query = `
     Or 조건으로 블로그 글을 검색함
     """
     getArticleListOrType (input: ArticleListSearchInput, offset: Int, limit: Int): [ArticleType]
+
+    """
+    _id에 부합하는 블로그 글을 검색함
+    """
+    getOneArticleFromId (input: ID!): ArticleType
+`;
+
+export const mutation = `
+    """
+    article POST용 mutation
+    created & updated는 서버에서 처리하기
+    """
+    createArticle(input: ArticleCreateInput): CreateArticleResponse
+
+    """
+    """
+    updateArticle(_id: ID!, input: ArticleUpdateInput): UpdateArticleResponse
+
+    deleteArticle(input: ID!): DeleteArticleResponse
 `;
 
 // {

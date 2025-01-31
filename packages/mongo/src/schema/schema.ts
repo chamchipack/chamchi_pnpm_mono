@@ -17,17 +17,25 @@ import {
   types as Kakaotype,
 } from './socialLogin/kakao';
 
+import {
+  types as articleTypes,
+  query as articleQuery,
+  mutation as articleMutation,
+} from './blog/schema';
+
 const schema = buildSchema(`
   type Query {
     ${japaneseQuery}
     ${vocabularyQuery}
     ${KakaoQuery}
+    ${articleQuery}
   }
 
   type Mutation {
     ${japaneseMutation}
     ${vocabularyMutation}
     ${KakaoMutation}
+    ${articleMutation}
   }
 
   ${japaneseType}
@@ -35,6 +43,8 @@ const schema = buildSchema(`
   ${vocabularyType}
 
   ${Kakaotype}
+
+  ${articleTypes}
 `);
 
 export default schema;

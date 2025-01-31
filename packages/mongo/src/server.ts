@@ -21,6 +21,12 @@ import { kakaoLogin } from './resolvers/socialLogin/kakao';
 import { graphqlHTTP } from 'express-graphql';
 import { kakaoInitialCheck } from './resolvers/socialLogin/kakaoInitialCheck';
 
+import getArticleListOrType from './resolvers/blog/getArticleListOrType';
+import getOneArticleFromId from './resolvers/blog/getOneArticleFromId';
+import createArticle from './resolvers/blog/createArticle';
+import updateArticle from './resolvers/blog/updateArticle';
+import deleteArticle from './resolvers/blog/deleteArticle';
+
 const resolvers = {
   Query: {
     getWordListAndType,
@@ -28,6 +34,8 @@ const resolvers = {
     getOneWordFromId,
     getWordListTotalcount,
     getVocaList,
+    getArticleListOrType,
+    getOneArticleFromId,
   },
   Mutation: {
     createWord,
@@ -35,6 +43,9 @@ const resolvers = {
     updateWord,
     kakaoLogin,
     kakaoInitialCheck,
+    createArticle,
+    updateArticle,
+    deleteArticle,
   },
 };
 
