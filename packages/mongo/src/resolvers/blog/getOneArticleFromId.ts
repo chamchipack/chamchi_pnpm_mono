@@ -32,8 +32,8 @@ const getOneArticleFromId = async (
 
     return article as library | any; // 결과 반환
   } catch (error) {
-    console.error('Error fetching japanese:', error);
-    throw new Error('Error fetching japanese');
+    console.error('Error fetching call article:', error);
+    throw new Error('Error fetching call article');
   } finally {
     // await client.close();
   }

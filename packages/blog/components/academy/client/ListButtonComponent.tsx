@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../state';
-import { PaginationAtom, SearchFilterAtom } from './state';
+import { PaginationAtom, SearchCategoryAtom, SearchFilterAtom } from './state';
 import SearchFilter from './SearchFilter';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import MenuAtom from '@/components/Layout/Header/client/auth/state';
@@ -17,6 +17,7 @@ export default function ListButtonComponent() {
   const ismobile = useClientSize('sm');
   const menu = useRecoilValue(MenuAtom);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
+  const [, setCategoryState] = useRecoilState(SearchCategoryAtom);
   const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
   const path = usePathname();
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
@@ -27,6 +28,7 @@ export default function ListButtonComponent() {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleChange = (newValue: string) => {
+    setCategoryState(newValue);
     setPaginationState((prev: any) => ({
       ...prev,
       page: 1,

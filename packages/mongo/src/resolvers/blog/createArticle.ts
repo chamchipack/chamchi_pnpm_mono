@@ -33,6 +33,7 @@ const createArticle = async (
       await client.getCollection('library');
 
     const nowISO = getKSTDate();
+    console.log(nowISO);
 
     // 저장할 데이터 (created & updated 추가)
     const dataToInsert = {
@@ -42,7 +43,7 @@ const createArticle = async (
     };
 
     // 데이터 저장
-    const result = await articlesCollection.insertOne(input);
+    const result = await articlesCollection.insertOne(dataToInsert);
 
     // 결과 반환
     return { _id: result.insertedId as ObjectId, status: 201 };

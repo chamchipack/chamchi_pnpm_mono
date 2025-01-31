@@ -19,7 +19,7 @@ const getArticleListOrType = async (
     limit?: number;
   },
 ): Promise<library[]> => {
-  console.log(input, offset, limit);
+  // console.log(input, offset, limit);
   try {
     const articlesCollection: Collection<Document> =
       await client.getCollection('library');
@@ -52,6 +52,7 @@ const getArticleListOrType = async (
 
     const result = await articlesCollection
       .find(filter)
+      .sort({ created: -1 }) // 🔥 `created` 기준 최신순 정렬
       .skip(offset)
       .limit(limit)
       .toArray();

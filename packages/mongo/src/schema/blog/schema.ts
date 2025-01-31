@@ -8,7 +8,7 @@ export const Article = `
     type ArticleType {
         _id: ID
         category: String
-        imageId: String
+        imageId: [String]
         log: Int
         markdown_contents: String
         markdown_title: String
@@ -35,7 +35,7 @@ export const Article = `
 export const ArticleCreatetype = `
     input ArticleCreateInput {
         category: String
-        imageId: String
+        imageId: [String]
         log: Int
         markdown_contents: String!
         markdown_title: String!
@@ -57,7 +57,7 @@ export const ArticleCreatetype = `
 export const ArticleUpdatetype = `
     input ArticleUpdateInput {
         category: String
-        imageId: String
+        imageId: [String]
         log: Int
         markdown_contents: String!
         markdown_title: String!

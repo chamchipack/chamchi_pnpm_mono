@@ -22,47 +22,67 @@ export default async function ListContainer({
   // const total = result?.data?.totalItems || 0;
 
   return (
-    <div className={styles['responsive-container']}>
-      <div className={styles['reponsive-content']} style={{ width: '100%' }}>
-        {/* {list.length ? ( */}
-        <List rows={[]} path={path} total={0} />
-        {/* ) : (
-          <Box
-            sx={{
-              width: '100%',
-              height: 50,
-              background: '#e2e2e2',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mt: 4,
-              borderRadius: 3,
-            }}
-          >
-            <Typography color="text.secondary">
-              조회된 데이터가 없어요!
-            </Typography>
-          </Box>
-        )} */}
-      </div>
+    <>
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ width: '100%', alignItems: 'center', margin: '0 auto' }}>
+          <List rows={[]} path={path} total={0} />
+        </Box>
 
-      {/* 웹 사이즈일때 출력되는 필터 */}
-      <div className={styles['responsive-side']} style={{}}>
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
-            p: 3,
-            display: 'flex',
-            flexDirection: 'row',
+            flexBasis: { xs: '0%', sm: '50%' },
+            display: { xs: 'none', sm: 'block' }, // flex → block 변경
           }}
         >
-          <Divider orientation="vertical" flexItem sx={{ mr: 3 }} />
-          <Box>
-            <SearchFilter />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              height: '100%', // 높이 보장
+              p: 3,
+              overflow: 'visible', // sticky 방해 요소 제거
+            }}
+          >
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ mr: 3, alignSelf: 'stretch', height: '100%' }}
+            />
+
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                height: '100%', // 높이 추가
+              }}
+            >
+              <Box
+                sx={{
+                  width: '100%',
+                  position: 'sticky',
+                  top: '80px', // 필요에 따라 조정
+                  zIndex: 10,
+                  backgroundColor: 'white',
+                  height: 'auto',
+                }}
+              >
+                <SearchFilter />
+              </Box>
+            </Box>
           </Box>
         </Box>
+      </Box>
+
+      {/* <div className={styles['responsive-container']}>
+      <div className={styles['reponsive-content']} style={{ width: '100%' }}>
       </div>
-    </div>
+
+      <div className={styles['responsive-side']} style={{}}>
+      </div>
+    </div> */}
+    </>
   );
 }

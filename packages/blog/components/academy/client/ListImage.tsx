@@ -36,11 +36,11 @@ export default function ImageBox({
   useEffect(() => {
     const fetchImageUrl = async () => {
       setLoading(false);
-      setImageUrl(null);
+      if (imageName && imageName.startsWith('https')) setImageUrl(imageName);
 
-      const generatedUrl = await getImageUrl();
-
-      if (generatedUrl) setImageUrl(generatedUrl);
+      // const generatedUrl = await getImageUrl();
+      // https://api.chamchipack.com/api/files/6chhfppu6fpcdiq/t2l9eh02itdq0wm/blob_TliNjs7KoG.png
+      // if (generatedUrl) setImageUrl(generatedUrl);
       setLoading(false);
     };
     fetchImageUrl();

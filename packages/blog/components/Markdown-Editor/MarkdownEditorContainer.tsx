@@ -15,6 +15,11 @@ import pb from '@/api/server/db/pocketbase';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { kboFont } from 'package/styles/fonts/module';
+import { useMutation } from '@apollo/client';
+import {
+  createArticleMutation,
+  updateArticleMutation,
+} from '@/config/apollo-client/mutation';
 
 interface Props {
   contentId: string;
@@ -30,6 +35,8 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
   const isMobile = useClientSize('sm');
   const router = useRouter();
   const { data } = useSession();
+  const [createArticle] = useMutation(createArticleMutation([]));
+  const [updateArticle] = useMutation(updateArticleMutation([]));
 
   const [title, setTitle] = useState<string>(props?.markdown_title || '');
   const [previewImage, setPreviewImage] = useState<string>(''); // 이미지 미리보기 URL 상태
@@ -97,6 +104,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
 
     const recordIds: string[] = [];
     let thumbnail = null;
+    let thumbnailAddress = '';
 
     const MAX_SIZE = 2 * 1024 * 1024;
 
@@ -126,14 +134,17 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
         const record = await pb.collection('images').create(formData);
         recordIds.push(record?.id);
         const pocketBaseImageUrl = pb.files.getUrl(record, record.image); // PocketBase URL 가져오기
+        console.log(pocketBaseImageUrl);
+        if (!thumbnailAddress) thumbnailAddress = pocketBaseImageUrl;
 
+        console.log({ thumbnail, pocketBaseImageUrl, blobUrl });
         updatedMarkdown = updatedMarkdown.replace(blobUrl, pocketBaseImageUrl);
       } catch (error) {
         console.error('이미지 업로드 실패:', error);
       }
     }
 
-    return { recordIds, updatedMarkdown, thumbnail };
+    return { recordIds, updatedMarkdown, thumbnail, thumbnailAddress };
   };
 
   const onClickSave = async () => {
@@ -148,9 +159,26 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       recordIds = [],
       updatedMarkdown = '',
       thumbnail,
+      thumbnailAddress = '',
     } = await processMarkdownImages(markdownText);
 
     const formData = new FormData();
+
+    const test: any = {
+      userName: data?.user?.name,
+      userId: data?.user?.username,
+      markdown_title: title,
+      markdown_contents: updatedMarkdown,
+      category: _category,
+      // timestamp: moment().format('YYYY-MM-DD HH:mm:ss'),
+      tag: tags || [],
+      summary: extractSummary(markdownText),
+      theme: props?.path,
+      imageId: recordIds,
+      isPublic: true,
+      log: 0,
+    };
+    if (thumbnailAddress) test.thumbnail = thumbnailAddress;
 
     const form = {
       userName: data?.user?.name,
@@ -185,18 +213,34 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       // if (props?.contentId) result = await db.update('library', form);
       // else result = await db.create('library', form);
 
-      if (props?.contentId)
-        result = await pb
-          .collection('library')
-          .update(props?.contentId, formData);
-      else result = await pb.collection('library').create(formData);
+      if (props?.contentId) {
+        // result = await pb
+        //   .collection('library')
+        //   .update(props?.contentId, formData);
+
+        const { data } = await updateArticle({
+          variables: {
+            _id: props?.contentId,
+            input: test,
+          },
+        });
+        result = data?.createArticle;
+      } else {
+        const { data } = await createArticle({
+          variables: {
+            input: test,
+          },
+        });
+        result = data?.createArticle;
+        // result = await pb.collection('library').create(formData);
+      }
 
       if (props?.contentId) {
         router.refresh();
         if (props?.setEditPage) props?.setEditPage(false);
         setLoading(false);
       } else {
-        router.push(`/pinetree/${props?.path}/${result?.id}`);
+        router.push(`/pinetree/${props?.path}/${result?._id}`);
         setLoading(false);
       }
     } catch {

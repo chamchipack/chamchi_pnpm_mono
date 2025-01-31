@@ -22,8 +22,8 @@ const Title = ({ item, path }: { item: any; path: string }) => {
           setContents(item);
           // setDetailPage(true);
 
-          if (!item?.id) return;
-          router.push(`/pinetree/${path}/${item?.id}`);
+          if (!item?._id) return;
+          router.push(`/pinetree/${path}/${item?._id}`);
         }}
       >
         {item.markdown_title}

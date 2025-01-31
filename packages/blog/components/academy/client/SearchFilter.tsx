@@ -4,11 +4,12 @@ import { Box, IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { SearchFilterAtom } from './state';
+import { SearchFilterAtom, SearchTextAtom } from './state';
 
 export default function SearchFilter() {
   const searchKeywordRef = useRef<HTMLInputElement>(null);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
+  const [, setSearchTextState] = useRecoilState(SearchTextAtom);
 
   const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === e.key) {
@@ -16,6 +17,7 @@ export default function SearchFilter() {
       setFilterState({
         'markdown_title.like': searchKeywordRef.current?.value,
       });
+      setSearchTextState(searchKeywordRef.current?.value as string);
     }
   };
 
@@ -29,6 +31,7 @@ export default function SearchFilter() {
   return (
     <Box
       sx={{
+        top: 100,
         mt: 1,
         display: 'flex',
         alignItems: 'center',
