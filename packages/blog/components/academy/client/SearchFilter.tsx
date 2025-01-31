@@ -2,7 +2,7 @@
 
 import { Box, IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { SearchFilterAtom } from './state';
 
@@ -18,6 +18,14 @@ export default function SearchFilter() {
       });
     }
   };
+
+  useEffect(() => {
+    if (filterState['markdown_title.like'])
+      setFilterState((prev) => ({
+        ...prev,
+        'markdown_title.like': '',
+      }));
+  }, []);
   return (
     <Box
       sx={{

@@ -26,16 +26,20 @@ interface Japanese {
   };
 }
 
-const getWordListOrType = async (_: undefined, {
-  input,
-  offset = 0,
-  limit = 10,
-}: {
-  input?: Word<TypeGbn>;
-  offset?: number;
-  limit?: number;
-}): Promise<Word<TypeGbn>[]> => {
+const getWordListOrType = async (
+  _: undefined,
+  {
+    input,
+    offset = 0,
+    limit = 10,
+  }: {
+    input?: Word<TypeGbn>;
+    offset?: number;
+    limit?: number;
+  },
+): Promise<Word<TypeGbn>[]> => {
   try {
+    console.log('요청이 들어옵니다');
     // await client.connect();
     const db = client.db(database);
     const japaneseCollection = db.collection<Word<TypeGbn>>('japanese');
@@ -75,9 +79,11 @@ const getWordListOrType = async (_: undefined, {
     // const filter = orConditions.length > 0 ? { $or: orConditions } : {};
 
     // 데이터 검색
-    const japanese = await japaneseCollection.find(filter).skip(offset)
-    .limit(limit)
-    .toArray()
+    const japanese = await japaneseCollection
+      .find(filter)
+      .skip(offset)
+      .limit(limit)
+      .toArray();
     return japanese;
   } catch (error) {
     console.error('Error fetching japanese:', error);
