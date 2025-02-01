@@ -9,24 +9,28 @@ import { SearchFilterAtom, SearchTextAtom } from './state';
 export default function SearchFilter() {
   const searchKeywordRef = useRef<HTMLInputElement>(null);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
-  const [, setSearchTextState] = useRecoilState(SearchTextAtom);
+  const [textState, setSearchTextState] = useRecoilState(SearchTextAtom);
 
   const handleKeyDownSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if ('Enter' === e.key) {
       e.preventDefault();
-      setFilterState({
-        'markdown_title.like': searchKeywordRef.current?.value,
-      });
+      // setFilterState({
+      //   'markdown_title.like': searchKeywordRef.current?.value,
+      // });
       setSearchTextState(searchKeywordRef.current?.value as string);
     }
   };
 
   useEffect(() => {
-    if (filterState['markdown_title.like'])
-      setFilterState((prev) => ({
-        ...prev,
-        'markdown_title.like': '',
-      }));
+    if (textState && searchKeywordRef.current) {
+      searchKeywordRef.current.value = textState;
+    }
+
+    // if (filterState['markdown_title.like'])
+    //   setFilterState((prev) => ({
+    //     ...prev,
+    //     'markdown_title.like': '',
+    //   }));
   }, []);
   return (
     <Box
@@ -52,11 +56,12 @@ export default function SearchFilter() {
       <IconButton
         sx={{ p: '4px' }}
         aria-label="search"
-        onClick={() =>
-          setFilterState({
-            ...filterState,
-            'markdown_title.like': searchKeywordRef.current?.value,
-          })
+        onClick={
+          () => setSearchTextState(searchKeywordRef.current?.value as string)
+          // setFilterState({
+          //   ...filterState,
+          //   'markdown_title.like': searchKeywordRef.current?.value,
+          // })
         }
         onMouseDown={(e: React.MouseEvent<HTMLButtonElement>) =>
           e.preventDefault()

@@ -34,10 +34,11 @@ export const markdownHeaderStyles = {
     marginBottom: '4px',
   },
   '& code': {
-    color: '#yellow',
-    padding: '2px 4px',
+    color: '#f06156',
+    padding: '4px 6px',
     borderRadius: '4px',
     fontSize: '0.9em',
+    background: '#d1d1d1',
   },
   '& pre': {
     backgroundColor: '#282c34',

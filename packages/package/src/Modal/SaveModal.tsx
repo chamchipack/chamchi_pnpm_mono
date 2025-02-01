@@ -40,10 +40,10 @@ const SaveModal = ({
         <Box
           sx={{
             margin: '0 auto',
-            width: 220,
+            width: 250,
             background: (theme) => theme.palette.background.default,
-            p: 4,
-            borderRadius: 10,
+            p: 3,
+            borderRadius: 2,
             boxShadow: 24,
           }}
         >

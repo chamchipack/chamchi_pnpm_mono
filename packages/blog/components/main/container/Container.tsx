@@ -5,6 +5,7 @@ import BackgroundImageBox from './BackgroundImageBox';
 import IntroductionBox from './IntroductionBox';
 import ScrollModal from './ScrollModal'; // 모달 컴포넌트 추가
 import { getData } from '@/api/module/fetch';
+import { menuItems } from '@/config/menu/menu';
 
 const Container = async () => {
   const parameter = {
@@ -17,9 +18,23 @@ const Container = async () => {
   const result = await getData(parameter);
   const list: any[] = result?.data?.items || [];
 
+  const params = {
+    target: 'blog_menu',
+    type: 'search',
+    options: {},
+    sort: {},
+  };
+  let record = [];
+  try {
+    const result = await getData(params);
+    record = result?.data?.items;
+  } catch {
+    record = menuItems;
+  }
+
   return (
     <>
-      <HeaderContainer menu={[]} />
+      <HeaderContainer menu={record || []} />
       <ScrollModal /> {/* 스크롤 모달 추가 */}
       {/* 메인 레이아웃 */}
       <Box

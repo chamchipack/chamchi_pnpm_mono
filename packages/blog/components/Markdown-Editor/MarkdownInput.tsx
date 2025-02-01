@@ -194,7 +194,7 @@ export default function MarkdownInput({
       />
       <ModernSelectBox category={category} setCategory={setCategory} />
 
-      <Box sx={{ height: 40, width: '100%' }}>
+      <Box sx={{ height: 40, width: '100%', my: 1 }}>
         <Autocomplete
           multiple
           freeSolo

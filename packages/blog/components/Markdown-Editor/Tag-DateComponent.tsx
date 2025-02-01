@@ -7,13 +7,6 @@ interface Props {
 }
 
 const TagDateComponent = ({ tag = [], created = '', category = '' }: Props) => {
-  // const path = usePathname();
-  // const buttons =
-  // menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
-  // [];
-
-  // const result = buttons.find(({ label = "" }) => category === label)
-
   return (
     <Box
       sx={{

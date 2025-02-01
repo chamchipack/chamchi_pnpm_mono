@@ -9,6 +9,7 @@ const queryFields = [
   'created',
   'category',
   'userId',
+  'tag',
 ];
 const getOneArticleFromId = gql`
   query getOneArticleFromId($input: ID!) {
@@ -46,7 +47,7 @@ export default async function Content({ id, path }: Props) {
       title={item?.markdown_title}
       markdownText={item?.markdown_contents}
       readonly={true}
-      tag={[]}
+      tag={item?.tag || []}
       created={item?.created}
       category={item?.category}
       contentId={id}
