@@ -46,7 +46,7 @@ const Container = async () => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' }, // 모바일: 세로 정렬, 웹: 가로 정렬
+          flexDirection: { xs: 'column', md: 'row' },
         }}
       >
         <BackgroundImageBox />

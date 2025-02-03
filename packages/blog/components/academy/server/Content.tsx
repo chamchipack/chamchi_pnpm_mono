@@ -4,7 +4,7 @@ import { gql } from '@apollo/client';
 import client from '@/config/apollo-client/apollo';
 
 const queryFields = [
-  '_id, markdown_title',
+  'markdown_title',
   'markdown_contents',
   'created',
   'category',
@@ -32,15 +32,6 @@ export default async function Content({ id, path }: Props) {
   });
 
   const item = data?.getOneArticleFromId || {};
-
-  // const params = {
-  //   target: 'library',
-  //   type: 'single',
-  //   options: { id },
-  //   sort: {},
-  // };
-  // const result = await getData(params);
-  // const record = result?.data;
 
   return (
     <MarkdownPreview

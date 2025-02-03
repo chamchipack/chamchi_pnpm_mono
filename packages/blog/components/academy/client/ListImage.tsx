@@ -41,7 +41,6 @@ export default function ImageBox({
       if (imageName && imageName.startsWith('https')) setImageUrl(imageName);
 
       // const generatedUrl = await getImageUrl();
-      // https://api.chamchipack.com/api/files/6chhfppu6fpcdiq/t2l9eh02itdq0wm/blob_TliNjs7KoG.png
       // if (generatedUrl) setImageUrl(generatedUrl);
       setLoading(false);
     };
@@ -97,9 +96,6 @@ export default function ImageBox({
             justifyContent: 'center',
             textAlign: 'center',
             borderRadius: 3,
-            // backgroundImage: `url(/thumb${randomNum}.png)`,
-            // backgroundSize: 'cover',
-            // backgroundPosition: 'center',
           }}
         >
           <Typography fontSize={12} color="text.primary">

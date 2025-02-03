@@ -35,7 +35,7 @@ export const markdownHeaderStyles = {
   },
   '& code': {
     color: '#f06156',
-    padding: '4px 6px',
+    padding: '2px 4px',
     borderRadius: '4px',
     fontSize: '0.9em',
     background: '#d1d1d1',
@@ -48,6 +48,13 @@ export const markdownHeaderStyles = {
     overflowX: 'auto',
     fontSize: '0.85em',
     margin: '20px 0',
+  },
+  '& pre code': {
+    color: '#fff',
+    padding: '2px 4px',
+    borderRadius: '4px',
+    fontSize: '0.9em',
+    background: 'none',
   },
   '& a': {
     color: '#1e90ff',

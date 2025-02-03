@@ -1,19 +1,16 @@
 'use client';
-// import db from '@/api/module';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-// import { PaginationAtom, SearchFilterAtom } from './state';
 import Title from './Title';
 import ListImage from './ListImage';
-// import PaginationComponent from './Pagination';
-// import useIsRendering from 'package/src/hooks/useRenderStatus';
 import { getArticleListOrType } from '@/config/apollo-client/query';
 import { useQuery } from '@apollo/client';
 
 import useScrollBottom from './useScrollBottom';
 import { motion } from 'framer-motion';
 import { SearchCategoryAtom, SearchTextAtom } from './state';
+import client from '@/config/apollo-client/apollo';
 
 interface Props {
   rows: any[];
@@ -29,22 +26,51 @@ const cardVariants = {
 const offsetCalculate = (cur: number, per: number) => cur * per;
 
 const List = ({ ...props }: Props) => {
-  // const renderStatus = useIsRendering();
-  // const [rows, setRows] = useState<any>([]);
-  // const [total, setTotal] = useState(0);
   const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
-  // const [isLoading, setIsLoading] = useState(true);
-  const [isFetchingMore, setIsFetchingMore] = useState(false); // 중복 호출 방지
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [cachedData, setCachedData] = useState<any[]>([]); // 누적된 데이터 저장
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cachedData, setCachedData] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
   const textState = useRecoilValue(SearchTextAtom);
   const categoryState = useRecoilValue(SearchCategoryAtom);
-  // const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
 
   const isBottom = useScrollBottom();
 
-  const query = getArticleListOrType([]);
+  const query = getArticleListOrType([
+    '_id',
+    'markdown_title',
+    'markdown_contents',
+    'created',
+    'category',
+    'userId',
+    'userName',
+    'summary',
+    'thumbnail',
+  ]);
+
+  // useEffect(() => {
+  //   const observable = client.watchQuery({
+  //     query,
+  //     variables: {
+  //       input: {
+  //         category: categoryState,
+  //         markdown_title: textState,
+  //         theme: props?.path,
+  //         isPublic: true,
+  //       },
+  //       offset: offsetCalculate(currentPage, 5),
+  //       limit: 5,
+  //     },
+  //     fetchPolicy: 'cache-only', // ✅ 서버 요청 없이 캐시 데이터만 감시
+  //   });
+
+  //   const subscription = observable.subscribe(({ data }) => {
+  //     console.log('업데이트된 캐시:', client.cache.extract());
+  //   });
+
+  //   return () => subscription.unsubscribe();
+  // }, [client]);
 
   const { data, fetchMore, loading } = useQuery(query, {
     variables: {
@@ -57,20 +83,30 @@ const List = ({ ...props }: Props) => {
       offset: offsetCalculate(0, 5),
       limit: 5,
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'cache-first', // ✅ 캐시에 데이터가 있으면 서버 요청 X
+    // nextFetchPolicy: 'cache-first', // ✅ 캐시 유지 (Apollo 3.7 이상 지원)
+    notifyOnNetworkStatusChange: false,
   });
+
+  useEffect(() => {
+    setHasMore(true);
+  }, [categoryState]);
 
   // 초기 데이터 세팅
   useEffect(() => {
     if (data?.getArticleListOrType) {
-      // setRows(data.getArticleListOrType);
       setCachedData(data.getArticleListOrType);
     }
   }, [data]);
 
-  // 스크롤이 바닥에 도달하면 fetchMore 실행
   const handleLoadMore = async () => {
-    if (isFetchingMore || cachedData.length % pagination.perPage !== 0) return; // 중복 호출 방지
+    // console.log(cachedData.length, 5, cachedData.length % pagination.perPage);
+    if (
+      !hasMore ||
+      isFetchingMore ||
+      cachedData.length % pagination.perPage !== 0
+    )
+      return;
 
     setIsFetchingMore(true);
 
@@ -85,19 +121,21 @@ const List = ({ ...props }: Props) => {
             theme: props?.path,
             isPublic: true,
           },
-          offset: offsetCalculate(newPage - 1, pagination.perPage),
+          offset: cachedData.length,
+          // offset: offsetCalculate(newPage - 1, pagination.perPage),
           limit: pagination.perPage,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult || !fetchMoreResult.getArticleListOrType)
+            return prev;
+
+          return fetchMoreResult; // ✅ fetchMoreResult만 반환하면 `merge()`가 알아서 캐시 처리
         },
       });
 
-      if (newData?.getArticleListOrType?.length) {
-        setCachedData((prevData) => [
-          ...prevData,
-          ...newData.getArticleListOrType,
-        ]); // 기존 데이터에 추가
-        // setRows((prevData) => [...prevData, ...newData.getArticleListOrType]); // UI 업데이트
-        setCurrentPage(newPage); // 페이지 업데이트
-      }
+      if (!newData?.getArticleListOrType.length) setHasMore(false);
+
+      setCurrentPage(newPage);
     } finally {
       setIsFetchingMore(false);
     }
@@ -117,10 +155,6 @@ const List = ({ ...props }: Props) => {
       page: 1,
     }));
   }, [categoryState]);
-
-  useEffect(() => {
-    // console.log(cachedData);
-  }, [cachedData]);
 
   return (
     <>
@@ -165,7 +199,7 @@ const List = ({ ...props }: Props) => {
                       lineHeight={1.3}
                       sx={{ wordBreak: 'break-word' }}
                     >
-                      {item.summary}
+                      {index}
                     </Typography>
                   </Box>
 
