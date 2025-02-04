@@ -2,22 +2,11 @@ import { Box, Typography } from '@mui/material';
 
 interface Props {
   tag: string[];
-  timestamp: string;
+  created: string;
   category: string;
 }
 
-const TagDateComponent = ({
-  tag = [],
-  timestamp = '',
-  category = '',
-}: Props) => {
-  // const path = usePathname();
-  // const buttons =
-  // menuItems.find(({ path: _path = '' }) => path.includes(_path))?.category ||
-  // [];
-
-  // const result = buttons.find(({ label = "" }) => category === label)
-
+const TagDateComponent = ({ tag = [], created = '', category = '' }: Props) => {
   return (
     <Box
       sx={{
@@ -51,7 +40,7 @@ const TagDateComponent = ({
       </Box>
       <Box>
         <Typography variant="caption" color="text.secondary">
-          {timestamp || ''}
+          {/* {new Date(Number(created)).toISOString() || ''} */}
         </Typography>
       </Box>
     </Box>

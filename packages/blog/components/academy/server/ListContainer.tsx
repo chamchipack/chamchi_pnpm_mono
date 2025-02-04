@@ -1,8 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { getData } from '@/api/module/fetch';
 import { Box, Divider, Typography } from '@mui/material';
-import styles from '../academy.module.css';
+// import styles from '../academy.module.css';
 import List from '../client/List';
 import SearchFilter from '../client/SearchFilter';
 
@@ -11,58 +10,60 @@ export default async function ListContainer({
 }: {
   path: string;
 }): Promise<React.ReactElement> {
-  // const parameter = {
-  //   target: 'library',
-  //   type: 'search',
-  //   options: { 'theme.like': path },
-  //   sort: {},
-  // };
-  // const result = await getData(parameter);
-  // const list: any[] = result?.data?.items || [];
-  // const total = result?.data?.totalItems || 0;
-
   return (
-    <div className={styles['responsive-container']}>
-      <div className={styles['reponsive-content']} style={{ width: '100%' }}>
-        {/* {list.length ? ( */}
-        <List rows={[]} path={path} total={0} />
-        {/* ) : (
-          <Box
-            sx={{
-              width: '100%',
-              height: 50,
-              background: '#e2e2e2',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mt: 4,
-              borderRadius: 3,
-            }}
-          >
-            <Typography color="text.secondary">
-              조회된 데이터가 없어요!
-            </Typography>
-          </Box>
-        )} */}
-      </div>
+    <>
+      <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+        <Box sx={{ width: '100%', alignItems: 'center', margin: '0 auto' }}>
+          <List rows={[]} path={path} total={0} />
+        </Box>
 
-      {/* 웹 사이즈일때 출력되는 필터 */}
-      <div className={styles['responsive-side']} style={{}}>
         <Box
           sx={{
-            width: '100%',
-            height: '100%',
-            p: 3,
-            display: 'flex',
-            flexDirection: 'row',
+            flexBasis: { xs: '0%', sm: '50%' },
+            display: { xs: 'none', sm: 'block' },
           }}
         >
-          <Divider orientation="vertical" flexItem sx={{ mr: 3 }} />
-          <Box>
-            <SearchFilter />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '100%',
+              height: '100%',
+              p: 3,
+              overflow: 'visible',
+            }}
+          >
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ mr: 3, alignSelf: 'stretch', height: '100%' }}
+            />
+
+            <Box
+              sx={{
+                position: 'relative',
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
+                height: '100%',
+              }}
+            >
+              <Box
+                sx={{
+                  width: '100%',
+                  position: 'sticky',
+                  top: '80px',
+                  zIndex: 10,
+                  backgroundColor: 'white',
+                  height: 'auto',
+                }}
+              >
+                <SearchFilter />
+              </Box>
+            </Box>
           </Box>
         </Box>
-      </div>
-    </div>
+      </Box>
+    </>
   );
 }

@@ -9,7 +9,13 @@ import SaveModal from 'package/src/Modal/SaveModal';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../academy/state';
-import { SearchFilterAtom } from '../academy/client/state';
+import {
+  SearchCategoryAtom,
+  SearchFilterAtom,
+  SearchTextAtom,
+} from '../academy/client/state';
+import { deleteArticleMutation } from '@/config/apollo-client/mutation';
+import { useMutation } from '@apollo/client';
 
 interface Props {
   id: string;
@@ -32,6 +38,9 @@ export default function DeleteButton({
   const [loading, setLoading] = useState(false);
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
   const [, setFilterState] = useRecoilState(SearchFilterAtom);
+  const [deleteArticle] = useMutation(deleteArticleMutation([]));
+  const [, setCategoryState] = useRecoilState(SearchCategoryAtom);
+  const [, setSearchTextState] = useRecoilState(SearchTextAtom);
 
   const delay = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -62,12 +71,18 @@ export default function DeleteButton({
         }
       }
 
-      await db.delete('library', id);
+      // await db.delete('library', id);
+      await deleteArticle({
+        variables: {
+          input: id,
+        },
+      });
       setIsEditPageon(false);
       router.push(`/pinetree/${path}`);
 
       setLoading(false);
-      setFilterState({ 'category.like': '' });
+      setCategoryState('');
+      setSearchTextState('');
 
       setModal(false);
     } catch {}

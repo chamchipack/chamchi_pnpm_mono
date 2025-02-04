@@ -1,15 +1,18 @@
 import dotenv from 'dotenv';
 import { ObjectId } from 'mongodb';
-import client from '../../config/mongo';
+import client from '../../../config/mongo';
 import { Vocabulary } from './type';
 dotenv.config();
 const database = process.env.DATABASE;
 
-const getVocaList = async (_: undefined, {
-  input,
-}: {
-  input?: Vocabulary;
-}): Promise<Vocabulary[]> => {
+const getVocaList = async (
+  _: undefined,
+  {
+    input,
+  }: {
+    input?: Vocabulary;
+  },
+): Promise<Vocabulary[]> => {
   try {
     // await client.connect();
     const db = client.db(database);

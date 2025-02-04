@@ -17,7 +17,7 @@ interface MarkdownPreviewProps {
   markdownText: string;
   readonly?: boolean;
   tag?: string[];
-  timestamp?: string;
+  created?: string;
   userId?: string;
   contentId?: string;
   path: string;
@@ -30,7 +30,7 @@ export default function MarkdownPreview({
   markdownText,
   readonly = false,
   tag = [],
-  timestamp = '',
+  created = '',
   userId = '',
   contentId = '',
   path,
@@ -81,11 +81,7 @@ export default function MarkdownPreview({
             />
             <DetailButton userId={userId} setEditPage={setEditPage} />
           </Box>
-          <TagDateComponent
-            tag={tag}
-            timestamp={timestamp}
-            category={category}
-          />
+          <TagDateComponent tag={tag} created={created} category={category} />
           <ReactMarkdown
             remarkPlugins={[remarkBreaks, remarkGfm]}
             urlTransform={(url, type) => {

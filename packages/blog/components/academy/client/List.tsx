@@ -1,13 +1,16 @@
 'use client';
-import db from '@/api/module';
 import { Box, Skeleton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { PaginationAtom, SearchFilterAtom } from './state';
 import Title from './Title';
 import ListImage from './ListImage';
-import PaginationComponent from './Pagination';
-import useIsRendering from 'package/src/hooks/useRenderStatus';
+import { getArticleListOrType } from '@/config/apollo-client/query';
+import { useQuery } from '@apollo/client';
+
+import useScrollBottom from './useScrollBottom';
+import { motion } from 'framer-motion';
+import { SearchCategoryAtom, SearchTextAtom } from './state';
+import client from '@/config/apollo-client/apollo';
 
 interface Props {
   rows: any[];
@@ -15,41 +18,158 @@ interface Props {
   total: number;
 }
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: 'easeOut' } },
+};
+
+const offsetCalculate = (cur: number, per: number) => cur * per;
+
 const List = ({ ...props }: Props) => {
-  const renderStatus = useIsRendering();
-  const [rows, setRows] = useState<any>([]);
-  const [total, setTotal] = useState(0);
   const [pagination, setPagination] = useState({ page: 1, perPage: 5 });
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFetchingMore, setIsFetchingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [cachedData, setCachedData] = useState<any[]>([]);
+  const [hasMore, setHasMore] = useState(true);
 
-  const filterState = useRecoilValue(SearchFilterAtom);
-  const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
+  const textState = useRecoilValue(SearchTextAtom);
+  const categoryState = useRecoilValue(SearchCategoryAtom);
 
-  const onLoadData = async (pgnum: number) => {
-    setIsLoading(true);
-    const { data = [], ...rest } = await db.search('library', {
-      options: { ...filterState, 'theme.like': props?.path },
-      pagination: { page: pgnum, perPage: 5 },
-    });
-    setTotal(data?.totalItems);
-    const result = Array.isArray(data) ? data : data?.items;
+  const isBottom = useScrollBottom();
 
-    setRows(result);
-    setIsLoading(false);
-  };
+  const query = getArticleListOrType([
+    '_id',
+    'markdown_title',
+    'markdown_contents',
+    'created',
+    'category',
+    'userId',
+    'userName',
+    'summary',
+    'thumbnail',
+  ]);
+
+  // useEffect(() => {
+  //   const observable = client.watchQuery({
+  //     query,
+  //     variables: {
+  //       input: {
+  //         category: categoryState,
+  //         markdown_title: textState,
+  //         theme: props?.path,
+  //         isPublic: true,
+  //       },
+  //       offset: offsetCalculate(currentPage, 5),
+  //       limit: 5,
+  //     },
+  //     fetchPolicy: 'cache-only', // ✅ 서버 요청 없이 캐시 데이터만 감시
+  //   });
+
+  //   const subscription = observable.subscribe(({ data }) => {
+  //     console.log('업데이트된 캐시:', client.cache.extract());
+  //   });
+
+  //   return () => subscription.unsubscribe();
+  // }, [client]);
+
+  const { data, fetchMore, loading } = useQuery(query, {
+    variables: {
+      input: {
+        category: categoryState,
+        markdown_title: textState,
+        theme: props?.path,
+        isPublic: true,
+      },
+      offset: offsetCalculate(0, 5),
+      limit: 5,
+    },
+    fetchPolicy: 'cache-first', // ✅ 캐시에 데이터가 있으면 서버 요청 X
+    // nextFetchPolicy: 'cache-first', // ✅ 캐시 유지 (Apollo 3.7 이상 지원)
+    notifyOnNetworkStatusChange: false,
+  });
 
   useEffect(() => {
-    //   (Object.entries(filterState).length ||
-    //     Object.entries(paginationState).length) &&
-    onLoadData(paginationState.page || 1);
-  }, [filterState]);
+    setHasMore(true);
+  }, [categoryState]);
+
+  // 초기 데이터 세팅
+  useEffect(() => {
+    if (data?.getArticleListOrType) {
+      setCachedData(data.getArticleListOrType);
+    }
+  }, [data]);
+
+  const handleLoadMore = async () => {
+    // console.log(cachedData.length, 5, cachedData.length % pagination.perPage);
+    if (
+      !hasMore ||
+      isFetchingMore ||
+      cachedData.length % pagination.perPage !== 0
+    )
+      return;
+
+    setIsFetchingMore(true);
+
+    try {
+      const newPage = currentPage + 1;
+
+      const { data: newData } = await fetchMore({
+        variables: {
+          input: {
+            category: categoryState,
+            markdown_title: textState,
+            theme: props?.path,
+            isPublic: true,
+          },
+          offset: cachedData.length,
+          // offset: offsetCalculate(newPage - 1, pagination.perPage),
+          limit: pagination.perPage,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult || !fetchMoreResult.getArticleListOrType)
+            return prev;
+
+          return fetchMoreResult; // ✅ fetchMoreResult만 반환하면 `merge()`가 알아서 캐시 처리
+        },
+      });
+
+      if (!newData?.getArticleListOrType.length) setHasMore(false);
+
+      setCurrentPage(newPage);
+    } finally {
+      setIsFetchingMore(false);
+    }
+  };
+
+  // 스크롤이 바닥에 닿으면 handleLoadMore 실행
+  useEffect(() => {
+    if (isBottom) {
+      handleLoadMore();
+    }
+  }, [isBottom]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setPagination((prev) => ({
+      ...prev,
+      page: 1,
+    }));
+  }, [categoryState]);
 
   return (
     <>
-      {rows.length ? (
+      {cachedData.length ? (
         <>
-          {rows.map((item: any, index: number) => (
-            <Box sx={{ width: '100%', minHeight: 140, mt: 4 }} key={item.id}>
+          {cachedData.map((item: any, index: number) => (
+            <Box
+              component={motion.div}
+              key={item._id}
+              variants={cardVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              sx={{ width: '100%', minHeight: 140, mt: 4 }}
+            >
               <Box
                 sx={{
                   p: 1,
@@ -79,7 +199,7 @@ const List = ({ ...props }: Props) => {
                       lineHeight={1.3}
                       sx={{ wordBreak: 'break-word' }}
                     >
-                      {item.summary}
+                      {index}
                     </Typography>
                   </Box>
 
@@ -89,11 +209,11 @@ const List = ({ ...props }: Props) => {
                     </Typography>
                   </Box>
 
-                  <Box>
+                  {/* <Box>
                     <Typography fontSize={12} color="text.secondary">
                       날짜: {item.timestamp}
                     </Typography>
-                  </Box>
+                  </Box> */}
                 </Box>
 
                 <Box
@@ -106,23 +226,17 @@ const List = ({ ...props }: Props) => {
                 >
                   <ListImage
                     collectionId={item?.collectionId}
-                    recordId={item?.id}
+                    recordId={item?._id}
                     imageName={item?.thumbnail}
                   />
                 </Box>
               </Box>
             </Box>
           ))}
-          <PaginationComponent
-            total={total}
-            pagination={paginationState}
-            setPagination={setPaginationState}
-            onClickSearch={onLoadData}
-          />
         </>
       ) : (
         <>
-          {isLoading ? (
+          {loading ? (
             <Skeleton sx={{ width: '100%', height: 250 }} />
           ) : (
             <Box

@@ -17,6 +17,16 @@ export const SearchFilterAtom = atom<SearchType>({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const SearchTextAtom = atom<string>({
+  key: 'SearchTextAtom',
+  default: '',
+});
+
+export const SearchCategoryAtom = atom<string>({
+  key: 'SearchCategoryAtom',
+  default: '',
+});
+
 export const PaginationAtom = atom<any>({
   key: 'PaginationAtom',
   default: { page: 1, perPage: 5 },

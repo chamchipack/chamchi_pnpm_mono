@@ -31,6 +31,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   const cookies = req.cookies;
   const access = cookies.get('next-auth.access-token')?.value || '';
   const refresh = cookies.get('next-auth.refresh-token')?.value || '';
+  // const clientIp =
+  //   req.headers.get('x-forwarded-for') || req.ip || 'IP not found';
+
+  // console.log('@@@@@@@@@@@@');
+  // console.log(clientIp);
+  // console.log('@@@@@@@@@@@@');
 
   // if (!access || !refresh)
   //   return NextResponse.json<ResponseType<null>>({

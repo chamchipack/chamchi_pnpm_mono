@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import isEditPageon from '../state';
-import { PaginationAtom, SearchFilterAtom } from './state';
+import { PaginationAtom, SearchCategoryAtom, SearchFilterAtom } from './state';
 import SearchFilter from './SearchFilter';
 import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import MenuAtom from '@/components/Layout/Header/client/auth/state';
@@ -17,24 +17,24 @@ export default function ListButtonComponent() {
   const ismobile = useClientSize('sm');
   const menu = useRecoilValue(MenuAtom);
   const [filterState, setFilterState] = useRecoilState(SearchFilterAtom);
+  const [categoryState, setCategoryState] = useRecoilState(SearchCategoryAtom);
   const [paginationState, setPaginationState] = useRecoilState(PaginationAtom);
   const path = usePathname();
   const [, setIsEditPageon] = useRecoilState(isEditPageon);
 
-  const [value, setValue] = useState<string>(
-    filterState?.['category.like'] || '',
-  );
+  const [value, setValue] = useState<string>(categoryState || '');
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleChange = (newValue: string) => {
+    setCategoryState(newValue);
     setPaginationState((prev: any) => ({
       ...prev,
       page: 1,
     }));
-    setFilterState({
-      ...filterState,
-      'category.like': newValue,
-    });
+    // setFilterState({
+    //   ...filterState,
+    //   'category.like': newValue,
+    // });
     setValue(newValue);
   };
 
@@ -86,7 +86,7 @@ export default function ListButtonComponent() {
             flexDirection: 'row',
           }}
         >
-          {buttons.slice(0, 2).map((button: any, index: number) => (
+          {buttons.slice(0, 3).map((button: any, index: number) => (
             <Button
               key={button.label}
               sx={{
@@ -134,10 +134,11 @@ export default function ListButtonComponent() {
                 display: 'flex',
                 flexDirection: 'row',
                 p: 1,
-                backgroundColor: 'background.paper',
+                backgroundColor: 'background.default',
+                borderRadius: 1,
               }}
             >
-              {buttons.slice(2).map((button: any) => (
+              {buttons.slice(3).map((button: any) => (
                 <Button
                   key={button.label}
                   sx={{}}

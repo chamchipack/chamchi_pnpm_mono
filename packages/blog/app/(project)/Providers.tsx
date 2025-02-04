@@ -5,6 +5,8 @@ import { DemoThemeData } from '@/config/utils/Theme';
 import { SessionProvider } from 'next-auth/react';
 import { RecoilRoot } from 'recoil';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ApolloProvider } from '@apollo/client';
+import client from '@/config/apollo-client/apollo';
 
 const queryClient = new QueryClient();
 
@@ -16,9 +18,11 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ThemeProvider theme={theme}>
         <SessionProvider>
           <CssBaseline />
-          <QueryClientProvider client={queryClient}>
-            {children}
-          </QueryClientProvider>
+          <ApolloProvider client={client}>
+            <QueryClientProvider client={queryClient}>
+              {children}
+            </QueryClientProvider>
+          </ApolloProvider>
         </SessionProvider>
       </ThemeProvider>
     </RecoilRoot>
