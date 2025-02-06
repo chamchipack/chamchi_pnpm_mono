@@ -7,16 +7,44 @@ import ScrollModal from './ScrollModal'; // 모달 컴포넌트 추가
 import { getData } from '@/api/module/fetch';
 import { menuItems } from '@/config/menu/menu';
 
-const Container = async () => {
-  const parameter = {
-    target: 'library',
-    type: 'search',
-    options: {},
-    sort: {},
-  };
+import { gql } from '@apollo/client';
+import client from '@/config/apollo-client/apollo';
 
-  const result = await getData(parameter);
-  const list: any[] = result?.data?.items || [];
+const queryFields = [
+  '_id',
+  'markdown_title',
+  'thumbnail',
+  'summary',
+  'theme'
+];
+const getArticleListOrType = gql`
+query getArticleListOrType($input: ArticleListSearchInput, $offset: Int, $limit: Int) {
+  getArticleListOrType(input: $input, offset: $offset, limit: $limit) {
+  __typename
+    ${queryFields.join('\n')}
+  }
+}
+`;
+
+const Container = async () => {
+
+  const { data } = await client.query({
+    query: getArticleListOrType,
+    variables: { input: { isPublic: true }, offset: 0, limit: 5 },
+    fetchPolicy: 'no-cache', // ✅ 항상 최신 데이터 가져오기
+  });
+
+  const item = data?.getArticleListOrType || {};
+
+  // const parameter = {
+  //   target: 'library',
+  //   type: 'search',
+  //   options: {},
+  //   sort: {},
+  // };
+
+  // const result = await getData(parameter);
+  // const list: any[] = result?.data?.items || [];
 
   const params = {
     target: 'blog_menu',
@@ -52,7 +80,7 @@ const Container = async () => {
         <BackgroundImageBox />
         <IntroductionBox />
       </Box>
-      <CardComponent data={list} />
+      <CardComponent data={item} />
     </>
   );
 };

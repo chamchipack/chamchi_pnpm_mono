@@ -70,7 +70,11 @@ async function startServer() {
   await server.start();
   server.applyMiddleware({ app, path: '/graphql' });
 
-  app.listen(PORT, () => {
+  app.get("/healthz", (req:any, res:any) => {
+    res.status(200).send("OK");
+  });
+
+  app.listen(PORT, "0.0.0.0",() => {
     console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
     run();
   });

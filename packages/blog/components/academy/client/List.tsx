@@ -81,7 +81,7 @@ const List = ({ ...props }: Props) => {
         isPublic: true,
       },
       offset: offsetCalculate(0, 5),
-      limit: 5,
+      limit: 10,
     },
     fetchPolicy: 'cache-first', // ✅ 캐시에 데이터가 있으면 서버 요청 X
     // nextFetchPolicy: 'cache-first', // ✅ 캐시 유지 (Apollo 3.7 이상 지원)
@@ -199,7 +199,7 @@ const List = ({ ...props }: Props) => {
                       lineHeight={1.3}
                       sx={{ wordBreak: 'break-word' }}
                     >
-                      {index}
+                      {item?.summary}
                     </Typography>
                   </Box>
 

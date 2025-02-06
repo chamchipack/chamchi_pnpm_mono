@@ -3,7 +3,8 @@
 import { Box, Typography } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import ListImage from './container/ListImage';
+import ListImage from '../academy/client/ListImage';
+// import ListImage from './container/ListImage';
 
 const cardVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -74,9 +75,9 @@ const CardComponent = ({ data }: ContentProps) => {
               <Box sx={{ width: '100%', height: '100%' }}>
                 <ListImage
                   collectionId={item?.collectionId}
-                  recordId={item?.id}
+                  recordId={item?._id}
                   imageName={item?.thumbnail}
-                  index={index}
+                  // index={index}
                 />
               </Box>
 
@@ -92,8 +93,8 @@ const CardComponent = ({ data }: ContentProps) => {
                   marginLeft: { xs: 0, md: 10 },
                 }}
                 onClick={() => {
-                  if (!item?.id) return;
-                  router.push(`/pinetree/${item?.theme}/${item?.id}`);
+                  if (!item?._id) return;
+                  router.push(`/pinetree/${item?.theme}/${item?._id}`);
                 }}
               >
                 <Typography variant="h5" fontWeight="bold">

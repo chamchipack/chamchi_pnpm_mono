@@ -1,7 +1,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql', // GraphQL 서버 URL
+  uri: `${process.env.NEXT_PUBLIC_MONGO_URL}/graphql`, // GraphQL 서버 URL
   cache: new InMemoryCache({
     typePolicies: {
       ArticleType: {
@@ -29,7 +29,6 @@ const client = new ApolloClient({
                   return !isDuplicate; // 중복이 아니면 유지
                 });
 
-                console.log(uniqueMerged);
                 return uniqueMerged;
               }
               // if (args?.input?.categoryState === '') {

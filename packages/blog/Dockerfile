@@ -49,7 +49,7 @@ COPY --from=builder /app/packages/blog/package.json /app/package.json
 # COPY --from=builder /app/packages/blog/package.json /app/package.json
 # COPY --from=builder /app/packages/package /app/package
 # COPY --from=builder /app/packages/blog /app/blog
-# COPY --from=builder /app/packages/blog/.env.production /app/.env.production
+COPY --from=builder /app/packages/blog/.env.production /app/.env.production
 
 # 9. 프로덕션 의존성만 설치
 RUN pnpm install --prod

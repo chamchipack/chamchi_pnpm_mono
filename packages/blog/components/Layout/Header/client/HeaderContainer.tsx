@@ -54,7 +54,7 @@ const HeaderContainer = ({ ...props }) => {
           <div style={{ ...kboFont, marginLeft: 10 }}>
             <p
               style={{ cursor: 'pointer' }}
-              onClick={() => router.push('/pinetree')}
+              onClick={() => router.push('/main')}
             >
               블로그 참치
             </p>

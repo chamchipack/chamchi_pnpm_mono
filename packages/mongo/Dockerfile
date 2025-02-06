@@ -1,20 +1,51 @@
-# 1. Node.js 공식 이미지 사용 (경량 버전)
-FROM node:20-alpine
+# 1단계: 빌드 단계
+FROM node:20-alpine AS builder
 
-# 2. 작업 디렉토리 설정
+# 작업 디렉토리 설정
 WORKDIR /app
 
-# 3. package.json과 pnpm-lock.yaml 복사
-COPY package.json pnpm-lock.yaml ./
+# 1. pnpm 최신 버전 설치
+RUN npm install -g pnpm@latest
 
-# 4. pnpm 설치 (최신 버전 보장)
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# 2. 패키지 매니페스트 파일 복사
+COPY ./package.json ./
+COPY ./pnpm-lock.yaml ./
+COPY ./pnpm-workspace.yaml ./
 
-# 5. 의존성 설치 (node_modules 생성)
-RUN pnpm install --frozen-lockfile
+# 3. mongodb 관련 패키지의 package.json 복사
+COPY ./packages/mongo/package.json ./packages/mongo/
 
-# 6. 소스 코드 복사
-COPY . .
+# 4. 의존성 설치 (개발 및 프로덕션 의존성 모두 설치)
+RUN pnpm install --filter=mongo...
 
-# 7. Nodemon으로 서버 실행 (소스 코드 변경 시 반영)
-CMD ["pnpm", "nodemon", "./src/server.ts"]
+# 5. 모든 소스 복사 및 빌드 실행
+COPY ./packages/mongo ./packages/mongo
+COPY ./packages/mongo/.env ./packages/mongo/.env
+
+
+ENV NODE_ENV=production
+
+# 6. MongoDB Express 실행을 위한 빌드 (필요하면 추가)
+RUN pnpm --filter=mongo run build
+
+# 2단계: 실행 단계
+FROM node:20-alpine AS runner
+
+# 작업 디렉토리 설정
+WORKDIR /app
+
+RUN npm install -g pnpm@latest
+
+# 7. 환경 변수 설정 (production 모드)
+ENV NODE_ENV=production
+
+# 8. 빌드 결과물만 복사
+COPY --from=builder /app/packages/mongo/dist /app/dist
+COPY --from=builder /app/packages/mongo/package.json /app/package.json
+COPY --from=builder /app/packages/mongo/.env /app/.env
+
+# 9. 프로덕션 의존성만 설치
+RUN pnpm install --prod
+
+# 10. MongoDB Express 서버 실행
+CMD ["pnpm", "start"]
