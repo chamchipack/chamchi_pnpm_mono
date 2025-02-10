@@ -6,6 +6,7 @@ echo "1) studio"
 echo "2) blog"
 echo "3) voca"
 echo "4) mongo"
+echo "5) lettering"
 
 # 사용자로부터 입력 받기
 read -p "Enter the number (1 or 2): " selection
@@ -25,6 +26,9 @@ elif [ "$selection" -eq 4 ]; then
   cd ./packages/mongo
   pnpm nodemon ./src/server.ts
   # pnpm --filter voca dev --port 8300
+elif [ "$selection" -eq 5 ]; then
+  echo "Running 'lettering' project in dev mode..."
+  pnpm --filter lettering dev --port 9500
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1
