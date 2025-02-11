@@ -147,13 +147,17 @@ export const ThemeData = {
     MuiButton: buttonProperties,
   },
   typography: {
-    fontFamily: pretendardFont.fontFamily,
+    // fontFamily: pretendardFont.fontFamily,
     ...typographyProperties,
   },
   palette: {
     common: {
       black: '#222222',
       white: '#F8F8F8',
+      star: '#FFC300',
+      main: '#F39E9E',
+      gray: '#A6A6A6',
+      mainhover: '#FFD3C6',
     },
     primary: {
       light: '#D6EEEE80',

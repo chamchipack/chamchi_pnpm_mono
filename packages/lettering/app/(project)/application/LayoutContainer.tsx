@@ -9,8 +9,8 @@ export default function LayoutContainer({
         className={styles['responsive-container']}
         style={{
           margin: '0 auto',
-          minHeight: '100vh',
           minWidth: '350px',
+          // minHeight: '100vh',
         }}
       >
         {children}
