@@ -10,7 +10,7 @@ const nextConfig = {
   //   return [
   //     {
   //       source: '/',
-  //       destination: '/main',
+  //       destination: '/application/home',
   //       permanent: true,
   //     },
   //   ];

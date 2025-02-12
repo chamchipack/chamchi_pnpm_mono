@@ -5,16 +5,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 
-type NavigationMessage = {
-  type: 'NAVIGATE';
-  path: string;
-};
-
 interface Props {
   isAllowed: boolean;
+  selectedDate?: string;
 }
 
-export default function SearchInput({ isAllowed = false }: Props) {
+export default function SearchInput({
+  isAllowed = false,
+  selectedDate = '',
+}: Props) {
   const router = useRouter();
 
   const [query, setQuery] = useState('');
@@ -23,7 +22,9 @@ export default function SearchInput({ isAllowed = false }: Props) {
     if (!isAllowed) return;
 
     if (query.trim()) {
-      console.info(query);
+      let path = `/application/store-list?query=${query}&date=${selectedDate}`;
+      const isWebView = handleNavigation({ path, status: 'forward' });
+      if (!isWebView) return router.push(path);
     }
   };
 
@@ -32,6 +33,12 @@ export default function SearchInput({ isAllowed = false }: Props) {
 
     if (event.key === 'Enter') {
       handleSearch();
+
+      if (query.trim()) {
+        let path = `/application/store-list?${query}&date=${selectedDate}`;
+        const isWebView = handleNavigation({ path, status: 'forward' });
+        if (!isWebView) return router.push(path);
+      }
     }
   };
 

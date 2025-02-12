@@ -5,17 +5,28 @@ import { Box, IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import PickupTimeChip from '@/components/common/datetime/PickupTimeChip';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import DatePickerDialog from '@/components/common/datetime/DatePickerDialog';
 import 'dayjs/locale/ko';
+import ListFilterChip from '@/components/common/filter/ListFilterChip';
+import ListFilterDrawer from '@/components/common/filter/ListFilterDrawer';
 
 dayjs.locale('ko');
 
-export default function InputContainer() {
+interface Props {
+  isFilterVisable: boolean;
+}
+
+const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항목 6'];
+
+export default function InputContainer({ isFilterVisable = false }: Props) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [filter, setFilter] = useState<string>(items[0] || '');
+
   const [open, setOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
 
   const handleRouter = () => {
     const isWebView = handleNavigation({ path: '', status: 'back' });
@@ -34,14 +45,26 @@ export default function InputContainer() {
         <IconButton onClick={handleRouter} sx={{ mr: 1.5 }}>
           <ArrowBackIosNewIcon fontSize="small" />
         </IconButton>
-        <SearchInput isAllowed={true} />
+        <SearchInput
+          isAllowed={true}
+          selectedDate={selectedDate?.format('YYYY. MM. DD. HH:mm') || ''}
+        />
       </Box>
 
       {/* ✅ 오른쪽 정렬된 칩 버튼 */}
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+        {isFilterVisable && (
+          <Box sx={{ mr: 1 }}>
+            <ListFilterChip
+              onClick={() => setOpenFilter(true)}
+              value={filter}
+            />
+          </Box>
+        )}
+
         <PickupTimeChip
           onClick={() => setOpen(true)}
-          value={selectedDate ? selectedDate.format('YYYY. MM. DD') : ''}
+          value={selectedDate ? selectedDate.format('YYYY. MM. DD. HH:mm') : ''}
         />
       </Box>
 
@@ -52,6 +75,16 @@ export default function InputContainer() {
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
       />
+
+      {isFilterVisable && (
+        <ListFilterDrawer
+          open={openFilter}
+          onClose={() => setOpenFilter(false)}
+          value={filter}
+          setValue={setFilter}
+          items={items}
+        />
+      )}
     </>
   );
 }

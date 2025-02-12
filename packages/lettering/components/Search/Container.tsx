@@ -21,7 +21,7 @@ export default function Container() {
     <>
       <Box sx={{ py: 1.5 }}>
         <Box sx={{ px: 2 }}>
-          <InputContainer />
+          <InputContainer isFilterVisable={false} />
         </Box>
         <Box sx={{ px: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>

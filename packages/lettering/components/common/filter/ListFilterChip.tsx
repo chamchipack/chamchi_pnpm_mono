@@ -1,24 +1,22 @@
 import { Box, Typography, ButtonBase } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-interface PickupTimeChipProps {
+interface ListFilterChipProps {
   onClick?: () => void; // 클릭 이벤트 (선택 사항)
   value: string;
 }
 
-export default function PickupTimeChip({
+export default function ListFilterChip({
   onClick,
   value,
-}: PickupTimeChipProps) {
+}: ListFilterChipProps) {
   return (
     <ButtonBase
       onClick={onClick}
       sx={{
-        minWidth: value ? 170 : 130,
         height: 32,
-        backgroundColor: value ? 'common.main' : '',
-        border: value ? '' : '1px solid',
-        borderColor: value ? '' : 'common.main',
+        border: '1px solid',
+        borderColor: 'common.gray',
         color: 'white',
         borderRadius: '16px',
         display: 'flex',
@@ -27,23 +25,13 @@ export default function PickupTimeChip({
         padding: '0 12px',
         cursor: 'pointer',
         '&:hover': {
-          backgroundColor: 'common.mainhover',
+          backgroundColor: 'grey.100',
           opacity: 0.9,
         },
       }}
     >
-      {/* 좌측 아이콘 */}
-      <CalendarTodayIcon
-        sx={{ fontSize: 18, color: value ? 'white' : 'common.main' }}
-      />
-
-      {/* 중앙 텍스트 */}
-      <Typography
-        fontSize={13}
-        // fontWeight="bold"
-        color={value ? 'white' : 'common.main'}
-      >
-        {value || '픽업시간설정'}
+      <Typography fontSize={13} color={'common.black'}>
+        {value || '기본순'}
       </Typography>
     </ButtonBase>
   );
