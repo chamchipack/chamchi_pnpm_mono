@@ -4,10 +4,20 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 
-export default function HeadComponent() {
+interface Props {
+  isButtonVisable: boolean;
+  title: string;
+}
+
+export default function HeadComponent({
+  isButtonVisable = false,
+  title = '',
+}: Props) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
+    if (!isButtonVisable) return;
+
     const isWebView = handleNavigation({ path: '', status: 'back' });
 
     if (!isWebView) return router.back();
@@ -24,12 +34,12 @@ export default function HeadComponent() {
     >
       {/* 왼쪽: 뒤로가기 아이콘 */}
       <IconButton onClick={handleRouter}>
-        <ArrowBackIosNewIcon fontSize="small" />
+        {isButtonVisable && <ArrowBackIosNewIcon fontSize="small" />}
       </IconButton>
 
       {/* 중앙: 제목 */}
       <Typography fontSize={16} fontWeight={900}>
-        알림
+        {title}
       </Typography>
 
       {/* 오른쪽: 빈 공간 */}
