@@ -1,4 +1,9 @@
+'use client';
+
+
+import { handleNavigation } from '@/config/navigation';
 import { Box, Button, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 interface NotificationBoxProps {
   _id: string;
@@ -20,6 +25,15 @@ export default function NotificationBox({
   productName = '상품명',
   type = 'review',
 }: NotificationBoxProps) {
+  const router = useRouter();
+
+  const handleRouter = () => {
+    let path = `/application/create-review?id=${'query'}`;
+    const isWebView = handleNavigation({ path: '', status: 'forward' });
+
+    if (!isWebView) return router.push(path);
+  };
+
   return (
     <Box
       sx={{
@@ -102,6 +116,10 @@ export default function NotificationBox({
                 backgroundColor: 'common.main',
                 opacity: 0.8,
               },
+            }}
+            onClick={() => {
+              if (type === 'review') return handleRouter()
+              else return
             }}
           >
             {type === 'review' ? '리뷰 작성하기' : '주문내역 보기'}

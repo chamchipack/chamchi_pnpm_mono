@@ -1,15 +1,15 @@
 'use client';
+import CouponForm from '@/components/common/coupon/CouponForm';
+import DrawerForm from '@/components/common/modal/DrawerForm';
+import OptionForm from '@/components/common/option/OptionForm';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import DrawerForm from '@/components/common/modal/DrawerForm';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DrawerInputForm from './DrawerInputForm';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import CouponForm from '@/components/common/coupon/CouponForm';
-import { IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
-import OptionForm from '@/components/common/option/OptionForm';
 
 const coupon = [
   {
@@ -52,6 +52,25 @@ export default function InputClickableBox({
   );
 
   const onClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (open) {
+      document.documentElement.style.overflow = 'hidden'; // ✅ html에도 적용
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none'; // ✅ 모바일 스크롤 방지
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+  
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [open]);
+  
 
   return (
     <>

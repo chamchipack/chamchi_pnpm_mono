@@ -1,8 +1,8 @@
 'use client';
-import { Box, Typography, IconButton } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Box, IconButton, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   isButtonVisable: boolean;
@@ -28,22 +28,23 @@ export default function HeadComponent({
       sx={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between', // ✅ 좌/중앙/우 정렬
-        height: 50, // ✅ 적절한 높이 설정
+        justifyContent: 'center', // ✅ 기본적으로 가운데 정렬
+        height: 50,
+        position: 'relative', // ✅ 아이콘과 타이포 위치 조정
       }}
     >
-      {/* 왼쪽: 뒤로가기 아이콘 */}
-      <IconButton onClick={handleRouter}>
-        {isButtonVisable && <ArrowBackIosNewIcon fontSize="small" />}
-      </IconButton>
+      {isButtonVisable && (
+        <IconButton
+          onClick={handleRouter}
+          sx={{ position: 'absolute', left: 0 }} // ✅ 왼쪽 고정
+        >
+          <ArrowBackIosNewIcon fontSize="small" />
+        </IconButton>
+      )}
 
-      {/* 중앙: 제목 */}
       <Typography fontSize={16} fontWeight={900}>
         {title}
       </Typography>
-
-      {/* 오른쪽: 빈 공간 */}
-      <Box sx={{ width: 40 }} />
     </Box>
   );
 }

@@ -1,8 +1,7 @@
 'use client';
-import { useState } from 'react';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Typography } from '@mui/material';
 import BottomFixed from '../bottom-fixed/BottomFixed';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 interface Coupon {
   name: string;
@@ -32,7 +31,7 @@ export default function CouponForm({
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pb: isCheckable ? 10 : 0 }}>
         {coupons.map((coupon, index) => {
           const isSelected = value === coupon.name;
 
