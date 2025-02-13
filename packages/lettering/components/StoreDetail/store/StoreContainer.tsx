@@ -1,3 +1,4 @@
+'use client';
 import {
   Box,
   Typography,
@@ -13,7 +14,18 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import StarRatingscore from '@/components/common/rating/StarRatingscore';
 import ReviewCount from '@/components/common/review/ReviewCount';
 
+import { useRouter } from 'next/navigation';
+import { handleNavigation } from '@/config/navigation';
+
 export default function StoreContainer() {
+  const router = useRouter();
+
+  const handleRouter = () => {
+    let path = `/application/order?id=${'query'}`;
+    const isWebView = handleNavigation({ path: '', status: 'forward' });
+
+    if (!isWebView) return router.push(path);
+  };
   return (
     <Box sx={{}}>
       <Box
@@ -103,6 +115,7 @@ export default function StoreContainer() {
               opacity: 0.8,
             },
           }}
+          onClick={handleRouter}
         >
           주문제작
         </Button>

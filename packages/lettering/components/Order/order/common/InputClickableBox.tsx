@@ -6,12 +6,34 @@ import DrawerForm from '@/components/common/modal/DrawerForm';
 import { useState } from 'react';
 import DrawerInputForm from './DrawerInputForm';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CouponForm from '@/components/common/coupon/CouponForm';
+import { IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import OptionForm from '@/components/common/option/OptionForm';
+
+const coupon = [
+  {
+    name: '생일 할인',
+    discount: '10,000원',
+    description: '생일 축하 기념 할인 쿠폰',
+  },
+  {
+    name: '첫 구매 할인',
+    discount: '5,000원',
+    description: '첫 구매 시 사용 가능한 쿠폰',
+  },
+  {
+    name: 'VIP 회원 할인',
+    discount: '5,000원',
+    description: 'VIP 회원 전용 할인 쿠폰',
+  },
+];
 
 interface Props {
   data: { label: string; value: string }[];
   onClick?: () => void;
   isLabelVisable: boolean;
-  type: 'text' | 'coupon';
+  type: 'text' | 'coupon' | 'option';
 }
 
 export default function InputClickableBox({
@@ -21,6 +43,8 @@ export default function InputClickableBox({
   type = 'text',
 }: Props) {
   const [open, setOpen] = useState(false);
+
+  const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
 
   // ✅ inputValues를 객체로 저장 (label을 key로 사용)
   const [inputValues, setInputValues] = useState<Record<string, string>>(
@@ -84,7 +108,7 @@ export default function InputClickableBox({
                   </Typography>
                 ) : (
                   <>
-                    {inputValues[item.label] ? (
+                    {inputValues[item.label] || selectedCoupon ? (
                       <CheckCircleIcon sx={{ color: 'info.main' }} />
                     ) : (
                       ''
@@ -121,6 +145,45 @@ export default function InputClickableBox({
             setInputValues={setInputValues}
             onClose={onClose}
           />
+        )}
+        {type === 'coupon' && (
+          <Box sx={{ p: 2 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Typography fontWeight="bold">쿠폰 선택</Typography>
+              <IconButton onClick={onClose}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+            <CouponForm
+              coupons={coupon}
+              isCheckable={true}
+              value={selectedCoupon}
+              setValue={setSelectedCoupon}
+              onClickCheck={onClose}
+            />
+          </Box>
+        )}
+
+        {type === 'option' && (
+          <Box sx={{ p: 2 }}>
+            <OptionForm
+              isCheckable={true}
+              onClickCheck={() => {}}
+              options={[
+                { name: '추가 토핑', type: 'checkbox' },
+                { name: '초코 시럽', type: 'checkbox' },
+                { name: '케이크 크기 업그레이드', type: 'number' },
+                { name: '음료 추가', type: 'number' },
+              ]}
+            />
+          </Box>
         )}
       </DrawerForm>
     </>

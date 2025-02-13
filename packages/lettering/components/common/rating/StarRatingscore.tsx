@@ -8,6 +8,7 @@ interface Props {
 
 export default function StarRatingscore({ ...props }: Props) {
   const size = props?.iconSize || 18;
+
   return (
     <Box sx={{ display: ' flex', flexDirection: 'row', alignItems: 'center' }}>
       <StarRateIcon sx={{ color: 'common.star', width: size, height: size }} />

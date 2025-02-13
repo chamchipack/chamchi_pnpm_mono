@@ -80,6 +80,17 @@ export default function CustomizeInputContainer() {
           type="coupon"
         />
       </Box>
+
+      <Box sx={{ my: 2 }}>
+        <Typography fontSize={14} fontWeight={'bold'} sx={{ mb: 1 }}>
+          옵션
+        </Typography>
+        <InputClickableBox
+          data={[{ label: '옵션', value: '' }]}
+          isLabelVisable={false}
+          type="option"
+        />
+      </Box>
     </>
   );
 }

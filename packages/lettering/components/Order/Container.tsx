@@ -1,3 +1,4 @@
+'use client';
 import { Box, Typography } from '@mui/material';
 import HeadComponent from '../common/HeadComponent';
 import OrderDefaultInfo from './order/common/OrderDefaultInfo';
@@ -6,8 +7,12 @@ import OrderImagePicker from './order/customize/OrderImagePicker';
 import CustomizeInputContainer from './order/customize/CustomizeInputContainer';
 import PaymentPolicy from './order/common/PaymentPolicy';
 import TotalAccountBox from './order/common/TotalAccountBox';
+import CouponForm from '../common/coupon/CouponForm';
+import { useState } from 'react';
 
 export default function Container() {
+  const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
+
   const handleOrder = () => {
     console.log('주문하기 버튼 클릭됨');
   };
@@ -38,7 +43,6 @@ export default function Container() {
         </Box>
       </Box>
 
-      {/* ✅ 하단 고정 버튼 (컴포넌트 사용) */}
       <TotalAccountBox label="주문하기" onClick={() => {}} />
     </>
   );

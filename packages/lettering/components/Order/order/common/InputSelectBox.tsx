@@ -1,4 +1,4 @@
-import { MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 interface SelectBoxProps {
@@ -39,11 +39,11 @@ export default function InputSelectBox({
       }}
     >
       <MenuItem disabled value="">
-        {placeholder}
+        <Typography sx={{ fontSize: 14 }}>{placeholder}</Typography>
       </MenuItem>
       {options.map((option) => (
         <MenuItem key={option.value} value={option.value}>
-          {option.label}
+          <Typography sx={{ fontSize: 14 }}>{option.label}</Typography>
         </MenuItem>
       ))}
     </Select>

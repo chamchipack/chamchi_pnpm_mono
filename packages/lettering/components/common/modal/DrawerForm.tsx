@@ -8,7 +8,7 @@ interface BottomDrawerProps {
   children: React.ReactNode;
 }
 
-export default function DrawerForm({
+export default function BottomDrawer({
   open,
   onClose,
   minHeight = '60vh', // ✅ 기본값 설정
