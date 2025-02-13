@@ -1,7 +1,18 @@
+'use client';
 import StarRatingscore from '@/components/common/rating/StarRatingscore';
 import { Box, Card, CardContent, Typography } from '@mui/material';
+import { handleNavigation } from '@/config/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function StoreComponent() {
+  const router = useRouter(); // ✅ Next.js Router 사용
+
+  const handleRouter = () => {
+    let path = `/application/store-detail?_id=${'query'}`;
+    const isWebView = handleNavigation({ path, status: 'forward' });
+    if (!isWebView) return router.push(path);
+  };
+
   return (
     <>
       <Box
@@ -13,7 +24,11 @@ export default function StoreComponent() {
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
+          '&: hover': {
+            cursor: 'pointer',
+          },
         }}
+        onClick={handleRouter}
       >
         {Array.from({ length: 5 }).map((_, index) => (
           <Box

@@ -17,6 +17,7 @@ dayjs.locale('ko');
 interface Props {
   isFilterVisable: boolean;
   isBackwardVisable: boolean;
+  isTimeSelectable: boolean;
 }
 
 const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항목 6'];
@@ -24,10 +25,13 @@ const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항�
 export default function InputContainer({
   isFilterVisable = false,
   isBackwardVisable = false,
+  isTimeSelectable = false,
 }: Props) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
   const [filter, setFilter] = useState<string>(items[0] || '');
+
+  const timeFormat = `YYYY. MM. DD. ${isTimeSelectable ? 'HH:mm' : ''}`;
 
   const [open, setOpen] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -53,7 +57,7 @@ export default function InputContainer({
         )}
         <SearchInput
           isAllowed={true}
-          selectedDate={selectedDate?.format('YYYY. MM. DD. HH:mm') || ''}
+          selectedDate={selectedDate?.format(timeFormat) || ''}
         />
       </Box>
 
@@ -70,7 +74,8 @@ export default function InputContainer({
 
         <PickupTimeChip
           onClick={() => setOpen(true)}
-          value={selectedDate ? selectedDate.format('YYYY. MM. DD. HH:mm') : ''}
+          value={selectedDate ? selectedDate.format(timeFormat) : ''}
+          isTimeSelectable={isTimeSelectable}
         />
       </Box>
 
@@ -80,6 +85,7 @@ export default function InputContainer({
         onClose={() => setOpen(false)}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
+        isTimeSelectable={isTimeSelectable}
       />
 
       {isFilterVisable && (

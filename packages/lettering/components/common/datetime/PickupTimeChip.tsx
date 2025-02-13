@@ -4,17 +4,23 @@ import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 interface PickupTimeChipProps {
   onClick?: () => void; // 클릭 이벤트 (선택 사항)
   value: string;
+  isTimeSelectable: boolean;
 }
 
 export default function PickupTimeChip({
   onClick,
   value,
+  isTimeSelectable,
 }: PickupTimeChipProps) {
+  const widthCondition = () => {
+    if (isTimeSelectable) return value ? 170 : 130;
+    else return 130;
+  };
   return (
     <ButtonBase
       onClick={onClick}
       sx={{
-        minWidth: value ? 170 : 130,
+        minWidth: widthCondition(),
         height: 32,
         backgroundColor: value ? 'common.main' : '',
         border: value ? '' : '1px solid',

@@ -12,7 +12,11 @@ export default function Container() {
         </Box>
 
         <Box sx={{ px: 2 }}>
-          <InputContainer isFilterVisable={false} isBackwardVisable={false} />
+          <InputContainer
+            isFilterVisable={false}
+            isBackwardVisable={false}
+            isTimeSelectable={false}
+          />
         </Box>
         <Box sx={{ px: 2 }}>
           <ListContainer />

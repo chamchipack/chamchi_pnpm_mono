@@ -3,7 +3,7 @@ import StarRateIcon from '@mui/icons-material/StarRate';
 
 interface Props {
   iconSize?: number;
-  rating?: number;
+  rating: number;
 }
 
 export default function StarRatingscore({ ...props }: Props) {

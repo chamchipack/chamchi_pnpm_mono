@@ -15,6 +15,7 @@ interface DatePickerDrawerProps {
   onClose: () => void;
   selectedDate: Dayjs | null;
   setSelectedDate: (date: Dayjs | null) => void;
+  isTimeSelectable: boolean;
 }
 
 export default function DatePickerDialog({
@@ -22,9 +23,16 @@ export default function DatePickerDialog({
   onClose,
   selectedDate,
   setSelectedDate,
+  isTimeSelectable,
 }: DatePickerDrawerProps) {
   const [selectedHour, setSelectedHour] = useState('');
   const [selectedMinute, setSelectedMinute] = useState('');
+
+  const disabledCondition = () => {
+    console.log(isTimeSelectable);
+    if (!isTimeSelectable) return selectedDate ? false : true;
+    else return !selectedDate || (!selectedHour && !selectedMinute);
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
@@ -39,7 +47,7 @@ export default function DatePickerDialog({
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
             minHeight: '60vh',
-            maxHeight: '90vh', // ✅ 최대 높이 설정
+            maxHeight: !isTimeSelectable ? '60vh' : '90vh', // ✅ 최대 높이 설정
           },
         }}
       >
@@ -103,13 +111,15 @@ export default function DatePickerDialog({
               }}
             />
 
-            <SelectTime
-              onClose={onClose}
-              selectedHour={selectedHour}
-              selectedMinute={selectedMinute}
-              setSelectedHour={setSelectedHour}
-              setSelectedMinute={setSelectedMinute}
-            />
+            {isTimeSelectable && (
+              <SelectTime
+                onClose={onClose}
+                selectedHour={selectedHour}
+                selectedMinute={selectedMinute}
+                setSelectedHour={setSelectedHour}
+                setSelectedMinute={setSelectedMinute}
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -123,28 +133,26 @@ export default function DatePickerDialog({
           >
             <Typography fontSize={14} color="common.black">
               {selectedDate
-                ? `${selectedDate.format('YYYY년 MM월 DD일')} ${selectedHour}시 ${selectedMinute}분`
+                ? `${selectedDate.format('YYYY년 MM월 DD일')} ${isTimeSelectable ? `${selectedHour}시 ${selectedMinute}분` : ''} `
                 : '날짜를 선택해주세요'}
             </Typography>
 
             <Button
-              disabled={!selectedDate || (!selectedHour && !selectedMinute)}
+              disabled={disabledCondition()}
               sx={{
                 width: '30%',
                 height: 40,
-                backgroundColor:
-                  !selectedDate || (!selectedHour && !selectedMinute)
-                    ? 'common.gray'
-                    : 'common.main',
+                backgroundColor: disabledCondition()
+                  ? 'common.gray'
+                  : 'common.main',
                 color: 'white',
                 fontSize: 14,
                 fontWeight: 'bold',
                 borderRadius: 1,
                 '&:hover': {
-                  backgroundColor:
-                    !selectedDate || (!selectedHour && !selectedMinute)
-                      ? 'common.gray'
-                      : 'common.main',
+                  backgroundColor: disabledCondition()
+                    ? 'common.gray'
+                    : 'common.main',
                   opacity: 0.8,
                 },
               }}

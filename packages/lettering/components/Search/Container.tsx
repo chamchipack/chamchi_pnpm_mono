@@ -21,7 +21,11 @@ export default function Container() {
     <>
       <Box sx={{ py: 1.5 }}>
         <Box sx={{ px: 2 }}>
-          <InputContainer isFilterVisable={false} isBackwardVisable={true} />
+          <InputContainer
+            isFilterVisable={false}
+            isBackwardVisable={true}
+            isTimeSelectable={true}
+          />
         </Box>
         <Box sx={{ px: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>

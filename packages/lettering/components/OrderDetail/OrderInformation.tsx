@@ -1,7 +1,13 @@
+'use client';
 import { Box, Typography } from '@mui/material';
 import CustomChip from '../common/chip/CustomChip';
+import { useState } from 'react';
+import ModalWrapper from '../common/modal/ModalWrapper';
 
 export default function OrderInformation() {
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => setOpen(false);
   return (
     <>
       <Box sx={{}}>
@@ -94,10 +100,11 @@ export default function OrderInformation() {
             sx={{
               cursor: 'pointer',
             }}
+            onClick={() => setOpen(true)}
           >
             주문내역 삭제하기
           </Typography>
-          <Typography
+          {/* <Typography
             fontSize={14}
             color="common.gray"
             sx={{
@@ -114,9 +121,18 @@ export default function OrderInformation() {
             }}
           >
             혹은 주문 제작이 시작되었어요
-          </Typography>
+          </Typography> */}
         </Box>
       </Box>
+
+      <ModalWrapper
+        open={open}
+        handleClose={handleClose}
+        title="주문내역 삭제"
+        content="삭제하실래>"
+        onClickCheck={() => {}}
+        processing={false}
+      ></ModalWrapper>
     </>
   );
 }
