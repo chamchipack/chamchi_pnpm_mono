@@ -9,7 +9,7 @@ export default function Container() {
         <HeadComponent isButtonVisable={true} title="프로필" />
       </Box>
 
-      <Box sx={{ px: 2 }}>
+      <Box sx={{ px: 2.5 }}>
         <ProfileContainer />
       </Box>
     </Box>

@@ -19,7 +19,7 @@ const keywords = [
 export default function Container() {
   return (
     <>
-      <Box sx={{ py: 1.5 }}>
+      <Box sx={{ py: 1.5, pb: 10 }}>
         <Box sx={{ px: 2 }}>
           <InputContainer
             isFilterVisable={false}

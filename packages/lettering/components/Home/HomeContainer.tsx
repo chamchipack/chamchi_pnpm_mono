@@ -13,7 +13,7 @@ export default function HomeContainer() {
   const size = useClientSize('sm');
   return (
     <>
-      <Box sx={{ py: 1.5 }}>
+      <Box sx={{ py: 1.5, pb: 10 }}>
         <Box sx={{ px: 2.5 }}>
           <TopFrame />
         </Box>

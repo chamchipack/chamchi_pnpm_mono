@@ -6,7 +6,7 @@ import ListContainer from './list/ListContainer';
 export default function Container() {
   return (
     <>
-      <Box sx={{ py: 1.5 }}>
+      <Box sx={{ py: 1.5, pb: 10 }}>
         <Box sx={{ px: 2.5 }}>
           <HeadComponent isButtonVisable={false} title="주문내역" />
         </Box>

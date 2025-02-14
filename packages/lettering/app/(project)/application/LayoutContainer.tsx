@@ -1,3 +1,4 @@
+import NavigationBar from '@/components/common/Layout/NavigationBar';
 import styles from './container.module.css';
 
 export default function LayoutContainer({
@@ -14,6 +15,7 @@ export default function LayoutContainer({
         }}
       >
         {children}
+        <NavigationBar />
       </div>
     </>
   );

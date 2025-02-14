@@ -120,7 +120,7 @@ const ModalWrapper = ({
                     '&:hover': {
                       backgroundColor: 'common.main',
                       borderColor: 'common.main',
-                      opacity: 0.4,
+                      // opacity: 0.4,
                     },
                   }}
                   onClick={handleClose}
@@ -128,8 +128,11 @@ const ModalWrapper = ({
                   <Box style={{ width: '100%', justifyContent: 'center' }}>
                     <Typography
                       variant="h5"
-                      color="text.primary"
                       fontWeight="bold"
+                      sx={{
+                        color: 'common.main',
+                        '&:hover': { color: 'white' },
+                      }}
                     >
                       취소
                     </Typography>
