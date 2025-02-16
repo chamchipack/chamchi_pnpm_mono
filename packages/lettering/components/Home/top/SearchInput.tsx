@@ -8,11 +8,13 @@ import { handleNavigation } from '@/config/navigation';
 interface Props {
   isAllowed: boolean;
   selectedDate?: string;
+  placeholder?: string;
 }
 
 export default function SearchInput({
   isAllowed = false,
   selectedDate = '',
+  placeholder = '',
 }: Props) {
   const router = useRouter();
 
@@ -23,7 +25,10 @@ export default function SearchInput({
 
     if (query.trim()) {
       let path = `/application/store-list?query=${query}&date=${selectedDate}`;
-      const isWebView = handleNavigation({ path, status: 'forward' });
+      const isWebView = handleNavigation({
+        path: 'store-list',
+        status: 'forward',
+      });
       if (!isWebView) return router.push(path);
     }
   };
@@ -36,7 +41,10 @@ export default function SearchInput({
 
       if (query.trim()) {
         let path = `/application/store-list?${query}&date=${selectedDate}`;
-        const isWebView = handleNavigation({ path, status: 'forward' });
+        const isWebView = handleNavigation({
+          path: 'store-list',
+          status: 'forward',
+        });
         if (!isWebView) return router.push(path);
       }
     }
@@ -46,7 +54,10 @@ export default function SearchInput({
     if (isAllowed) return;
 
     let path = '/application/search';
-    const isWebView = handleNavigation({ path, status: 'forward' });
+    const isWebView = handleNavigation({
+      path: 'search',
+      status: 'forward',
+    });
 
     if (!isWebView) return router.push(path);
   };
@@ -56,15 +67,17 @@ export default function SearchInput({
       <TextField
         fullWidth
         variant="outlined"
-        placeholder="검색어를 입력하세요..."
+        placeholder={placeholder || '검색어를 입력하세요'}
         value={query}
         onChange={(e) => {
           if (!isAllowed) return;
           setQuery(e.target.value);
         }}
+        onBlur={(e) => e.target.blur()}
         onKeyDown={handleKeyDown} // 엔터 키 감지
         onClick={handleRouter}
         InputProps={{
+          readOnly: !isAllowed,
           sx: {
             borderRadius: 30,
             height: 45, // 인풋 높이

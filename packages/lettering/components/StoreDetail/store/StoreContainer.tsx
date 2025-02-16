@@ -22,7 +22,7 @@ export default function StoreContainer() {
 
   const handleRouter = () => {
     let path = `/application/order?id=${'query'}`;
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({ path: 'order', status: 'forward' });
 
     if (!isWebView) return router.push(path);
   };

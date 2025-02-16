@@ -16,6 +16,7 @@ interface DatePickerDrawerProps {
   selectedDate: Dayjs | null;
   setSelectedDate: (date: Dayjs | null) => void;
   isTimeSelectable: boolean;
+  isTimeForPast: boolean;
 }
 
 export default function DatePickerDialog({
@@ -24,12 +25,12 @@ export default function DatePickerDialog({
   selectedDate,
   setSelectedDate,
   isTimeSelectable,
+  isTimeForPast,
 }: DatePickerDrawerProps) {
   const [selectedHour, setSelectedHour] = useState('');
   const [selectedMinute, setSelectedMinute] = useState('');
 
   const disabledCondition = () => {
-    console.log(isTimeSelectable);
     if (!isTimeSelectable) return selectedDate ? false : true;
     else return !selectedDate || (!selectedHour && !selectedMinute);
   };
@@ -42,6 +43,7 @@ export default function DatePickerDialog({
         onClose={onClose}
         PaperProps={{
           sx: {
+            backgroundColor: 'background.default',
             width: '100%',
             height: '100%',
             borderTopLeftRadius: 12,
@@ -64,8 +66,13 @@ export default function DatePickerDialog({
           <Box>
             <DateCalendar
               value={selectedDate}
-              minDate={dayjs().startOf('month')} // ✅ 이번 달 이전 이동 불가
-              shouldDisableDate={(day) => day.isBefore(dayjs(), 'day')} // ✅ 오늘 이전 날짜 비활성화
+              minDate={isTimeForPast ? undefined : dayjs().startOf('month')} // ✅ 과거 날짜 선택 가능
+              maxDate={isTimeForPast ? dayjs().endOf('month') : undefined} // ✅ 미래 날짜 선택 가능
+              shouldDisableDate={(day) =>
+                isTimeForPast
+                  ? day.isAfter(dayjs(), 'day')
+                  : day.isBefore(dayjs(), 'day')
+              }
               onChange={(newDate) => {
                 if (newDate) setSelectedDate(dayjs(newDate));
               }}

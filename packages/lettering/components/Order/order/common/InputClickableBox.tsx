@@ -34,6 +34,7 @@ interface Props {
   onClick?: () => void;
   isLabelVisable: boolean;
   type: 'text' | 'coupon' | 'option';
+  inputRequestTitle?: string;
 }
 
 export default function InputClickableBox({
@@ -41,6 +42,7 @@ export default function InputClickableBox({
   onClick,
   isLabelVisable = false,
   type = 'text',
+  inputRequestTitle = '',
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -63,14 +65,13 @@ export default function InputClickableBox({
       document.body.style.overflow = '';
       document.body.style.touchAction = '';
     }
-  
+
     return () => {
       document.documentElement.style.overflow = '';
       document.body.style.overflow = '';
       document.body.style.touchAction = '';
     };
   }, [open]);
-  
 
   return (
     <>
@@ -163,10 +164,11 @@ export default function InputClickableBox({
             inputValues={inputValues}
             setInputValues={setInputValues}
             onClose={onClose}
+            title={inputRequestTitle}
           />
         )}
         {type === 'coupon' && (
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: 2, backgroundColor: 'background.default' }}>
             <Box
               sx={{
                 display: 'flex',
@@ -191,7 +193,9 @@ export default function InputClickableBox({
         )}
 
         {type === 'option' && (
-          <Box sx={{ p: 2 }}>
+          <Box
+            sx={{ p: 2, backgroundColor: 'background.default', height: '100%' }}
+          >
             <OptionForm
               isCheckable={true}
               onClickCheck={() => {}}

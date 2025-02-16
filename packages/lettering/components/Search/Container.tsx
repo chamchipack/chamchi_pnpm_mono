@@ -25,6 +25,7 @@ export default function Container() {
             isFilterVisable={false}
             isBackwardVisable={true}
             isTimeSelectable={true}
+            placeholder="가게 이름이나 주소를 입력해보세요!"
           />
         </Box>
         <Box sx={{ px: 2 }}>

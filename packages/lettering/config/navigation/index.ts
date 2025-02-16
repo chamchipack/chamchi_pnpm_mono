@@ -15,6 +15,7 @@ type Params = {
  * @returns WebView 환경이면 `true`, 그렇지 않으면 `false`
  */
 export const handleNavigation = (params: Params): boolean => {
+  console.log(params.path, 'Next.js');
   if (typeof window !== 'undefined' && (window as any).ReactNativeWebView) {
     // ✅ WebView 환경에서 네이티브로 메시지 전송
     (window as any).ReactNativeWebView.postMessage(

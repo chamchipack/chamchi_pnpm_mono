@@ -15,7 +15,7 @@ export default function LayoutContainer({
         }}
       >
         {children}
-        <NavigationBar />
+        {/* <NavigationBar /> */}
       </div>
     </>
   );

@@ -11,7 +11,7 @@ export default function ListContainer() {
           my: 2,
         }}
       >
-        <StoreEmptyComponent />
+        {/* <StoreEmptyComponent /> */}
         {Array.from({ length: 3 }).map((_, index) => (
           <Box key={index} sx={{ my: 4 }}>
             <StoreComponent />

@@ -11,7 +11,10 @@ export default function TopFrame() {
 
   const handleRouter = () => {
     let path = '/application/notification';
-    const isWebView = handleNavigation({ path, status: 'forward' });
+    const isWebView = handleNavigation({
+      path: 'notification',
+      status: 'forward',
+    });
 
     if (!isWebView) return router.push(path);
   };

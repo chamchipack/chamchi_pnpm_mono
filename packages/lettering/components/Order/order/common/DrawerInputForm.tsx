@@ -7,6 +7,7 @@ interface DrawerInputFormProps {
   inputValues: Record<string, string>;
   setInputValues: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   onClose: () => void;
+  title: string;
 }
 
 export default function DrawerInputForm({
@@ -14,6 +15,7 @@ export default function DrawerInputForm({
   inputValues,
   setInputValues,
   onClose,
+  title = '',
 }: DrawerInputFormProps) {
   const handleInputChange = (label: string, newValue: string) => {
     setInputValues((prev: Record<string, string>) => ({
@@ -24,7 +26,13 @@ export default function DrawerInputForm({
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', height: '100%', py: 1 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        py: 1,
+        backgroundColor: 'background.default',
+      }}
     >
       {/* 상단 타이틀 + 닫기 버튼 */}
       <Box
@@ -37,7 +45,7 @@ export default function DrawerInputForm({
           pt: 2,
         }}
       >
-        <Typography fontWeight="bold">정보 수정</Typography>
+        <Typography fontWeight="bold">{title || '요청사항 등록'}</Typography>
         <IconButton onClick={onClose}>
           <CloseIcon />
         </IconButton>

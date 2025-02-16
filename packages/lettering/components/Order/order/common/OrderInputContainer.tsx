@@ -13,14 +13,24 @@ export default function OrderInputContainer() {
   return (
     <>
       <Box sx={{ my: 2 }}>
-        <InputClickableBox data={dummy1} isLabelVisable={true} type="text" />
+        <InputClickableBox
+          data={dummy1}
+          isLabelVisable={true}
+          type="text"
+          inputRequestTitle="주문자 정보"
+        />
       </Box>
 
       <Box sx={{ my: 2 }}>
         <Typography fontSize={14} fontWeight={'bold'} sx={{ mb: 1 }}>
           요청사항 입력
         </Typography>
-        <InputClickableBox data={dummy2} isLabelVisable={false} type="text" />
+        <InputClickableBox
+          data={dummy2}
+          isLabelVisable={false}
+          type="text"
+          inputRequestTitle="요청사항 등록"
+        />
       </Box>
     </>
   );

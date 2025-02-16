@@ -1,6 +1,5 @@
 'use client';
 
-
 import { handleNavigation } from '@/config/navigation';
 import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -29,7 +28,10 @@ export default function NotificationBox({
 
   const handleRouter = () => {
     let path = `/application/create-review?id=${'query'}`;
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({
+      path: 'create-review',
+      status: 'forward',
+    });
 
     if (!isWebView) return router.push(path);
   };
@@ -118,8 +120,8 @@ export default function NotificationBox({
               },
             }}
             onClick={() => {
-              if (type === 'review') return handleRouter()
-              else return
+              if (type === 'review') return handleRouter();
+              else return;
             }}
           >
             {type === 'review' ? '리뷰 작성하기' : '주문내역 보기'}

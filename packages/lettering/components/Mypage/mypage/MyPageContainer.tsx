@@ -17,13 +17,13 @@ function MenuItem({
 
   const handleRouter = () => {
     let pathKind = {
-      interest: '/application/mypage/interest',
-      review: `/application/review/individual`,
+      interest: 'mypage/interest',
+      review: `review/individual`,
     };
     let path = pathKind[type];
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({ path, status: 'forward' });
 
-    if (!isWebView) return router.push(path);
+    if (!isWebView) return router.push(`/application/${path}`);
   };
 
   return (

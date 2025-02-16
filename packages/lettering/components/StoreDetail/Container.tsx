@@ -12,7 +12,7 @@ export default function Container() {
           <HeadComponent isButtonVisable={true} title="스타벅스 강남점" />
         </Box>
 
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{}}>
           <StoreMainImage />
         </Box>
         <Box sx={{ px: 2, mt: 1 }}>

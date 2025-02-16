@@ -13,7 +13,7 @@ export default function ReviewCount({ count = 0 }: Props) {
 
   const handleRouter = () => {
     let path = `/application/review?id=${'query'}`;
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({ path: 'review', status: 'forward' });
 
     if (!isWebView) return router.push(path);
   };

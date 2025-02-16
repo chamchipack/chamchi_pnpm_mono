@@ -9,7 +9,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { handleNavigation } from '@/config/navigation';
 
 const NAV_ITEMS = [
-  { label: '메인', icon: <HomeIcon />, key: 'home', path: '/application/home' },
+  { label: '메인', icon: <HomeIcon />, key: 'Home', path: '/application/home' },
   {
     label: '검색',
     icon: <SearchIcon />,
@@ -25,7 +25,7 @@ const NAV_ITEMS = [
   {
     label: '주문내역',
     icon: <ReceiptLongIcon />,
-    key: 'order',
+    key: 'order-list',
     path: '/application/order-list',
   },
   {
@@ -44,7 +44,7 @@ export default function NavigationBar() {
   if (!SHOW_PAGES.includes(pathname)) return null; // 특정 페이지에서만 표시
 
   const handleRouter = (path: string) => {
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({ path, status: 'forward' });
 
     if (!isWebView) return router.push(path);
   };
@@ -74,7 +74,7 @@ export default function NavigationBar() {
         return (
           <Box
             key={item.key}
-            onClick={() => handleRouter(item.path)} // ✅ 클릭 시 페이지 이동
+            onClick={() => handleRouter(item.key)} // ✅ 클릭 시 페이지 이동
             sx={{
               display: 'flex',
               flexDirection: 'column',

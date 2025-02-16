@@ -27,6 +27,7 @@ export default function ListFilterDrawer({
       onClose={onClose}
       PaperProps={{
         sx: {
+          backgroundColor: 'background.default',
           width: '100%',
           height: '100%',
           borderTopLeftRadius: 12,

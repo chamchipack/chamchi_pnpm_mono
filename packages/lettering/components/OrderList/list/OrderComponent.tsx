@@ -9,7 +9,10 @@ export default function OrderComponent() {
 
   const handleRouter = () => {
     let path = `/application/order-detail?id=${'query'}`;
-    const isWebView = handleNavigation({ path: '', status: 'forward' });
+    const isWebView = handleNavigation({
+      path: 'order-detail',
+      status: 'forward',
+    });
 
     if (!isWebView) return router.push(path);
   };

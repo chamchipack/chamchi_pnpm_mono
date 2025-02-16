@@ -9,7 +9,10 @@ export default function StoreComponent() {
 
   const handleRouter = () => {
     let path = `/application/store-detail?_id=${'query'}`;
-    const isWebView = handleNavigation({ path, status: 'forward' });
+    const isWebView = handleNavigation({
+      path: 'store-detail',
+      status: 'forward',
+    });
     if (!isWebView) return router.push(path);
   };
 
@@ -54,7 +57,7 @@ export default function StoreComponent() {
           </Box>
         ))}
       </Box>
-      <Box sx={{ mt: 1 }}>
+      <Box sx={{ mt: 1 }} onClick={handleRouter}>
         <Box
           sx={{
             display: 'flex',
@@ -65,7 +68,7 @@ export default function StoreComponent() {
           <Typography fontSize={16} fontWeight={'bold'} sx={{ mr: 1 }}>
             스타벅스 강남점
           </Typography>
-          <StarRatingscore />
+          <StarRatingscore rating={4.3} />
         </Box>
         <Typography
           color="common.gray"

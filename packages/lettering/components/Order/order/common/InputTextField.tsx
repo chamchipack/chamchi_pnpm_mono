@@ -19,10 +19,13 @@ export default function InputTextField({
       placeholder={placeholder}
       value={value}
       onChange={(e) => setValue(e.target.value)}
+      // rows={4}
+      // multiline
       sx={{
-        height: 30,
+        height: 40,
         borderRadius: 1, // ✅ 둥글게 변경
         '& .MuiOutlinedInput-root': {
+          height: 40,
           borderRadius: 1, // ✅ 내부도 둥글게
           '& fieldset': {
             borderColor: 'rgba(0, 0, 0, 0.2)', // 기본 테두리 색상 (연한 회색)

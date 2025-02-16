@@ -18,6 +18,8 @@ interface Props {
   isFilterVisable: boolean;
   isBackwardVisable: boolean;
   isTimeSelectable: boolean;
+  placeholder?: string;
+  isTimeForPast?: boolean;
 }
 
 const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항목 6'];
@@ -26,6 +28,8 @@ export default function InputContainer({
   isFilterVisable = false,
   isBackwardVisable = false,
   isTimeSelectable = false,
+  placeholder = '',
+  isTimeForPast = false,
 }: Props) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
@@ -58,6 +62,7 @@ export default function InputContainer({
         <SearchInput
           isAllowed={true}
           selectedDate={selectedDate?.format(timeFormat) || ''}
+          placeholder={placeholder || ''}
         />
       </Box>
 
@@ -86,6 +91,7 @@ export default function InputContainer({
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         isTimeSelectable={isTimeSelectable}
+        isTimeForPast={isTimeForPast}
       />
 
       {isFilterVisable && (
