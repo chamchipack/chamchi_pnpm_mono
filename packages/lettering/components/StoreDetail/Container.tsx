@@ -4,7 +4,12 @@ import StoreMainImage from './store/\bStoreMainImage';
 import StoreContainer from './store/StoreContainer';
 import StoreItemPictures from './store/StoreItemPictures';
 
-export default function Container() {
+interface Props {
+  storeId: string;
+}
+
+export default function Container({ storeId = '' }: Props) {
+  console.log(storeId);
   return (
     <>
       <Box sx={{ py: 1.5 }}>

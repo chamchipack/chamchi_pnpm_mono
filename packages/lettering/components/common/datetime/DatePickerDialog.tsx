@@ -1,5 +1,5 @@
 'use client';
-import { Box, Button, Drawer, Typography } from '@mui/material';
+import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -9,6 +9,7 @@ import {
 } from '@mui/x-date-pickers';
 import SelectTime from './SelectTime';
 import { useEffect, useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface DatePickerDrawerProps {
   open: boolean;
@@ -27,13 +28,35 @@ export default function DatePickerDialog({
   isTimeSelectable,
   isTimeForPast,
 }: DatePickerDrawerProps) {
-  const [selectedHour, setSelectedHour] = useState('');
-  const [selectedMinute, setSelectedMinute] = useState('');
+  const [selectedHour, setSelectedHour] = useState(
+    selectedDate ? selectedDate.format('HH') : '00',
+  );
+  const [selectedMinute, setSelectedMinute] = useState(
+    selectedDate ? selectedDate.format('mm') : '00',
+  );
 
   const disabledCondition = () => {
     if (!isTimeSelectable) return selectedDate ? false : true;
     else return !selectedDate || (!selectedHour && !selectedMinute);
   };
+
+  useEffect(() => {
+    if (open) {
+      document.documentElement.style.overflow = 'hidden'; // ✅ html에도 적용
+      document.body.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none'; // ✅ 모바일 스크롤 방지
+    } else {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    }
+
+    return () => {
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      document.body.style.touchAction = '';
+    };
+  }, [open]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
@@ -49,10 +72,25 @@ export default function DatePickerDialog({
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
             minHeight: '60vh',
-            maxHeight: !isTimeSelectable ? '60vh' : '90vh', // ✅ 최대 높이 설정
+            maxHeight: !isTimeSelectable ? '70vh' : '90vh', // ✅ 최대 높이 설정
           },
         }}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'end',
+            pt: 3,
+            pb: 2,
+            px: 2,
+            height: 30,
+          }}
+        >
+          <IconButton onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
         <Box
           sx={{
             display: 'flex',
@@ -74,6 +112,7 @@ export default function DatePickerDialog({
                   : day.isBefore(dayjs(), 'day')
               }
               onChange={(newDate) => {
+                console.log(newDate, dayjs(newDate));
                 if (newDate) setSelectedDate(dayjs(newDate));
               }}
               slots={{
@@ -168,6 +207,8 @@ export default function DatePickerDialog({
                   const updatedDate = selectedDate
                     .hour(Number(selectedHour))
                     .minute(Number(selectedMinute));
+
+                  console.log(updatedDate);
                   setSelectedDate(updatedDate);
                 }
                 onClose();

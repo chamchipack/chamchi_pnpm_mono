@@ -4,17 +4,26 @@ import { Box, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 
-export default function OrderComponent() {
+export default function OrderComponent({ orderId = '', name = '' }) {
   const router = useRouter();
 
   const handleRouter = () => {
-    let path = `/application/order-detail?id=${'query'}`;
+    let path = 'order-detail';
+
+    const param = {
+      orderId,
+    };
+
     const isWebView = handleNavigation({
-      path: 'order-detail',
+      path,
       status: 'forward',
+      params: JSON.stringify(param),
     });
 
-    if (!isWebView) return router.push(path);
+    if (!isWebView) {
+      const queryParams = new URLSearchParams(param).toString();
+      router.push(`/application/${path}?${queryParams}`);
+    }
   };
   return (
     <>
@@ -46,7 +55,7 @@ export default function OrderComponent() {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box sx={{ flex: 4 }}>
             <Typography fontSize={16} fontWeight="bold">
-              스타벅스 강남점
+              {name}
             </Typography>
             <Typography fontSize={12} color="text.secondary">
               경기도 성남시 수정구 성남대로 1237번길 8-21

@@ -49,6 +49,14 @@ function MenuItem({
 }
 
 function InfoGrid() {
+  const router = useRouter();
+
+  const handleRouter = () => {
+    let path = 'policy';
+    const isWebView = handleNavigation({ path, status: 'forward' });
+
+    if (!isWebView) return router.push(`/application/${path}`);
+  };
   return (
     <Box
       sx={{
@@ -60,7 +68,7 @@ function InfoGrid() {
     >
       {['자주 묻는 질문', '약관 및 정책', '공지사항', '고객센터'].map(
         (item, index) => (
-          <Typography key={index} fontSize={14}>
+          <Typography key={index} fontSize={14} onClick={handleRouter}>
             {item}
           </Typography>
         ),

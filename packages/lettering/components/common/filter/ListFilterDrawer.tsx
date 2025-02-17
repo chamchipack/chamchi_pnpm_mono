@@ -63,7 +63,7 @@ export default function ListFilterDrawer({
             리스트 정렬
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 1 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8, p: 1 }}>
           {items.map((item, index) => (
             <Box
               key={index}
@@ -99,6 +99,7 @@ export default function ListFilterDrawer({
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
+              mt: 1.5,
             }}
           >
             <Typography

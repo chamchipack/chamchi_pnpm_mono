@@ -20,6 +20,10 @@ interface Props {
   isTimeSelectable: boolean;
   placeholder?: string;
   isTimeForPast?: boolean;
+  params?: {
+    query: string;
+    date: Dayjs | null;
+  };
 }
 
 const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항목 6'];
@@ -30,12 +34,15 @@ export default function InputContainer({
   isTimeSelectable = false,
   placeholder = '',
   isTimeForPast = false,
+  params = { query: '', date: null },
 }: Props) {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(
+    params.date ? dayjs(params.date) : null,
+  );
   const [filter, setFilter] = useState<string>(items[0] || '');
 
-  const timeFormat = `YYYY. MM. DD. ${isTimeSelectable ? 'HH:mm' : ''}`;
+  const timeFormat = isTimeSelectable ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';
 
   const [open, setOpen] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
@@ -63,6 +70,7 @@ export default function InputContainer({
           isAllowed={true}
           selectedDate={selectedDate?.format(timeFormat) || ''}
           placeholder={placeholder || ''}
+          queryInput={params.query}
         />
       </Box>
 

@@ -2,7 +2,12 @@ import { Box } from '@mui/material';
 import HeadComponent from '../common/HeadComponent';
 import OrderInformation from './OrderInformation';
 
-export default function Container() {
+interface Props {
+  orderId: string;
+}
+
+export default function Container({ orderId = '' }: Props) {
+  console.log(orderId);
   return (
     <>
       <Box sx={{ py: 1.5 }}>

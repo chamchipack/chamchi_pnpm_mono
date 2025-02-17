@@ -4,32 +4,46 @@ import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface Props {
   isAllowed: boolean;
   selectedDate?: string;
   placeholder?: string;
+  queryInput?: string;
 }
 
 export default function SearchInput({
   isAllowed = false,
   selectedDate = '',
   placeholder = '',
+  queryInput = '',
 }: Props) {
   const router = useRouter();
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(queryInput);
 
   const handleSearch = () => {
     if (!isAllowed) return;
 
     if (query.trim()) {
-      let path = `/application/store-list?query=${query}&date=${selectedDate}`;
+      let path = 'store-list';
+
+      const param = {
+        query,
+        date: selectedDate,
+      };
+
       const isWebView = handleNavigation({
         path: 'store-list',
         status: 'forward',
+        params: JSON.stringify(param),
       });
-      if (!isWebView) return router.push(path);
+
+      if (!isWebView) {
+        const queryParams = new URLSearchParams(param).toString();
+        router.push(`/application/${path}?${queryParams}`);
+      }
     }
   };
 

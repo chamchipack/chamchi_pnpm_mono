@@ -13,12 +13,12 @@ export const metadata: Metadata = {
 interface Props {
   searchParams: {
     query: string;
-    date: string;
+    date: any;
   };
 }
 const Page = ({ searchParams }: Props) => {
-  console.log(searchParams);
-  return <Container />;
+  const params = searchParams;
+  return <Container params={params} />;
 };
 
 export default Page;

@@ -1,10 +1,32 @@
 import { Box, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { handleNavigation } from '@/config/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function IncomingReservation() {
+  const router = useRouter(); // Next.js 라우터
+
+  const handleRouter = () => {
+    let path = 'order-detail';
+    const param = {
+      orderId: 'adwiuvubdasvdwbi',
+    };
+
+    const isWebView = handleNavigation({
+      path,
+      status: 'forward',
+      params: JSON.stringify(param),
+    });
+
+    if (!isWebView) {
+      const queryParams = new URLSearchParams(param).toString();
+      router.push(`/application/${path}?${queryParams}`);
+    }
+  };
+
   return (
     <>
-      <Box sx={{ ...flex }}>
+      <Box sx={{ ...flex }} onClick={handleRouter}>
         <Typography variant="h6" fontWeight={600} fontSize={14}>
           다가오는 예약
         </Typography>

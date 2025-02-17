@@ -8,6 +8,7 @@ type Status = 'forward' | 'back' | 'replace';
 type Params = {
   path: string;
   status: Status;
+  params?: string;
 };
 /**
  * 네비게이션 처리 함수
@@ -23,6 +24,7 @@ export const handleNavigation = (params: Params): boolean => {
         type: 'NAVIGATE',
         path: params.path || '',
         status: params.status || 'forward',
+        params: params?.params || '',
       } as NavigationMessage),
     );
     return true; // WebView에서 처리됨

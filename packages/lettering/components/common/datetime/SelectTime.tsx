@@ -12,6 +12,11 @@ interface SelectTimeProps {
   setSelectedMinute: (minute: string) => void;
 }
 
+const hours = [...Array(24)].map((_, i) => i.toString().padStart(2, '0'));
+const minutes = [...Array(6)].map((_, i) =>
+  (i * 10).toString().padStart(2, '0'),
+);
+
 export default function SelectTime({
   //   onTimeSelect,
   onClose,
@@ -20,12 +25,8 @@ export default function SelectTime({
   setSelectedHour,
   setSelectedMinute,
 }: SelectTimeProps) {
-  const hours = [...Array(24)].map((_, i) => i.toString().padStart(2, '0'));
-  const minutes = [...Array(6)].map((_, i) =>
-    (i * 10).toString().padStart(2, '0'),
-  );
-
   const handleHourScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    console.log(e.currentTarget);
     const index = Math.round(e.currentTarget.scrollTop / 40);
     setSelectedHour(hours[index] || '00');
   };
@@ -63,25 +64,6 @@ export default function SelectTime({
           setSelectedTime={setSelectedMinute} // ✅ 부모에서 받은 setState 사용
         />
       </Box>
-
-      {/* <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mt: 3 }}>
-        <Button
-          variant="contained"
-          color="inherit"
-          onClick={onClose}
-          sx={{ flex: 1 }}
-        >
-          취소
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleConfirm}
-          sx={{ flex: 1 }}
-        >
-          확인
-        </Button>
-      </Box> */}
     </Box>
   );
 }

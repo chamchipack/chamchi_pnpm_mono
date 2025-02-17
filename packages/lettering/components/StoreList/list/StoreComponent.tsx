@@ -4,16 +4,24 @@ import { Box, Card, CardContent, Typography } from '@mui/material';
 import { handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
 
-export default function StoreComponent() {
+export default function StoreComponent({ storeId = '', name = '' }) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
-    let path = `/application/store-detail?_id=${'query'}`;
+    let path = 'store-detail';
+
+    const param = { storeId };
+
     const isWebView = handleNavigation({
       path: 'store-detail',
       status: 'forward',
+      params: JSON.stringify(param),
     });
-    if (!isWebView) return router.push(path);
+
+    if (!isWebView) {
+      const queryParams = new URLSearchParams(param).toString();
+      router.push(`/application/${path}?${queryParams}`);
+    }
   };
 
   return (
@@ -66,7 +74,7 @@ export default function StoreComponent() {
           }}
         >
           <Typography fontSize={16} fontWeight={'bold'} sx={{ mr: 1 }}>
-            스타벅스 강남점
+            {name}
           </Typography>
           <StarRatingscore rating={4.3} />
         </Box>

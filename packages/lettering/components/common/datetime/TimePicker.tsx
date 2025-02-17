@@ -14,42 +14,56 @@ export default function TimePicker({
   selectedTime,
   setSelectedTime,
 }: TimePickerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollEnabled, setScrollEnabled] = useState(true); // ✅ 스크롤 중인지 상태 관리
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [isScrolling, setIsScrolling] = useState(false);
 
   // ✅ 시간 클릭 시 해당 위치로 스크롤 이동
   const handleTimeClick = (t: string) => {
     if (!containerRef.current) return;
 
     setSelectedTime(t);
-    setScrollEnabled(false); // ✅ 스크롤 이벤트 일시 정지
+    setIsScrolling(true);
 
     const index = time.indexOf(t);
     containerRef.current.scrollTo({
-      top: index * 40, // ✅ 40px 단위로 이동
+      top: index * 40,
       behavior: 'smooth',
     });
 
-    // ✅ 500ms 후에 스크롤 다시 활성화 (스크롤 완료 후)
-    setTimeout(() => setScrollEnabled(true), 500);
+    setTimeout(() => setIsScrolling(false), 500);
   };
 
-  // ✅ 스크롤 이벤트 처리 (스크롤 중에는 클릭 이벤트 차단)
+  // ✅ 스크롤 이벤트 처리 (부드럽게 이동)
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    if (!scrollEnabled) return; // ✅ 스크롤 이벤트 비활성화 시 무시
-    handleTimeScroll(e);
+    if (!e.currentTarget || !containerRef.current || isScrolling) return;
+
+    setIsScrolling(true);
+
+    if (!e.currentTarget) return; // ✅ 방어 코드 추가
+    const index = Math.round(e.currentTarget.scrollTop / 40);
+    // if (index + 1 !== time.length || Number(selectedTime) + 1 !== time.length)
+    // setSelectedTime(time[index] || '00');
+
+    setTimeout(() => setIsScrolling(false), 300);
   };
 
-  // ✅ 선택된 시간이 바뀌면 자동 스크롤 이동 (최초 렌더링 시)
+  // ✅ 선택된 시간이 바뀌면 자동 스크롤 이동
   useEffect(() => {
     if (!containerRef.current) return;
 
     const index = time.indexOf(selectedTime);
-    containerRef.current.scrollTo({
-      top: index * 40,
-      behavior: 'instant', // ✅ 즉각 이동 (애니메이션 없음)
+    const maxIndex = time.length - 1;
+
+    if (index >= maxIndex) return;
+
+    requestAnimationFrame(() => {
+      if (!containerRef.current) return; // ✅ 방어 코드 추가
+      containerRef.current.scrollTo({
+        top: index * 40,
+        behavior: 'smooth',
+      });
     });
-  }, [selectedTime, time]);
+  }, [selectedTime]);
 
   return (
     <Box
@@ -77,19 +91,21 @@ export default function TimePicker({
           py: 7,
           '&::-webkit-scrollbar': { display: 'none' },
         }}
-        onScroll={handleScroll} // ✅ 스크롤 이벤트 수정
+        onScroll={handleScroll} // ✅ 스크롤 이벤트 추가
+        // onMouseUp={handleScrollEnd}
+        // onTouchEnd={handleScrollEnd}
       >
         {time.map((t) => (
           <Typography
             key={t}
-            onClick={() => handleTimeClick(t)} // ✅ 클릭하면 해당 시간으로 이동
+            onClick={() => handleTimeClick(t)}
             sx={{
               height: 40,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               scrollSnapAlign: 'center',
-              color: selectedTime === t ? 'black' : 'gray',
+              color: selectedTime === t ? 'black' : '#d9d9d9',
               fontWeight: selectedTime === t ? 'bold' : 'normal',
               cursor: 'pointer',
               '&:hover': { color: 'black' },

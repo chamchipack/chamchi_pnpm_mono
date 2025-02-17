@@ -35,6 +35,15 @@ export default function OrderInformation() {
 
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
+            <Typography fontSize={12}>완료일시</Typography>
+          </Box>
+          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+            2025년 3월 5일 오후 12:40
+          </Typography>
+        </Box>
+
+        <Box sx={{ ...flex1 }}>
+          <Box sx={{ minWidth: 130 }}>
             <Typography fontSize={12}>주문번호</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
