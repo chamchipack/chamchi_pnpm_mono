@@ -1,6 +1,8 @@
+// 'use client';
 import { Box } from '@mui/material';
 import HeadComponent from '../common/HeadComponent';
 import ProfileContainer from './ProfileContainer';
+// import { useEffect, useState } from 'react';
 
 export default function Container() {
   return (

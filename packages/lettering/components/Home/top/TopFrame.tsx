@@ -19,6 +19,16 @@ export default function TopFrame() {
     if (!isWebView) return router.push(path);
   };
 
+  const handleRouterAddress = () => {
+    let path = '/application/address';
+    const isWebView = handleNavigation({
+      path: 'address',
+      status: 'forward',
+    });
+
+    if (!isWebView) return router.push(path);
+  };
+
   return (
     <Box
       sx={{
@@ -28,7 +38,7 @@ export default function TopFrame() {
       }}
     >
       {/* 지역 선택 */}
-      <Box sx={{ ...flex }}>
+      <Box sx={{ ...flex }} onClick={handleRouterAddress}>
         <Typography variant="h6" fontWeight={600} fontSize={14}>
           경기도 수원시
         </Typography>

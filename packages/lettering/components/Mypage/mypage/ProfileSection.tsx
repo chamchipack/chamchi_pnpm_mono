@@ -1,11 +1,23 @@
 'use client';
 
 import { handleNavigation } from '@/config/navigation';
+import { NickNameAtom } from '@/store/userStore/state';
+import { useUserStore } from '@/store/userStore/store';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
 export default function ProfileSection() {
   const router = useRouter();
+  const { nickname } = useUserStore();
+  const recoilNickname = useRecoilValue(NickNameAtom);
+
+  const [clientNickname, setClientNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    setClientNickname(recoilNickname); // ✅ 클라이언트에서 Recoil 값 업데이트
+  }, [recoilNickname]);
 
   const handleRouter = () => {
     let path = `/application/profile?id=${'query'}`;
@@ -13,6 +25,11 @@ export default function ProfileSection() {
 
     if (!isWebView) return router.push(path);
   };
+
+  const cachedNickname = useMemo(
+    () => clientNickname ?? '로딩 중...',
+    [clientNickname],
+  );
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -29,7 +46,7 @@ export default function ProfileSection() {
       />
       <Box>
         <Typography fontSize={16} fontWeight="bold">
-          닉네임
+          {cachedNickname}
         </Typography>
         <Typography
           fontSize={14}

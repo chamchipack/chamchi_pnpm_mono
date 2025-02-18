@@ -10,9 +10,11 @@ const queryClient = new QueryClient();
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProviders>
-      <CssBaseline />
-      {children}
-    </ThemeProviders>
+    <RecoilRoot>
+      <ThemeProviders>
+        <CssBaseline />
+        {children}
+      </ThemeProviders>
+    </RecoilRoot>
   );
 }

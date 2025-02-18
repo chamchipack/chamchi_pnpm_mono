@@ -1,15 +1,35 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography, Modal, TextField, Button } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InputTextField from '../Order/order/common/InputTextField';
+import DrawerForm from '@/components/common/modal/DrawerForm';
+import { handleStorage } from '@/config/navigation';
+import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes';
+
+import {
+  webViewRender,
+  emit,
+  useNativeMessage,
+} from 'react-native-react-bridge/lib/web';
+import { useUserStore } from '@/store/userStore/store';
+import { useRecoilValue } from 'recoil';
+import { NickNameAtom } from '@/store/userStore/state';
 
 export default function ProfileInfoSection() {
   const [open, setOpen] = useState(false);
-  const [nickname, setNickname] = useState('닉네임'); // ✅ 닉네임 상태
+
+  const [nickname, setNickname] = useState(''); // ✅ 닉네임 상태
 
   const handleClose = () => setOpen(false);
-  const handleSave = () => {
+
+  const handleStorageData = (name: string) => {
+    const data = {
+      name,
+    };
+    const isWebView = handleStorage({ data });
+
+    if (!isWebView) localStorage.setItem('nickName', name);
     setOpen(false);
   };
 
@@ -48,7 +68,7 @@ export default function ProfileInfoSection() {
           >
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography fontSize={14} color="text.primary">
-                닉네임
+                {nickname}
               </Typography>
               <Typography
                 fontSize={14}
@@ -96,51 +116,43 @@ export default function ProfileInfoSection() {
       </Box>
 
       {/* 닉네임 수정 모달 */}
-      <Modal open={open} onClose={handleClose}>
+      <DrawerForm
+        open={open}
+        onClose={handleClose}
+        minHeight="40vh"
+        maxHeight="60vh"
+      >
         <Box
           sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: '80%',
-            height: 200,
-            bgcolor: 'white',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            height: '100%',
             p: 3,
-            borderRadius: 2,
           }}
         >
-          <Box
+          <Box>
+            <Typography fontSize={14} fontWeight="bold" sx={{ mb: 1 }}>
+              닉네임 수정
+            </Typography>
+
+            <InputTextField value={nickname} setValue={setNickname} />
+          </Box>
+          <Button
+            fullWidth
+            onClick={() => handleStorageData(nickname)}
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              height: '100%',
+              height: 45,
+              fontSize: 14,
+              backgroundColor: 'common.main',
+              color: 'white',
+              '&: hover': { backgroundColor: 'common.main', color: 'white' },
             }}
           >
-            <Box>
-              <Typography fontSize={14} fontWeight="bold" sx={{ mb: 1 }}>
-                닉네임 수정
-              </Typography>
-
-              <InputTextField value={nickname} setValue={setNickname} />
-            </Box>
-            <Button
-              fullWidth
-              onClick={handleSave}
-              sx={{
-                height: 30,
-                fontSize: 14,
-                backgroundColor: 'common.main',
-                color: 'white',
-                '&: hover': { backgroundColor: 'common.main', color: 'white' },
-              }}
-            >
-              저장
-            </Button>
-          </Box>
+            저장
+          </Button>
         </Box>
-      </Modal>
+      </DrawerForm>
     </>
   );
 }

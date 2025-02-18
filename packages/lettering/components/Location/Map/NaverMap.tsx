@@ -3,7 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Script from 'next/script';
 
-const NAVER_CLIENT_ID = ''; // 네이버 지도 API Client ID
+const NAVER_CLIENT_ID = '96xve4j2vc'; // 네이버 지도 API Client ID
 
 const NaverMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);

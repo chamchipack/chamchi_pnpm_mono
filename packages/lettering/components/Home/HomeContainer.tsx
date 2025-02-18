@@ -7,22 +7,20 @@ import IncomingReservation from './contents/IncomingReservation';
 import HomeBanner from './contents/HomeBanner';
 import HomePopularList from './contents/HomePopularList';
 import HomePopularElements from './contents/HomePopularElements';
-import { useClientSize } from 'package/src/hooks/useMediaQuery';
 import { useEffect, useState } from 'react';
+import WebViewMessageHandler from './WebViewMessageHandler'; // ✅ 새로 분리한 컴포넌트 추가
 
 export default function HomeContainer() {
-  const size = useClientSize('sm');
-
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
-    console.log(userAgent);
     setIsMobile(/iphone|ipad|ipod|android/i.test(userAgent));
   }, []);
 
   return (
     <>
+      <WebViewMessageHandler /> {/* ✅ WebView 이벤트 리스너 컴포넌트 추가 */}
       <Box sx={{ py: 1.5, pb: 0 }}>
         <Box sx={{ px: 2.5 }}>
           <TopFrame />
