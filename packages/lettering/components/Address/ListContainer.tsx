@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button } from '@mui/material';
 import HeadComponent from './HeadComponent';
 import { useRouter } from 'next/navigation';
-import { handleNavigation } from '@/config/navigation';
+import { handleFindLocation, handleNavigation } from '@/config/navigation';
 import SearchInput from './SearchInput';
 import CurrentLocationSelector from './CurrentLocationSelector';
 import AddressList from './AddressList';
@@ -21,10 +21,6 @@ export default function ListContainer() {
   const [editMode, setEditMode] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [currentLocation, setCurrentLocation] = useState<string | null>(null);
-
-  const handleFindCurrentLocation = () => {
-    setCurrentLocation('경기도 성남시 수정구'); // 예제 주소
-  };
 
   const handleRegisterAddress = () => {
     setCurrentLocation(null);
@@ -58,8 +54,8 @@ export default function ListContainer() {
           <SearchInput handleRouter={handleRouter} isUsable={false} />
           <CurrentLocationSelector
             currentLocation={currentLocation}
-            handleFindCurrentLocation={handleFindCurrentLocation}
             handleRegisterAddress={handleRegisterAddress}
+            setCurrentLocation={setCurrentLocation}
           />
           <AddressList
             addressList={addressList}

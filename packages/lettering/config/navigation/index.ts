@@ -40,6 +40,24 @@ export const handleNavigation = (params: Params): boolean => {
   return false; // WebView가 아니므로 `router.push` 실행해야 함
 };
 
+type LocationParams = {
+  data: unknown;
+};
+
+export const handleFindLocation = (params: StorageParams): boolean => {
+  if (typeof window !== 'undefined' && (window as any).ReactNativeWebView) {
+    (window as any).ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'LOCATION',
+        data: params.data || '',
+      } as LocationParams),
+    );
+    return true; // WebView에서 처리됨
+  }
+
+  return false; // WebView가 아니므로 `router.push` 실행해야 함
+};
+
 type StorageParams = {
   data: unknown;
 };

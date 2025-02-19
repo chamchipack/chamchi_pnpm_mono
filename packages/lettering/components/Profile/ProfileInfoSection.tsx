@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Typography, Modal, TextField, Button } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InputTextField from '../Order/order/common/InputTextField';
@@ -20,11 +20,19 @@ export default function ProfileInfoSection() {
   const [open, setOpen] = useState(false);
 
   const [nickname, setNickname] = useState(''); // ✅ 닉네임 상태
+  const recoilNickname = useRecoilValue(NickNameAtom);
+
+  const [clientNickname, setClientNickname] = useState<string | null>(null);
+
+  useEffect(() => {
+    setClientNickname(recoilNickname); // ✅ 클라이언트에서 Recoil 값 업데이트
+  }, [recoilNickname]);
 
   const handleClose = () => setOpen(false);
 
   const handleStorageData = (name: string) => {
     const data = {
+      key: 'nickname',
       name,
     };
     const isWebView = handleStorage({ data });
@@ -32,6 +40,11 @@ export default function ProfileInfoSection() {
     if (!isWebView) localStorage.setItem('nickName', name);
     setOpen(false);
   };
+
+  const cachedNickname = useMemo(
+    () => clientNickname ?? '로딩 중...',
+    [clientNickname],
+  );
 
   return (
     <>
@@ -68,7 +81,7 @@ export default function ProfileInfoSection() {
           >
             <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography fontSize={14} color="text.primary">
-                {nickname}
+                유저 이름
               </Typography>
               <Typography
                 fontSize={14}
@@ -81,7 +94,7 @@ export default function ProfileInfoSection() {
                   whiteSpace: 'nowrap',
                 }}
               >
-                {nickname} {/* ✅ 변경된 닉네임 반영 */}
+                {cachedNickname} {/* ✅ 변경된 닉네임 반영 */}
               </Typography>
             </Box>
           </Box>
