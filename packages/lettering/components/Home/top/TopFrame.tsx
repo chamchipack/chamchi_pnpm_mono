@@ -1,32 +1,21 @@
 'use client';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import CircleIcon from '@mui/icons-material/Circle';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
+import UserAddressButton from './address/UserAddressButton';
 
 export default function TopFrame() {
   const router = useRouter(); // ✅ Next.js Router 사용
 
-  const handleRouter = () => {
-    let path = '/application/notification';
+  const handleRouter = (path: string) => {
     const isWebView = handleNavigation({
-      path: 'notification',
+      path,
       status: 'forward',
     });
 
-    if (!isWebView) return router.push(path);
-  };
-
-  const handleRouterAddress = () => {
-    let path = '/application/address';
-    const isWebView = handleNavigation({
-      path: 'address',
-      status: 'forward',
-    });
-
-    if (!isWebView) return router.push(path);
+    if (!isWebView) return router.push(`/application/${path}`);
   };
 
   return (
@@ -37,30 +26,24 @@ export default function TopFrame() {
         position: 'relative',
       }}
     >
-      {/* 지역 선택 */}
-      <Box sx={{ ...flex }} onClick={handleRouterAddress}>
-        <Typography variant="h6" fontWeight={600} fontSize={14}>
-          경기도 수원시
-        </Typography>
-        <ArrowDropDownIcon sx={{ fontSize: 24, color: 'common.black' }} />
+      <Box sx={{ ...flex }} onClick={() => handleRouter('address')}>
+        <UserAddressButton />
       </Box>
 
-      {/* 알림 아이콘 */}
       <Box
         sx={{
           position: 'relative',
           display: 'inline-block',
         }}
-        onClick={handleRouter} // ✅ 클릭 시 이동
+        onClick={() => handleRouter('notification')}
       >
         <NotificationsIcon
           sx={{
             fontSize: 24,
             color: 'common.black',
-            cursor: 'pointer', // ✅ 커서 스타일 변경
+            cursor: 'pointer',
           }}
         />
-        {/* 빨간 알림 표시 */}
         <CircleIcon
           sx={{
             fontSize: 10,

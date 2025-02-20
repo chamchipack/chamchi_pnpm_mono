@@ -22,26 +22,26 @@ export default function HomeContainer() {
     <>
       <WebViewMessageHandler /> {/* ✅ WebView 이벤트 리스너 컴포넌트 추가 */}
       <Box sx={{ py: 1.5, pb: 0 }}>
-        <Box sx={{ px: 2.5 }}>
+        <Box sx={{ px: 2 }}>
           <TopFrame />
         </Box>
-        <Box sx={{ px: 2.5, my: 2 }}>
+        <Box sx={{ px: 2, my: 2 }}>
           <SearchInput
             isAllowed={false}
             placeholder="예약가능한 곳을 찾아보세요!"
           />
         </Box>
-        <Box sx={{ px: 2.5, my: 3 }}>
+        <Box sx={{ px: 2, my: 3 }}>
           <IncomingReservation />
         </Box>
         <Box sx={{ my: 3 }}>
           <HomeBanner />
         </Box>
-        <Box sx={{ pr: isMobile ? 0 : 2.5, pl: 2.5, my: 3 }}>
+        <Box sx={{ pr: isMobile ? 0 : 2, pl: 2, my: 3 }}>
           <HomePopularElements />
         </Box>
 
-        <Box sx={{ pr: isMobile ? 0 : 2.5, pl: 2.5, my: 3 }}>
+        <Box sx={{ pr: isMobile ? 0 : 2, pl: 2, my: 3 }}>
           <HomePopularList />
         </Box>
       </Box>

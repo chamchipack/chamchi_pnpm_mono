@@ -45,6 +45,8 @@ export default function ListContainer() {
       <HeadComponent
         title={editMode ? '편집' : '주소 설정'}
         onChange={onChangeEditMode}
+        isRoutingReplace
+        path="home"
       />
 
       {editMode ? (

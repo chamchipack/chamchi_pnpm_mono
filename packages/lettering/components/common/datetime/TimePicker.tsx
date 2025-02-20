@@ -20,6 +20,7 @@ export default function TimePicker({
   // ✅ 시간 클릭 시 해당 위치로 스크롤 이동
   const handleTimeClick = (t: string) => {
     if (!containerRef.current) return;
+    console.log(t);
 
     setSelectedTime(t);
     setIsScrolling(true);
@@ -44,7 +45,10 @@ export default function TimePicker({
     // if (index + 1 !== time.length || Number(selectedTime) + 1 !== time.length)
     // setSelectedTime(time[index] || '00');
 
-    setTimeout(() => setIsScrolling(false), 300);
+    setTimeout(() => {
+      setIsScrolling(false);
+      console.log('sssss');
+    }, 1000);
   };
 
   // ✅ 선택된 시간이 바뀌면 자동 스크롤 이동

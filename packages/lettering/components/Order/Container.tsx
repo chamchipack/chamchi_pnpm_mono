@@ -23,22 +23,22 @@ export default function Container() {
         <Box sx={{ px: 2 }}>
           <HeadComponent isButtonVisable={true} title="주문하기" />
         </Box>
-        <Box sx={{ px: 2.5, mt: 2 }}>
+        <Box sx={{ px: 2, mt: 2 }}>
           <OrderDefaultInfo />
         </Box>
-        <Box sx={{ px: 2.5, mt: 2 }}>
+        <Box sx={{ px: 2, mt: 2 }}>
           <OrderInputContainer />
         </Box>
-        <Box sx={{ px: 2.5, mt: 2 }}>
+        <Box sx={{ px: 2, mt: 2 }}>
           <Typography fontSize={14} fontWeight={'bold'} sx={{ mb: 1 }}>
             원하는 케이크 이미지 선택
           </Typography>
           <OrderImagePicker />
         </Box>
-        <Box sx={{ px: 2.5, mt: 2 }}>
+        <Box sx={{ px: 2, mt: 2 }}>
           <CustomizeInputContainer />
         </Box>
-        <Box sx={{ px: 2.5, my: 5 }}>
+        <Box sx={{ px: 2, my: 5 }}>
           <PaymentPolicy />
         </Box>
       </Box>

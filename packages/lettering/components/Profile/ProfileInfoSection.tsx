@@ -5,28 +5,21 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import InputTextField from '../Order/order/common/InputTextField';
 import DrawerForm from '@/components/common/modal/DrawerForm';
 import { handleStorage } from '@/config/navigation';
-import { WebViewMessageEvent } from 'react-native-webview/lib/WebViewTypes';
 
-import {
-  webViewRender,
-  emit,
-  useNativeMessage,
-} from 'react-native-react-bridge/lib/web';
-import { useUserStore } from '@/store/userStore/store';
-import { useRecoilValue } from 'recoil';
-import { NickNameAtom } from '@/store/userStore/state';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { UserInfoAtom } from '@/store/userStore/state';
 
 export default function ProfileInfoSection() {
   const [open, setOpen] = useState(false);
 
   const [nickname, setNickname] = useState(''); // ✅ 닉네임 상태
-  const recoilNickname = useRecoilValue(NickNameAtom);
+  const [recoilNickname, setRecoilNickName] = useRecoilState(UserInfoAtom);
 
   const [clientNickname, setClientNickname] = useState<string | null>(null);
 
   useEffect(() => {
-    setClientNickname(recoilNickname); // ✅ 클라이언트에서 Recoil 값 업데이트
-  }, [recoilNickname]);
+    setClientNickname(recoilNickname.nickname); // ✅ 클라이언트에서 Recoil 값 업데이트
+  }, [recoilNickname.nickname]);
 
   const handleClose = () => setOpen(false);
 
@@ -36,6 +29,8 @@ export default function ProfileInfoSection() {
       name,
     };
     const isWebView = handleStorage({ data });
+
+    setRecoilNickName((prev) => ({ ...prev, nickname: name }));
 
     if (!isWebView) localStorage.setItem('nickName', name);
     setOpen(false);

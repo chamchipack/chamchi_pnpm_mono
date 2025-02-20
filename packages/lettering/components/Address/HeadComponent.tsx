@@ -8,15 +8,29 @@ import EditIcon from '@mui/icons-material/Edit';
 interface Props {
   title: string;
   onChange: () => void;
+  isRoutingReplace?: boolean;
+  path?: string;
 }
 
-export default function HeadComponent({ title = '', onChange }: Props) {
+export default function HeadComponent({
+  title = '',
+  onChange,
+  isRoutingReplace = false,
+  path = '',
+}: Props) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
-    const isWebView = handleNavigation({ path: '', status: 'back' });
+    const isWebView = handleNavigation({
+      path: isRoutingReplace ? path : '',
+      status: isRoutingReplace ? 'replace' : 'back',
+    });
 
-    if (!isWebView) return router.back();
+    // const isWebView = handleNavigation({ path: '', status: 'back' });
+
+    if (!isWebView) {
+      isRoutingReplace ? router.push(`/application/${path}`) : router.back();
+    }
   };
 
   return (

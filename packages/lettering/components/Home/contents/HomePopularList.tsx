@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export default function HomePopularList() {
   return (
@@ -29,17 +29,30 @@ export default function HomePopularList() {
               alignItems: 'start',
             }}
           >
-            {/* 카드 */}
-            <Card
+            {/* 🔹 이미지 박스 (기존 Card 대체) */}
+            <Box
               sx={{
                 minWidth: 130,
                 height: 130,
                 flexShrink: 0,
-                backgroundColor: 'grey.300',
+                position: 'relative',
+                overflow: 'hidden',
+                borderRadius: 2, // ✅ 모서리 둥글게
+                backgroundColor: '#f0f0f0', // ✅ 기본 배경 (이미지가 없을 경우)
               }}
             >
-              <CardContent></CardContent>
-            </Card>
+              {/* 이미지 추가 */}
+              <img
+                src="/cake2.png"
+                alt={`매장 ${index + 1}`}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover', // ✅ 이미지가 박스를 꽉 채우도록
+                }}
+              />
+            </Box>
+
             {/* 하단 텍스트 */}
             <Typography
               variant="body2"

@@ -7,20 +7,29 @@ import { useRouter } from 'next/navigation';
 interface Props {
   isButtonVisable: boolean;
   title: string;
+  isRoutingReplace?: boolean;
+  path?: string;
 }
 
 export default function HeadComponent({
   isButtonVisable = false,
   title = '',
+  isRoutingReplace = false,
+  path = '',
 }: Props) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
     if (!isButtonVisable) return;
 
-    const isWebView = handleNavigation({ path: '', status: 'back' });
+    const isWebView = handleNavigation({
+      path: isRoutingReplace ? path : '',
+      status: isRoutingReplace ? 'replace' : 'back',
+    });
 
-    if (!isWebView) return router.back();
+    if (!isWebView) {
+      isRoutingReplace ? router.push(`/application/${path}`) : router.back();
+    }
   };
 
   return (

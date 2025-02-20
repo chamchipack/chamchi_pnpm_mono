@@ -39,7 +39,7 @@ export default function BannerSlider() {
         position: 'relative',
         width: '100%',
         // maxWidth: 600,
-        height: 200,
+        height: 160,
         overflow: 'hidden',
         margin: 'auto',
       }}

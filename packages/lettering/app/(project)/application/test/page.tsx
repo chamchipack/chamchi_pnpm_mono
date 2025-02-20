@@ -1,70 +1,71 @@
 'use client';
 
-import { useUserStore } from '@/store/userStore/store';
-import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useRecentSearches } from '@/store/searchData/useRecentSearches';
+import { Box, Button, Chip, TextField, Typography } from '@mui/material';
+import { useState } from 'react';
 
-const Page = () => {
-  const [isModalVisible, setModalVisible] = useState('');
-  // const [s, d] = useREvo
-  const handleRouter = () => {
-    if (typeof window !== 'undefined' && (window as any).ReactNativeWebView) {
-      // ✅ WebView 환경에서 네이티브로 메시지 전송
-      (window as any).ReactNativeWebView.postMessage(
-        JSON.stringify({
-          type: 'NAVIGATE',
-          data: 'good',
-        } as any),
-      );
-      return true; // WebView에서 처리됨
+export default function RecentSearches() {
+  const { searches, addSearch, removeSearch, clearSearches } =
+    useRecentSearches();
+  const [input, setInput] = useState('');
+
+  // 🔹 검색어 추가 핸들러
+  const handleAddSearch = () => {
+    if (input.trim() !== '') {
+      addSearch(input);
+      setInput('');
     }
   };
 
-  useEffect(() => {
-    const handleMessage = (event) => {
-      try {
-        // const data = JSON.parse(event.data);
-        // console.log('React Native에서 받은 데이터:', data);
-
-        // if (data.type === 'INIT') {
-        setModalVisible(event.data); // ✅ Zustand에 저장
-
-        (window as any).ReactNativeWebView.postMessage(
-          JSON.stringify({
-            type: 'NAVIGATE',
-            data: event.data,
-          } as any),
-        );
-        // }
-      } catch (error) {
-        console.error('메시지 처리 오류:', error);
-
-        (window as any).ReactNativeWebView.postMessage(
-          JSON.stringify({
-            type: 'NAVIGATE',
-            data: 'error',
-          } as any),
-        );
-      }
-    };
-
-    // window.ReactNativeWebView.postMessage(
-    //   JSON.stringify({
-    //     type: 'NAVIGATE',
-    //     data: 'sssss',
-    //   }),
-    // );
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
-
   return (
-    <div>
-      <Button onClick={handleRouter}>sssss</Button>
-      <div>{isModalVisible}sss</div>
-    </div>
-  );
-};
+    <Box
+      sx={{ maxWidth: 400, p: 2, border: '1px solid #ddd', borderRadius: 2 }}
+    >
+      <Typography variant="h6">🔍 최근 검색어</Typography>
 
-export default Page;
+      {/* 🔹 검색어 입력 */}
+      <Box sx={{ display: 'flex', gap: 1, my: 2 }}>
+        <TextField
+          size="small"
+          label="검색어 입력"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleAddSearch()}
+        />
+        <Button variant="contained" onClick={handleAddSearch}>
+          추가
+        </Button>
+      </Box>
+
+      {/* 🔹 최근 검색어 리스트 */}
+      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+        {searches.length === 0 ? (
+          <Typography variant="body2" sx={{ color: 'gray' }}>
+            최근 검색어가 없습니다.
+          </Typography>
+        ) : (
+          searches.map((search, index) => (
+            <Chip
+              key={index}
+              label={search}
+              onDelete={() => removeSearch(search)}
+              sx={{ cursor: 'pointer' }}
+            />
+          ))
+        )}
+      </Box>
+
+      {/* 🔹 전체 삭제 버튼 */}
+      {searches.length > 0 && (
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={clearSearches}
+          sx={{ mt: 2 }}
+        >
+          전체 삭제
+        </Button>
+      )}
+    </Box>
+  );
+}

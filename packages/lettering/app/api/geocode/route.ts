@@ -9,25 +9,25 @@ if (!NAVER_CLIENT_ID || !NAVER_CLIENT_SECRET) {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const lat = searchParams.get('lat');
-  const lon = searchParams.get('lon');
+  const query = searchParams.get('query'); // 변환할 주소
 
-  if (!lat || !lon) {
+  if (!query) {
     return NextResponse.json(
-      { error: '위도(lon)와 경도(lat)를 제공하세요.' },
+      { error: '주소(query)를 제공하세요.' },
       { status: 400 },
     );
   }
 
-  // 📌 URL 인코딩 적용
-  const coords = encodeURIComponent(`${lon},${lat}`);
-  const url = `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${coords}&output=json&orders=legalcode,admcode,addr,roadaddr`;
+  // 📌 URL 인코딩 적용 (한글 주소 포함 가능)
+  const encodedQuery = encodeURIComponent(query);
+  const url = `https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=${encodedQuery}`;
 
   try {
     const res = await fetch(url, {
       headers: {
         'X-NCP-APIGW-API-KEY-ID': NAVER_CLIENT_ID,
         'X-NCP-APIGW-API-KEY': NAVER_CLIENT_SECRET,
+        Accept: 'application/json',
       },
     });
 

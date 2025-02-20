@@ -1,15 +1,35 @@
-import { TextField, InputAdornment } from '@mui/material';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { useState } from 'react';
 
 interface SearchInputProps {
-  handleRouter: () => void;
+  handleSearchQuery?: (query: string) => void;
   isUsable: boolean;
+  handleRouter?: () => void;
 }
 
 export default function SearchInput({
+  handleSearchQuery,
+  isUsable = true,
   handleRouter,
-  isUsable = false,
 }: SearchInputProps) {
+  const [query, setQuery] = useState<string>('');
+
+  const handleSearch = () => {
+    if (!isUsable) return;
+
+    if (query.trim() && handleSearchQuery) {
+      handleSearchQuery(query);
+    }
+  };
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!isUsable) return;
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   return (
     <TextField
       fullWidth
@@ -17,7 +37,15 @@ export default function SearchInput({
       placeholder="검색어를 입력하세요"
       size="small"
       sx={{ my: 1, mb: 2 }}
-      onClick={handleRouter}
+      onChange={(e) => {
+        if (!isUsable) return;
+        setQuery(e.target.value);
+      }}
+      onBlur={(e) => e.target.blur()}
+      onKeyDown={handleKeyDown}
+      onClick={() => {
+        if (!isUsable && handleRouter) handleRouter();
+      }}
       InputProps={{
         readOnly: !isUsable,
         sx: {
@@ -38,7 +66,9 @@ export default function SearchInput({
         },
         endAdornment: (
           <InputAdornment position="end">
-            <SearchIcon sx={{ fontSize: 24, color: 'gray' }} />
+            <IconButton onClick={handleSearch}>
+              <SearchIcon sx={{ fontSize: 24, color: 'gray' }} />
+            </IconButton>
           </InputAdornment>
         ),
       }}

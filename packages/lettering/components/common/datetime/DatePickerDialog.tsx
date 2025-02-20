@@ -10,6 +10,7 @@ import {
 import SelectTime from './SelectTime';
 import { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import TimeSelector from './TimeSelector';
 
 interface DatePickerDrawerProps {
   open: boolean;
@@ -28,16 +29,19 @@ export default function DatePickerDialog({
   isTimeSelectable,
   isTimeForPast,
 }: DatePickerDrawerProps) {
-  const [selectedHour, setSelectedHour] = useState(
-    selectedDate ? selectedDate.format('HH') : '00',
-  );
-  const [selectedMinute, setSelectedMinute] = useState(
-    selectedDate ? selectedDate.format('mm') : '00',
-  );
+  // const [selectedHour, setSelectedHour] = useState(
+  //   selectedDate ? selectedDate.format('HH') : '00',
+  // );
+  // const [selectedMinute, setSelectedMinute] = useState(
+  //   selectedDate ? selectedDate.format('mm') : '00',
+  // );
+
+  const [selectedTime, setSelectedTime] = useState('');
 
   const disabledCondition = () => {
     if (!isTimeSelectable) return selectedDate ? false : true;
-    else return !selectedDate || (!selectedHour && !selectedMinute);
+    // else return !selectedDate || (!selectedHour && !selectedMinute);
+    else return !selectedDate || !selectedTime;
   };
 
   useEffect(() => {
@@ -158,12 +162,18 @@ export default function DatePickerDialog({
             />
 
             {isTimeSelectable && (
-              <SelectTime
-                onClose={onClose}
-                selectedHour={selectedHour}
-                selectedMinute={selectedMinute}
-                setSelectedHour={setSelectedHour}
-                setSelectedMinute={setSelectedMinute}
+              // <SelectTime
+              //   onClose={onClose}
+              //   selectedHour={selectedHour}
+              //   selectedMinute={selectedMinute}
+              //   setSelectedHour={setSelectedHour}
+              //   setSelectedMinute={setSelectedMinute}
+              // />
+              <TimeSelector
+                startTime="14:00"
+                endTime="20:30"
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
               />
             )}
           </Box>
@@ -179,7 +189,7 @@ export default function DatePickerDialog({
           >
             <Typography fontSize={14} color="common.black">
               {selectedDate
-                ? `${selectedDate.format('YYYY년 MM월 DD일')} ${isTimeSelectable ? `${selectedHour}시 ${selectedMinute}분` : ''} `
+                ? `${selectedDate.format('YYYY년 MM월 DD일')} ${isTimeSelectable ? `${selectedTime}` : ''} `
                 : '날짜를 선택해주세요'}
             </Typography>
 
@@ -203,12 +213,17 @@ export default function DatePickerDialog({
                 },
               }}
               onClick={() => {
-                if (selectedDate && selectedHour && selectedMinute) {
+                if (selectedDate && selectedTime) {
+                  const [selectedHour, selectedMinute] = selectedTime
+                    .split(':')
+                    .map(Number);
+
                   const updatedDate = selectedDate
                     .hour(Number(selectedHour))
                     .minute(Number(selectedMinute));
 
                   console.log(updatedDate);
+
                   setSelectedDate(updatedDate);
                 }
                 onClose();

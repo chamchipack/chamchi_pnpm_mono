@@ -13,9 +13,11 @@ interface SelectTimeProps {
 }
 
 const hours = [...Array(24)].map((_, i) => i.toString().padStart(2, '0'));
-const minutes = [...Array(6)].map((_, i) =>
-  (i * 10).toString().padStart(2, '0'),
-);
+// const minutes = [...Array(6)].map((_, i) =>
+//   (i * 10).toString().padStart(2, '0'),
+// );
+
+const minutes = ['00', '30'];
 
 export default function SelectTime({
   //   onTimeSelect,
@@ -26,7 +28,6 @@ export default function SelectTime({
   setSelectedMinute,
 }: SelectTimeProps) {
   const handleHourScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    console.log(e.currentTarget);
     const index = Math.round(e.currentTarget.scrollTop / 40);
     setSelectedHour(hours[index] || '00');
   };

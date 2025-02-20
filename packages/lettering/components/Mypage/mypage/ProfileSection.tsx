@@ -1,8 +1,7 @@
 'use client';
 
 import { handleNavigation } from '@/config/navigation';
-import { NickNameAtom } from '@/store/userStore/state';
-import { useUserStore } from '@/store/userStore/store';
+import { NickNameAtom, UserInfoAtom } from '@/store/userStore/state';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
@@ -10,14 +9,13 @@ import { useRecoilValue } from 'recoil';
 
 export default function ProfileSection() {
   const router = useRouter();
-  const { nickname } = useUserStore();
-  const recoilNickname = useRecoilValue(NickNameAtom);
+  const nickname = useRecoilValue(UserInfoAtom);
 
   const [clientNickname, setClientNickname] = useState<string | null>(null);
 
   useEffect(() => {
-    setClientNickname(recoilNickname); // ✅ 클라이언트에서 Recoil 값 업데이트
-  }, [recoilNickname]);
+    setClientNickname(nickname.nickname);
+  }, [nickname.nickname]);
 
   const handleRouter = () => {
     let path = `/application/profile?id=${'query'}`;

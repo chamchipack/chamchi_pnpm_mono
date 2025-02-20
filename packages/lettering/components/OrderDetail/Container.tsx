@@ -11,11 +11,11 @@ export default function Container({ orderId = '' }: Props) {
   return (
     <>
       <Box sx={{ py: 1.5 }}>
-        <Box sx={{ px: 2.5 }}>
+        <Box sx={{ px: 2 }}>
           <HeadComponent isButtonVisable={true} title="주문 상세내역" />
         </Box>
 
-        <Box sx={{ px: 2.5, mt: 3 }}>
+        <Box sx={{ px: 2, mt: 3 }}>
           <OrderInformation />
         </Box>
       </Box>

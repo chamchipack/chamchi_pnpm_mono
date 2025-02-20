@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 
 export default function HomePopularElements() {
   return (
@@ -11,13 +11,13 @@ export default function HomePopularElements() {
       <Box
         sx={{
           display: 'flex',
-          overflowX: 'auto', // ✅ 가로 스크롤 가능
-          whiteSpace: 'nowrap', // ✅ 줄 바꿈 방지
-          gap: 2, // 카드 간격 조정
-          paddingBottom: 3, // ✅ 카드 아래 텍스트를 위한 공간 확보
-          scrollbarWidth: 'none', // Firefox에서 스크롤바 숨김
-          msOverflowStyle: 'none', // IE, Edge에서 스크롤바 숨김
-          '&::-webkit-scrollbar': { display: 'none' }, // Chrome, Safari에서 스크롤바 숨김
+          overflowX: 'auto',
+          whiteSpace: 'nowrap',
+          gap: 2,
+          paddingBottom: 3,
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+          '&::-webkit-scrollbar': { display: 'none' },
         }}
       >
         {Array.from({ length: 10 }).map((_, index) => (
@@ -27,7 +27,7 @@ export default function HomePopularElements() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'start',
-              position: 'relative', // 카드 내부 절대 위치 지정
+              position: 'relative',
             }}
           >
             {/* 카드 */}
@@ -36,21 +36,42 @@ export default function HomePopularElements() {
                 minWidth: 130,
                 height: 130,
                 flexShrink: 0,
-                backgroundColor: 'grey.300',
-                position: 'relative', // ✅ 하단 배경 고정을 위한 상대 위치 설정
-                overflow: 'hidden', // ✅ 배경이 넘치지 않도록 처리
+                position: 'relative',
+                overflow: 'hidden',
               }}
             >
-              {/* 카드 하단부 검은색 배경 + 텍스트 */}
-              <CardContent
+              {/* 🔹 카드 이미지 */}
+              <CardMedia
+                component="img"
+                height="130"
+                image="/cake2.png"
+                alt={`상품 ${index + 1}`}
+                sx={{ objectFit: 'cover' }}
+              />
+
+              {/* 🔹 페이드 효과를 위한 배경 */}
+              <Box
                 sx={{
                   position: 'absolute',
                   bottom: 0,
                   left: 0,
                   width: '100%',
-                  backgroundColor: 'rgba(0, 0, 0, 0.6)', // ✅ 검은색 반투명 배경
-                  color: 'white', // ✅ 텍스트 흰색
-                  padding: '8px 12px', // ✅ 내부 여백 추가
+                  height: '40%', // ✅ 페이드 적용 높이 조정
+                  background:
+                    'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%)',
+                }}
+              />
+
+              {/* 🔹 카드 하단 텍스트 */}
+              <CardContent
+                sx={{
+                  position: 'absolute',
+                  bottom: -20,
+                  left: 0,
+                  width: '100%',
+                  color: 'white',
+                  padding: '8px 12px',
+                  zIndex: 1, // ✅ 배경보다 위에 표시
                 }}
               >
                 <Typography variant="body2" fontSize={12}>

@@ -62,6 +62,13 @@ type StorageParams = {
   data: unknown;
 };
 
+/**
+ *
+ * @param params : 1개의 데이터만 스토리지에 저장할때는 { key: '키값', name: '저장할 데이터' }
+ *
+ * @param params : 2개 이상의 데이터를 스토리지에 저장할때는 { multiple: true, data: [] }
+ * data 배열의 구조는 { key: '키값', name: '저장할 데이터'}[]
+ */
 export const handleStorage = (params: StorageParams): boolean => {
   if (typeof window !== 'undefined' && (window as any).ReactNativeWebView) {
     (window as any).ReactNativeWebView.postMessage(
