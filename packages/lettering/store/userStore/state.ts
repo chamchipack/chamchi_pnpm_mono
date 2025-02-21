@@ -16,10 +16,12 @@ export const AddressAtom = atom<string>({
 });
 
 type UserInformation = {
+  userId: string;
   nickname: string;
   address: string;
   longitude: string;
   latitude: string;
+  profile_image?: string;
 };
 
 const userDefaultValue = {
@@ -27,6 +29,8 @@ const userDefaultValue = {
   address: '',
   longitude: '',
   latitude: '',
+  userId: '',
+  profile_image: '',
 };
 
 export const UserInfoAtom = atom<UserInformation>({

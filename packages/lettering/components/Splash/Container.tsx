@@ -10,17 +10,23 @@ export default function Container() {
   useEffect(() => {
     const handleMessage = (event: MessageEvent<string>) => {
       try {
-        console.log('📩 WebView에서 받은 메시지:', event.data);
         const userData = JSON.parse(event.data);
 
         setUserInfo({
-          nickname: userData?.nickname || '',
+          nickname: 'sss' || null,
           address: userData?.address || '',
           longitude: userData?.longitude || '',
           latitude: userData?.latitude || '',
+          userId: userData?.userId || '',
         });
+
+        (window as any).ReactNativeWebView?.postMessage(
+          JSON.stringify({
+            type: 'ETC',
+            data: 'good',
+          }),
+        );
       } catch (error) {
-        console.error('❌ 메시지 처리 오류:', error);
         (window as any).ReactNativeWebView?.postMessage(
           JSON.stringify({
             type: 'ETC',

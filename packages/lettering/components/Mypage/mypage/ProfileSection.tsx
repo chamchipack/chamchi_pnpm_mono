@@ -1,33 +1,64 @@
 'use client';
 
 import { handleNavigation } from '@/config/navigation';
-import { NickNameAtom, UserInfoAtom } from '@/store/userStore/state';
+import { UserInfoAtom } from '@/store/userStore/state';
 import { Box, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRecoilValue } from 'recoil';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+
+type User = {
+  userId: string;
+  nickname: string;
+};
 
 export default function ProfileSection() {
   const router = useRouter();
-  const nickname = useRecoilValue(UserInfoAtom);
+  const recoilUserInfo = useRecoilValue(UserInfoAtom);
 
-  const [clientNickname, setClientNickname] = useState<string | null>(null);
+  const [loading, setLoading] = useState<'loading' | 'done'>('loading');
+  const [nickname, setNickname] = useState<User>({ userId: '', nickname: '' });
 
   useEffect(() => {
-    setClientNickname(nickname.nickname);
-  }, [nickname.nickname]);
+    if (recoilUserInfo.nickname) {
+      setNickname({
+        nickname: recoilUserInfo.nickname,
+        userId: recoilUserInfo.userId,
+      });
+    }
+    setLoading('done');
+  }, [recoilUserInfo.nickname]);
 
-  const handleRouter = () => {
-    let path = `/application/profile?id=${'query'}`;
-    const isWebView = handleNavigation({ path: 'profile', status: 'forward' });
-
-    if (!isWebView) return router.push(path);
+  const handleRouter = (path: string) => {
+    if (!path) return;
+    const isWebView = handleNavigation({ path, status: 'forward' });
+    if (!isWebView) router.push(`/application/${path}`);
   };
 
-  const cachedNickname = useMemo(
-    () => clientNickname ?? '로딩 중...',
-    [clientNickname],
-  );
+  const textConfig = useMemo(() => {
+    if (loading === 'loading') {
+      return {
+        text: '잠시만 기다려주세요..',
+        fontWeight: 'normal',
+        color: 'gray',
+        size: 12,
+      };
+    }
+    return nickname?.nickname
+      ? {
+          text: nickname?.nickname,
+          fontWeight: 'bold',
+          color: 'black',
+          size: 16,
+        }
+      : {
+          text: '로그인하고 시작하기!',
+          fontWeight: 'normal',
+          color: 'gray',
+          size: 16,
+        };
+  }, [loading, nickname]);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -42,18 +73,25 @@ export default function ProfileSection() {
           objectFit: 'cover',
         }}
       />
-      <Box>
-        <Typography fontSize={16} fontWeight="bold">
-          {cachedNickname}
-        </Typography>
+      <Box
+        sx={flexBox}
+        onClick={() => handleRouter(nickname.userId ? 'profile' : 'login')}
+      >
         <Typography
-          fontSize={14}
-          sx={{ color: 'common.gray' }}
-          onClick={handleRouter}
+          fontSize={textConfig.size}
+          fontWeight={textConfig.fontWeight}
+          color={textConfig.color}
         >
-          자세히 보기
+          {textConfig.text}
         </Typography>
+        <ArrowForwardIosIcon sx={{ fontSize: 16, color: 'common.gray' }} />
       </Box>
     </Box>
   );
 }
+
+const flexBox = {
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+};

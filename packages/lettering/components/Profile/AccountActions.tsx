@@ -2,11 +2,42 @@
 import { Box, Typography } from '@mui/material';
 import { useState } from 'react';
 import ModalWrapper from '../common/modal/ModalWrapper';
+import { useRecoilState } from 'recoil';
+import { UserInfoAtom } from '@/store/userStore/state';
+import { handleNavigation } from '@/config/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function AccountActions() {
+  const router = useRouter();
+  const [userInfo, setUserInfo] = useRecoilState(UserInfoAtom);
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
+
+  const onClickLogout = async () => {
+    try {
+      (window as any).ReactNativeWebView?.postMessage(
+        JSON.stringify({
+          type: 'LOGOUT',
+          data: 'logout',
+        }),
+      );
+
+      setUserInfo((prev) => ({
+        ...prev,
+        userId: '',
+        nickname: '',
+        profile_image: '',
+      }));
+      handleClose();
+
+      const isWebView = handleNavigation({ path: 'mypage', status: 'forward' });
+
+      if (!isWebView) router.push('/application/mypage');
+    } catch (e) {
+    } finally {
+    }
+  };
 
   return (
     <>
@@ -36,7 +67,7 @@ export default function AccountActions() {
       <ModalWrapper
         open={open}
         handleClose={handleClose}
-        onClickCheck={() => {}}
+        onClickCheck={onClickLogout}
         title="로그아웃"
         content="로그아웃을 하시겠어요?"
         processing={false}
