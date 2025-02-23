@@ -153,6 +153,7 @@ export default function CreationContainer() {
             multiline
             rows={4}
             placeholder="리뷰를 작성해주세요."
+            inputProps={{ maxLength: 100 }}
             value={reviewText}
             onChange={(e) => setReviewText(e.target.value)}
             sx={{

@@ -30,7 +30,12 @@ const coupon = [
 ];
 
 interface Props {
-  data: { label: string; value: string }[];
+  data: {
+    label: string;
+    value: string;
+    placeholder?: string;
+    isMaxLengthOn?: boolean;
+  }[];
   onClick?: () => void;
   isLabelVisable: boolean;
   type: 'text' | 'coupon' | 'option';

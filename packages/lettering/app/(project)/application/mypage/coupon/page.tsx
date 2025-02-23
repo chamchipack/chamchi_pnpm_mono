@@ -1,4 +1,4 @@
-import Container from '@/components/Policy/Container';
+import Container from '@/components/Mypage/coupon/Container';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,16 +10,13 @@ export const metadata: Metadata = {
   },
 };
 
-type MenuValue = 'faq' | 'terms-and-policies' | 'notices' | 'customer-support';
-
 interface Props {
   searchParams: {
-    policy: MenuValue;
+    id: string;
   };
 }
 const Page = ({ searchParams }: Props) => {
-  const { policy } = searchParams;
-  return <Container policy={policy} />;
+  return <Container />;
 };
 
 export default Page;

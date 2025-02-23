@@ -31,7 +31,14 @@ export default function CouponForm({
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pb: isCheckable ? 10 : 0 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          pb: isCheckable ? 10 : 0,
+        }}
+      >
         {coupons.map((coupon, index) => {
           const isSelected = value === coupon.name;
 

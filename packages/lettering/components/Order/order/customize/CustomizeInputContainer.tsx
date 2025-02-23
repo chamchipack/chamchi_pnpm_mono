@@ -13,12 +13,12 @@ export default function CustomizeInputContainer() {
     <>
       <Box>
         <Typography fontSize={14} fontWeight={'bold'} sx={{ mb: 1 }}>
-          문구
+          케이크 문구
         </Typography>
         <InputTextField
           value={inputValue}
           setValue={setInputValue}
-          placeholder="문구를 입력해주세요. 최대 30자"
+          placeholder="케이크에 들어갈 문구를 입력해주세요. 최대 30자"
         />
       </Box>
 

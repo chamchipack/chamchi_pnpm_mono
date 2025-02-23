@@ -9,7 +9,7 @@ export default function Container() {
     <Box sx={{ py: 1.5 }}>
       <Box sx={{ px: 2 }}>
         <HeadComponent
-          isButtonVisable={true}
+          isLeftButtonVisable={true}
           title="프로필"
           isRoutingReplace
           path="mypage"

@@ -14,7 +14,7 @@ export default function Container({ storeId = '' }: Props) {
     <>
       <Box sx={{ py: 1.5 }}>
         <Box sx={{ px: 2 }}>
-          <HeadComponent isButtonVisable={true} title="스타벅스 강남점" />
+          <HeadComponent isLeftButtonVisable={true} title="스타벅스 강남점" />
         </Box>
 
         <Box sx={{}}>

@@ -7,7 +7,7 @@ export default function Container() {
     <>
       <Box sx={{ py: 1.5 }}>
         <Box sx={{ px: 2 }}>
-          <HeadComponent isButtonVisable={true} title="알림" />
+          <HeadComponent isLeftButtonVisable={true} title="알림" />
         </Box>
 
         <Box sx={{ px: 2, my: 2 }}>

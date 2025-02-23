@@ -12,7 +12,7 @@ export default function Container({ orderId = '' }: Props) {
     <>
       <Box sx={{ py: 1.5 }}>
         <Box sx={{ px: 2 }}>
-          <HeadComponent isButtonVisable={true} title="주문 상세내역" />
+          <HeadComponent isLeftButtonVisable={true} title="주문 상세내역" />
         </Box>
 
         <Box sx={{ px: 2, mt: 3 }}>

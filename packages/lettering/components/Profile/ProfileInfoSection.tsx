@@ -144,7 +144,12 @@ export default function ProfileInfoSection() {
               닉네임 수정
             </Typography>
 
-            <InputTextField value={nickname} setValue={setNickname} />
+            <InputTextField
+              value={nickname}
+              setValue={setNickname}
+              inputMaxLength={8}
+              isMaxLengthOn={true}
+            />
           </Box>
           <Button
             fullWidth

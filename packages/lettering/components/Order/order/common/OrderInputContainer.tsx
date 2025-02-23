@@ -1,13 +1,29 @@
 import { Box, Typography } from '@mui/material';
 import InputClickableBox from './InputClickableBox';
 
-type Input = { label: string; value: string }[];
+type Input = {
+  label: string;
+  value: string;
+  placeholder: string;
+  isMaxLengthOn?: boolean;
+}[];
 const dummy1: Input = [
-  { label: '연락처', value: '010-7650-7023' },
-  { label: '주문자', value: '조찬익' },
+  {
+    label: '연락처',
+    value: '010-7650-7023',
+    placeholder: '연락처를 입력해주세요',
+  },
+  { label: '주문자', value: '조찬익', placeholder: '주문자를 입력해주세요' },
 ];
 
-const dummy2: Input = [{ label: '요청사항', value: '' }];
+const dummy2: Input = [
+  {
+    label: '요청사항',
+    value: '',
+    placeholder: '요청사항을 입력해주세요. (최대 30자)',
+    isMaxLengthOn: true,
+  },
+];
 
 export default function OrderInputContainer() {
   return (

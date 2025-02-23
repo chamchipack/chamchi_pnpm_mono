@@ -90,6 +90,7 @@ export default function SearchInput({
         onBlur={(e) => e.target.blur()}
         onKeyDown={handleKeyDown} // 엔터 키 감지
         onClick={handleRouter}
+        inputProps={{ maxLength: 50 }}
         InputProps={{
           readOnly: !isAllowed,
           sx: {

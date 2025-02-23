@@ -3,11 +3,17 @@ import CloseIcon from '@mui/icons-material/Close';
 import InputTextField from './InputTextField';
 
 interface DrawerInputFormProps {
-  data: { label: string; value: string }[];
+  data: {
+    label: string;
+    value: string;
+    placeholder?: string;
+    isMaxLengthOn?: boolean;
+  }[];
   inputValues: Record<string, string>;
   setInputValues: React.Dispatch<React.SetStateAction<Record<string, string>>>;
   onClose: () => void;
   title: string;
+  placeholder?: string;
 }
 
 export default function DrawerInputForm({
@@ -16,6 +22,7 @@ export default function DrawerInputForm({
   setInputValues,
   onClose,
   title = '',
+  placeholder = '',
 }: DrawerInputFormProps) {
   const handleInputChange = (label: string, newValue: string) => {
     setInputValues((prev: Record<string, string>) => ({
@@ -61,7 +68,8 @@ export default function DrawerInputForm({
             <InputTextField
               value={inputValues[item.label] || ''}
               setValue={(newValue) => handleInputChange(item.label, newValue)}
-              placeholder="문구를 입력해주세요. 최대 30자"
+              placeholder={item.placeholder || '문구를 입력해주세요'}
+              isMaxLengthOn={item?.isMaxLengthOn}
             />
           </Box>
         ))}
