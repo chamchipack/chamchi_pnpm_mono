@@ -4,9 +4,7 @@ export default function HomePopularList() {
   return (
     <>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6" fontWeight={600} fontSize={14}>
-          인기 매장
-        </Typography>
+        <Typography variant="subtitle2">인기 매장</Typography>
       </Box>
       <Box
         sx={{
@@ -55,7 +53,7 @@ export default function HomePopularList() {
 
             {/* 하단 텍스트 */}
             <Typography
-              variant="body2"
+              variant="body1"
               sx={{ marginTop: 1, textAlign: 'left', fontSize: 12 }}
             >
               매장 {index + 1}

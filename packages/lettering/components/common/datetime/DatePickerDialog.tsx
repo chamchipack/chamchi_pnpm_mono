@@ -131,7 +131,7 @@ export default function DatePickerDialog({
                       {...props}
                       style={{
                         borderRadius: '10%',
-                        backgroundColor: isSelected ? '#F39E9E' : 'transparent',
+                        backgroundColor: isSelected ? '#D1BFAD' : 'transparent',
                       }}
                     />
                   );

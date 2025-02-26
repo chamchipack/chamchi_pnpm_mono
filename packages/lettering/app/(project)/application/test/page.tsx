@@ -66,6 +66,16 @@ export default function RecentSearches() {
           전체 삭제
         </Button>
       )}
+
+      <Typography variant="subtitle1">텍스트입니다</Typography>
+      <Typography variant="subtitle2">텍스트입니다</Typography>
+
+      <Typography variant="body1">텍스트입니다</Typography>
+      <Typography variant="body2">텍스트입니다</Typography>
+      <Typography variant="caption">텍스트입니다</Typography>
+
+      <Typography color="text.disabled">텍스트입니다</Typography>
+      <Typography color="text.primary">텍스트입니다</Typography>
     </Box>
   );
 }

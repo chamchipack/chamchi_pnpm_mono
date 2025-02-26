@@ -9,12 +9,19 @@ import PaymentPolicy from './order/common/PaymentPolicy';
 import TotalAccountBox from './order/common/TotalAccountBox';
 import CouponForm from '../common/coupon/CouponForm';
 import { useState } from 'react';
+import { handleNavigation } from '@/config/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function Container() {
+  const router = useRouter();
+
   const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
 
   const handleOrder = () => {
-    console.log('주문하기 버튼 클릭됨');
+    let path = `/application/payments`;
+    const isWebView = handleNavigation({ path: 'payments', status: 'forward' });
+
+    if (!isWebView) return router.push(path);
   };
 
   return (
@@ -43,7 +50,7 @@ export default function Container() {
         </Box>
       </Box>
 
-      <TotalAccountBox label="주문하기" onClick={() => {}} />
+      <TotalAccountBox label="주문하기" onClick={handleOrder} />
     </>
   );
 }

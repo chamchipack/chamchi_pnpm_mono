@@ -17,7 +17,7 @@ interface Props {
   onRightButtonClick?: () => void; // ✅ 우측 버튼 클릭 핸들러
 }
 
-export default function TestHeadComponent({
+export default function HeadComponent({
   isLeftButtonVisable = false,
   title = '',
   isRoutingReplace = false,

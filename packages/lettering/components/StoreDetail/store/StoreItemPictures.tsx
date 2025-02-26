@@ -20,10 +20,11 @@ export default function StoreItemPictures() {
           src={src}
           alt={`Cake ${index + 1}`}
           sx={{
-            width: '100%', // ✅ 그리드 셀을 꽉 채우도록 설정
+            width: '98%', // ✅ 그리드 셀을 꽉 채우도록 설정
             height: 120, // ✅ 고정 높이 설정 (필요시 조절 가능)
             objectFit: 'cover', // ✅ 이미지 꽉 채우기
             transition: 'opacity 0.2s ease-in-out',
+            mb: '2px',
             '&:hover': {
               cursor: 'pointer', // ✅ 마우스 커서를 포인터로 변경 (클릭 가능 UI)
               opacity: 0.8, // ✅ 호버 시 약간 어두워짐 (피드백 효과)

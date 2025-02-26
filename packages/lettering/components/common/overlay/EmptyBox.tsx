@@ -2,9 +2,10 @@ import { Box, Typography } from '@mui/material';
 
 interface EmptyBoxProps {
   title: string;
+  subTitle?: string;
 }
 
-export default function EmptyBox({ title }: EmptyBoxProps) {
+export default function EmptyBox({ title, subTitle }: EmptyBoxProps) {
   return (
     <Box
       sx={{
@@ -19,6 +20,12 @@ export default function EmptyBox({ title }: EmptyBoxProps) {
       <Typography fontSize={16} fontWeight="bold" color="text.secondary">
         {title}
       </Typography>
+
+      {subTitle && (
+        <Typography fontSize={14} color="text.secondary">
+          {subTitle}
+        </Typography>
+      )}
 
       <Box
         component="img"

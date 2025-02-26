@@ -40,7 +40,7 @@ const AntSwitch = styled(Switch, {
         color: '#fff',
         '& + .MuiSwitch-track': {
           opacity: 1,
-          backgroundColor: '#FFD3C6', // ✅ 활성화 시 Primary 색상
+          backgroundColor: '#D1BFAD', // ✅ 활성화 시 Primary 색상
         },
       },
     },

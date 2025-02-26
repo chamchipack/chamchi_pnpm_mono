@@ -34,6 +34,7 @@ export default function TimeSelector({
         justifyContent: 'center', // ✅ 전체 가운데 정렬
         width: '100%',
         px: 2,
+        mt: 1.5,
       }}
     >
       <Box

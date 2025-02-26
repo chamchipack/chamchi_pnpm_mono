@@ -23,16 +23,14 @@ export default function Container() {
         <Box sx={{ px: 2 }}>
           <InputContainer
             isFilterVisable={false}
-            isBackwardVisable={true}
+            isBackwardVisable={false}
             isTimeSelectable={true}
             placeholder="가게 이름이나 주소를 입력해보세요!"
           />
         </Box>
         <Box sx={{ px: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>
-            <Typography fontSize={14} fontWeight={'bold'}>
-              인기 검색어 순위
-            </Typography>
+            <Typography variant="subtitle2">인기 검색어 순위</Typography>
           </Box>
 
           <PopularSearches keywords={keywords} />
@@ -42,9 +40,7 @@ export default function Container() {
         </Box>
         <Box sx={{ px: 2, my: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>
-            <Typography fontSize={14} fontWeight={'bold'}>
-              최근 검색어
-            </Typography>
+            <Typography variant="subtitle2">최근 검색어</Typography>
           </Box>
           <Box sx={{ px: 1 }}>
             <RecentSearches />

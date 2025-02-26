@@ -1,7 +1,7 @@
 'use client';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import HeadComponent from '../../common/HeadComponent';
-import SearchInput from '../SearchInput';
+import SearchInput from '../components/SearchInput';
 import { useState } from 'react';
 import AddressSearchList from './AddressSearchList';
 
@@ -12,25 +12,35 @@ type SearchList = {
 };
 
 export default function Container() {
-  const [searchList, setSearchList] = useState<SearchList[] | []>([]);
+  const [searchList, setSearchList] = useState<SearchList[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false); // 🔹 로딩 상태 추가
 
   const handleSearchQuery = async (query: string) => {
+    setSearchQuery(query);
+    setIsLoading(true); // 🔹 검색 시작 시 로딩 활성화
+
     try {
       const res = await fetch(`/api/geocode?query=${query}`);
       const data = await res.json();
       const { addresses = [] } = data;
 
       const result: SearchList[] = addresses.map(
-        ({ roadAddress = '', x = '', y = '' }) => {
-          return { roadAddress, longitude: x, latitude: y };
-        },
+        ({ roadAddress = '', x = '', y = '' }) => ({
+          roadAddress,
+          longitude: x,
+          latitude: y,
+        }),
       );
 
       setSearchList(result);
     } catch (error) {
       console.error('API 호출 오류:', error);
+    } finally {
+      setIsLoading(false); // 🔹 검색 종료 후 로딩 비활성화
     }
   };
+
   return (
     <>
       <Box sx={{ py: 1.5, pb: 10 }}>
@@ -39,11 +49,23 @@ export default function Container() {
         </Box>
 
         <Box sx={{ px: 2 }}>
-          <SearchInput isUsable={true} handleSearchQuery={handleSearchQuery} />
+          <SearchInput
+            isUsable={true}
+            handleSearchQuery={handleSearchQuery}
+            placeholder="예시) 강남구, 천안시, 성수동"
+          />
+
+          <Typography fontSize={12} color={'gray'} sx={{ my: 1 }}>
+            원하시는 주소를 시군구 혹은 읍면동 단위로 입력해주세요
+          </Typography>
         </Box>
 
         <Box sx={{ px: 2 }}>
-          <AddressSearchList searchList={searchList} />
+          <AddressSearchList
+            searchList={searchList}
+            searchQuery={searchQuery}
+            isLoading={isLoading}
+          />
         </Box>
       </Box>
     </>

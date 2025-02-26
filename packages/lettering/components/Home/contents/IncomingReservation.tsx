@@ -27,9 +27,7 @@ export default function IncomingReservation() {
   return (
     <>
       <Box sx={{ ...flex }} onClick={handleRouter}>
-        <Typography variant="h6" fontWeight={600} fontSize={14}>
-          다가오는 예약
-        </Typography>
+        <Typography variant="subtitle2">다가오는 예약</Typography>
         <ArrowForwardIosIcon sx={{ fontSize: 16, color: 'common.black' }} />
       </Box>
 
@@ -40,7 +38,7 @@ export default function IncomingReservation() {
           height: 100,
           padding: 2,
           backgroundImage:
-            'linear-gradient(90deg, #fdc4c4, #ffd3c6, #ffd3c6, #f39e9e)',
+            'linear-gradient(90deg, #E8E0D2, #D1BFAD, #D1BFAD, #C4AD91)',
           borderRadius: 1,
         }}
       >
@@ -64,12 +62,8 @@ export default function IncomingReservation() {
             height: '100%',
           }}
         >
-          <Typography variant="h6" fontWeight={600} fontSize={14}>
-            스타벅스 강남점
-          </Typography>
-          <Typography variant="body2" fontSize={12} color="text.secondary">
-            2025년 3월 1일 14:00
-          </Typography>
+          <Typography variant="subtitle2">스타벅스 강남점</Typography>
+          <Typography variant="caption">2025년 3월 1일 14:00</Typography>
         </Box>
       </Box>
     </>

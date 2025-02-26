@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 interface EditableAddressListProps {
-  addressList: { id: string; name: string; address: string }[];
+  addressList: { address: string }[];
 }
 
 export default function EditableAddressList({
@@ -20,7 +20,7 @@ export default function EditableAddressList({
     <List>
       {addressList.map((item) => (
         <ListItem
-          key={item.id}
+          key={item.address}
           sx={{
             mb: 1,
             display: 'flex',
@@ -30,7 +30,7 @@ export default function EditableAddressList({
         >
           {/* ✅ 좌측: 주소 정보 + 수정 버튼 */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <ListItemText primary={item.name} secondary={item.address} />
+            <ListItemText primary={item.address} secondary={item.address} />
             <Typography sx={{ fontSize: 10 }}>수정하기</Typography>
           </Box>
 

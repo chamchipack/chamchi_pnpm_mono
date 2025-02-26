@@ -1,6 +1,7 @@
 'use client';
 import { Box, TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
@@ -88,35 +89,59 @@ export default function SearchInput({
           setQuery(e.target.value);
         }}
         onBlur={(e) => e.target.blur()}
-        onKeyDown={handleKeyDown} // 엔터 키 감지
+        onKeyDown={handleKeyDown}
         onClick={handleRouter}
         inputProps={{ maxLength: 50 }}
+        sx={{
+          fontSize: '16px',
+          backgroundColor: 'grey.100',
+          borderRadius: 2,
+          '& .MuiOutlinedInput-root': {
+            '& fieldset': {
+              border: 'none', // ✅ 완전히 보더 제거
+            },
+            '&:hover fieldset': {
+              border: 'none', // ✅ 호버 시에도 보더 없음
+            },
+            '&.Mui-focused fieldset': {
+              border: 'none', // ✅ 포커스 시에도 보더 없음
+            },
+          },
+        }}
         InputProps={{
           readOnly: !isAllowed,
           sx: {
-            borderRadius: 30,
-            height: 45, // 인풋 높이
+            borderRadius: 3,
+            height: 45,
             paddingRight: 1,
-            '& .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'common.gray', // 기본 테두리 색상
-            },
-            '&:hover .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'gray', // 호버 시 테두리 색상
-            },
-            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-              borderColor: 'common.main', // 포커스 시 테두리 색상
-              borderWidth: '2px', // 테두리를 두껍게 설정
-            },
             '& input::placeholder': {
-              fontSize: '14px', // 🔥 placeholder 폰트 크기 조절
-              color: 'common.gray', // placeholder 색상 조절
-              opacity: 0.7, // placeholder 투명도 설정
+              fontSize: '14px',
+              opacity: 0.7,
             },
           },
           endAdornment: (
             <InputAdornment position="end">
-              <IconButton onClick={handleSearch}>
-                <SearchIcon sx={{ fontSize: 24, color: 'gray' }} />
+              <IconButton>
+                {query ? (
+                  <CloseIcon
+                    sx={{
+                      fontSize: 24,
+                      color: 'gray',
+                      background: 'white',
+                      borderRadius: 50,
+                      p: '2px',
+                    }}
+                    onClick={() => setQuery('')}
+                  />
+                ) : (
+                  <SearchIcon
+                    sx={{
+                      fontSize: 24,
+                      color: 'gray',
+                    }}
+                    onClick={handleSearch}
+                  />
+                )}
               </IconButton>
             </InputAdornment>
           ),

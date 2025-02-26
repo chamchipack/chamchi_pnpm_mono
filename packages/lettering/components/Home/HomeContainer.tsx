@@ -1,6 +1,6 @@
 'use client';
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import TopFrame from './top/TopFrame';
 import SearchInput from './top/SearchInput';
 import IncomingReservation from './contents/IncomingReservation';

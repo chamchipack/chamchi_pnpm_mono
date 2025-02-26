@@ -19,6 +19,7 @@
     "@mui/material": "^5.14.15",
     "@mui/system": "^5.14.15",
     "@mui/x-date-pickers": "^7.18.0",
+    "@tosspayments/tosspayments-sdk": "^2.3.4",
     "@types/navermaps": "^3.7.9",
     "dayjs": "^1.11.13",
     "framer-motion": "^11.2.11",

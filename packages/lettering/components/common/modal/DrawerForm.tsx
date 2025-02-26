@@ -28,6 +28,7 @@ export default function BottomDrawer({
           borderTopRightRadius: 12,
           minHeight,
           maxHeight,
+          background: 'white',
         },
       }}
     >

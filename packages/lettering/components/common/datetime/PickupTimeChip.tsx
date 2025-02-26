@@ -23,10 +23,10 @@ export default function PickupTimeChip({
         minWidth: widthCondition(),
         height: 32,
         backgroundColor: value ? 'common.main' : '',
-        border: value ? '' : '1px solid',
+        border: value ? '' : '1.5px solid',
         borderColor: value ? '' : 'common.main',
         color: 'white',
-        borderRadius: '16px',
+        borderRadius: 2,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between', // ✅ 아이콘과 텍스트 좌우 배치
@@ -44,11 +44,7 @@ export default function PickupTimeChip({
       />
 
       {/* 중앙 텍스트 */}
-      <Typography
-        fontSize={13}
-        // fontWeight="bold"
-        color={value ? 'white' : 'common.main'}
-      >
+      <Typography variant="body2" color={value ? 'white' : 'common.black'}>
         {value || '픽업시간설정'}
       </Typography>
     </ButtonBase>

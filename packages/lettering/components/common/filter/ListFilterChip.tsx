@@ -30,7 +30,7 @@ export default function ListFilterChip({
         },
       }}
     >
-      <Typography fontSize={13} color={'common.black'}>
+      <Typography variant="caption" color={'common.black'}>
         {value || '기본순'}
       </Typography>
     </ButtonBase>

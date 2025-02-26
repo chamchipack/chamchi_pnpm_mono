@@ -73,14 +73,13 @@ export default function StoreComponent({ storeId = '', name = '' }) {
             alignItems: 'center',
           }}
         >
-          <Typography fontSize={16} fontWeight={'bold'} sx={{ mr: 1 }}>
+          <Typography variant="subtitle1" sx={{ mr: 1 }}>
             {name}
           </Typography>
           <StarRatingscore rating={4.3} />
         </Box>
         <Typography
-          color="common.gray"
-          fontSize={12}
+          variant="caption"
           sx={{
             whiteSpace: 'nowrap', // 줄바꿈 방지
             overflow: 'hidden', // 넘친 텍스트 숨김

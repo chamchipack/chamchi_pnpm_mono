@@ -13,11 +13,13 @@ export default function Container() {
         const userData = JSON.parse(event.data);
 
         setUserInfo({
-          nickname: 'sss' || null,
+          nickname: userData?.nickname || '',
           address: userData?.address || '',
           longitude: userData?.longitude || '',
           latitude: userData?.latitude || '',
           userId: userData?.userId || '',
+          profile_image: userData?.profile_image || '',
+          location_list: JSON.parse(userData?.location_list) || [],
         });
 
         (window as any).ReactNativeWebView?.postMessage(

@@ -16,6 +16,7 @@ import ReviewCount from '@/components/common/review/ReviewCount';
 
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
+import StoreInformation from './StoreInformation';
 
 export default function StoreContainer() {
   const router = useRouter();
@@ -35,9 +36,7 @@ export default function StoreContainer() {
           alignItems: 'center',
         }}
       >
-        <Typography fontSize={18} fontWeight="bold">
-          스타벅스 강남점
-        </Typography>
+        <Typography variant="subtitle1">스타벅스 강남점</Typography>
         <IconButton>
           <FavoriteBorderIcon fontSize="medium" />
         </IconButton>
@@ -63,10 +62,20 @@ export default function StoreContainer() {
         </Box>
       </Box>
 
-      <Box sx={{ my: 1 }}>
-        <Typography fontSize={12} color="text.secondary">
+      <Box
+        sx={{
+          my: 1,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography variant="caption">
           경기도 성남시 수정구 성남대로 1237번길 8-21
         </Typography>
+
+        <StoreInformation />
       </Box>
 
       <Divider sx={{ my: 2 }} />

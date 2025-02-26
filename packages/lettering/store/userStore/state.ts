@@ -15,6 +15,12 @@ export const AddressAtom = atom<string>({
   effects_UNSTABLE: [persistAtom],
 });
 
+type LocationList = {
+  address: string;
+  longitude: string;
+  latitude: string;
+};
+
 type UserInformation = {
   userId: string;
   nickname: string;
@@ -22,6 +28,7 @@ type UserInformation = {
   longitude: string;
   latitude: string;
   profile_image?: string;
+  location_list?: LocationList[];
 };
 
 const userDefaultValue = {
@@ -31,6 +38,7 @@ const userDefaultValue = {
   latitude: '',
   userId: '',
   profile_image: '',
+  location_list: [],
 };
 
 export const UserInfoAtom = atom<UserInformation>({

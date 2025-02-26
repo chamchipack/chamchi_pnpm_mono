@@ -6,12 +6,14 @@ interface SearchInputProps {
   handleSearchQuery?: (query: string) => void;
   isUsable: boolean;
   handleRouter?: () => void;
+  placeholder?: string;
 }
 
 export default function SearchInput({
   handleSearchQuery,
   isUsable = true,
   handleRouter,
+  placeholder,
 }: SearchInputProps) {
   const [query, setQuery] = useState<string>('');
 
@@ -34,9 +36,9 @@ export default function SearchInput({
     <TextField
       fullWidth
       variant="outlined"
-      placeholder="검색어를 입력하세요"
+      placeholder={placeholder ?? '검색어를 입력하세요'}
       size="small"
-      sx={{ my: 1, mb: 2 }}
+      sx={{ my: 1 }}
       onChange={(e) => {
         if (!isUsable) return;
         setQuery(e.target.value);

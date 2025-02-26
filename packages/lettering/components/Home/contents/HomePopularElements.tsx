@@ -4,9 +4,7 @@ export default function HomePopularElements() {
   return (
     <>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h6" fontWeight={600} fontSize={14}>
-          최근 본 상품 리스트
-        </Typography>
+        <Typography variant="subtitle2">최근 본 상품 리스트</Typography>
       </Box>
       <Box
         sx={{
@@ -80,7 +78,7 @@ export default function HomePopularElements() {
               </CardContent>
             </Card>
             <Typography
-              variant="body2"
+              variant="body1"
               sx={{ marginTop: 1, textAlign: 'left', fontSize: 12 }}
             >
               매장 {index + 1}

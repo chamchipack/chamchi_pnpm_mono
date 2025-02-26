@@ -36,7 +36,8 @@ function InfoGrid() {
       {Object.entries(menuItemsMap).map(([value, label], index) => (
         <Typography
           key={index}
-          fontSize={14}
+          variant="body2"
+          color="text.secondary"
           onClick={() => handleRouter(value)}
         >
           {label}

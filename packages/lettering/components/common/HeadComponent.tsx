@@ -17,7 +17,7 @@ interface Props {
   onRightButtonClick?: () => void; // ✅ 우측 버튼 클릭 핸들러
 }
 
-export default function TestHeadComponent({
+export default function HeadComponent({
   isLeftButtonVisable = false,
   title = '',
   isRoutingReplace = false,
@@ -61,11 +61,7 @@ export default function TestHeadComponent({
       </Box>
 
       {/* 중앙 타이틀 */}
-      <Typography
-        fontSize={16}
-        fontWeight={900}
-        sx={{ flex: 1, textAlign: 'center' }}
-      >
+      <Typography variant="subtitle1" sx={{ flex: 1, textAlign: 'center' }}>
         {title}
       </Typography>
 

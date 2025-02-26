@@ -27,6 +27,7 @@ export default function TotalAccountBox({
           cursor: 'pointer',
         },
       }}
+      onClick={onClick}
     >
       <Typography
         fontWeight={'bold'}

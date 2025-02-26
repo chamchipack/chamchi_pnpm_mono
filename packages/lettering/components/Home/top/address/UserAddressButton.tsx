@@ -17,12 +17,10 @@ export default function UserAddressButton() {
 
   return (
     <>
-      <Typography variant="h6" fontWeight={600} fontSize={14}>
-        {address || '주소를 지정해보세요!'}
+      <Typography variant="subtitle2">
+        {address || '여기를 눌러 주소를 지정해보세요!'}
       </Typography>
-      {address && (
-        <ArrowDropDownIcon sx={{ fontSize: 24, color: 'common.black' }} />
-      )}
+      <ArrowDropDownIcon sx={{ fontSize: 24, color: 'common.black' }} />
     </>
   );
 }
