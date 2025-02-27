@@ -33,7 +33,8 @@ export default function MyPageItem({
         width: '100%',
         border: '1px solid lightgray',
         borderRadius: 2,
-        p: 2,
+        px: 2,
+        py: 1,
         cursor: 'pointer',
       }}
       onClick={handleRouter}

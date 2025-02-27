@@ -19,7 +19,7 @@ export default function CustomChip({
         justifyContent: 'center',
         height: 28,
         px: 2,
-        border: `1px solid`,
+        border: `2px solid`,
         borderColor: `${borderColor}`,
         borderRadius: 16,
         whiteSpace: 'nowrap', // 글자가 줄바꿈되지 않도록 설정

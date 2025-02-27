@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 import dayjs, { Dayjs } from 'dayjs';
+import { useRecentSearches } from '@/store/searchData/useRecentSearches';
 
 interface Props {
   isAllowed: boolean;
@@ -24,28 +25,32 @@ export default function SearchInput({
 
   const [query, setQuery] = useState(queryInput);
 
+  const { addSearch } = useRecentSearches();
+
   const handleSearch = () => {
     if (!isAllowed) return;
 
-    if (query.trim()) {
-      let path = 'store-list';
+    // if (query.trim()) {
+    //   console.log(query);
 
-      const param = {
-        query,
-        date: selectedDate,
-      };
+    //   let path = 'store-list';
 
-      const isWebView = handleNavigation({
-        path: 'store-list',
-        status: 'forward',
-        params: JSON.stringify(param),
-      });
+    //   const param = {
+    //     query,
+    //     date: selectedDate,
+    //   };
 
-      if (!isWebView) {
-        const queryParams = new URLSearchParams(param).toString();
-        router.push(`/application/${path}?${queryParams}`);
-      }
-    }
+    //   const isWebView = handleNavigation({
+    //     path: 'store-list',
+    //     status: 'forward',
+    //     params: JSON.stringify(param),
+    //   });
+
+    //   if (!isWebView) {
+    //     const queryParams = new URLSearchParams(param).toString();
+    //     router.push(`/application/${path}?${queryParams}`);
+    //   }
+    // }
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -55,6 +60,8 @@ export default function SearchInput({
       handleSearch();
 
       if (query.trim()) {
+        addSearch(query);
+
         let path = `/application/store-list?${query}&date=${selectedDate}`;
         const isWebView = handleNavigation({
           path: 'store-list',

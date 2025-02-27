@@ -40,7 +40,12 @@ export default function Container() {
         </Box>
         <Box sx={{ px: 2, my: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>
-            <Typography variant="subtitle2">최근 검색어</Typography>
+            <Typography variant="subtitle2">
+              최근 검색어
+              <Typography component={'span'} variant="caption" sx={{ ml: 1 }}>
+                최대 10개까지 저장됩니다
+              </Typography>
+            </Typography>
           </Box>
           <Box sx={{ px: 1 }}>
             <RecentSearches />

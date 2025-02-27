@@ -42,13 +42,6 @@ export function useLocation(
   useEffect(() => {
     const handleMessage = (event: MessageEvent<string>) => {
       try {
-        (window as any).ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            type: 'ETC',
-            data: 'come',
-          }),
-        );
-
         const position = JSON.parse(event.data);
         if (!position?.longitude || !position?.latitude) {
           setErrorMessage('위치 정보를 가져올 수 없습니다.');
@@ -82,15 +75,12 @@ export function useLocation(
 
   const callApi = async (lng: number, lat: number) => {
     try {
-      const res = await fetch(
-        `/api/reverse-geocode?lat=${37.4219983333333}&lon=${-122.084}`,
-      );
+      const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
       const data = await res.json();
 
       if (!res.ok || data.error)
         throw new Error(data.error || '주소 변환 실패');
 
-      console.log(data, res);
       const array = data?.results || [];
 
       if (array.length) {

@@ -30,8 +30,8 @@ export default function EditableAddressList({
         >
           {/* ✅ 좌측: 주소 정보 + 수정 버튼 */}
           <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-            <ListItemText primary={item.address} secondary={item.address} />
-            <Typography sx={{ fontSize: 10 }}>수정하기</Typography>
+            <ListItemText primary={item.address} />
+            {/* <Typography sx={{ fontSize: 10 }}>수정하기</Typography> */}
           </Box>
 
           {/* ✅ 우측: 삭제(휴지통) 버튼 */}
