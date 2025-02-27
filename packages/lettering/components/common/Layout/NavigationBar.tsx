@@ -36,12 +36,22 @@ const NAV_ITEMS = [
   },
 ];
 
+const isWebView = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return (
+    /wv|android.*version\/[\d.]+.*chrome\/[.\d]+ mobile/i.test(userAgent) ||
+    (/iphone|ipod|ipad/i.test(userAgent) && !/safari/i.test(userAgent))
+  );
+};
+
 export default function NavigationBar() {
   const pathname = usePathname(); // 현재 경로 가져오기
   const router = useRouter(); // Next.js 라우터
 
   const SHOW_PAGES = NAV_ITEMS.map((item) => item.path);
   if (!SHOW_PAGES.includes(pathname)) return null; // 특정 페이지에서만 표시
+
+  if (isWebView()) return null;
 
   const handleRouter = (path: string) => {
     const isWebView = handleNavigation({ path, status: 'forward' });
@@ -54,8 +64,10 @@ export default function NavigationBar() {
       sx={{
         position: 'fixed',
         bottom: 0,
-        left: 0,
-        width: '100%',
+        left: '50%',
+        transform: 'translateX(-50%)', // ✅ 중앙 정렬
+        width: 'inherit', // ✅ 부모의 너비를 따름
+        maxWidth: 470, // ✅ 부모 크기만큼 제한
         px: 4,
         pb: 4,
         pt: 3,
