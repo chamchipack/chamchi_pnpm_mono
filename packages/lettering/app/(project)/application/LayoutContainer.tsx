@@ -18,7 +18,7 @@ export default function LayoutContainer({
       </div>
 
       {/* 우측 빈 공간 (배경: 빨강) */}
-      <div className={styles['side-space']} />
+      <div className={styles['side-space']}></div>
     </div>
   );
 }

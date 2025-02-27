@@ -28,7 +28,7 @@ export function useLocation(
     setIsLoading(true);
     setIsError(false);
     setErrorMessage(null);
-    callApi();
+    // callApi();
 
     const isWebView = handleFindLocation({ data: 'find-location' });
 

@@ -10,21 +10,26 @@
 /* 좌우 빈 공간 (배경색: 빨강) */
 .side-space {
   flex: 1;
-  background: red;
 }
 
 /* 가운데 컨텐츠 (고정 크기 + 좌우 경계선 추가) */
 .responsive-container {
   width: 100%;
-  max-width: 470px; /* ✅ 모바일 크기 고정 */
+  min-height: 100vh;
+  max-width: 500px; /* ✅ 모바일 크기 고정 */
   background: white; /* ✅ 내용 영역은 흰색 */
   overflow: hidden;
-  border-left: 1px solid #ddd; /* ✅ 좌측 경계선 */
-  border-right: 1px solid #ddd; /* ✅ 우측 경계선 */
+  border-left: 2px solid #ddd; /* ✅ 좌측 경계선 */
+  border-right: 2px solid #ddd; /* ✅ 우측 경계선 */
 }
 
 @media only screen and (max-width: 767px) {
   .responsive-container {
     width: 100%; /* ✅ 모바일에서는 꽉 차도록 */
+    border-left: none;
+    border-right: none;
+  }
+  .side-space {
+    display: none;
   }
 }
