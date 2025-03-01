@@ -1,8 +1,14 @@
+enum Provider {
+  Kakao = 'kakao',
+  Naver = 'naver',
+  Google = 'google',
+}
+
 // ✅ User 테이블
 interface User {
   _id: string;
   socialId: string;
-  provider: string;
+  provider: Provider;
   fcmToken: string;
   profile: string;
   nickname: string;
@@ -20,18 +26,18 @@ interface Seller {
   images: string[];
   lat: number;
   lng: number;
-  location: string;
+  location: string; // 아마 주소
   sellerName: string;
   id: string;
   pw: string;
-  businessNumber: number;
+  businessNumber: number; // 사업자 번호?
   mutualName: string;
   startDay: string;
   endDay: string;
   startTime: string;
   endTime: string;
-  originalInfo: string;
-  introduction: string;
+  originalInfo: string; // ???
+  introduction: string; // 소개글?
   openedAt: Date;
   closedAt: Date;
   mininumReservationDate: Date;
@@ -41,12 +47,12 @@ interface Seller {
 
 // ✅ Order 테이블
 type OrderStatus =
-  | 'pending'
-  | 'inProgress'
-  | 'packed'
-  | 'completed'
-  | 'refundInProgress'
-  | 'refunded';
+  | 'pending' // 대기중
+  | 'inProgress' // 만드는 중
+  | 'packed' // 포장완료
+  | 'completed' // 완료
+  | 'refundInProgress' // 환불 진행중
+  | 'refunded'; // 환불 완료
 
 interface Order {
   _id: string;

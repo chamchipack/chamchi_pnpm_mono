@@ -12,11 +12,12 @@ export const metadata: Metadata = {
 
 interface Props {
   searchParams: {
-    id: string;
+    sellerId: string;
   };
 }
 const Page = ({ searchParams }: Props) => {
-  return <Container />;
+  const { sellerId = '' } = searchParams;
+  return <Container sellerId={sellerId} />;
 };
 
 export default Page;

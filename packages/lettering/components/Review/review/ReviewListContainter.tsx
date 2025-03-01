@@ -38,7 +38,7 @@ export default function ReviewListContainer({
       </Box>
 
       <Box>
-        {dummyNotifications.map((item, index) => (
+        {reviews.map((item, index) => (
           <Box key={index} sx={{ mb: 4 }}>
             <ReviewBox {...item} />
           </Box>
@@ -47,6 +47,64 @@ export default function ReviewListContainer({
     </>
   );
 }
+
+const reviews: Review[] = [
+  {
+    _id: 'review1',
+    orderId: 'order1',
+    userId: 'user1',
+    sellerId: 'seller1',
+    star: 5,
+    content: '정말 맛있어요! 강력 추천합니다.',
+    images: ['https://placehold.co/600x400'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: 'review2',
+    orderId: 'order2',
+    userId: 'user2',
+    sellerId: 'seller1',
+    star: 4,
+    content: '괜찮았어요. 다시 방문할 의향이 있어요!',
+    images: ['https://placehold.co/600x400'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: 'review3',
+    orderId: 'order3',
+    userId: 'user3',
+    sellerId: 'seller2',
+    star: 3,
+    content: '보통이었어요. 기대보다는 아쉬웠네요.',
+    images: ['https://placehold.co/600x400'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: 'review4',
+    orderId: 'order4',
+    userId: 'user4',
+    sellerId: 'seller2',
+    star: 2,
+    content: '맛은 괜찮았지만, 서비스가 아쉬웠어요.',
+    images: ['https://placehold.co/600x400'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    _id: 'review5',
+    orderId: 'order5',
+    userId: 'user5',
+    sellerId: 'seller3',
+    star: 1,
+    content: '다시는 안 갈 것 같아요...',
+    images: ['https://placehold.co/600x400'],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+];
 
 const dummyNotifications = [
   {

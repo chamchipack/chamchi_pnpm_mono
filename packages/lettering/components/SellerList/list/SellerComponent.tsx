@@ -1,19 +1,24 @@
 'use client';
 import StarRatingscore from '@/components/common/rating/StarRatingscore';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
 
-export default function StoreComponent({ storeId = '', name = '' }) {
+export default function SellerComponent({
+  _id,
+  marketName,
+  location,
+  images,
+}: Seller) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
-    let path = 'store-detail';
+    let path = 'seller-detail';
 
-    const param = { storeId };
+    const param = { sellerId: _id };
 
     const isWebView = handleNavigation({
-      path: 'store-detail',
+      path: 'seller-detail',
       status: 'forward',
       params: JSON.stringify(param),
     });
@@ -35,35 +40,47 @@ export default function StoreComponent({ storeId = '', name = '' }) {
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
           '&::-webkit-scrollbar': { display: 'none' },
-          '&: hover': {
+          '&:hover': {
             cursor: 'pointer',
           },
         }}
         onClick={handleRouter}
       >
-        {Array.from({ length: 5 }).map((_, index) => (
-          <Box
-            key={index}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'start',
-            }}
-          >
-            {/* 카드 */}
-            <Card
+        {(images && images.length > 0 ? images : Array.from({ length: 5 })).map(
+          (image, index) => (
+            <Box
+              key={index}
               sx={{
-                minWidth: 130,
-                height: 130,
-                flexShrink: 0,
-                backgroundColor: 'grey.200',
-                borderRadius: 3,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'start',
               }}
             >
-              <CardContent></CardContent>
-            </Card>
-          </Box>
-        ))}
+              {/* 카드 */}
+              <Card
+                sx={{
+                  minWidth: 130,
+                  height: 130,
+                  flexShrink: 0,
+                  backgroundColor: 'grey.200',
+                  borderRadius: 3,
+                  overflow: 'hidden',
+                }}
+              >
+                {typeof image === 'string' ? (
+                  <CardMedia
+                    component="img"
+                    image={image}
+                    alt={`seller-image-${index}`}
+                    sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <CardContent></CardContent>
+                )}
+              </Card>
+            </Box>
+          ),
+        )}
       </Box>
       <Box sx={{ mt: 1 }} onClick={handleRouter}>
         <Box
@@ -74,7 +91,7 @@ export default function StoreComponent({ storeId = '', name = '' }) {
           }}
         >
           <Typography variant="subtitle1" sx={{ mr: 1 }}>
-            {name}
+            {marketName}
           </Typography>
           <StarRatingscore rating={4.3} />
         </Box>
@@ -87,7 +104,7 @@ export default function StoreComponent({ storeId = '', name = '' }) {
             width: '100%', // 부모 요소의 크기 안에서 동작
           }}
         >
-          경기도 성남시 수정구 성남대로 1237번길 8-21
+          {location}
         </Typography>
       </Box>
     </>

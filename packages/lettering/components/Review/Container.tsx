@@ -2,7 +2,11 @@ import { Box } from '@mui/material';
 import HeadComponent from '../common/HeadComponent';
 import ReviewListContainer from './review/ReviewListContainter';
 
-export default function Container() {
+interface Props {
+  sellerId: string;
+}
+
+export default function Container({ sellerId = '' }: Props) {
   return (
     <Box sx={{ py: 1.5 }}>
       <Box sx={{ px: 2 }}>

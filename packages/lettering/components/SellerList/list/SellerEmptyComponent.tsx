@@ -1,6 +1,7 @@
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-export default function StoreEmptyComponent() {
+export default function SellerEmptyComponent() {
   return (
     <Box
       sx={{

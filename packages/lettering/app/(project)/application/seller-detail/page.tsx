@@ -1,4 +1,4 @@
-import Container from '@/components/StoreDetail/Container';
+import Container from '@/components/SellerDetail/Container';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,12 +12,12 @@ export const metadata: Metadata = {
 
 interface Props {
   searchParams: {
-    storeId: string;
+    sellerId: string;
   };
 }
 const Page = ({ searchParams }: Props) => {
-  const { storeId = '' } = searchParams || {};
-  return <Container storeId={storeId} />;
+  const { sellerId = '' } = searchParams || {};
+  return <Container sellerId={sellerId} />;
 };
 
 export default Page;

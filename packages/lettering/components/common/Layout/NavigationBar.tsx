@@ -40,7 +40,7 @@ const NAV_ITEMS = [
 export default function NavigationBar() {
   const pathname = usePathname(); // 현재 경로 가져오기
   const router = useRouter(); // Next.js 라우터
-  const [isWebView, setIsWebView] = useState(false);
+  const [isWebView, setIsWebView] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -96,14 +96,14 @@ export default function NavigationBar() {
               flexDirection: 'column',
               alignItems: 'center',
               cursor: 'pointer',
-              color: isActive ? 'common.black' : 'common.gray',
+              color: isActive ? '#F39E9E' : 'common.gray',
             }}
           >
             <IconButton
               sx={{
                 width: 24,
                 height: 24,
-                color: isActive ? 'common.black' : 'common.gray',
+                color: isActive ? '#F39E9E' : 'common.gray',
               }}
             >
               {item.icon}

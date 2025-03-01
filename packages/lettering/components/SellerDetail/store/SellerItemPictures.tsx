@@ -4,7 +4,7 @@ const dummyImages = Array.from({ length: 20 }, (_, index) =>
   index % 2 === 0 ? '/cake1.png' : '/cake2.png',
 );
 
-export default function StoreItemPictures() {
+export default function SellerItemPictures() {
   return (
     <Box
       sx={{

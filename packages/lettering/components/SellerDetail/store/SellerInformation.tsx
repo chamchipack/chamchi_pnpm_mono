@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 
-export default function StoreInformation() {
+export default function SellerInformation() {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);

@@ -1,23 +1,16 @@
 'use client';
+import { formatTimeAgo } from '@/config/utils/time/formatTimeAgo';
 import { Box, Button, Rating, Typography } from '@mui/material';
 import { useState } from 'react';
 
-interface NotificationBoxProps {
-  _id: string;
-  userName?: string;
-  timeAgo?: string;
-  reviewMessage?: string;
-  productName?: string;
-  image?: string;
-}
-
 export default function ReviewBox({
-  userName = '조찬익',
-  timeAgo = '방금 전',
-  reviewMessage = '주문에 대한 리뷰를 남겨주세요!',
-  productName = '상품명',
-  image = '',
-}: NotificationBoxProps) {
+  userId = '조찬익',
+  createdAt,
+  content = '주문에 대한 리뷰를 남겨주세요!',
+  orderId = '상품명',
+  images,
+  star,
+}: Review) {
   const [imgError, setImgError] = useState(false);
 
   return (
@@ -63,16 +56,16 @@ export default function ReviewBox({
           }}
         >
           <Typography fontSize={14} fontWeight="bold">
-            {userName}
+            {userId}
           </Typography>
           <Typography fontSize={12} color="text.secondary">
-            {timeAgo}
+            {formatTimeAgo(createdAt)}
           </Typography>
         </Box>
 
         <Box>
           <Rating
-            value={4.7}
+            value={star}
             precision={0.1} // ✅ 소수점 1자리까지 반영
             readOnly
             sx={{
@@ -83,21 +76,21 @@ export default function ReviewBox({
 
         <Box sx={{ mt: 2 }}>
           <Typography fontSize={14} color="text.primary">
-            {reviewMessage}
+            {content}
           </Typography>
         </Box>
 
         <Box sx={{ mt: 1 }}>
           <Typography fontSize={12} color="text.secondary">
-            {productName}
+            {orderId}
           </Typography>
         </Box>
 
-        {image && (
+        {images && (
           <Box sx={{ mt: 1 }}>
             <Box
               component="img"
-              src={!imgError && image ? image : undefined} // ✅ 에러 발생 시 src 제거
+              src={!imgError && images[0] ? images[0] : undefined} // ✅ 에러 발생 시 src 제거
               alt="Notification Image"
               onError={() => setImgError(true)} // ✅ 이미지 로드 실패 시 에러 상태 변경
               sx={{

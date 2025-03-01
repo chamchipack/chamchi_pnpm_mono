@@ -1,4 +1,4 @@
-import Container from '@/components/StoreList/Container';
+import Container from '@/components/SellerList/Container';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

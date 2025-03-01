@@ -62,9 +62,9 @@ export default function SearchInput({
       if (query.trim()) {
         addSearch(query);
 
-        let path = `/application/store-list?${query}&date=${selectedDate}`;
+        let path = `/application/seller-list?${query}&date=${selectedDate}`;
         const isWebView = handleNavigation({
-          path: 'store-list',
+          path: 'seller-list',
           status: 'forward',
         });
         if (!isWebView) return router.push(path);
