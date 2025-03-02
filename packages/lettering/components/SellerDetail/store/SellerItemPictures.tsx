@@ -1,10 +1,32 @@
+'use client';
+import { handleNavigation } from '@/config/navigation';
 import { Box } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 const dummyImages = Array.from({ length: 20 }, (_, index) =>
   index % 2 === 0 ? '/cake1.png' : '/cake2.png',
 );
 
 export default function SellerItemPictures() {
+  const router = useRouter();
+
+  const handleRouter = () => {
+    console.log('??');
+    let path = `/application/order?sellerId=sellerId&productId=productId&type=select`;
+    const params = {
+      sellerId: 'sell',
+      productId: 'produc',
+      type: 'select',
+    };
+    const isWebView = handleNavigation({
+      path: 'order',
+      status: 'forward',
+      params: JSON.stringify(params),
+    });
+
+    if (!isWebView) return router.push(path);
+  };
+
   return (
     <Box
       sx={{
@@ -30,6 +52,7 @@ export default function SellerItemPictures() {
               opacity: 0.8, // ✅ 호버 시 약간 어두워짐 (피드백 효과)
             },
           }}
+          onClick={handleRouter}
         />
       ))}
     </Box>

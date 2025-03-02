@@ -13,6 +13,7 @@ interface Props {
   selectedDate?: string;
   placeholder?: string;
   queryInput?: string;
+  fieldColor?: string;
 }
 
 export default function SearchInput({
@@ -20,6 +21,7 @@ export default function SearchInput({
   selectedDate = '',
   placeholder = '',
   queryInput = '',
+  fieldColor = 'grey.100',
 }: Props) {
   const router = useRouter();
 
@@ -62,10 +64,16 @@ export default function SearchInput({
       if (query.trim()) {
         addSearch(query);
 
+        const param = {
+          query,
+          date: selectedDate,
+        };
+
         let path = `/application/seller-list?${query}&date=${selectedDate}`;
         const isWebView = handleNavigation({
           path: 'seller-list',
           status: 'forward',
+          params: JSON.stringify(param),
         });
         if (!isWebView) return router.push(path);
       }
@@ -85,7 +93,7 @@ export default function SearchInput({
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'row' }}>
       <TextField
         fullWidth
         variant="outlined"
@@ -101,7 +109,7 @@ export default function SearchInput({
         inputProps={{ maxLength: 50 }}
         sx={{
           fontSize: '16px',
-          backgroundColor: 'grey.100',
+          backgroundColor: fieldColor || 'grey.100',
           borderRadius: 2,
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
@@ -154,6 +162,7 @@ export default function SearchInput({
           ),
         }}
       />
+      {/* sdf */}
     </Box>
   );
 }

@@ -10,7 +10,7 @@ export default function ReviewBox({
   orderId = '상품명',
   images,
   star,
-}: Review) {
+}: ReviewSchema) {
   const [imgError, setImgError] = useState(false);
 
   return (

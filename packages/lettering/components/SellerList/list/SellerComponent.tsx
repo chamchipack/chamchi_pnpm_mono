@@ -9,7 +9,7 @@ export default function SellerComponent({
   marketName,
   location,
   images,
-}: Seller) {
+}: SellerSchema) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {

@@ -1,6 +1,6 @@
 'use client';
 import { handleNavigation } from '@/config/navigation';
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, IconButton, Typography } from '@mui/material';
 import {
   loadTossPayments,
   TossPaymentsSDK,
@@ -8,6 +8,7 @@ import {
 } from '@tosspayments/tosspayments-sdk';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const clientKey: string = 'test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm';
 const customerKey: string = 'SiGXsyFsHU_REoW-oxiSS';
@@ -32,6 +33,17 @@ export default function Container() {
     const isWebView = handleNavigation({ path: 'order', status: 'forward' });
 
     if (!isWebView) return router.back();
+  };
+
+  const handleRouterBack = () => {
+    const isWebView = handleNavigation({
+      path: '',
+      status: 'back',
+    });
+
+    if (!isWebView) {
+      router.back();
+    }
   };
 
   useEffect(() => {
@@ -86,6 +98,25 @@ export default function Container() {
 
   return (
     <div className="wrapper">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          p: 2,
+        }}
+      >
+        <IconButton onClick={handleRouterBack}>
+          <ArrowBackIosNewIcon fontSize="small" />
+        </IconButton>
+        <Typography
+          onClick={handleRouterBack}
+          variant="subtitle1"
+          sx={{ '&:hover': { cursor: 'pointer' } }}
+        >
+          눌러서 뒤로가기
+        </Typography>
+      </Box>
       <div className="box_section">
         {/* ✅ 결제 UI */}
         <div id="payment-method" />

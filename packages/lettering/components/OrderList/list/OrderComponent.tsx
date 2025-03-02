@@ -3,15 +3,23 @@ import CustomChip from '@/components/common/chip/CustomChip';
 import { Box, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
+import { formatDate } from '@/config/utils/time/formatDateAndtime';
 
-export default function OrderComponent({ orderId = '', name = '' }) {
+export default function OrderComponent({
+  _id = '',
+  sellerId = '',
+  status,
+  productId = '',
+  productImage,
+  createdAt,
+}: OrderSchema) {
   const router = useRouter();
 
   const handleRouter = () => {
     let path = 'order-detail';
 
     const param = {
-      orderId,
+      orderId: _id,
     };
 
     const isWebView = handleNavigation({
@@ -37,7 +45,7 @@ export default function OrderComponent({ orderId = '', name = '' }) {
           }}
         >
           <Typography fontSize={12} color="common.gray">
-            2025년 3월 1일 오후 12:40
+            {formatDate(createdAt)}
           </Typography>
           <Typography
             onClick={handleRouter}
@@ -55,29 +63,32 @@ export default function OrderComponent({ orderId = '', name = '' }) {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box sx={{ flex: 4 }}>
             <Typography fontSize={16} fontWeight="bold">
-              {name}
+              {sellerId}
             </Typography>
             <Typography fontSize={12} color="text.secondary">
               경기도 성남시 수정구 성남대로 1237번길 8-21
             </Typography>
             <Typography fontSize={14} color="text.secondary" sx={{ mt: 1 }}>
-              상품 이름
+              {productId}
             </Typography>
           </Box>
 
           <Box
+            component="img"
+            src={productImage}
             sx={{
               flex: 1,
-              minWidth: 90,
-              minHeight: 90,
+              width: 90,
+              height: 90,
               backgroundColor: 'grey.300',
               borderRadius: 1,
+              objectFit: 'cover', // 이미지 비율 유지하면서 꽉 채우기
             }}
           />
         </Box>
 
         <Box>
-          <CustomChip title={'제작중'} borderColor="common.main" />
+          <CustomChip title={status} borderColor="common.main" />
         </Box>
       </Box>
 

@@ -4,7 +4,9 @@ export default function HomePopularList() {
   return (
     <>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2">인기 매장</Typography>
+        <Typography variant="subtitle1" fontSize={20}>
+          인기 매장
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -30,8 +32,8 @@ export default function HomePopularList() {
             {/* 🔹 이미지 박스 (기존 Card 대체) */}
             <Box
               sx={{
-                minWidth: 130,
-                height: 130,
+                minWidth: 160,
+                height: 160,
                 flexShrink: 0,
                 position: 'relative',
                 overflow: 'hidden',

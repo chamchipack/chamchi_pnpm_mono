@@ -1,4 +1,4 @@
-export const sellerList: Seller[] = [
+export const sellerList: SellerSchema[] = [
   {
     _id: 'fawdhjLKwdrwe1',
     marketName: '가게이름1',

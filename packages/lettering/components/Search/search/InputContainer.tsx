@@ -11,6 +11,8 @@ import DatePickerDialog from '@/components/common/datetime/DatePickerDialog';
 import 'dayjs/locale/ko';
 import ListFilterChip from '@/components/common/filter/ListFilterChip';
 import ListFilterDrawer from '@/components/common/filter/ListFilterDrawer';
+import { useRecoilState } from 'recoil';
+import { dateSelectionAtom } from '@/store/otherStore/dateSelection';
 
 dayjs.locale('ko');
 
@@ -37,9 +39,17 @@ export default function InputContainer({
   params = { query: '', date: null },
 }: Props) {
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(
-    params.date ? dayjs(params.date) : null,
+  const [selectedDate, setSelectedDate] = useRecoilState<Dayjs | null>(
+    dateSelectionAtom,
+    // params.date ? dayjs(params.date) : null,
   );
+
+  useEffect(() => {
+    if (params.date) {
+      setSelectedDate(dayjs(params.date));
+    }
+  }, [params.date]);
+
   const [filter, setFilter] = useState<string>(items[0] || '');
 
   const timeFormat = isTimeSelectable ? 'YYYY-MM-DD HH:mm' : 'YYYY-MM-DD';

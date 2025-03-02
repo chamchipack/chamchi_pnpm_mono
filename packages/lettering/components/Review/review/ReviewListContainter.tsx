@@ -48,7 +48,7 @@ export default function ReviewListContainer({
   );
 }
 
-const reviews: Review[] = [
+const reviews: ReviewSchema[] = [
   {
     _id: 'review1',
     orderId: 'order1',

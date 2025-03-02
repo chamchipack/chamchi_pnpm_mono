@@ -4,7 +4,9 @@ export default function HomePopularElements() {
   return (
     <>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="subtitle2">최근 본 상품 리스트</Typography>
+        <Typography variant="subtitle1" fontSize={20}>
+          최근 본 상품 리스트
+        </Typography>
       </Box>
       <Box
         sx={{
@@ -31,8 +33,8 @@ export default function HomePopularElements() {
             {/* 카드 */}
             <Card
               sx={{
-                minWidth: 130,
-                height: 130,
+                minWidth: 160,
+                height: 160,
                 flexShrink: 0,
                 position: 'relative',
                 overflow: 'hidden',

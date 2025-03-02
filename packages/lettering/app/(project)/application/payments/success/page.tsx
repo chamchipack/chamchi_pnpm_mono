@@ -14,7 +14,7 @@ export default function PaymentSuccess() {
     console.log('결제 성공:', { paymentKey, orderId, amount });
 
     // 예: 결제 완료 페이지로 이동
-    router.replace(`/application/order-complete?orderId=${orderId}`);
+    // router.replace(`/application/order-complete?orderId=${orderId}`);
   }, []);
 
   return <div>결제가 완료되었습니다!</div>;

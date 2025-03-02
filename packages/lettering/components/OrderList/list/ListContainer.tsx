@@ -1,6 +1,7 @@
 import { Box, Card, CardContent, Typography } from '@mui/material';
 import OrderComponent from './OrderComponent';
 import OrderEmptyComponent from './OrderEmptyComponent';
+import { orderlist } from './dummy';
 
 const dummy = [
   { _id: 'wdfaojok111', name: '1111' },
@@ -10,6 +11,7 @@ const dummy = [
   { _id: 'wwwww5555', name: '5555' },
   { _id: 'rtrt666666', name: '66666' },
 ];
+
 export default function ListContainer() {
   return (
     <>
@@ -19,9 +21,9 @@ export default function ListContainer() {
         }}
       >
         {/* <OrderEmptyComponent /> */}
-        {dummy.map((item, index) => (
+        {orderlist.map((item, index) => (
           <Box key={index} sx={{ my: 4 }}>
-            <OrderComponent orderId={item._id} name={item.name} />
+            <OrderComponent {...item} />
           </Box>
         ))}
       </Box>

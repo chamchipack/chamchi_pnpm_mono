@@ -28,22 +28,46 @@ export default function HomeContainer() {
     <>
       <WebViewMessageHandler />
       <WebviewWrapper>
-        <Box sx={{ py: 1.5, pb: 0 }}>
-          <Box sx={{ px: 2 }}>
-            <TopFrame />
+        <Box sx={{ pb: 1.5 }}>
+          <Box
+            sx={{
+              py: 2,
+              backgroundColor: 'common.light',
+              borderBottomRightRadius: 20,
+              borderBottomLeftRadius: 20,
+              boxShadow: 5,
+            }}
+          >
+            <Box sx={{ px: 2 }}>
+              <TopFrame />
+            </Box>
+            <Box sx={{ px: 2, my: 2 }}>
+              <SearchInput
+                isAllowed={false}
+                placeholder="예약가능한 곳을 찾아보세요!"
+                fieldColor="#fff"
+              />
+            </Box>
           </Box>
-          <Box sx={{ px: 2, my: 2 }}>
-            <SearchInput
-              isAllowed={false}
-              placeholder="예약가능한 곳을 찾아보세요!"
+
+          <Box sx={{ px: 2, my: 3 }}>
+            <Box
+              sx={{
+                backgroundColor: '#EFEFEF',
+                height: 90,
+                borderRadius: 2,
+              }}
             />
           </Box>
-          <Box sx={{ px: 2, my: 3 }}>
-            <IncomingReservation />
-          </Box>
+
           <Box sx={{ my: 3 }}>
             <HomeBanner />
           </Box>
+
+          <Box sx={{ px: 2, my: 3 }}>
+            <IncomingReservation />
+          </Box>
+
           <Box sx={{ pr: isMobile ? 0 : 2, pl: 2, my: 3 }}>
             <HomePopularElements />
           </Box>

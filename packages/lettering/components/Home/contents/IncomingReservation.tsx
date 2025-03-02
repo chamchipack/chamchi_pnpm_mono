@@ -38,7 +38,7 @@ export default function IncomingReservation() {
           height: 100,
           padding: 2,
           backgroundImage:
-            'linear-gradient(90deg, #E8E0D2, #D1BFAD, #D1BFAD, #C4AD91)',
+            'linear-gradient(90deg, #FFD3C6, #FFD3C6, #F39E9E, #F39E9E)',
           borderRadius: 1,
         }}
       >

@@ -4,10 +4,41 @@ import { Box, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useRecentSearches } from '@/store/searchData/useRecentSearches';
 import { formatTimeAgo } from '@/store/searchData/utils';
+import { useRecoilState } from 'recoil';
+import { dateSelectionAtom } from '@/store/otherStore/dateSelection';
+import { handleNavigation } from '@/config/navigation';
+import { useRouter } from 'next/navigation';
+import { Dayjs } from 'dayjs';
 
 export default function RecentSearches() {
+  const router = useRouter();
+
   const { searches, removeSearch } = useRecentSearches();
   const [clientSearches, setClientSearches] = useState<typeof searches>([]);
+
+  const [selectedDate] = useRecoilState(dateSelectionAtom);
+
+  const handleRouter = (query: string) => {
+    const param: { query: string; date?: Dayjs } = { query };
+
+    if (selectedDate) {
+      param.date = selectedDate;
+    }
+
+    // ✅ selectedDate가 있을 때만 `date`를 포함
+    let path = `/application/seller-list?query=${query}`;
+    if (selectedDate) {
+      path += `&date=${selectedDate}`;
+    }
+
+    const isWebView = handleNavigation({
+      path: 'seller-list',
+      status: 'forward',
+      params: JSON.stringify(param),
+    });
+
+    if (!isWebView) return router.push(path);
+  };
 
   // ✅ 클라이언트 사이드에서만 상태 적용
   useEffect(() => {
@@ -30,6 +61,7 @@ export default function RecentSearches() {
             {/* 검색어 */}
             <Typography
               sx={{ fontSize: 14, fontWeight: 500, color: 'text.secondary' }}
+              onClick={() => handleRouter(query)}
             >
               {query}
             </Typography>

@@ -18,12 +18,24 @@ import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 import SellerInformation from './SellerInformation';
 
-export default function SellerContainer({ marketName, location }: Seller) {
+export default function SellerContainer({
+  marketName,
+  location,
+}: SellerSchema) {
   const router = useRouter();
 
   const handleRouter = () => {
-    let path = `/application/order?id=${'query'}`;
-    const isWebView = handleNavigation({ path: 'order', status: 'forward' });
+    let path = `/application/order?sellerId=sellerId&productId=productId&type=custom`;
+    const params = {
+      sellerId: 'sell',
+      productId: 'produc',
+      type: 'custom',
+    };
+    const isWebView = handleNavigation({
+      path: 'order',
+      status: 'forward',
+      params: JSON.stringify(params),
+    });
 
     if (!isWebView) return router.push(path);
   };

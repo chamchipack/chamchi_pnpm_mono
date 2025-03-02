@@ -3,8 +3,20 @@ import { Box, Typography } from '@mui/material';
 import CustomChip from '../common/chip/CustomChip';
 import { useState } from 'react';
 import ModalWrapper from '../common/modal/ModalWrapper';
+import { formatDate } from '@/config/utils/time/formatDateAndtime';
+import { formatMoney } from '@/config/utils/number/formatMoney';
 
-export default function OrderInformation() {
+export default function OrderInformation({
+  sellerId,
+  status,
+  createdAt,
+  bookingDate,
+  orderNumber,
+  userId,
+  phoneNumber,
+  totalPrice,
+  paymentMethod,
+}: OrderSchema) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
@@ -12,7 +24,7 @@ export default function OrderInformation() {
     <>
       <Box sx={{}}>
         <Typography fontSize={16} fontWeight="bold">
-          스타벅스 강남점
+          {sellerId}
         </Typography>
         <Typography fontSize={12} color="text.secondary">
           경기도 성남시 수정구 성남대로 1237번길 8-21
@@ -20,7 +32,7 @@ export default function OrderInformation() {
       </Box>
 
       <Box sx={{ mt: 2 }}>
-        <CustomChip title="픽업완료" borderColor="common.main" />
+        <CustomChip title={status} borderColor="common.main" />
       </Box>
 
       <Box sx={{ mt: 2 }}>
@@ -29,7 +41,7 @@ export default function OrderInformation() {
             <Typography fontSize={12}>주문일시</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
-            2025년 3월 1일 오후 12:40
+            {formatDate(createdAt)}
           </Typography>
         </Box>
 
@@ -38,7 +50,7 @@ export default function OrderInformation() {
             <Typography fontSize={12}>완료일시</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
-            2025년 3월 5일 오후 12:40
+            {formatDate(bookingDate)}
           </Typography>
         </Box>
 
@@ -47,7 +59,7 @@ export default function OrderInformation() {
             <Typography fontSize={12}>주문번호</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
-            1758480430
+            {orderNumber}
           </Typography>
         </Box>
 
@@ -56,7 +68,7 @@ export default function OrderInformation() {
             <Typography fontSize={12}>주문자 이름</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
-            조찬익
+            {userId}
           </Typography>
         </Box>
 
@@ -65,7 +77,7 @@ export default function OrderInformation() {
             <Typography fontSize={12}>주문자 연락처</Typography>
           </Box>
           <Typography fontSize={12} sx={{ color: 'common.gray' }}>
-            010-7650-7023
+            {phoneNumber}
           </Typography>
         </Box>
       </Box>
@@ -79,7 +91,7 @@ export default function OrderInformation() {
           <Typography fontSize={14} fontWeight={'bold'}>
             결제 금액
           </Typography>
-          <Typography fontSize={14}>25,000원</Typography>
+          <Typography fontSize={14}>{formatMoney(totalPrice)}원</Typography>
         </Box>
 
         <Box
@@ -91,7 +103,7 @@ export default function OrderInformation() {
           <Typography fontSize={14} fontWeight={'bold'}>
             결제 방법
           </Typography>
-          <Typography fontSize={14}>카카오페이</Typography>
+          <Typography fontSize={14}>{paymentMethod}</Typography>
         </Box>
       </Box>
 

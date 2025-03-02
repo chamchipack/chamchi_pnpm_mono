@@ -2,13 +2,13 @@ import { Box } from '@mui/material';
 import HeadComponent from '../common/HeadComponent';
 import SellerMainImage from './store/SellerMainImage';
 import SellerContainer from './store/SellerContainer';
-import SellerItemPictures from './store/SellerItemPictures';
+import SellerTabs from './store/SelleterTabs';
 
 interface Props {
   sellerId: string;
 }
 
-const data: Seller = {
+const data: SellerSchema = {
   _id: 'fawdhjLKwdrwe1',
   marketName: '가게이름1',
   images: [
@@ -40,7 +40,6 @@ const data: Seller = {
 };
 
 export default function Container({ sellerId = '' }: Props) {
-  // sellerId를 이용한 서버요청
   return (
     <>
       <Box sx={{ py: 1.5 }}>
@@ -48,16 +47,15 @@ export default function Container({ sellerId = '' }: Props) {
           <HeadComponent isLeftButtonVisable={true} title={data?.marketName} />
         </Box>
 
-        <Box sx={{}}>
+        <Box>
           <SellerMainImage images={data?.images} />
         </Box>
         <Box sx={{ px: 2, mt: 1 }}>
           <SellerContainer {...data} />
         </Box>
 
-        <Box sx={{ mt: 2 }}>
-          <SellerItemPictures />
-        </Box>
+        {/* ✅ 분리된 탭 컴포넌트 추가 */}
+        <SellerTabs sellerData={data} />
       </Box>
     </>
   );

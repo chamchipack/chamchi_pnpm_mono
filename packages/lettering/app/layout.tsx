@@ -30,7 +30,11 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body style={{ ...pretendardFont, background: '#f7e4e4' }}>
+      <body
+        className={`${inter.className} ${inter.style.fontFamily}`}
+        style={{ background: '#f7e4e4' }}
+      >
+        {/* <body style={{ ...pretendardFont, background: '#f7e4e4' }}> */}
         {children}
       </body>
       {/* <body className={`${inter.className} ${inter.style.fontFamily}`}>

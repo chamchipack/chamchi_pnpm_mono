@@ -12,10 +12,13 @@ export const metadata: Metadata = {
 
 interface Props {
   searchParams: {
-    id: string;
+    sellerId: string;
+    productId: string;
+    type: 'custom' | 'select';
   };
 }
 const Page = ({ searchParams }: Props) => {
+  console.log(searchParams);
   return <Container />;
 };
 

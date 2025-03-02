@@ -20,7 +20,7 @@ interface User {
 }
 
 // ✅ Seller 테이블
-interface Seller {
+interface SellerSchema {
   _id: string;
   marketName: string;
   images: string[];
@@ -54,7 +54,7 @@ type OrderStatus =
   | 'refundInProgress' // 환불 진행중
   | 'refunded'; // 환불 완료
 
-interface Order {
+interface OrderSchema {
   _id: string;
   orderNumber: number;
   userId: string;
@@ -77,7 +77,7 @@ interface Order {
 }
 
 // ✅ Product 테이블
-interface Product {
+interface ProductSchema {
   _id: string;
   sellerId: string;
   image: string;
@@ -110,7 +110,7 @@ interface Coupon {
 }
 
 // ✅ Review 테이블
-interface Review {
+interface ReviewSchema {
   _id: string;
   orderId: string;
   userId: string;
