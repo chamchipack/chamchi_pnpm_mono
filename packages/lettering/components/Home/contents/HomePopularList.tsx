@@ -1,6 +1,29 @@
+'use client';
+import { handleNavigation } from '@/config/navigation';
 import { Box, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function HomePopularList() {
+  const router = useRouter(); // Next.js 라우터
+
+  const handleRouter = (sellerId: string) => {
+    let path = 'seller-detail';
+    const param = {
+      orderId: 'adwiuvubdasvdwbi',
+    };
+
+    const isWebView = handleNavigation({
+      path,
+      status: 'forward',
+      params: JSON.stringify(param),
+    });
+
+    if (!isWebView) {
+      const queryParams = new URLSearchParams(param).toString();
+      router.push(`/application/${path}?${queryParams}`);
+    }
+  };
+
   return (
     <>
       <Box sx={{ mb: 2 }}>
@@ -39,11 +62,13 @@ export default function HomePopularList() {
                 overflow: 'hidden',
                 borderRadius: 2, // ✅ 모서리 둥글게
                 backgroundColor: '#f0f0f0', // ✅ 기본 배경 (이미지가 없을 경우)
+                '&:hover': { cursor: 'pointer' },
               }}
+              onClick={() => handleRouter('_id')}
             >
               {/* 이미지 추가 */}
               <img
-                src="/cake2.png"
+                src={index % 2 !== 0 ? '/cake2.png' : '/cake1.png'}
                 alt={`매장 ${index + 1}`}
                 style={{
                   width: '100%',

@@ -75,23 +75,40 @@ export function useLocation(
 
   const callApi = async (lng: number, lat: number) => {
     try {
-      const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
-      const data = await res.json();
+      const response = await fetch(
+        `/api/reverse-kakao-geocode?lat=${lat}&lng=${lng}`,
+      );
+      const result = await response.json();
 
-      if (!res.ok || data.error)
-        throw new Error(data.error || '주소 변환 실패');
+      if (!response.ok || result.error)
+        throw new Error(result.error || '주소 변환 실패');
 
-      const array = data?.results || [];
+      const { documents = [] } = result;
+      const { address = {} } = documents[0];
 
-      if (array.length) {
-        const { region = {} } =
-          array.find(({ name = '' }) => name === 'roadaddr') || {};
-        const a = region['area1']?.name || '';
-        const b = region['area2']?.name || '';
-        const c = region['area3']?.name || '';
-        const rs = `${a} ${b} ${c}`;
+      // const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
+      // const data = await res.json();
 
-        setCurrentLocation(rs);
+      // if (!res.ok || data.error)
+      //   throw new Error(data.error || '주소 변환 실패');
+
+      // const array = data?.results || [];
+
+      if (documents.length) {
+        // const { region = {} } =
+        //   array.find(({ name = '' }) => name === 'roadaddr') || {};
+        // const a = region['area1']?.name || '';
+        // const b = region['area2']?.name || '';
+        // const c = region['area3']?.name || '';
+        // const rs = `${a} ${b} ${c}`;
+
+        const depth1 = address['region_1depth_name'] || '';
+        const depth2 = address['region_2depth_name'] || '';
+        const depth3 = address['region_3depth_name'] || '';
+
+        const region = `${depth1} ${depth2} ${depth3}`;
+
+        setCurrentLocation(region);
         setIsLoading(false);
       } else {
         setIsError(true);

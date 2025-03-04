@@ -17,12 +17,34 @@ import ReviewCount from '@/components/common/review/ReviewCount';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 import SellerInformation from './SellerInformation';
+import PickupTimeChip from '@/components/common/datetime/PickupTimeChip';
+import { useRecoilState } from 'recoil';
+import dayjs, { Dayjs } from 'dayjs';
+import { dateSelectionAtom } from '@/store/otherStore/dateSelection';
+import { useEffect, useState } from 'react';
+import DatePickerDialog from '@/components/common/datetime/DatePickerDialog';
+
+const timeFormat = 'YYYY-MM-DD HH:mm';
 
 export default function SellerContainer({
   marketName,
   location,
 }: SellerSchema) {
   const router = useRouter();
+
+  const [selectedDate, setSelectedDate] = useRecoilState<Dayjs | null>(
+    dateSelectionAtom,
+  );
+
+  const [date, setDate] = useState<Dayjs | null>(selectedDate);
+
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    if (selectedDate) {
+      setDate(dayjs(selectedDate));
+    }
+  }, [selectedDate]);
 
   const handleRouter = () => {
     let path = `/application/order?sellerId=sellerId&productId=productId&type=custom`;
@@ -85,7 +107,7 @@ export default function SellerContainer({
       >
         <Typography variant="caption">{location}</Typography>
 
-        <SellerInformation />
+        {/* <SellerInformation /> */}
       </Box>
 
       <Divider sx={{ my: 2 }} />
@@ -99,7 +121,7 @@ export default function SellerContainer({
         }}
       >
         {/* 왼쪽 버튼: 날짜 선택 */}
-        <Button
+        {/* <Button
           sx={{
             width: '40%',
             backgroundColor: 'common.main',
@@ -118,7 +140,12 @@ export default function SellerContainer({
         >
           <CalendarTodayIcon sx={{ fontSize: 14, mr: 1 }} />
           눌러서 날짜 선택
-        </Button>
+        </Button> */}
+        <PickupTimeChip
+          onClick={() => setOpen(true)}
+          value={date ? date.format(timeFormat) : ''}
+          isTimeSelectable={true}
+        />
 
         {/* 오른쪽 버튼: 주문예약 */}
         <Button
@@ -139,6 +166,15 @@ export default function SellerContainer({
           주문제작
         </Button>
       </Box>
+
+      <DatePickerDialog
+        open={open}
+        onClose={() => setOpen(false)}
+        selectedDate={date}
+        setSelectedDate={setDate}
+        isTimeSelectable={true}
+        isTimeForPast={false}
+      />
     </Box>
   );
 }

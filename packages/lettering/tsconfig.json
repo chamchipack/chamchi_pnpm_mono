@@ -1,11 +1,8 @@
 {
   "compilerOptions": {
+    // "types": ["kakao.maps.d.ts"],
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,12 +17,8 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
-      ],
-      "package/*": [
-        "../package/*"
-      ] // packages/package/src 폴더의 별칭 설정
+      "@/*": ["./*"],
+      "package/*": ["../package/*"] // packages/package/src 폴더의 별칭 설정
     },
     "plugins": [
       {
@@ -40,7 +33,5 @@
     "next.config.mjs",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

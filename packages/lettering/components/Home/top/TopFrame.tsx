@@ -26,7 +26,10 @@ export default function TopFrame() {
         position: 'relative',
       }}
     >
-      <Box sx={{ ...flex }} onClick={() => handleRouter('address')}>
+      <Box
+        sx={{ ...flex, '&:hover': { cursor: 'pointer' } }}
+        onClick={() => handleRouter('address')}
+      >
         <UserAddressButton />
       </Box>
 

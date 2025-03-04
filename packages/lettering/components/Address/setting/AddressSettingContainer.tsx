@@ -102,9 +102,9 @@ export default function AddressSettingContainer() {
         isLeftButtonVisable={!editMode}
         title={editMode ? '편집' : '주소 설정'}
         onRightButtonClick={onChangeEditMode}
-        path="home"
-        isRoutingReplace
-        isRightButtonVisable
+        // path="home"
+        // isRoutingReplace
+        isRightButtonVisable={false}
         rightButtonIcon={editMode ? <ArrowBackIosNewIcon /> : <EditIcon />}
       />
 

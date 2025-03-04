@@ -1,6 +1,29 @@
+'use client';
+import { handleNavigation } from '@/config/navigation';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 export default function HomePopularElements() {
+  const router = useRouter(); // Next.js 라우터
+
+  const handleRouter = (sellerId: string) => {
+    let path = 'seller-detail';
+    const param = {
+      orderId: 'adwiuvubdasvdwbi',
+    };
+
+    const isWebView = handleNavigation({
+      path,
+      status: 'forward',
+      params: JSON.stringify(param),
+    });
+
+    if (!isWebView) {
+      const queryParams = new URLSearchParams(param).toString();
+      router.push(`/application/${path}?${queryParams}`);
+    }
+  };
+
   return (
     <>
       <Box sx={{ mb: 2 }}>
@@ -38,13 +61,15 @@ export default function HomePopularElements() {
                 flexShrink: 0,
                 position: 'relative',
                 overflow: 'hidden',
+                '&:hover': { cursor: 'pointer' },
               }}
+              onClick={() => handleRouter('_id')}
             >
               {/* 🔹 카드 이미지 */}
               <CardMedia
                 component="img"
-                height="130"
-                image="/cake2.png"
+                height="160"
+                image={index % 2 === 0 ? '/cake2.png' : '/cake1.png'}
                 alt={`상품 ${index + 1}`}
                 sx={{ objectFit: 'cover' }}
               />

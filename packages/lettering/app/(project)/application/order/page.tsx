@@ -18,8 +18,13 @@ interface Props {
   };
 }
 const Page = ({ searchParams }: Props) => {
-  console.log(searchParams);
-  return <Container />;
+  return (
+    <Container
+      sellerId={searchParams.sellerId}
+      productId={searchParams.productId}
+      type={searchParams.type}
+    />
+  );
 };
 
 export default Page;

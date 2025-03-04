@@ -3,6 +3,8 @@ import HeadComponent from '../common/HeadComponent';
 import SellerMainImage from './store/SellerMainImage';
 import SellerContainer from './store/SellerContainer';
 import SellerTabs from './store/SelleterTabs';
+import SellerItemPictures from './store/SellerItemPictures';
+import SellerInfo from './store/SellerInfo';
 
 interface Props {
   sellerId: string;
@@ -31,7 +33,8 @@ const data: SellerSchema = {
   startTime: '10:00',
   endTime: '20:00',
   originalInfo: '정보1',
-  introduction: '소개글1',
+  introduction:
+    '세상에 단 하나뿐인 감성 레터링 케이크! 🎂💕 맞춤 디자인으로 특별한 순간을 더욱 빛내세요.',
   openedAt: new Date(),
   closedAt: new Date(),
   mininumReservationDate: new Date(),
@@ -55,7 +58,14 @@ export default function Container({ sellerId = '' }: Props) {
         </Box>
 
         {/* ✅ 분리된 탭 컴포넌트 추가 */}
-        <SellerTabs sellerData={data} />
+        {/* <SellerTabs sellerData={data} /> */}
+        <Box sx={{ mt: 3 }}>
+          <SellerItemPictures />
+        </Box>
+
+        <Box sx={{ mt: 3 }}>
+          <SellerInfo key="seller-info" sellerData={data} />
+        </Box>
       </Box>
     </>
   );

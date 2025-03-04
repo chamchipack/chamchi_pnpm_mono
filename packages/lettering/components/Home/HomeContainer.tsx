@@ -1,4 +1,4 @@
-'use client';
+// 'use client';
 
 import { Box, Typography, Backdrop, Button } from '@mui/material';
 import TopFrame from './top/TopFrame';
@@ -7,22 +7,19 @@ import IncomingReservation from './contents/IncomingReservation';
 import HomeBanner from './contents/HomeBanner';
 import HomePopularList from './contents/HomePopularList';
 import HomePopularElements from './contents/HomePopularElements';
-import { useEffect, useState } from 'react';
 import WebViewMessageHandler from './WebViewMessageHandler';
 import WebviewWrapper from '@/config/utils/webview/WebviewWrapper';
 import CompanyInformation from './CompanyInformation';
 
 export default function HomeContainer() {
-  const [isMobile, setIsMobile] = useState(false);
+  // const [isMobile, setIsMobile] = useState(false);
 
-  const [isWebView, setIsWebView] = useState(false); // ✅ 웹뷰 여부 추가
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const userAgent = navigator.userAgent.toLowerCase();
-      setIsMobile(/iphone|ipad|ipod|android/i.test(userAgent));
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     const userAgent = navigator.userAgent.toLowerCase();
+  //     setIsMobile(/iphone|ipad|ipod|android/i.test(userAgent));
+  //   }
+  // }, []);
 
   return (
     <>
@@ -50,7 +47,7 @@ export default function HomeContainer() {
             </Box>
           </Box>
 
-          <Box sx={{ px: 2, my: 3 }}>
+          {/* <Box sx={{ px: 2, my: 3 }}>
             <Box
               sx={{
                 backgroundColor: '#EFEFEF',
@@ -58,21 +55,21 @@ export default function HomeContainer() {
                 borderRadius: 2,
               }}
             />
-          </Box>
+          </Box> */}
 
           <Box sx={{ my: 3 }}>
             <HomeBanner />
           </Box>
 
-          <Box sx={{ px: 2, my: 3 }}>
+          <Box sx={{ px: 2, my: 4 }}>
             <IncomingReservation />
           </Box>
 
-          <Box sx={{ pr: isMobile ? 0 : 2, pl: 2, my: 3 }}>
-            <HomePopularElements />
-          </Box>
-          <Box sx={{ pr: isMobile ? 0 : 2, pl: 2, my: 3 }}>
+          <Box sx={{ pr: 0, pl: 2, my: 4 }}>
             <HomePopularList />
+          </Box>
+          <Box sx={{ pr: 0, pl: 2, my: 4 }}>
+            <HomePopularElements />
           </Box>
 
           <Box sx={{ mt: 3 }}>

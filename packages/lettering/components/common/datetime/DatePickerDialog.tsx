@@ -36,7 +36,9 @@ export default function DatePickerDialog({
   //   selectedDate ? selectedDate.format('mm') : '00',
   // );
 
-  const [selectedTime, setSelectedTime] = useState('');
+  const [selectedTime, setSelectedTime] = useState(
+    selectedDate?.format('HH:mm') || '',
+  );
 
   const disabledCondition = () => {
     if (!isTimeSelectable) return selectedDate ? false : true;
@@ -116,7 +118,6 @@ export default function DatePickerDialog({
                   : day.isBefore(dayjs(), 'day')
               }
               onChange={(newDate) => {
-                console.log(newDate, dayjs(newDate));
                 if (newDate) setSelectedDate(dayjs(newDate));
               }}
               slots={{
@@ -131,7 +132,7 @@ export default function DatePickerDialog({
                       {...props}
                       style={{
                         borderRadius: '10%',
-                        backgroundColor: isSelected ? '#D1BFAD' : 'transparent',
+                        backgroundColor: isSelected ? '#F39E9E' : 'transparent',
                       }}
                     />
                   );
@@ -187,7 +188,7 @@ export default function DatePickerDialog({
               alignItems: 'center',
             }}
           >
-            <Typography fontSize={14} color="common.black">
+            <Typography fontSize={18} color="common.black">
               {selectedDate
                 ? `${selectedDate.format('YYYY년 MM월 DD일')} ${isTimeSelectable ? `${selectedTime}` : ''} `
                 : '날짜를 선택해주세요'}
@@ -221,8 +222,6 @@ export default function DatePickerDialog({
                   const updatedDate = selectedDate
                     .hour(Number(selectedHour))
                     .minute(Number(selectedMinute));
-
-                  console.log(updatedDate);
 
                   setSelectedDate(updatedDate);
                 }

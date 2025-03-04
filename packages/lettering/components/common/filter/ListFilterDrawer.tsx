@@ -18,7 +18,7 @@ export default function ListFilterDrawer({
   setValue,
   items,
 }: ListFilterDrawerProps) {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [selected, setSelected] = useState<number | null>(0);
 
   return (
     <Drawer

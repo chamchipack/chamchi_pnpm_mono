@@ -39,7 +39,8 @@ const ModalWrapper = ({
         <Box
           sx={{
             margin: '0 auto',
-            width: '80%',
+            width: '70%',
+            maxWidth: 400,
             background: (theme) => theme.palette.background.default,
             p: 3,
             borderRadius: 2,

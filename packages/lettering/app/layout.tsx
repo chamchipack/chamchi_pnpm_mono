@@ -31,8 +31,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} ${inter.style.fontFamily}`}
-        style={{ background: '#f7e4e4' }}
+        className={`${inter.className} bg-default ${inter.style.fontFamily}`}
       >
         {/* <body style={{ ...pretendardFont, background: '#f7e4e4' }}> */}
         {children}

@@ -3,6 +3,7 @@ import EmptyBox from '@/components/common/overlay/EmptyBox';
 import { handleNavigation, handleStorage } from '@/config/navigation';
 import { UserInfoAtom } from '@/store/userStore/state';
 import { Box, Typography, CircularProgress } from '@mui/material';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
@@ -23,6 +24,8 @@ export default function AddressSearchList({
   searchQuery = '',
   isLoading = false, // 기본값 false
 }: Props) {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(UserInfoAtom);
   const [selectedAddress, setSelectedAddress] = useState<SearchList>({
@@ -65,7 +68,11 @@ export default function AddressSearchList({
       handleStorage({ data });
       onClose();
 
-      handleNavigation({ path: 'address', status: 'forward' });
+      const isWebview = handleNavigation({
+        path: 'address',
+        status: 'forward',
+      });
+      if (!isWebview) return router.push(`/application/address`);
     } catch {}
   };
 

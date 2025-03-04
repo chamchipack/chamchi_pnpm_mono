@@ -21,19 +21,31 @@ export default function Container() {
     setIsLoading(true); // 🔹 검색 시작 시 로딩 활성화
 
     try {
-      const res = await fetch(`/api/geocode?query=${query}`);
-      const data = await res.json();
-      const { addresses = [] } = data;
+      // const res = await fetch(`/api/geocode?query=${query}`);
+      const response = await fetch(`/api/kakao-geocode?query=${query}`);
+      const list = await response.json();
+      // const data = await res.json();
 
-      const result: SearchList[] = addresses.map(
-        ({ roadAddress = '', x = '', y = '' }) => ({
-          roadAddress,
+      // const { addresses = [] } = data;
+      const { documents = [] } = list;
+
+      const addList: SearchList[] = documents.map(
+        ({ x = '', y = '', address_name = '' }) => ({
+          roadAddress: address_name,
           longitude: x,
           latitude: y,
         }),
       );
 
-      setSearchList(result);
+      // const result: SearchList[] = addresses.map(
+      //   ({ roadAddress = '', x = '', y = '' }) => ({
+      //     roadAddress,
+      //     longitude: x,
+      //     latitude: y,
+      //   }),
+      // );
+
+      setSearchList(addList);
     } catch (error) {
       console.error('API 호출 오류:', error);
     } finally {

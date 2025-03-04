@@ -1,3 +1,4 @@
+'use client';
 import { Box, Typography } from '@mui/material';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { handleNavigation } from '@/config/navigation';
@@ -26,9 +27,16 @@ export default function IncomingReservation() {
 
   return (
     <>
-      <Box sx={{ ...flex }} onClick={handleRouter}>
+      <Box sx={{ ...flex }}>
         <Typography variant="subtitle2">다가오는 예약</Typography>
-        <ArrowForwardIosIcon sx={{ fontSize: 16, color: 'common.black' }} />
+        <ArrowForwardIosIcon
+          sx={{
+            fontSize: 16,
+            color: 'common.black',
+            '&:hover': { cursor: 'pointer' },
+          }}
+          onClick={handleRouter}
+        />
       </Box>
 
       <Box
@@ -40,16 +48,22 @@ export default function IncomingReservation() {
           backgroundImage:
             'linear-gradient(90deg, #FFD3C6, #FFD3C6, #F39E9E, #F39E9E)',
           borderRadius: 1,
+          '&:hover': { cursor: 'pointer' },
         }}
+        onClick={handleRouter}
       >
         <Box
+          component="img"
+          src="/cake1.png"
+          alt="케이크 이미지"
           sx={{
             width: 60,
             height: 60,
             backgroundColor: 'white',
-            borderRadius: 1, // 동그란 이미지 자리
+            borderRadius: '10%', // 동그랗게 만들기
             flexShrink: 0, // 크기 유지
             marginRight: 2,
+            objectFit: 'cover', // 이미지가 꽉 차도록
           }}
         />
 

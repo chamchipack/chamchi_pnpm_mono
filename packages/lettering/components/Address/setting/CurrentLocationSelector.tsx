@@ -1,7 +1,9 @@
+'use client';
 import { Typography, Box, CircularProgress } from '@mui/material';
 import { useState } from 'react';
 import { useLocation } from './useLocation';
 import LocationButton from './LocationButton';
+import useDetectiveWebview from '@/config/utils/webview/useDetectiveWebview';
 
 interface CurrentLocationSelectorProps {
   currentLocation: string | null;
@@ -23,6 +25,10 @@ export default function CurrentLocationSelector({
     handleFindCurrentLocation,
     handleSaveLocation,
   } = useLocation(currentLocation, setCurrentLocation);
+
+  const isWebview = useDetectiveWebview();
+
+  if (!isWebview) return null;
 
   return (
     <>

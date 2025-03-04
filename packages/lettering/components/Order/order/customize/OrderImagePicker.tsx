@@ -3,7 +3,10 @@ import { useState } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-export default function OrderImagePicker() {
+type OrderType = {
+  type: 'custom' | 'select';
+};
+export default function OrderImagePicker({ type }: OrderType) {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +20,36 @@ export default function OrderImagePicker() {
   const handleImageReset = () => {
     setSelectedImage(null);
   };
+
+  if (type === 'select')
+    return (
+      <Box
+        sx={{
+          width: '100%',
+          height: 300,
+          border: '1px solid rgba(0, 0, 0, 0.1)',
+          borderRadius: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+          position: 'relative',
+          overflow: 'hidden',
+          backgroundColor: selectedImage ? 'transparent' : 'grey.100',
+        }}
+      >
+        <Box
+          component="img"
+          src={'/cake1.png'}
+          alt="Selected"
+          sx={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      </Box>
+    );
 
   return (
     <Box

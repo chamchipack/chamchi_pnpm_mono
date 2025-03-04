@@ -1,3 +1,4 @@
+'use client';
 import { isBackdropVisable } from '@/store/otherStore/backdrop/homeBackdrop';
 import { Backdrop, Button, Typography, Box } from '@mui/material';
 import { useEffect, useState } from 'react';

@@ -28,7 +28,7 @@ interface Props {
   };
 }
 
-const items = ['항목 1', '항목 2', '항목 3', '항목 4', '항목 5', '항목 6'];
+const items = ['기본순', '별점 높은 순', '주문 많은 순', '찜 많은 순'];
 
 export default function InputContainer({
   isFilterVisable = false,

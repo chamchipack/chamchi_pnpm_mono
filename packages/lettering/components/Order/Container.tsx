@@ -12,7 +12,13 @@ import { useState } from 'react';
 import { handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
 
-export default function Container() {
+interface Props {
+  sellerId: string;
+  productId: string;
+  type: 'custom' | 'select';
+}
+
+export default function Container({ type }: Props) {
   const router = useRouter();
 
   const [selectedCoupon, setSelectedCoupon] = useState<string | null>(null);
@@ -38,9 +44,11 @@ export default function Container() {
         </Box>
         <Box sx={{ px: 2, mt: 2 }}>
           <Typography fontSize={14} fontWeight={'bold'} sx={{ mb: 1 }}>
-            원하는 케이크 이미지 선택
+            {type === 'select'
+              ? '선택된 케이크 이미지'
+              : '원하는 케이크 이미지 선택'}
           </Typography>
-          <OrderImagePicker />
+          <OrderImagePicker type={type} />
         </Box>
         <Box sx={{ px: 2, mt: 2 }}>
           <CustomizeInputContainer />

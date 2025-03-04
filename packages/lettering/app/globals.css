@@ -4,6 +4,18 @@ body {
   overflow-x: hidden;
 }
 
+/* 기본 배경색 */
+.bg-default {
+  background: #f7e4e4;
+}
+
+/* 500px 이하에서는 흰색 */
+@media (max-width: 500px) {
+  .bg-default {
+    background: white;
+  }
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

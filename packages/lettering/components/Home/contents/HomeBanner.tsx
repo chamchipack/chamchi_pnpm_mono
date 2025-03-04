@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { Box } from '@mui/material';
 import { useSwipeable } from 'react-swipeable';
 
-const banners = ['/note.png', '/banner-test.png', '/cake2.png'];
+const banners = ['/banner-test.png'];
 
 export default function BannerSlider() {
   const [index, setIndex] = useState(0);

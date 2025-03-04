@@ -4,16 +4,16 @@ import PopularSearches from './search/PopularSearches';
 import RecentSearches from './search/RecentSearches';
 
 const keywords = [
-  '아이폰 15',
-  '삼성 갤럭시',
-  '맥북 프로',
-  'PS5',
-  '닌텐도 스위치',
-  '애플워치',
-  '에어팟 프로',
-  '갤럭시 탭',
-  '아이패드',
-  'LG 올레드 TV',
+  '레터링 케이크 주문',
+  '생일 레터링 케이크',
+  '맞춤 제작 케이크',
+  '미니 레터링 케이크',
+  '이벤트 케이크 디자인',
+  '서울 레터링 케이크 맛집',
+  '웨딩 레터링 케이크',
+  '케이크 문구 추천',
+  '캐릭터 레터링 케이크',
+  '심플한 레터링 케이크 디자인',
 ];
 
 export default function Container() {
