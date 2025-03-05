@@ -5,21 +5,20 @@ import AppleLogin from './socialLogin/AppleLogin';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { UserInfoAtom } from '@/store/userStore/state';
-import { handleNavigation } from '@/config/navigation';
+import { handleLogin, handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
+
+type ReturnType = 'webview' | 'web' | 'failed';
 
 export default function LoginContainer() {
   const router = useRouter();
   const [userInfo, setUserInfo] = useRecoilState(UserInfoAtom);
-  const onClickButton = async (type: 'kakao' | 'apple') => {
-    if (type === 'apple') return;
+  const onClickButton = (type: 'kakao' | 'apple'): ReturnType => {
+    if (type === 'apple') return 'failed';
 
-    (window as any).ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        type: 'LOGIN',
-        data: type,
-      }),
-    );
+    const isWebview = handleLogin({ type: 'LOGIN', data: type });
+
+    return isWebview ? 'webview' : 'web';
   };
 
   useEffect(() => {
@@ -32,6 +31,7 @@ export default function LoginContainer() {
           userId: user.userId || '',
           nickname: user.nickname || '',
           profile_image: user.profile_image || '',
+          provider: user?.provider || '',
         }));
         const isWebView = handleNavigation({
           path: 'mypage',

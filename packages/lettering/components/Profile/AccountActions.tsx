@@ -28,6 +28,7 @@ export default function AccountActions() {
         userId: '',
         nickname: '',
         profile_image: '',
+        provider: '',
       }));
       handleClose();
 

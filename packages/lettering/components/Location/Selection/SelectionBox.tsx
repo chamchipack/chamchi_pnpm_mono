@@ -21,7 +21,7 @@ export default function SelectionBox({
     <Box
       sx={{
         position: 'absolute',
-        bottom: 190,
+        bottom: 30,
         left: '50%',
         transform: 'translateX(-50%)',
         width: 'calc(100% - 40px)',

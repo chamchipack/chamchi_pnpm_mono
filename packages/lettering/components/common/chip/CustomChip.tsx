@@ -1,13 +1,14 @@
+import { OrderStatus, OrderStatusEnum } from '@/types/schema/OrderSchema';
 import { Box, Typography } from '@mui/material';
 
 interface CustomChipProps {
-  title: string;
+  status: OrderStatus;
   borderColor?: string;
   textColor?: string;
 }
 
 export default function CustomChip({
-  title = '',
+  status,
   borderColor = 'grey.400',
   textColor = 'text.primary',
 }: CustomChipProps) {
@@ -26,7 +27,7 @@ export default function CustomChip({
       }}
     >
       <Typography fontSize={12} sx={{ color: textColor }}>
-        {title}
+        {OrderStatusEnum[status]}
       </Typography>
     </Box>
   );

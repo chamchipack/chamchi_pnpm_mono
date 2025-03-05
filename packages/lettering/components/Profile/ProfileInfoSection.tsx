@@ -7,7 +7,7 @@ import DrawerForm from '@/components/common/modal/DrawerForm';
 import { handleStorage } from '@/config/navigation';
 
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { UserInfoAtom } from '@/store/userStore/state';
+import { ProviderConvert, UserInfoAtom } from '@/store/userStore/state';
 
 export default function ProfileInfoSection() {
   const [open, setOpen] = useState(false);

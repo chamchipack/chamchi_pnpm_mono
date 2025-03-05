@@ -5,6 +5,7 @@ import { useState } from 'react';
 import ModalWrapper from '../common/modal/ModalWrapper';
 import { formatDate } from '@/config/utils/time/formatDateAndtime';
 import { formatMoney } from '@/config/utils/number/formatMoney';
+import { OrderSchema } from '@/types/schema/OrderSchema';
 
 export default function OrderInformation({
   sellerId,
@@ -32,7 +33,7 @@ export default function OrderInformation({
       </Box>
 
       <Box sx={{ mt: 2 }}>
-        <CustomChip title={status} borderColor="common.main" />
+        <CustomChip status={status} borderColor="common.main" />
       </Box>
 
       <Box sx={{ mt: 2 }}>

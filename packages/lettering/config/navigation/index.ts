@@ -42,6 +42,28 @@ export const handleNavigation = (params: Params): boolean => {
   return false; // WebView가 아니므로 `router.push` 실행해야 함
 };
 
+type LoginParams = {
+  type: 'LOGIN';
+  data: 'kakao' | 'apple';
+};
+
+export const handleLogin = (params: LoginParams): boolean => {
+  if (params.type !== 'LOGIN' || !params?.data) return false;
+
+  if (typeof window !== 'undefined' && (window as any).ReactNativeWebView) {
+    // ✅ WebView 환경에서 네이티브로 메시지 전송
+    (window as any).ReactNativeWebView.postMessage(
+      JSON.stringify({
+        type: 'LOGIN',
+        data: params.data,
+      } as any),
+    );
+    return true; // WebView에서 처리됨
+  }
+
+  return false;
+};
+
 type LocationParams = {
   data: unknown;
 };

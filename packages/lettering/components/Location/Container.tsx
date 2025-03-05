@@ -7,16 +7,23 @@ import CurrentLocationTypo from '../common/location/CurrentLocationTypo';
 export default function Container() {
   return (
     <>
-      <Box sx={{ py: 1.5, height: '100vh' }}>
-        <Box sx={{ px: 2 }}>
+      <Box
+        sx={{
+          overflow: 'hidden',
+          height: '90vh',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box sx={{ px: 2, flexShrink: 0 }}>
           <HeadComponent isLeftButtonVisable={false} title="내 주변" />
         </Box>
 
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ px: 2, mb: 2, flexShrink: 0 }}>
           <CurrentLocationTypo isClickAvailable={false} />
         </Box>
 
-        <Box sx={{ my: 2, height: '100%' }}>
+        <Box sx={{ flex: 1 }}>
           {/* <NaverMap /> */}
           <KakaoMap />
         </Box>

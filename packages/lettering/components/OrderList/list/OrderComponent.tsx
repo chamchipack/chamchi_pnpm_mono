@@ -4,6 +4,7 @@ import { Box, Divider, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { handleNavigation } from '@/config/navigation';
 import { formatDate } from '@/config/utils/time/formatDateAndtime';
+import { OrderSchema } from '@/types/schema/OrderSchema';
 
 export default function OrderComponent({
   _id = '',
@@ -88,7 +89,7 @@ export default function OrderComponent({
         </Box>
 
         <Box>
-          <CustomChip title={status} borderColor="common.main" />
+          <CustomChip status={status} borderColor="common.main" />
         </Box>
       </Box>
 

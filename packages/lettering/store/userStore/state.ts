@@ -21,6 +21,20 @@ type LocationList = {
   latitude: string;
 };
 
+enum Provider {
+  Kakao = 'kakao',
+  Naver = 'naver',
+  Google = 'google',
+  Apple = 'apple',
+}
+
+export enum ProviderConvert {
+  kakao = '카카오',
+  naver = '네이버',
+  google = '구글',
+  apple = '애플',
+}
+
 type UserInformation = {
   userId: string;
   nickname: string;
@@ -29,6 +43,7 @@ type UserInformation = {
   latitude: string;
   profile_image?: string;
   location_list?: LocationList[];
+  provider: Provider | string;
 };
 
 const userDefaultValue = {
@@ -39,6 +54,7 @@ const userDefaultValue = {
   userId: '',
   profile_image: '',
   location_list: [],
+  provider: '',
 };
 
 export const UserInfoAtom = atom<UserInformation>({
