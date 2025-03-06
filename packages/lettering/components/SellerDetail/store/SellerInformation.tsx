@@ -1,30 +1,16 @@
 import BottomDrawer from '@/components/common/modal/DrawerForm';
+import useLockBodyScroll from '@/config/utils/hooks/useLockBodyScroll';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 import { useEffect, useState } from 'react';
 
-export default function SellerInformation() {
+const SellerInformation = () => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => setOpen(false);
 
-  useEffect(() => {
-    if (open) {
-      document.documentElement.style.overflow = 'hidden'; // ✅ html에도 적용
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; // ✅ 모바일 스크롤 방지
-    } else {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
-
-    return () => {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
-  }, [open]);
+  useLockBodyScroll(open);
 
   return (
     <>
@@ -47,4 +33,6 @@ export default function SellerInformation() {
       </BottomDrawer>
     </>
   );
-}
+};
+
+export default React.memo(SellerInformation);

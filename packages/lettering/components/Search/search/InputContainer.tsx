@@ -132,6 +132,7 @@ export default function InputContainer({
       <DatePickerDialog
         open={open}
         onClose={() => setOpen(false)}
+        onOpen={() => setOpen(true)}
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
         isTimeSelectable={isTimeSelectable}
@@ -142,6 +143,7 @@ export default function InputContainer({
         <ListFilterDrawer
           open={openFilter}
           onClose={() => setOpenFilter(false)}
+          onOpen={() => setOpenFilter(true)}
           value={filter}
           setValue={setFilter}
           items={items}

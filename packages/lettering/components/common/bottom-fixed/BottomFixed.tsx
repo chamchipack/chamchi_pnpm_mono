@@ -16,8 +16,9 @@ export default function BottomFixed({
       sx={{
         position: 'fixed',
         bottom: 0,
-        left: 0,
-        width: '100%',
+        left: '50%',
+        transform: 'translateX(-50%)', // ✅ 중앙 정렬
+        minWidth: 500,
         backgroundColor: isDisabled ? 'common.gray' : 'common.main', // ✅ 배경색 지정 (필요하면 변경 가능)
         padding: 2,
         display: 'flex',

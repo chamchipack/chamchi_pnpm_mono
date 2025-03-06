@@ -1,6 +1,5 @@
 import { Box, Typography, Backdrop, Button } from '@mui/material';
 import TopFrame from './top/TopFrame';
-// import SearchInput from './top/SearchInput';
 import IncomingReservation from './contents/IncomingReservation';
 import HomeBanner from './contents/HomeBanner';
 import HomePopularList from './contents/HomePopularList';
@@ -8,19 +7,9 @@ import HomePopularElements from './contents/HomePopularElements';
 import WebViewMessageHandler from './WebViewMessageHandler';
 import WebviewWrapper from '@/config/utils/webview/WebviewWrapper';
 import CompanyInformation from './CompanyInformation';
-import SearchInput from '../common/input/SearchInput';
 import InputContainer from './top/InputContainer';
 
 export default function HomeContainer() {
-  // const [isMobile, setIsMobile] = useState(false);
-
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined') {
-  //     const userAgent = navigator.userAgent.toLowerCase();
-  //     setIsMobile(/iphone|ipad|ipod|android/i.test(userAgent));
-  //   }
-  // }, []);
-
   return (
     <>
       <WebViewMessageHandler />

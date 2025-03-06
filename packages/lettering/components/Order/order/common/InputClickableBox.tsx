@@ -10,6 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import DrawerInputForm from './DrawerInputForm';
+import useLockBodyScroll from '@/config/utils/hooks/useLockBodyScroll';
 
 const coupon = [
   {
@@ -60,23 +61,7 @@ export default function InputClickableBox({
 
   const onClose = () => setOpen(false);
 
-  useEffect(() => {
-    if (open) {
-      document.documentElement.style.overflow = 'hidden'; // ✅ html에도 적용
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; // ✅ 모바일 스크롤 방지
-    } else {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
-
-    return () => {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
-  }, [open]);
+  useLockBodyScroll(open);
 
   return (
     <>
@@ -162,6 +147,7 @@ export default function InputClickableBox({
         onClose={onClose}
         minHeight="40vh"
         maxHeight="60vh"
+        onOpen={() => setOpen(false)}
       >
         {type === 'text' && (
           <DrawerInputForm

@@ -1,11 +1,18 @@
 'use client';
-import { Box, Button, Drawer, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  SwipeableDrawer,
+  Typography,
+} from '@mui/material';
 import { useEffect, useState } from 'react';
 import CheckIcon from '@mui/icons-material/Check';
 
 interface ListFilterDrawerProps {
   open: boolean;
   onClose: () => void;
+  onOpen: () => void;
   value: string;
   setValue: (value: string) => void;
   items: string[];
@@ -14,6 +21,7 @@ interface ListFilterDrawerProps {
 export default function ListFilterDrawer({
   open,
   onClose,
+  onOpen,
   value,
   setValue,
   items,
@@ -21,14 +29,17 @@ export default function ListFilterDrawer({
   const [selected, setSelected] = useState<number | null>(0);
 
   return (
-    <Drawer
+    <SwipeableDrawer
       anchor="bottom" // ✅ 아래에서 위로 올라오는 Drawer
       open={open}
+      onOpen={onOpen}
       onClose={onClose}
       PaperProps={{
         sx: {
           backgroundColor: 'background.default',
           width: '100%',
+          maxWidth: '500px',
+          margin: '0 auto',
           height: '100%',
           borderTopLeftRadius: 12,
           borderTopRightRadius: 12,
@@ -119,6 +130,6 @@ export default function ListFilterDrawer({
           </Box>
         </Box>
       </Box>
-    </Drawer>
+    </SwipeableDrawer>
   );
 }

@@ -22,6 +22,7 @@ export default function ProfileInfoSection() {
   }, [recoilNickname.nickname]);
 
   const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
 
   const handleStorageData = (name: string) => {
     const data = {
@@ -127,6 +128,7 @@ export default function ProfileInfoSection() {
       <DrawerForm
         open={open}
         onClose={handleClose}
+        onOpen={handleOpen}
         minHeight="40vh"
         maxHeight="60vh"
       >

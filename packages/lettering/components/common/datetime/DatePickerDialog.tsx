@@ -1,5 +1,12 @@
 'use client';
-import { Box, Button, Drawer, IconButton, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Drawer,
+  IconButton,
+  SwipeableDrawer,
+  Typography,
+} from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
@@ -11,10 +18,12 @@ import SelectTime from './SelectTime';
 import { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import TimeSelector from './TimeSelector';
+import useLockBodyScroll from '@/config/utils/hooks/useLockBodyScroll';
 
 interface DatePickerDrawerProps {
   open: boolean;
   onClose: () => void;
+  onOpen: () => void;
   selectedDate: Dayjs | null;
   setSelectedDate: (date: Dayjs | null) => void;
   isTimeSelectable: boolean;
@@ -24,6 +33,7 @@ interface DatePickerDrawerProps {
 export default function DatePickerDialog({
   open,
   onClose,
+  onOpen,
   selectedDate,
   setSelectedDate,
   isTimeSelectable,
@@ -46,34 +56,21 @@ export default function DatePickerDialog({
     else return !selectedDate || !selectedTime;
   };
 
-  useEffect(() => {
-    if (open) {
-      document.documentElement.style.overflow = 'hidden'; // ✅ html에도 적용
-      document.body.style.overflow = 'hidden';
-      document.body.style.touchAction = 'none'; // ✅ 모바일 스크롤 방지
-    } else {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    }
-
-    return () => {
-      document.documentElement.style.overflow = '';
-      document.body.style.overflow = '';
-      document.body.style.touchAction = '';
-    };
-  }, [open]);
+  useLockBodyScroll(open);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
-      <Drawer
+      <SwipeableDrawer
         anchor="bottom" // ✅ 아래에서 위로 올라오는 Drawer
         open={open}
         onClose={onClose}
+        onOpen={onOpen}
         PaperProps={{
           sx: {
             backgroundColor: 'background.default',
-            width: '100%',
+            width: '100%', // ✅ 최대한 부모 크기만큼 맞춤
+            maxWidth: '500px',
+            margin: '0 auto',
             height: '100%',
             borderTopLeftRadius: 12,
             borderTopRightRadius: 12,
@@ -82,6 +79,15 @@ export default function DatePickerDialog({
           },
         }}
       >
+        <div
+          style={{
+            width: '50px',
+            height: '5px',
+            backgroundColor: '#ccc',
+            borderRadius: '10px',
+            margin: '8px auto', // 중앙 정렬
+          }}
+        />
         <Box
           sx={{
             display: 'flex',
@@ -232,7 +238,7 @@ export default function DatePickerDialog({
             </Button>
           </Box>
         </Box>
-      </Drawer>
+      </SwipeableDrawer>
     </LocalizationProvider>
   );
 }
