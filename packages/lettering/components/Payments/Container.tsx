@@ -175,8 +175,9 @@ export default function Container() {
                   orderId: 'zLdSlAyyH-2adj7PuLRVN',
                   orderName: '토스 티셔츠 외 2건',
                   successUrl:
-                    window.location.origin + '/application/payments/success',
-                  failUrl: window.location.origin + '/application/payments',
+                    window.location.origin + '/application/payments/failed',
+                  failUrl:
+                    window.location.origin + '/application/payments/failed',
                   customerEmail: 'customer123@gmail.com',
                   customerName: '김토스',
                   customerMobilePhone: '01012341234',

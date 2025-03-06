@@ -8,12 +8,12 @@ export default function PaymentSuccess() {
 
   const handleRouter = () => {
     const isWebView = handleNavigation({
-      path: 'order-complete',
-      status: 'replace',
+      path: 'order-failed',
+      status: 'forward',
     });
 
     if (!isWebView) {
-      router.replace(`/application/order-complete`);
+      router.replace(`/application/order-failed`);
     }
   };
 
@@ -29,5 +29,5 @@ export default function PaymentSuccess() {
     handleRouter();
   }, []);
 
-  return <div>wfwf</div>;
+  return <div></div>;
 }

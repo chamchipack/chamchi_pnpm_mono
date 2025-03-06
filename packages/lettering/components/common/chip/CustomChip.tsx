@@ -26,7 +26,7 @@ export default function CustomChip({
         whiteSpace: 'nowrap', // 글자가 줄바꿈되지 않도록 설정
       }}
     >
-      <Typography fontSize={12} sx={{ color: textColor }}>
+      <Typography fontSize={12} fontWeight={'bold'} sx={{ color: textColor }}>
         {OrderStatusEnum[status]}
       </Typography>
     </Box>

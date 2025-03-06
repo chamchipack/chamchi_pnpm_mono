@@ -46,7 +46,7 @@ export default function RecentSearches() {
   }, [searches]);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', mt: 2 }}>
       {clientSearches.length > 0 ? (
         clientSearches.map(({ query, timestamp }, index) => (
           <Box

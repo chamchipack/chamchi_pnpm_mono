@@ -1,5 +1,4 @@
 'use client';
-import SearchInput from '@/components/Home/top/SearchInput';
 import { handleNavigation } from '@/config/navigation';
 import { Box, IconButton } from '@mui/material';
 import { useRouter } from 'next/navigation';
@@ -13,6 +12,7 @@ import ListFilterChip from '@/components/common/filter/ListFilterChip';
 import ListFilterDrawer from '@/components/common/filter/ListFilterDrawer';
 import { useRecoilState } from 'recoil';
 import { dateSelectionAtom } from '@/store/otherStore/dateSelection';
+import SearchInput from '@/components/common/input/SearchInput';
 
 dayjs.locale('ko');
 
@@ -44,6 +44,8 @@ export default function InputContainer({
     // params.date ? dayjs(params.date) : null,
   );
 
+  const [query, setQuery] = useState(params.query || '');
+
   useEffect(() => {
     if (params.date) {
       setSelectedDate(dayjs(params.date));
@@ -62,6 +64,22 @@ export default function InputContainer({
     if (!isWebView) return router.back();
   };
 
+  const handleSearch = () => {
+    const date = selectedDate?.format(timeFormat) || '';
+    const param = {
+      query,
+      date,
+    };
+
+    let path = `/application/seller-list?${query}&date=${date}`;
+    const isWebView = handleNavigation({
+      path: 'seller-list',
+      status: 'forward',
+      params: JSON.stringify(param),
+    });
+    if (!isWebView) return router.push(path);
+  };
+
   return (
     <>
       <Box
@@ -76,11 +94,19 @@ export default function InputContainer({
             <ArrowBackIosNewIcon fontSize="small" />
           </IconButton>
         )}
-        <SearchInput
+        {/* <SearchInput
           isAllowed={true}
           selectedDate={selectedDate?.format(timeFormat) || ''}
           placeholder={placeholder || ''}
           queryInput={params.query}
+        /> */}
+        <SearchInput
+          isClickAllowed
+          placeholder={placeholder || ''}
+          query={query}
+          setQuery={setQuery}
+          handleSearch={handleSearch}
+          isRecentSearchAllowed
         />
       </Box>
 

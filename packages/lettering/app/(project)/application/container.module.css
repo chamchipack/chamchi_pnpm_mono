@@ -28,6 +28,7 @@
     width: 100%; /* ✅ 모바일에서는 꽉 차도록 */
     border-left: none;
     border-right: none;
+    min-height: '';
   }
   .side-space {
     display: none;

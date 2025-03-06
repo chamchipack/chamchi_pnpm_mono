@@ -27,7 +27,7 @@ export default function KakaoMapForInformation({
     appkey: process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY || '',
   });
 
-  if (error) throw new Error('카카오 API Error');
+  if (error) return null;
 
   if (loading) return <BackDrop text="내 주변가게를 찾는 중입니다..." />;
 

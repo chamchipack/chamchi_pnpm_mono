@@ -30,7 +30,9 @@ export default function Container() {
         </Box>
         <Box sx={{ px: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>
-            <Typography variant="subtitle2">인기 검색어 순위</Typography>
+            <Typography variant="subtitle2" fontSize={16}>
+              인기 검색어 순위
+            </Typography>
           </Box>
 
           <PopularSearches keywords={keywords} />
@@ -40,7 +42,7 @@ export default function Container() {
         </Box>
         <Box sx={{ px: 2, my: 2 }}>
           <Box sx={{ mt: 3, mb: 1 }}>
-            <Typography variant="subtitle2">
+            <Typography variant="subtitle2" fontSize={16}>
               최근 검색어
               <Typography component={'span'} variant="caption" sx={{ ml: 1 }}>
                 최대 10개까지 저장됩니다

@@ -14,8 +14,10 @@ export default function TotalAccountBox({
       sx={{
         position: 'fixed',
         bottom: 0,
-        left: 0,
-        width: '100%',
+        left: '50%',
+        transform: 'translateX(-50%)', // ✅ 중앙 정렬
+        width: 'inherit',
+        maxWidth: 500, // ✅ 부모 크기만큼 제한
         backgroundColor: 'common.main', // ✅ 배경색 지정 (필요하면 변경 가능)
         padding: 2,
         display: 'flex',

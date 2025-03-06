@@ -1,8 +1,7 @@
 'use client';
-import Script from 'next/script';
 import { Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { useEffect, useState } from 'react';
-import { Box, CircularProgress, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import ImageMarker from '../Markers/ImageMarker';
 import CustomNoneSelectedMarker from '../Markers/CustomNoneSelectedMarker';
 import CustomSelectedMarker from '../Markers/CustomSelectedMarker';
@@ -11,6 +10,7 @@ import { useRecoilValue } from 'recoil';
 import { UserInfoAtom } from '@/store/userStore/state';
 import { dummy, generateNearbyMarkers } from './for-test/generateNearbyMarkers';
 import BackDrop from '@/components/common/backdrop/BackDrop';
+import Container from './Topbar/Container';
 
 // const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY}&autoload=false`;
 
@@ -60,7 +60,7 @@ const KakaoMap = () => {
   );
 
   if (error) {
-    throw new Error('카카오 API Error');
+    return null;
   }
 
   if (loading) {
@@ -69,21 +69,8 @@ const KakaoMap = () => {
 
   return (
     <>
-      {/* <Script
-        src={KAKAO_SDK_URL}
-        onLoad={() => {
-          if (kakao) {
-            console.log('있어');
-          } else {
-            console.log('없어');
-          }
-          kakao.maps.load(() => {
-            setLoaded(true);
-          });
-        }}
-      /> */}
-
       <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
+        <Container />
         <Map
           center={{
             lat: initialPosition.latitude,

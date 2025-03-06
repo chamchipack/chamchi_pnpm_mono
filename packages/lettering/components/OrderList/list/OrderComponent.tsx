@@ -45,12 +45,12 @@ export default function OrderComponent({
             alignItems: 'center',
           }}
         >
-          <Typography fontSize={12} color="common.gray">
+          <Typography fontSize={14} color="common.gray">
             {formatDate(createdAt)}
           </Typography>
           <Typography
             onClick={handleRouter}
-            fontSize={12}
+            fontSize={14}
             fontWeight="bold"
             color="common.gray"
             sx={{
@@ -63,13 +63,13 @@ export default function OrderComponent({
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Box sx={{ flex: 4 }}>
-            <Typography fontSize={16} fontWeight="bold">
+            <Typography fontSize={18} fontWeight="bold">
               {sellerId}
             </Typography>
             <Typography fontSize={12} color="text.secondary">
               경기도 성남시 수정구 성남대로 1237번길 8-21
             </Typography>
-            <Typography fontSize={14} color="text.secondary" sx={{ mt: 1 }}>
+            <Typography fontSize={14} color="text.primary" sx={{ mt: 1 }}>
               {productId}
             </Typography>
           </Box>

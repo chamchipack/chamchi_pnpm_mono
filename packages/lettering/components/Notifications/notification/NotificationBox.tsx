@@ -87,24 +87,24 @@ export default function NotificationBox({
         </Box>
 
         <Box sx={{ mt: 2 }}>
-          <Typography fontSize={12} color="text.secondary">
-            {reviewMessage}
+          <Typography fontSize={14} color="common.black">
+            {storeName}
           </Typography>
         </Box>
 
         <Box sx={{ mt: 1 }}>
-          <Typography fontSize={12} color="common.black">
-            {storeName}
-          </Typography>
           <Typography fontSize={12} color="text.secondary">
+            {reviewMessage}
+          </Typography>
+          {/* <Typography fontSize={12} color="text.secondary">
             {storeAddress}
           </Typography>
           <Typography fontSize={12} color="text.secondary">
             {productName}
-          </Typography>
+          </Typography> */}
         </Box>
 
-        <Box sx={{ mt: 1 }}>
+        <Box sx={{ mt: 3 }}>
           <Button
             sx={{
               width: '100%',

@@ -69,10 +69,10 @@ export default function AddressSearchList({
       onClose();
 
       const isWebview = handleNavigation({
-        path: 'address',
-        status: 'forward',
+        path: '',
+        status: 'back',
       });
-      if (!isWebview) return router.push(`/application/address`);
+      if (!isWebview) return router.back();
     } catch {}
   };
 

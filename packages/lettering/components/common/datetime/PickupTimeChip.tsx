@@ -33,7 +33,7 @@ export default function PickupTimeChip({
         padding: '0 12px',
         cursor: 'pointer',
         '&:hover': {
-          backgroundColor: 'common.mainhover',
+          backgroundColor: 'common.light',
           opacity: 0.9,
         },
       }}

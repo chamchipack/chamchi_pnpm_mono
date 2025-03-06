@@ -24,7 +24,7 @@ export default function OrderInformation({
   return (
     <>
       <Box sx={{}}>
-        <Typography fontSize={16} fontWeight="bold">
+        <Typography fontSize={18} fontWeight="bold">
           {sellerId}
         </Typography>
         <Typography fontSize={12} color="text.secondary">
@@ -39,45 +39,45 @@ export default function OrderInformation({
       <Box sx={{ mt: 2 }}>
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
-            <Typography fontSize={12}>주문일시</Typography>
+            <Typography fontSize={14}>주문일시</Typography>
           </Box>
-          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+          <Typography fontSize={14} sx={{ color: 'common.gray' }}>
             {formatDate(createdAt)}
           </Typography>
         </Box>
 
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
-            <Typography fontSize={12}>완료일시</Typography>
+            <Typography fontSize={14}>완료일시</Typography>
           </Box>
-          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+          <Typography fontSize={14} sx={{ color: 'common.gray' }}>
             {formatDate(bookingDate)}
           </Typography>
         </Box>
 
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
-            <Typography fontSize={12}>주문번호</Typography>
+            <Typography fontSize={14}>주문번호</Typography>
           </Box>
-          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+          <Typography fontSize={14} sx={{ color: 'common.gray' }}>
             {orderNumber}
           </Typography>
         </Box>
 
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
-            <Typography fontSize={12}>주문자 이름</Typography>
+            <Typography fontSize={14}>주문자 이름</Typography>
           </Box>
-          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+          <Typography fontSize={14} sx={{ color: 'common.gray' }}>
             {userId}
           </Typography>
         </Box>
 
         <Box sx={{ ...flex1 }}>
           <Box sx={{ minWidth: 130 }}>
-            <Typography fontSize={12}>주문자 연락처</Typography>
+            <Typography fontSize={14}>주문자 연락처</Typography>
           </Box>
-          <Typography fontSize={12} sx={{ color: 'common.gray' }}>
+          <Typography fontSize={14} sx={{ color: 'common.gray' }}>
             {phoneNumber}
           </Typography>
         </Box>
@@ -89,22 +89,22 @@ export default function OrderInformation({
             ...flex2,
           }}
         >
-          <Typography fontSize={14} fontWeight={'bold'}>
+          <Typography fontSize={16} fontWeight={'bold'}>
             결제 금액
           </Typography>
-          <Typography fontSize={14}>{formatMoney(totalPrice)}원</Typography>
+          <Typography fontSize={16}>{formatMoney(totalPrice)}원</Typography>
         </Box>
 
         <Box
           sx={{
             ...flex2,
-            mt: 1,
+            mt: 2,
           }}
         >
-          <Typography fontSize={14} fontWeight={'bold'}>
+          <Typography fontSize={16} fontWeight={'bold'}>
             결제 방법
           </Typography>
-          <Typography fontSize={14}>{paymentMethod}</Typography>
+          <Typography fontSize={16}>{paymentMethod}</Typography>
         </Box>
       </Box>
 
@@ -163,6 +163,7 @@ const flex1 = {
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'start',
+  mt: 0.5,
 };
 
 const flex2 = {

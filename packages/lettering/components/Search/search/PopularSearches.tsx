@@ -52,6 +52,7 @@ export default function PopularSearches({
         width: '100%',
         mx: 'auto',
         p: 1,
+        mt: 1,
       }}
     >
       {/* 왼쪽 리스트 (1~5위) */}

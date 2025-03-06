@@ -15,17 +15,18 @@ export default function Container() {
           flexDirection: 'column',
         }}
       >
-        <Box sx={{ px: 2, flexShrink: 0 }}>
+        {/* <Box sx={{ px: 2, flexShrink: 0 }}>
           <HeadComponent isLeftButtonVisable={false} title="내 주변" />
-        </Box>
+        </Box> */}
 
-        <Box sx={{ px: 2, mb: 2, flexShrink: 0 }}>
+        {/* <Box sx={{ px: 2, mb: 2, flexShrink: 0 }}>
           <CurrentLocationTypo isClickAvailable={false} />
-        </Box>
+        </Box> */}
 
         <Box sx={{ flex: 1 }}>
           {/* <NaverMap /> */}
           <KakaoMap />
+          {/* <Box sx={{ height: '100%', background: 'gray' }} /> */}
         </Box>
       </Box>
     </>
