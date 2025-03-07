@@ -1,5 +1,3 @@
-// ✅ Order 테이블
-
 export enum OrderStatusEnum {
   pending = '주문 대기중',
   inProgress = '만드는 중',

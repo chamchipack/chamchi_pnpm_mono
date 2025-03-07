@@ -1,45 +1,46 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
 import { Box, Typography, IconButton } from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import PersonIcon from '@mui/icons-material/Person';
+import { Home, Search, MapPin, ClipboardList, User } from 'lucide-react'; // ✅ Lucide 아이콘 import
 import { handleNavigation } from '@/config/navigation';
 import { useEffect, useState } from 'react';
 
 const NAV_ITEMS = [
-  { label: '메인', icon: <HomeIcon />, key: 'home', path: '/application/home' },
+  {
+    label: '메인',
+    icon: <Home size={32} />,
+    key: 'home',
+    path: '/application/home',
+  }, // ✅ 아이콘 크기 32px로 설정
   {
     label: '검색',
-    icon: <SearchIcon />,
+    icon: <Search size={32} />,
     key: 'search',
     path: '/application/search',
   },
   {
     label: '주변',
-    icon: <LocationOnIcon />,
+    icon: <MapPin size={32} />,
     key: 'location',
     path: '/application/location',
   },
   {
     label: '주문내역',
-    icon: <ReceiptLongIcon />,
+    icon: <ClipboardList size={32} />,
     key: 'order-list',
     path: '/application/order-list',
   },
   {
     label: '마이',
-    icon: <PersonIcon />,
+    icon: <User size={32} />,
     key: 'mypage',
     path: '/application/mypage',
   },
 ];
 
 export default function NavigationBar() {
-  const pathname = usePathname(); // 현재 경로 가져오기
-  const router = useRouter(); // Next.js 라우터
+  const pathname = usePathname();
+  const router = useRouter();
   const [isWebView, setIsWebView] = useState(true);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function NavigationBar() {
   };
 
   const SHOW_PAGES = NAV_ITEMS.map((item) => item.path);
-  if (!SHOW_PAGES.includes(pathname)) return null; // 특정 페이지에서만 표시
+  if (!SHOW_PAGES.includes(pathname)) return null;
 
   if (isWebView) return null;
 
@@ -69,9 +70,9 @@ export default function NavigationBar() {
         position: 'fixed',
         bottom: 0,
         left: '50%',
-        transform: 'translateX(-50%)', // ✅ 중앙 정렬
-        width: 'inherit', // ✅ 부모의 너비를 따름
-        maxWidth: 500, // ✅ 부모 크기만큼 제한
+        transform: 'translateX(-50%)',
+        width: 'inherit',
+        maxWidth: 500,
         px: 4,
         pb: 4,
         pt: 3,
@@ -82,7 +83,6 @@ export default function NavigationBar() {
         height: 88,
         backgroundColor: 'white',
         borderTop: '1px solid #d9dbdb',
-        // boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
       }}
     >
       {NAV_ITEMS.map((item) => {
@@ -91,23 +91,23 @@ export default function NavigationBar() {
         return (
           <Box
             key={item.key}
-            onClick={() => handleRouter(item.key)} // ✅ 클릭 시 페이지 이동
+            onClick={() => handleRouter(item.path)} // ✅ 클릭 시 path로 이동
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               cursor: 'pointer',
-              color: isActive ? '#F39E9E' : 'common.gray',
+              color: isActive ? '#964F66' : 'common.gray',
             }}
           >
             <IconButton
               sx={{
-                width: 24,
-                height: 24,
-                color: isActive ? '#F39E9E' : 'common.gray',
+                width: 40, // ✅ 아이콘 크기와 맞춰서 버튼 크기도 조정
+                height: 40,
+                color: isActive ? '#964F66' : 'common.gray',
               }}
             >
-              {item.icon}
+              {item.icon} {/* ✅ Lucide 아이콘 적용 */}
             </IconButton>
             <Typography fontSize={12} fontWeight={isActive ? 'bold' : 'normal'}>
               {item.label}

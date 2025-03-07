@@ -64,40 +64,6 @@ export function useLocation(
     }
   });
 
-  // useEffect(() => {
-  //   const handleMessage = (event: MessageEvent<string>) => {
-  //     try {
-  //       const position = JSON.parse(event.data);
-  //       if (!position?.longitude || !position?.latitude) {
-  //         setErrorMessage('위치 정보를 가져올 수 없습니다.');
-  //         setIsError(true);
-  //       }
-
-  //       setCurrentPosition({
-  //         longitude: position.longitude,
-  //         latitude: position.latitude,
-  //       });
-
-  //       setTimeout(() => callApi(position.longitude, position.latitude), 1000);
-  //     } catch (error) {
-  //       (window as any).ReactNativeWebView?.postMessage(
-  //         JSON.stringify({
-  //           type: 'ETC',
-  //           data: 'errr',
-  //         }),
-  //       );
-  //       setErrorMessage('위치 정보를 가져올 수 없습니다.');
-  //       console.error('❌ 메시지 처리 오류:', error);
-  //       setIsError(true);
-  //       setErrorMessage('위치 데이터를 처리하는 중 오류가 발생했습니다.');
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   window.addEventListener('message', handleMessage);
-  //   return () => window.removeEventListener('message', handleMessage);
-  // }, []);
-
   const callApi = async (lng: number, lat: number) => {
     try {
       const response = await fetch(
@@ -111,22 +77,7 @@ export function useLocation(
       const { documents = [] } = result;
       const { address = {} } = documents[0];
 
-      // const res = await fetch(`/api/reverse-geocode?lat=${lat}&lon=${lng}`);
-      // const data = await res.json();
-
-      // if (!res.ok || data.error)
-      //   throw new Error(data.error || '주소 변환 실패');
-
-      // const array = data?.results || [];
-
       if (documents.length) {
-        // const { region = {} } =
-        //   array.find(({ name = '' }) => name === 'roadaddr') || {};
-        // const a = region['area1']?.name || '';
-        // const b = region['area2']?.name || '';
-        // const c = region['area3']?.name || '';
-        // const rs = `${a} ${b} ${c}`;
-
         const depth1 = address['region_1depth_name'] || '';
         const depth2 = address['region_2depth_name'] || '';
         const depth3 = address['region_3depth_name'] || '';

@@ -1,4 +1,6 @@
-export const orderlist: OrderSchema[] = [
+import { StructuredDataSchemas } from '@/types/schema/default';
+
+export const orderlist: StructuredDataSchemas<string>['order'][] = [
   {
     _id: 'order1',
     orderNumber: 100001,
@@ -64,7 +66,7 @@ export const orderlist: OrderSchema[] = [
     discount: 0,
     totalPrice: 55000,
     paymentMethod: 'cash',
-    couponId: null,
+    couponId: '',
     bookingDate: new Date(),
     storeRequest: 'Request 3',
     createdAt: (() => {

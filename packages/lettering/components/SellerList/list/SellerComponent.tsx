@@ -3,13 +3,17 @@ import StarRatingscore from '@/components/common/rating/StarRatingscore';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
+import {
+  DataStructureKey,
+  StructuredDataSchemas,
+} from '@/types/schema/default';
 
 export default function SellerComponent({
   _id,
   marketName,
   location,
   images,
-}: SellerSchema) {
+}: StructuredDataSchemas[DataStructureKey.seller]) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {

@@ -5,12 +5,13 @@ import SellerContainer from './store/SellerContainer';
 import SellerTabs from './store/SelleterTabs';
 import SellerItemPictures from './store/SellerItemPictures';
 import SellerInfo from './store/SellerInfo';
+import { StructuredDataSchemas } from '@/types/schema/default';
 
 interface Props {
   sellerId: string;
 }
 
-const data: SellerSchema = {
+const data: StructuredDataSchemas['seller'] = {
   _id: 'fawdhjLKwdrwe1',
   marketName: '가게이름1',
   images: [

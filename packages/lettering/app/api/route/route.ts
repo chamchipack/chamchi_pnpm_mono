@@ -1,3 +1,5 @@
+import { NextRequest, NextResponse } from 'next/server';
+
 import {
   DataStructureKey,
   StructuredDataSchemas,
@@ -9,6 +11,8 @@ const generateDummySeller = (
   _id: `seller_${index}`,
   marketName: `가게이름${index}`,
   images: [
+    'https://placehold.co/600x400',
+    'https://placehold.co/600x400',
     'https://placehold.co/600x400',
     'https://placehold.co/600x400',
     'https://placehold.co/600x400',
@@ -36,3 +40,35 @@ const generateDummySeller = (
 
 export const sellerList: StructuredDataSchemas[DataStructureKey.seller][] =
   Array.from({ length: 30 }, (_, i) => generateDummySeller(i + 1));
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const pageSize = parseInt(searchParams.get('pageSize') || '10', 10);
+
+  const totalItems = sellerList.length;
+  const totalPage = Math.ceil(totalItems / pageSize);
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedItems = sellerList.slice(startIndex, endIndex);
+
+  const response = {
+    status: 200,
+    message: '요청이 성공적으로 처리되었습니다.',
+    data: {
+      items: paginatedItems,
+      page: {
+        currentPage: page,
+        pageSize,
+        totalPage,
+        totalCount: totalItems,
+      },
+    },
+  };
+
+  try {
+    return NextResponse.json(response);
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}

@@ -22,6 +22,7 @@ export default function Container() {
             isTimeSelectable={false}
             placeholder="가게 이름이나 상품명을 입력해보세요!"
             isTimeForPast={true}
+            isClickAllowed
           />
         </Box>
         <Box sx={{ px: 2 }}>
