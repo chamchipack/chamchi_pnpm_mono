@@ -39,16 +39,30 @@ export default function TopFrame() {
         sx={{
           position: 'relative',
           display: 'inline-block',
+          cursor: 'pointer',
+          padding: 0,
+          width: 24, // ✅ 부모 Box의 크기 고정
+          height: 24,
+          overflow: 'hidden', // ✅ 내부 이미지가 넘칠 경우 숨김 처리
         }}
         onClick={() => handleRouter('notification', true)}
       >
-        <NotificationsIcon
+        {/* ✅ alram.png 이미지 크기 조절 */}
+        <Box
+          component="img"
+          src="/alram.png"
+          alt="알람 아이콘"
           sx={{
-            fontSize: 24,
-            color: 'common.black',
-            cursor: 'pointer',
+            width: 48, // ✅ 이미지 크기는 48px
+            height: 48,
+            objectFit: 'contain',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)', // ✅ 부모 중앙 정렬
           }}
         />
+        {/* ✅ 기존 CircleIcon 유지 */}
         <CircleIcon
           sx={{
             fontSize: 10,

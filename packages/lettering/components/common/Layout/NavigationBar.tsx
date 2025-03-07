@@ -81,7 +81,8 @@ export default function NavigationBar() {
         zIndex: 100,
         height: 88,
         backgroundColor: 'white',
-        boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
+        borderTop: '1px solid #d9dbdb',
+        // boxShadow: '0 -2px 4px rgba(0, 0, 0, 0.1)',
       }}
     >
       {NAV_ITEMS.map((item) => {

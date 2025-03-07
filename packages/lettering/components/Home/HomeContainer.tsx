@@ -21,7 +21,7 @@ export default function HomeContainer() {
               backgroundColor: 'common.light',
               borderBottomRightRadius: 20,
               borderBottomLeftRadius: 20,
-              boxShadow: 5,
+              // boxShadow: 5,
             }}
           >
             <Box sx={{ px: 2 }}>
