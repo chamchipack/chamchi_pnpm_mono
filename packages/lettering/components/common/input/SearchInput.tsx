@@ -39,35 +39,13 @@ export default function SearchInput({
       if (query.trim()) {
         if (isRecentSearchAllowed) addSearch(query);
         handleSearch(query);
-
-        //     const param = {
-        //       query,
-        //       date: selectedDate,
-        //     };
-
-        //     let path = `/application/seller-list?${query}&date=${selectedDate}`;
-        //     const isWebView = handleNavigation({
-        //       path: 'seller-list',
-        //       status: 'forward',
-        //       params: JSON.stringify(param),
-        //     });
-        //     if (!isWebView) return router.push(path);
       }
     }
   };
 
   const handleRouter = () => {
     if (isClickAllowed) return;
-
     handleClickRouter();
-
-    // let path = '/application/search';
-    // const isWebView = handleNavigation({
-    //   path: 'search',
-    //   status: 'forward',
-    // });
-
-    // if (!isWebView) return router.push(path);
   };
 
   return (

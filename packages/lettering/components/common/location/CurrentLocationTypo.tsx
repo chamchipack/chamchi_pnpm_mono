@@ -27,12 +27,13 @@ export default function CurrentLocationTypo({
 
   const handleRouter = (path: string) => {
     if (!isClickAvailable) return;
-    const isWebView = handleNavigation({
-      path,
-      status: 'forward',
-    });
+    // const isWebView = handleNavigation({
+    //   path,
+    //   status: 'forward',
+    // });
 
-    if (!isWebView) return router.push(`/application/${path}`);
+    // if (!isWebView)
+    return router.push(`/application/${path}`);
   };
 
   return (

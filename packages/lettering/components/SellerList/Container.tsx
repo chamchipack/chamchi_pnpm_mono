@@ -24,6 +24,7 @@ export default function Container({ params }: Props) {
             isBackwardVisable={true}
             isTimeSelectable={true}
             params={params}
+            isClickAllowed={false}
           />
           <CurrentLocationTypo isClickAvailable />
         </Box>

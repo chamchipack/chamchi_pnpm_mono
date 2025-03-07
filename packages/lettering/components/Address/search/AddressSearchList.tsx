@@ -68,11 +68,12 @@ export default function AddressSearchList({
       handleStorage({ data });
       onClose();
 
-      const isWebview = handleNavigation({
-        path: '',
-        status: 'back',
-      });
-      if (!isWebview) return router.back();
+      // const isWebview = handleNavigation({
+      //   path: '',
+      //   status: 'back',
+      // });
+      // if (!isWebview)
+      return router.back();
     } catch {}
   };
 

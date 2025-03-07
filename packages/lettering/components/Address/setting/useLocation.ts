@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { handleFindLocation, handleStorage } from '@/config/navigation';
 import { useRecoilState } from 'recoil';
 import { UserInfoAtom } from '@/store/userStore/state';
+import useReceiveWebviewMessage from '@/config/utils/hooks/useReceiveWebviewMessage';
 
 type AddressListType = {
   address: string;
@@ -39,39 +40,63 @@ export function useLocation(
     }
   };
 
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent<string>) => {
-      try {
-        const position = JSON.parse(event.data);
-        if (!position?.longitude || !position?.latitude) {
-          setErrorMessage('위치 정보를 가져올 수 없습니다.');
-          setIsError(true);
-        }
+  useReceiveWebviewMessage((data, event) => {
+    try {
+      const position = data;
 
-        setCurrentPosition({
-          longitude: position.longitude,
-          latitude: position.latitude,
-        });
-
-        setTimeout(() => callApi(position.longitude, position.latitude), 1000);
-      } catch (error) {
-        (window as any).ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            type: 'ETC',
-            data: 'errr',
-          }),
-        );
+      if (!position?.longitude || !position?.latitude) {
         setErrorMessage('위치 정보를 가져올 수 없습니다.');
-        console.error('❌ 메시지 처리 오류:', error);
         setIsError(true);
-        setErrorMessage('위치 데이터를 처리하는 중 오류가 발생했습니다.');
-        setIsLoading(false);
       }
-    };
 
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
+      setCurrentPosition({
+        longitude: position.longitude,
+        latitude: position.latitude,
+      });
+
+      setTimeout(() => callApi(position.longitude, position.latitude), 1000);
+    } catch (e) {
+      setErrorMessage('위치 정보를 가져올 수 없습니다.');
+      console.error('❌ 메시지 처리 오류:', e);
+      setIsError(true);
+      setErrorMessage('위치 데이터를 처리하는 중 오류가 발생했습니다.');
+      setIsLoading(false);
+    }
+  });
+
+  // useEffect(() => {
+  //   const handleMessage = (event: MessageEvent<string>) => {
+  //     try {
+  //       const position = JSON.parse(event.data);
+  //       if (!position?.longitude || !position?.latitude) {
+  //         setErrorMessage('위치 정보를 가져올 수 없습니다.');
+  //         setIsError(true);
+  //       }
+
+  //       setCurrentPosition({
+  //         longitude: position.longitude,
+  //         latitude: position.latitude,
+  //       });
+
+  //       setTimeout(() => callApi(position.longitude, position.latitude), 1000);
+  //     } catch (error) {
+  //       (window as any).ReactNativeWebView?.postMessage(
+  //         JSON.stringify({
+  //           type: 'ETC',
+  //           data: 'errr',
+  //         }),
+  //       );
+  //       setErrorMessage('위치 정보를 가져올 수 없습니다.');
+  //       console.error('❌ 메시지 처리 오류:', error);
+  //       setIsError(true);
+  //       setErrorMessage('위치 데이터를 처리하는 중 오류가 발생했습니다.');
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   window.addEventListener('message', handleMessage);
+  //   return () => window.removeEventListener('message', handleMessage);
+  // }, []);
 
   const callApi = async (lng: number, lat: number) => {
     try {

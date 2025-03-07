@@ -22,6 +22,7 @@ interface Props {
   isTimeSelectable: boolean;
   placeholder?: string;
   isTimeForPast?: boolean;
+  isClickAllowed: boolean;
   params?: {
     query: string;
     date: Dayjs | null;
@@ -37,6 +38,7 @@ export default function InputContainer({
   placeholder = '',
   isTimeForPast = false,
   params = { query: '', date: null },
+  isClickAllowed = false,
 }: Props) {
   const router = useRouter();
   const [selectedDate, setSelectedDate] = useRecoilState<Dayjs | null>(
@@ -64,6 +66,18 @@ export default function InputContainer({
     if (!isWebView) return router.back();
   };
 
+  const handleClickRouter = () => {
+    if (isClickAllowed) return;
+
+    let path = `/application/search`;
+
+    const isWebView = handleNavigation({
+      path: 'search',
+      status: 'replace',
+    });
+    if (!isWebView) return router.replace(path);
+  };
+
   const handleSearch = () => {
     const date = selectedDate?.format(timeFormat) || '';
     const param = {
@@ -71,7 +85,9 @@ export default function InputContainer({
       date,
     };
 
-    let path = `/application/seller-list?${query}&date=${date}`;
+    const queryString = new URLSearchParams(param).toString(); // 객체 → 쿼리 스트링 변환
+    const path = `/application/seller-list?${queryString}`;
+
     const isWebView = handleNavigation({
       path: 'seller-list',
       status: 'forward',
@@ -101,11 +117,12 @@ export default function InputContainer({
           queryInput={params.query}
         /> */}
         <SearchInput
-          isClickAllowed
+          isClickAllowed={isClickAllowed}
           placeholder={placeholder || ''}
           query={query}
           setQuery={setQuery}
           handleSearch={handleSearch}
+          handleClickRouter={handleClickRouter}
           isRecentSearchAllowed
         />
       </Box>

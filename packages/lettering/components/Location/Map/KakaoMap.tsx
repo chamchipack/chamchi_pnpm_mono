@@ -60,7 +60,7 @@ const KakaoMap = () => {
   );
 
   if (error) {
-    return null;
+    return <Container />;
   }
 
   if (loading) {

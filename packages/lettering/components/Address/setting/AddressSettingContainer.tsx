@@ -58,12 +58,13 @@ export default function AddressSettingContainer() {
 
   const handleRouter = () => {
     let path = `/application/address/search`;
-    const isWebView = handleNavigation({
-      path: 'address/search',
-      status: 'forward',
-    });
+    // const isWebView = handleNavigation({
+    //   path: 'address/search',
+    //   status: 'forward',
+    // });
 
-    if (!isWebView) return router.push(path);
+    // if (!isWebView)
+    return router.push(path);
   };
 
   const onChangeEditMode = () => {
@@ -91,7 +92,7 @@ export default function AddressSettingContainer() {
     } catch {}
 
     setTimeout(() => {
-      handleNavigation({ path: 'home', status: 'forward' });
+      // handleNavigation({ path: 'home', status: 'forward' });
       setIsLoading(false);
     }, 1000);
   };
@@ -106,6 +107,7 @@ export default function AddressSettingContainer() {
         // isRoutingReplace
         isRightButtonVisable={false}
         rightButtonIcon={editMode ? <ArrowBackIosNewIcon /> : <EditIcon />}
+        isNativeRoute={false}
       />
 
       {editMode ? (

@@ -26,6 +26,7 @@ export default function Container() {
             isBackwardVisable={false}
             isTimeSelectable={true}
             placeholder="가게 이름이나 주소를 입력해보세요!"
+            isClickAllowed
           />
         </Box>
         <Box sx={{ px: 2 }}>

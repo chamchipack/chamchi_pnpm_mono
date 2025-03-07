@@ -7,6 +7,7 @@ import { useRecoilState } from 'recoil';
 import { UserInfoAtom } from '@/store/userStore/state';
 import { handleLogin, handleNavigation } from '@/config/navigation';
 import { useRouter } from 'next/navigation';
+import useReceiveWebviewMessage from '@/config/utils/hooks/useReceiveWebviewMessage';
 
 type ReturnType = 'webview' | 'web' | 'failed';
 
@@ -21,37 +22,23 @@ export default function LoginContainer() {
     return isWebview ? 'webview' : 'web';
   };
 
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent<string>) => {
-      try {
-        // console.log('📩 WebView에서 받은 메시지:', event.data);
-        const user = JSON.parse(event.data);
-        setUserInfo((prev) => ({
-          ...prev,
-          userId: user.userId || '',
-          nickname: user.nickname || '',
-          profile_image: user.profile_image || '',
-          provider: user?.provider || '',
-        }));
-        const isWebView = handleNavigation({
-          path: 'mypage',
-          status: 'forward',
-        });
+  useReceiveWebviewMessage((data, event) => {
+    try {
+      setUserInfo((prev) => ({
+        ...prev,
+        userId: data.userId || '',
+        nickname: data.nickname || '',
+        profile_image: data.profile_image || '',
+        provider: data?.provider || '',
+      }));
+      const isWebView = handleNavigation({
+        path: 'mypage',
+        status: 'forward',
+      });
 
-        if (!isWebView) router.push('/application/mypage');
-      } catch (error) {
-        (window as any).ReactNativeWebView?.postMessage(
-          JSON.stringify({
-            type: 'ETC',
-            data: 'error',
-          }),
-        );
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-    return () => window.removeEventListener('message', handleMessage);
-  }, []);
+      if (!isWebView) router.push('/application/mypage');
+    } catch {}
+  });
 
   return (
     <Box

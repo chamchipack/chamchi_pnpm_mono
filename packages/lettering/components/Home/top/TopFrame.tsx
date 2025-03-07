@@ -9,7 +9,9 @@ import UserAddressButton from './address/UserAddressButton';
 export default function TopFrame() {
   const router = useRouter(); // ✅ Next.js Router 사용
 
-  const handleRouter = (path: string) => {
+  const handleRouter = (path: string, forWebview: boolean) => {
+    if (!forWebview) return router.push(`/application/${path}`);
+
     const isWebView = handleNavigation({
       path,
       status: 'forward',
@@ -28,7 +30,7 @@ export default function TopFrame() {
     >
       <Box
         sx={{ ...flex, '&:hover': { cursor: 'pointer' } }}
-        onClick={() => handleRouter('address')}
+        onClick={() => handleRouter('address', false)}
       >
         <UserAddressButton />
       </Box>
@@ -38,7 +40,7 @@ export default function TopFrame() {
           position: 'relative',
           display: 'inline-block',
         }}
-        onClick={() => handleRouter('notification')}
+        onClick={() => handleRouter('notification', true)}
       >
         <NotificationsIcon
           sx={{

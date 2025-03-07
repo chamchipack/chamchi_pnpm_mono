@@ -15,6 +15,7 @@ interface Props {
   isRightButtonVisable?: boolean;
   rightButtonIcon?: ReactNode; // ✅ 아이콘을 prop으로 받음
   onRightButtonClick?: () => void; // ✅ 우측 버튼 클릭 핸들러
+  isNativeRoute?: boolean;
 }
 
 export default function HeadComponent({
@@ -25,11 +26,17 @@ export default function HeadComponent({
   isRightButtonVisable = false,
   rightButtonIcon = <SettingsIcon fontSize="small" />, // 기본값
   onRightButtonClick,
+  isNativeRoute = true,
 }: Props) {
   const router = useRouter(); // ✅ Next.js Router 사용
 
   const handleRouter = () => {
     if (!isLeftButtonVisable) return;
+
+    if (!isNativeRoute)
+      return isRoutingReplace
+        ? router.push(`/application/${path}`)
+        : router.back();
 
     const isWebView = handleNavigation({
       path: isRoutingReplace ? path : '',
