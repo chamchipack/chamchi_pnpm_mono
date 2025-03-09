@@ -28,7 +28,7 @@ export default function ProfileSection() {
       });
     }
     setLoading('done');
-  }, [recoilUserInfo.nickname]);
+  }, [recoilUserInfo]);
 
   const handleRouter = (path: string) => {
     if (!path) return;

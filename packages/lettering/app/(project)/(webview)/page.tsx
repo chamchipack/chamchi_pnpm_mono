@@ -1,3 +1,4 @@
+import ErrorPage from '@/components/Error/ErrorPage';
 import { Metadata } from 'next';
 import React from 'react';
 
@@ -16,7 +17,7 @@ interface Props {
   };
 }
 const Page = ({ searchParams }: Props) => {
-  return <div>ssssss</div>;
+  return <ErrorPage />;
 };
 
 export default Page;

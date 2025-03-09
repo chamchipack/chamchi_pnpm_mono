@@ -11,6 +11,7 @@ import { UserInfoAtom } from '@/store/userStore/state';
 import { dummy, generateNearbyMarkers } from './for-test/generateNearbyMarkers';
 import BackDrop from '@/components/common/backdrop/BackDrop';
 import Container from './Topbar/Container';
+import ErrorPage from '@/components/Error/ErrorPage';
 
 // const KAKAO_SDK_URL = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_APP_KEY}&autoload=false`;
 
@@ -60,7 +61,24 @@ const KakaoMap = () => {
   );
 
   if (error) {
-    return <Container />;
+    return (
+      <ErrorPage title="지도정보 가져오기에 실패했습니다." />
+      // <Box
+      //   sx={{
+      //     position: 'relative',
+      //     width: '100%',
+      //     height: '100%',
+      //     background: 'gray',
+      //   }}
+      // >
+      //   <Container />
+      //   <SelectionBox
+      //     selectedMarker={selectedMarker}
+      //     onClose={() => setSelectedMarker(null)}
+      //     markerName={selectedMarkerData?.name}
+      //   />
+      // </Box>
+    );
   }
 
   if (loading) {
@@ -118,13 +136,13 @@ const KakaoMap = () => {
         </Map>
 
         {/* 선택된 마커가 있으면 하단에 Box 표시 */}
-        {selectedMarker && (
-          <SelectionBox
-            selectedMarker={selectedMarker}
-            onClose={() => setSelectedMarker(null)}
-            markerName={selectedMarkerData?.name}
-          />
-        )}
+        {/* {selectedMarker && ( */}
+        <SelectionBox
+          selectedMarker={selectedMarker}
+          onClose={() => setSelectedMarker(null)}
+          markerName={selectedMarkerData?.name}
+        />
+        {/* )} */}
       </Box>
     </>
   );

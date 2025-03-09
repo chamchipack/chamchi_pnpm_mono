@@ -30,10 +30,12 @@ const KakaoLoginCallback = () => {
               userId: id.toString() || '',
               nickname: kakao_account?.profile?.nickname || '',
               profile_image: kakao_account?.profile?.profile_image_url || '',
-              provider: Provider.Kakao,
+              provider: 'kakao',
             }));
-          } catch (e) {}
-          router.push('/application/mypage'); // 로그인 후 홈으로 이동
+            router.push('/application/mypage'); // 로그인 후 홈으로 이동
+          } catch (e) {
+            console.log(e);
+          }
         });
     }
   }, [router]);

@@ -1,5 +1,6 @@
 'use client';
 
+import useDetectiveWebview from '@/config/utils/webview/useDetectiveWebview';
 import { Box, Typography } from '@mui/material';
 
 interface SelectionBoxProps {
@@ -16,12 +17,13 @@ export default function SelectionBox({
   markerName = '알 수 없음',
 }: SelectionBoxProps) {
   if (!selectedMarker) return null; // 선택된 마커가 없으면 렌더링하지 않음
+  const isWebView = useDetectiveWebview();
 
   return (
     <Box
       sx={{
         position: 'absolute',
-        bottom: 30,
+        bottom: isWebView ? 30 : 'calc(10vh + 20px)',
         left: '50%',
         transform: 'translateX(-50%)',
         width: 'calc(100% - 40px)',

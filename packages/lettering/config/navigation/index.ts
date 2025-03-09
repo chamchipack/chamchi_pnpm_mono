@@ -19,6 +19,8 @@ type Params = {
  * 네비게이션 처리 함수
  * @param path 이동할 경로
  *
+ * status : forward 기본, back 뒤로가기, replace : replace
+ *
  * params => JSON.stringify({ _id: '', type: ''})
  * @returns WebView 환경이면 `true`, 그렇지 않으면 `false`
  */
