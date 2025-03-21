@@ -235,6 +235,17 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
         // result = await pb.collection('library').create(formData);
       }
 
+      await fetch('/api/update', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          _id: props?.contentId || result?._id,
+          path: props?.path, // 예: 'academy'
+        }),
+      });
+
       if (props?.contentId) {
         router.refresh();
         if (props?.setEditPage) props?.setEditPage(false);
@@ -245,6 +256,7 @@ export default function MarkdownEditorContainer({ ...props }: Props) {
       }
     } catch {
       setLoading(false);
+    } finally {
     }
   };
 
