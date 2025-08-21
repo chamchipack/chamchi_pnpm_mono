@@ -5,3 +5,4 @@ packages:
   - "packages/voca"
   - "packages/mongo"
   - "packages/lettering"
+  - "packages/pick-pic"

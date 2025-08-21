@@ -1,0 +1,52 @@
+{
+  "name": "pick-pic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "next-sitemap && next dev",
+    "build": "next build",
+    "start": "next start -p 9500",
+    "sitemap": "next-sitemap",
+    "cypress": "cypress open",
+    "analyze": "ANALYZE=true next build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.832.0",
+    "@aws-sdk/s3-request-presigner": "^3.832.0",
+    "@mui/material": "^5.14.15",
+    "@mui/x-date-pickers": "^7.18.0",
+    "@portone/browser-sdk": "^0.0.16",
+    "@types/qs": "^6.9.18",
+    "framer-motion": "^11.2.11",
+    "lottie-react": "^2.4.1",
+    "lucide-react": "^0.477.0",
+    "next": "^14.2.15",
+    "package": "1.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-kakao-maps-sdk": "^1.1.27",
+    "react-native-react-bridge": "^0.12.3",
+    "react-native-webview": "^13.13.2",
+    "react-swipeable": "^7.0.2",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.7",
+    "@types/node": "^22.7.5",
+    "@types/react": "^18.3.11",
+    "@typescript-eslint/eslint-plugin": "^8.8.1",
+    "@typescript-eslint/parser": "^8.8.1",
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "postcss": "^8.5.3",
+    "prettier": "^3.3.3",
+    "tailwindcss": "^4.1.7",
+    "typescript": "^5.6.3"
+  }
+}

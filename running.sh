@@ -20,7 +20,7 @@ elif [ "$selection" -eq 2 ]; then
   pnpm --filter blog dev --port 7500
 elif [ "$selection" -eq 3 ]; then
   echo "Running 'voca' project in dev mode..."
-  pnpm --filter voca dev --port 8300
+  pnpm --filter pick-pic dev --port 9500
 elif [ "$selection" -eq 4 ]; then
   echo "Running 'voca' project in dev mode..."
   cd ./packages/mongo
