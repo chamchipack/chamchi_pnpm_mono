@@ -4,5 +4,6 @@ packages:
   - "packages/blog"
   - "packages/voca"
   - "packages/mongo"
+  - "packages/chamlangapi"
   - "packages/lettering"
   - "packages/pick-pic"

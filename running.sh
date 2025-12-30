@@ -27,8 +27,9 @@ elif [ "$selection" -eq 4 ]; then
   pnpm nodemon ./src/server.ts
   # pnpm --filter voca dev --port 8300
 elif [ "$selection" -eq 5 ]; then
-  echo "Running 'lettering' project in dev mode..."
-  pnpm --filter lettering dev --port 9500
+  echo "Running 'chamlangapi' project in dev mode..."
+  cd ./packages/chamlangapi
+  pnpm nodemon ./src/index.ts
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1
