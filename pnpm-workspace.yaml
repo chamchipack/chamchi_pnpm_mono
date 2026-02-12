@@ -1,5 +1,6 @@
 packages:
   - "packages/studio"
+  - "packages/administration"
   - "packages/package"
   - "packages/blog"
   - "packages/voca"

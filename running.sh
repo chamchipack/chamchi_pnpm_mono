@@ -26,10 +26,10 @@ elif [ "$selection" -eq 4 ]; then
   cd ./packages/mongo
   pnpm nodemon ./src/server.ts
   # pnpm --filter voca dev --port 8300
-elif [ "$selection" -eq 5 ]; then
-  echo "Running 'chamlangapi' project in dev mode..."
-  cd ./packages/chamlangapi
-  pnpm nodemon ./src/index.ts
+elif [ "$selection" -eq 6 ]; then
+  echo "Running 'administration' project in dev mode..."
+  cd ./packages/administration
+  pnpm --filter administration dev --port 9500
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1
