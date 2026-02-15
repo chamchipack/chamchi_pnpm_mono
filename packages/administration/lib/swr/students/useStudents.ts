@@ -27,7 +27,7 @@ export const useStudents = ({
 
   const key = `/api/students?${params.toString()}`;
 
-  const { data, error, isLoading, mutate } = useSWR<StudentsResponse>(
+  const { data, error, isLoading, mutate, ...rest } = useSWR<StudentsResponse>(
     key,
     fetcher,
   );

@@ -10,9 +10,11 @@ import {
   Plus,
 } from 'lucide-react';
 
-interface Props {}
+interface Props {
+  onClickRegister: () => void;
+}
 
-const DefaultToolbar = forwardRef(({}, ref) => {
+const DefaultToolbar = forwardRef(({ onClickRegister }: Props, ref) => {
   const baseBtn =
     'flex items-center gap-2 px-2 py-1 rounded-md border text-xs transition';
 
@@ -35,6 +37,7 @@ const DefaultToolbar = forwardRef(({}, ref) => {
 
         <button
           className={`${baseBtn} border-blue-500 text-blue-600 hover:bg-blue-50`}
+          onClick={onClickRegister}
         >
           <Plus size={16} />
           등록

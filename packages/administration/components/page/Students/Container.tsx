@@ -14,6 +14,7 @@ export default function Container() {
     pagination,
     setPagination,
     isLoading,
+    refetch,
   } = useStudents();
 
   return (
@@ -27,6 +28,7 @@ export default function Container() {
       onKeywordChange={setKeyword}
       onStatusChange={setStatusFilter}
       isLoading={isLoading}
+      refetch={refetch}
     />
   );
 }

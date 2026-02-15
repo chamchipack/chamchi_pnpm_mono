@@ -40,6 +40,7 @@ interface Props {
   onPaginationChange: (model: GridPaginationModel) => void;
   onCloseDrawer: () => void;
   onOpenDrawer: () => void;
+  onRegisterDrawer: () => void;
   onSelectMobile: (student: Student) => void;
   handleChangePage: (n: number) => void;
   isLoading: boolean;
@@ -60,11 +61,16 @@ export default function StudentsViewUI({
   onStatusChange,
   onRowDoubleClick,
   onPaginationChange,
+  onRegisterDrawer,
   onCloseDrawer,
   onOpenDrawer,
   onSelectMobile,
   handleChangePage,
 }: Props) {
+  const GridToolbar = () => (
+    <DefaultToolbar onClickRegister={onRegisterDrawer} />
+  );
+
   return (
     <div className="px-4 py-4 flex flex-col gap-4">
       <Title title="수강생 관리" desc="수강생 관리합니다" />
@@ -120,7 +126,7 @@ export default function StudentsViewUI({
         mobile={
           <div>
             <div className="mb-2">
-              <DefaultToolbar />
+              <DefaultToolbar onClickRegister={onRegisterDrawer} />
             </div>
             <StudentCardList students={students} onSelect={onSelectMobile} />
             <div className="flex justify-center mt-1">
@@ -135,7 +141,7 @@ export default function StudentsViewUI({
         desktop={
           <DefaultGrid
             slots={{
-              toolbar: DefaultToolbar,
+              toolbar: GridToolbar,
             }}
             loading={isLoading}
             rows={students}
@@ -155,9 +161,11 @@ export default function StudentsViewUI({
         open={drawerOpen}
         onClose={onCloseDrawer}
         onOpen={onOpenDrawer}
-        minHeight="80vh"
+        minHeight="60vh"
+        maxHeight="80vh"
       >
-        {selectedStudent && <StudentDetail student={selectedStudent} />}
+        {/* {selectedStudent && <StudentDetail student={selectedStudent} />} */}
+        <StudentDetail student={selectedStudent} />
       </CommonSwipeableDrawer>
     </div>
   );

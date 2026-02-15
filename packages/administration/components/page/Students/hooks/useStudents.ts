@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useStudents as getStudents } from '@/lib/swr/useStudents';
+import { useStudents as getStudents } from '@/lib/swr/students/useStudents';
 
 export type Student = {
   id: number;
@@ -15,16 +15,12 @@ export function useStudents() {
   const [pagination, setPagination] = useState({ page: 1, perPage: 10 });
   const [statusFilter, setStatusFilter] = useState<boolean | null>(null);
 
-  const { items, isLoading, isError, ...etc } = getStudents({
+  const { items, isLoading, isError, mutate, ...etc } = getStudents({
     page: pagination.page,
     perPage: pagination.perPage,
     keyword,
     status: statusFilter,
   });
-
-  useEffect(() => {
-    console.log(pagination);
-  }, [pagination]);
 
   return {
     students: items || [],
@@ -36,5 +32,6 @@ export function useStudents() {
     pagination,
     setPagination,
     isLoading,
+    refetch: mutate,
   };
 }

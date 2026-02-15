@@ -43,7 +43,7 @@ const CommonSwipeableDrawer = ({
                 width: '100%',
                 maxWidth: 480,
                 margin: '0 auto',
-                height: '100%',
+                height: '100vh',
                 borderTopLeftRadius: 30,
                 borderTopRightRadius: 30,
                 minHeight,
@@ -57,7 +57,7 @@ const CommonSwipeableDrawer = ({
               }),
 
           zIndex: 9999,
-          paddingBottom: isMobile ? 30 : 0,
+          // paddingBottom: isMobile ? 30 : 0,
         },
       }}
     >
