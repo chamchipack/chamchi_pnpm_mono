@@ -343,7 +343,10 @@ export default function StudentDetail({ student, onSuccess }: Props) {
           </div>
 
           <div className="mt-2 px-2 py-2 border-t border-gray-100">
-            <SessionScheduleEditor sessionId={selectedSession} />
+            <SessionScheduleEditor
+              session={selectedSession}
+              setSession={setSelectedSession}
+            />
           </div>
         </div>
       </div>
