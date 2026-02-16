@@ -46,6 +46,8 @@ export default function StudentsView(props: Props) {
   } = props;
 
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [paymentDrawerOpen, setPaymentDrawerOpen] = useState(false);
+
   const [text, setText] = useState('');
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
 
@@ -124,6 +126,33 @@ export default function StudentsView(props: Props) {
         return regularPayment?.nextDueDate ?? '-';
       },
     },
+    {
+      field: 'viewPayment',
+      headerName: '결제내역',
+      ...commonColumnOptions,
+      width: 150,
+      sortable: false,
+      renderCell: (params: any) => (
+        <button
+          onClick={() => {
+            setSelectedStudent(params.row);
+            setPaymentDrawerOpen(true);
+          }}
+          className="
+            px-3 py-1.5
+            text-sm font-medium
+            border border-gray-300
+            rounded-md
+            bg-white
+            hover:bg-gray-50
+            active:scale-[0.98]
+            transition
+          "
+        >
+          결제내역 보기
+        </button>
+      ),
+    },
     { field: 'lessonBasePayment', headerName: '회차 결제여부', flex: 1 },
   ];
 
@@ -146,6 +175,7 @@ export default function StudentsView(props: Props) {
       keywordText={text}
       columns={columns}
       drawerOpen={drawerOpen}
+      paymentDrawerOpen={paymentDrawerOpen}
       selectedStudent={selectedStudent}
       onTextChange={setText}
       onSearch={() => onKeywordChange(text)}
@@ -167,6 +197,15 @@ export default function StudentsView(props: Props) {
       onSelectMobile={(student) => {
         setSelectedStudent(student);
         setDrawerOpen(true);
+      }}
+      onSelectMobilePayment={(student) => {
+        setSelectedStudent(student);
+        setPaymentDrawerOpen(true);
+      }}
+      openPaymentDrawer={() => setPaymentDrawerOpen(true)}
+      closePaymentDrawer={() => {
+        setPaymentDrawerOpen(false);
+        setSelectedStudent(null);
       }}
     />
   );

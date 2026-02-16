@@ -24,7 +24,7 @@ interface Student {
 }
 
 interface Props {
-  student?: Student | null;
+  student?: Student | any;
   onSuccess?: () => void; // 저장 후 콜백 (optional)
 }
 
@@ -185,6 +185,8 @@ export default function StudentDetail({ student, onSuccess }: Props) {
       };
 
       console.log(payload);
+      console.log(selectedClasses);
+      console.log(selectedSession);
 
       // if (isEditMode) {
       //   await fetch(`/api/students/${student!.id}`, {

@@ -14,10 +14,10 @@ interface Props {
   onClickRegister: () => void;
 }
 
-const DefaultToolbar = forwardRef(({ onClickRegister }: Props, ref) => {
-  const baseBtn =
-    'flex items-center gap-2 px-2 py-1 rounded-md border text-xs transition';
+const baseBtn =
+  'flex items-center gap-2 px-2 py-1 rounded-md border text-xs transition';
 
+const DefaultToolbar = forwardRef(({ onClickRegister }: Props, ref) => {
   return (
     <>
       <div className="flex justify-end w-full mt-2 flex-wrap gap-2">

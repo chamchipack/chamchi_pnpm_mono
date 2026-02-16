@@ -16,6 +16,7 @@ import StudentDetail from './detail/StudentDetail';
 import Responsive from '@/components/common/layout/Responsive';
 import DefaultGrid from '@/components/common/DefaultGrid';
 import DefaultToolbar from '@/components/common/DefaultGrid/DefaultToolbar';
+import PaymentLog from './detail/Payment';
 
 const STATUS_LIST = [
   { label: '재원', value: true },
@@ -31,6 +32,7 @@ interface Props {
 
   columns: GridColDef[];
   drawerOpen: boolean;
+  paymentDrawerOpen: boolean;
   selectedStudent: Student | null;
 
   onTextChange: (v: string) => void;
@@ -42,7 +44,11 @@ interface Props {
   onOpenDrawer: () => void;
   onRegisterDrawer: () => void;
   onSelectMobile: (student: Student) => void;
+  onSelectMobilePayment: (student: Student) => void;
   handleChangePage: (n: number) => void;
+
+  openPaymentDrawer: () => void;
+  closePaymentDrawer: () => void;
   isLoading: boolean;
 }
 
@@ -55,15 +61,19 @@ export default function StudentsViewUI({
   columns,
   isLoading,
   drawerOpen,
+  paymentDrawerOpen,
   selectedStudent,
   onTextChange,
   onSearch,
   onStatusChange,
   onRowDoubleClick,
   onPaginationChange,
+  onSelectMobilePayment,
   onRegisterDrawer,
   onCloseDrawer,
   onOpenDrawer,
+  openPaymentDrawer,
+  closePaymentDrawer,
   onSelectMobile,
   handleChangePage,
 }: Props) {
@@ -128,8 +138,13 @@ export default function StudentsViewUI({
             <div className="mb-2">
               <DefaultToolbar onClickRegister={onRegisterDrawer} />
             </div>
-            <StudentCardList students={students} onSelect={onSelectMobile} />
-            <div className="flex justify-center mt-1">
+            <StudentCardList
+              students={students}
+              selectedStudent={selectedStudent}
+              onSelect={onSelectMobile}
+              openPaymentDrawer={onSelectMobilePayment}
+            />
+            <div className="flex justify-center mt-2">
               <Pagination
                 count={Math.ceil(total / pagination.perPage)}
                 page={pagination.page}
@@ -157,16 +172,29 @@ export default function StudentsViewUI({
       />
 
       {/* 🔻 Drawer */}
-      <CommonSwipeableDrawer
-        open={drawerOpen}
-        onClose={onCloseDrawer}
-        onOpen={onOpenDrawer}
-        minHeight="60vh"
-        maxHeight="80vh"
-      >
-        {/* {selectedStudent && <StudentDetail student={selectedStudent} />} */}
-        <StudentDetail student={selectedStudent} />
-      </CommonSwipeableDrawer>
+      {!paymentDrawerOpen && (
+        <CommonSwipeableDrawer
+          open={drawerOpen}
+          onClose={onCloseDrawer}
+          onOpen={onOpenDrawer}
+          minHeight="60vh"
+          maxHeight="80vh"
+        >
+          <StudentDetail student={selectedStudent} />
+        </CommonSwipeableDrawer>
+      )}
+
+      {!drawerOpen && (
+        <CommonSwipeableDrawer
+          open={paymentDrawerOpen}
+          onClose={closePaymentDrawer}
+          onOpen={openPaymentDrawer}
+          minHeight="60vh"
+          maxHeight="80vh"
+        >
+          <PaymentLog student={selectedStudent} />
+        </CommonSwipeableDrawer>
+      )}
     </div>
   );
 }
