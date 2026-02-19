@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import NavigationBar from '@/components/common/layout/NavigationBar';
 import HeaderMyMenu from '@/components/common/head/HeaderMyMenu';
+import AlertModal from '@/components/common/alert/AlertModal';
 
 export default async function LayoutContainer({
   children,
@@ -21,6 +22,7 @@ export default async function LayoutContainer({
         "
       >
         {children}
+        <AlertModal />
         <HeaderMyMenu />
         <NavigationBar cookie={value} />
       </div>

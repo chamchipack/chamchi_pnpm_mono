@@ -166,6 +166,7 @@ export default function SessionScheduleEditor({ session, setSession }: Props) {
                   <div className="flex items-center gap-3">
                     <input
                       type="time"
+                      step="900"
                       value={lessonTime?.stime || ''}
                       onChange={(e) =>
                         handleTimeChange(

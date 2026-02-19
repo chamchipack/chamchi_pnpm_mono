@@ -6,10 +6,15 @@ import { useEffect, useState } from 'react';
 import Section, { SelectButton, SliderRow } from './common/Section';
 import { getClassAndSession } from '@/lib/swr/students/getClassAndSession';
 import SessionScheduleEditor, { SessionType } from './Session';
+import { useRecoilState } from 'recoil';
+import { alertModalAtom } from '@/lib/store/alert/alert-state';
+import { createStudent } from '@/lib/swr/students';
 
 interface LessonPayment {
   total: number;
   remaining: number;
+  isPaid: boolean;
+  over: number;
 }
 
 interface Student {
@@ -35,6 +40,8 @@ const defaultForm = {
   enrollmentDate: '',
   lessonTotal: 0,
   lessonRemaining: 0,
+  isPaid: false,
+  over: 0,
 };
 
 export default function StudentDetail({ student, onSuccess }: Props) {
@@ -53,6 +60,8 @@ export default function StudentDetail({ student, onSuccess }: Props) {
   const [searchResults, setSearchResults] = useState<
     { id: string; name: string }[]
   >([]);
+
+  const [alert, setAlert] = useRecoilState(alertModalAtom);
 
   /**
    * 🔥 student 변경 시 form 동기화
@@ -110,6 +119,8 @@ export default function StudentDetail({ student, onSuccess }: Props) {
         enrollmentDate: student.enrollmentDate ?? '',
         lessonTotal: student.lessonBasedPayment?.total ?? 0,
         lessonRemaining: student.lessonBasedPayment?.remaining ?? 0,
+        isPaid: student.lessonBasePayment?.isPaid ?? false,
+        over: student.lessonBasePayment?.over ?? 0,
       });
     };
 
@@ -151,42 +162,46 @@ export default function StudentDetail({ student, onSuccess }: Props) {
     }));
   };
 
+  const handleClose = () => {
+    setAlert((prev) => ({ ...prev, open: true, message: '안녕하세요' }));
+    alert.onClose?.();
+  };
+
   const handleSubmit = async () => {
     try {
       setLoading(true);
 
-      // const payload = {
-      //   name: form.name,
-      //   type: form.type,
-      //   paymentType: form.paymentType,
-      //   enrollmentDate: form.enrollmentDate,
-      //   lessonBasedPayment:
-      //     form.paymentType === 'package'
-      //       ? {
-      //           total: form.lessonTotal,
-      //           remaining: form.lessonRemaining,
-      //         }
-      //       : null,
-      // };
+      const sessionData = selectedSession[0]
+        ? {
+            regularDays: selectedSession[0].regularDays,
+            lessonTimes: selectedSession[0].lessonTimes,
+            regularTimes: selectedSession[0].regularTimes,
+          }
+        : null;
 
       const payload = {
         name: form.name,
-        type: form.type,
+        type: form.type || 'lesson',
         paymentType: form.paymentType,
         enrollmentDate: form.enrollmentDate,
         classId: selectedClasses.map((c) => c.id), // 🔥 추가
+        instructorId: [],
+        regularPayment: {},
         lessonBasedPayment:
           form.paymentType === 'package'
             ? {
                 total: form.lessonTotal,
                 remaining: form.lessonRemaining,
+                over: form.over || 0,
+                isPaid: form.isPaid ? form.isPaid : false,
               }
-            : null,
+            : {},
+        ...sessionData,
       };
+      //sessionId 필요
+      console.log(sessionData);
 
-      console.log(payload);
-      console.log(selectedClasses);
-      console.log(selectedSession);
+      const s = createStudent(payload);
 
       // if (isEditMode) {
       //   await fetch(`/api/students/${student!.id}`, {
@@ -203,6 +218,7 @@ export default function StudentDetail({ student, onSuccess }: Props) {
       // }
 
       // onSuccess?.();
+      handleClose();
     } catch (error) {
       console.error('저장 실패', error);
     } finally {
@@ -230,7 +246,7 @@ export default function StudentDetail({ student, onSuccess }: Props) {
             />
           </div>
 
-          <Section title="수강 형태">
+          {/* <Section title="수강 형태">
             <div className="flex gap-2">
               <SelectButton
                 label="레슨"
@@ -243,7 +259,7 @@ export default function StudentDetail({ student, onSuccess }: Props) {
                 onClick={() => updateField('type', 'class')}
               />
             </div>
-          </Section>
+          </Section> */}
 
           <Section title="결제 타입">
             <div className="flex gap-2">
@@ -357,7 +373,12 @@ export default function StudentDetail({ student, onSuccess }: Props) {
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full h-11 rounded-md bg-main text-white font-medium transition disabled:opacity-50"
+          className="
+    w-full h-11 rounded-md font-medium transition text-white
+    bg-main
+    disabled:bg-gray-400
+    disabled:cursor-not-allowed
+  "
         >
           {loading
             ? '저장 중...'

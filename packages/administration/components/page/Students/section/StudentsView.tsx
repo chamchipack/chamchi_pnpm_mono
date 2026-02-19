@@ -149,7 +149,7 @@ export default function StudentsView(props: Props) {
             transition
           "
         >
-          결제내역 보기
+          보기
         </button>
       ),
     },

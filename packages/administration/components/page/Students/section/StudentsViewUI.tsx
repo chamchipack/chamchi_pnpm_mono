@@ -17,6 +17,7 @@ import Responsive from '@/components/common/layout/Responsive';
 import DefaultGrid from '@/components/common/DefaultGrid';
 import DefaultToolbar from '@/components/common/DefaultGrid/DefaultToolbar';
 import PaymentLog from './detail/Payment';
+import { useState } from 'react';
 
 const STATUS_LIST = [
   { label: '재원', value: true },
@@ -78,8 +79,10 @@ export default function StudentsViewUI({
   handleChangePage,
 }: Props) {
   const GridToolbar = () => (
-    <DefaultToolbar onClickRegister={onRegisterDrawer} />
+    <DefaultToolbar onClickRegister={onRegisterDrawer} rowId={studentId} />
   );
+
+  const [studentId, setStudentId] = useState('');
 
   return (
     <div className="px-4 py-4 flex flex-col gap-4">
@@ -136,7 +139,10 @@ export default function StudentsViewUI({
         mobile={
           <div>
             <div className="mb-2">
-              <DefaultToolbar onClickRegister={onRegisterDrawer} />
+              <DefaultToolbar
+                onClickRegister={onRegisterDrawer}
+                rowId={studentId}
+              />
             </div>
             <StudentCardList
               students={students}
@@ -166,6 +172,9 @@ export default function StudentsViewUI({
             perPage={pagination.perPage}
             onPageChange={handleChangePage}
             onRowDoubleClick={onRowDoubleClick}
+            onRowSelectionModelChange={([rowId = '']) => {
+              setStudentId(rowId as string);
+            }}
             pageSizeOptions={[10, 20, 30]}
           />
         }

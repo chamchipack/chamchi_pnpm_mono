@@ -29,13 +29,13 @@ const DefaultGrid = ({
           pageSize: perPage,
         }}
         hideFooterPagination
-        disableRowSelectionOnClick
+        // disableRowSelectionOnClick
         sx={{
           height: 680,
           '& .MuiDataGrid-row.Mui-selected': {
-            backgroundColor: (theme) => theme.palette.primary.light,
+            backgroundColor: '#f1f4f6',
             '&:hover': {
-              backgroundColor: (theme) => theme.palette.primary.light,
+              backgroundColor: '#f1f4f6',
             },
           },
           ...sx,

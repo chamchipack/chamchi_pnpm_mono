@@ -1,5 +1,5 @@
 // app/api/students/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { pb } from '@/lib/pocketbase/server';
 
 export async function GET(req: Request) {
@@ -48,5 +48,60 @@ export async function GET(req: Request) {
       { message: 'Internal Server Error' },
       { status: 500 },
     );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    if (!body?.name) {
+      return NextResponse.json(
+        { message: '이름은 필수입니다.' },
+        { status: 400 },
+      );
+    }
+
+    /**
+     * 1️⃣ session 먼저 생성
+     */
+    const sessionData = {
+      name: body.name,
+      studentId: [], // 나중에 업데이트
+      instructorId: body?.instructorId || [],
+      regularDays: body?.regularDays || [],
+      lessonTimes: body?.lessonTimes || {},
+      type: body?.type || 'lesson',
+    };
+
+    const createdSession = await pb.collection('session').create(sessionData);
+
+    /**
+     * 2️⃣ student 생성 (sessionId 연결)
+     */
+    const studentData = {
+      ...body,
+      sessionId: [createdSession.id], // relation 필드라고 가정
+    };
+
+    const createdStudent = await pb.collection('student').create(studentData);
+
+    /**
+     * 3️⃣ 기존 session에 studentId 업데이트
+     */
+    await pb.collection('session').update(createdSession.id, {
+      studentId: [createdStudent.id],
+    });
+
+    return NextResponse.json(
+      {
+        student: createdStudent,
+        session: createdSession,
+      },
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error('Student POST error:', error);
+    return NextResponse.json({ message: '학생 생성 실패' }, { status: 500 });
   }
 }
