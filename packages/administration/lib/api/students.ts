@@ -11,8 +11,8 @@ export interface StudentsResponse {
   totalPages: number;
 }
 
-export const getStudents = async (): Promise<StudentsResponse> => {
-  const res = await fetch('/api/students');
+export const getStudents = async (): Promise<any> => {
+  const res = await fetch('/api/students/excel');
 
   if (!res.ok) throw new Error('Failed to fetch students');
 

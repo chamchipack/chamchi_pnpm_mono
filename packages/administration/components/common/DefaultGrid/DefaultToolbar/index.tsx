@@ -9,6 +9,9 @@ import {
   Layers,
   Plus,
 } from 'lucide-react';
+import { studentDataModel } from '@/lib/type/Student';
+import { getStudents } from '@/lib/api/students';
+import json2xlsx from '@/config/utils/xlsx/xlsx';
 
 interface Props {
   onClickRegister: () => void;
@@ -21,11 +24,68 @@ const baseBtn =
 
 const DefaultToolbar = forwardRef(
   ({ onClickRegister, onClickDelete, rowId }: Props, ref) => {
+    function flattenObject(obj: any, parentKey = '', result: any = {}): any {
+      for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const newKey = parentKey ? `${parentKey}.${key}` : key;
+
+          if (
+            typeof obj[key] === 'object' &&
+            obj[key] !== null &&
+            !Array.isArray(obj[key])
+          ) {
+            flattenObject(obj[key], newKey, result);
+          } else {
+            result[newKey] = obj[key];
+          }
+        }
+      }
+      return result;
+    }
+
+    const writeExcelFile = async () => {
+      const data = (await getStudents()) || [];
+      if (!data.length) return;
+
+      const exception = ['id'];
+
+      const result = data.map((item: any, index: number) => {
+        const form: any = { 순번: index + 1 };
+        const flat: any = flattenObject(item);
+
+        Object.entries(flat).forEach(([k, v]: [string, any]) => {
+          if (studentDataModel[k] && !exception.includes(k)) {
+            switch (k) {
+              case 'currentStatus':
+                form[studentDataModel[k]] = v ? '재원' : '퇴원';
+                break;
+              case 'paymentType':
+                form[studentDataModel[k]] =
+                  v === 'lesson' ? '회차결제' : '정기결제';
+                break;
+              case 'lessonBasedPayment.isPaid':
+                form[studentDataModel[k]] = v ? '결제됨' : '미결제';
+                break;
+              case 'type':
+                form[studentDataModel[k]] = v === 'lesson' ? '레슨' : '수업';
+                break;
+              default:
+                form[studentDataModel[k]] = v;
+            }
+          }
+        });
+        return form;
+      });
+
+      json2xlsx(result, '수강생엑셀');
+    };
+
     return (
       <>
-        <div className="flex justify-end w-full mt-2 flex-wrap gap-2">
+        <div className="flex justify-end w-full mt-2 flex-wrap gap-2 px-2">
           <button
             className={`${baseBtn} border-green-500 text-green-600 hover:bg-green-50`}
+            onClick={writeExcelFile}
           >
             <FileSpreadsheet size={16} />
             엑셀출력

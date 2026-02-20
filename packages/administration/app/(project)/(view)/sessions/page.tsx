@@ -1,4 +1,4 @@
-import LogsPage from '@/components/page/Dashboards/LogsPage';
+import Container from '@/components/page/Sessions/Container';
 import { Metadata } from 'next';
 import Script from 'next/script';
 
@@ -35,7 +35,7 @@ const Page = () => {
 
   return (
     <>
-      <div>sessions</div>
+      <Container />
 
       <Script
         id="jsonld-home"

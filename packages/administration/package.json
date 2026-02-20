@@ -16,6 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fullcalendar/common": "^5.11.5",
+    "@fullcalendar/core": "^6.1.9",
+    "@fullcalendar/daygrid": "^6.1.9",
+    "@fullcalendar/interaction": "^6.1.9",
+    "@fullcalendar/list": "^6.1.10",
+    "@fullcalendar/react": "^6.1.9",
+    "@fullcalendar/timegrid": "^6.1.9",
     "@mui/material": "^5.14.15",
     "@mui/x-data-grid": "^6.18.3",
     "@mui/x-data-grid-generator": "^6.18.7",
