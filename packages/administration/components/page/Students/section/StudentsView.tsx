@@ -182,6 +182,7 @@ export default function StudentsView(props: Props) {
       onStatusChange={onStatusChange}
       onRowDoubleClick={handleRowDoubleClick}
       onPaginationChange={handlePaginationChange}
+      onRefetch={() => refetch()}
       onCloseDrawer={() => {
         setDrawerOpen(false);
         setSelectedStudent(null);

@@ -8,7 +8,7 @@ import { getClassAndSession } from '@/lib/swr/students/getClassAndSession';
 import SessionScheduleEditor, { SessionType } from './Session';
 import { useRecoilState } from 'recoil';
 import { alertModalAtom } from '@/lib/store/alert/alert-state';
-import { createStudent } from '@/lib/swr/students';
+import { createStudent, updateStudent } from '@/lib/swr/students';
 
 interface LessonPayment {
   total: number;
@@ -162,9 +162,61 @@ export default function StudentDetail({ student, onSuccess }: Props) {
     }));
   };
 
-  const handleClose = () => {
-    setAlert((prev) => ({ ...prev, open: true, message: '안녕하세요' }));
+  const showError = (message: string) => {
+    setAlert((prev) => ({
+      ...prev,
+      type: 'error',
+      open: true,
+      message,
+    }));
     alert.onClose?.();
+  };
+
+  const checkData = (payload: any) => {
+    // 🔹 기본 필수값
+    if (!payload?.name?.trim()) {
+      showError('이름을 입력해주세요');
+      return false;
+    }
+
+    if (!payload?.enrollmentDate) {
+      showError('등록일을 입력해주세요');
+      return false;
+    }
+
+    if (!payload?.classId || payload.classId.length === 0) {
+      showError('클래스를 선택해주세요');
+      return false;
+    }
+
+    // 🔹 패키지 결제일 경우
+    if (payload.paymentType === 'package') {
+      if (!payload.lessonBasedPayment?.total) {
+        showError('총 수업 횟수를 입력해주세요');
+        return false;
+      }
+
+      if (
+        payload.lessonBasedPayment?.remaining === undefined ||
+        payload.lessonBasedPayment?.remaining === null
+      ) {
+        showError('남은 수업 횟수를 입력해주세요');
+        return false;
+      }
+    }
+
+    // 🔹 세션 데이터가 있을 경우
+    if (payload.regularDays && payload.regularDays.length === 0) {
+      showError('수업 요일을 선택해주세요');
+      return false;
+    }
+
+    if (payload.lessonTimes && Object.keys(payload.lessonTimes).length === 0) {
+      showError('수업 시간을 입력해주세요');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async () => {
@@ -198,29 +250,31 @@ export default function StudentDetail({ student, onSuccess }: Props) {
             : {},
         ...sessionData,
       };
+
+      if (!checkData(payload)) return;
       //sessionId 필요
-      console.log(sessionData);
+      console.log(student);
 
-      const s = createStudent(payload);
+      if (student?.id) await updateStudent(student?.id, payload);
+      else await createStudent(payload);
 
-      // if (isEditMode) {
-      //   await fetch(`/api/students/${student!.id}`, {
-      //     method: 'PATCH',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(payload),
-      //   });
-      // } else {
-      //   await fetch('/api/students', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify(payload),
-      //   });
-      // }
+      setAlert((prev) => ({
+        ...prev,
+        type: 'success',
+        open: true,
+        message: '저장되었습니다',
+      }));
+      alert.onClose?.();
 
-      // onSuccess?.();
-      handleClose();
+      await onSuccess?.();
     } catch (error) {
-      console.error('저장 실패', error);
+      setAlert((prev) => ({
+        ...prev,
+        type: 'error',
+        open: true,
+        message: '오류가 발생했습니다',
+      }));
+      alert.onClose?.();
     } finally {
       setLoading(false);
     }
