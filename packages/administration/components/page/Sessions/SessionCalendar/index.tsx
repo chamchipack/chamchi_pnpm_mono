@@ -43,8 +43,8 @@ export default function SessionCalendar({ events }: Props) {
   };
 
   return (
-    <div className="h-full flex gap-6 p-2 overflow-hidden">
-      <div className="w-full border-2 border-gray-100 rounded-3xl p-6 overflow-hidden">
+    <div className="h-full flex px-8 overflow-hidden">
+      <div className="w-full border-2 border-gray-100 rounded-3xl p-4 mb-10 overflow-hidden">
         <FullCalendar
           key={isMobile ? 'mobile' : 'desktop'}
           height="100%"
@@ -69,7 +69,7 @@ export default function SessionCalendar({ events }: Props) {
             day: '일',
             list: '리스트',
           }}
-          dayMaxEvents={3}
+          dayMaxEvents={4}
           selectable
           locale="ko"
           fixedWeekCount={false}

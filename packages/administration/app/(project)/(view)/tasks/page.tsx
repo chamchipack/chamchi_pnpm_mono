@@ -1,4 +1,5 @@
 import LogsPage from '@/components/page/Dashboards/LogsPage';
+import TaskDashboard from '@/components/page/Tasks/Default';
 import { Metadata } from 'next';
 import Script from 'next/script';
 
@@ -35,7 +36,8 @@ const Page = () => {
 
   return (
     <>
-      <LogsPage />
+      {/* <LogsPage /> */}
+      <TaskDashboard />
 
       <Script
         id="jsonld-home"

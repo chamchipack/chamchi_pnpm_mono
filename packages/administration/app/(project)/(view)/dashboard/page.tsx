@@ -1,3 +1,5 @@
+import NewDashboard from '@/components/page/Dashboards/\bNew';
+import ModernDashboard from '@/components/page/Dashboards/Container';
 import { Metadata } from 'next';
 import Script from 'next/script';
 
@@ -34,7 +36,8 @@ const Page = () => {
 
   return (
     <>
-      <div>dashboard</div>
+      {/* <ModernDashboard /> */}
+      <NewDashboard />
 
       <Script
         id="jsonld-home"

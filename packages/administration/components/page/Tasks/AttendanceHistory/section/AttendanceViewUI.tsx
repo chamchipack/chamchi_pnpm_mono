@@ -9,14 +9,14 @@ import {
 import { Search } from 'lucide-react';
 import Title from '@/components/common/layout/Title/Title';
 import CommonSwipeableDrawer from '@/components/common/backdrop/CommonSwipeableDrawer';
-import StudentCardList from './StudentCardList';
+// import StudentCardList from './StudentCardList';
 import Pagination from '@mui/material/Pagination';
-import { Student } from '@/lib/type/Student';
-import StudentDetail from './detail/StudentDetail';
+import { Attendance } from '@/lib/type/Attendance';
+// import StudentDetail from './detail/StudentDetail';
 import Responsive from '@/components/common/layout/Responsive';
 import DefaultGrid from '@/components/common/DefaultGrid';
 import DefaultToolbar from '@/components/common/DefaultGrid/DefaultToolbar';
-import PaymentLog from './detail/Payment';
+// import PaymentLog from './detail/Payment';
 import { useState } from 'react';
 import ActionConfirmationModal from '@/components/common/backdrop/ActionConfirmationModal';
 import { deleteStudent } from '@/lib/swr/students';
@@ -29,7 +29,7 @@ const STATUS_LIST = [
 ] as const;
 
 interface Props {
-  students: Student[];
+  students: Attendance[];
   total: number;
   pagination: { page: number; perPage: number };
   statusFilter: boolean | null;
@@ -38,18 +38,18 @@ interface Props {
   columns: GridColDef[];
   drawerOpen: boolean;
   paymentDrawerOpen: boolean;
-  selectedStudent: Student | null;
+  selectedHistory: Attendance | null;
 
   onTextChange: (v: string) => void;
   onSearch: () => void;
   onStatusChange: (v: boolean | null) => void;
-  onRowDoubleClick: (params: GridRowParams<Student>) => void;
+  onRowDoubleClick: (params: GridRowParams<Attendance>) => void;
   onPaginationChange: (model: GridPaginationModel) => void;
   onCloseDrawer: () => void;
   onOpenDrawer: () => void;
   onRegisterDrawer: () => void;
-  onSelectMobile: (student: Student) => void;
-  onSelectMobilePayment: (student: Student) => void;
+  onSelectMobile: (student: Attendance) => void;
+  onSelectMobilePayment: (student: Attendance) => void;
   handleChangePage: (n: number) => void;
   onRefetch: () => void;
 
@@ -58,7 +58,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export default function StudentsViewUI({
+export default function AttendanceViewUI({
   students,
   total,
   pagination,
@@ -68,7 +68,7 @@ export default function StudentsViewUI({
   isLoading,
   drawerOpen,
   paymentDrawerOpen,
-  selectedStudent,
+  selectedHistory,
   onTextChange,
   onSearch,
   onStatusChange,
@@ -102,41 +102,9 @@ export default function StudentsViewUI({
 
   return (
     <>
-      <div className="p-8 flex flex-col gap-4">
-        <Title title="수강생 관리" desc="수강생 관리합니다" />
-
+      <div className="flex flex-col gap-4">
         {/* 🔹 필터 */}
         <div className="flex flex-col gap-3">
-          <div className="flex gap-2.5 flex-wrap items-center">
-            {STATUS_LIST.map(({ label, value }) => {
-              const isActive = statusFilter === value;
-              return (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => onStatusChange(isActive ? null : value)}
-                  className={`
-          relative px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-300
-          ${
-            isActive
-              ? 'bg-main text-white shadow-lg shadow-main/20 scale-105 z-10'
-              : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
-          }
-        `}
-                >
-                  {/* 활성화 상태일 때 미세한 점 표시 (디테일) */}
-                  {isActive && (
-                    <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                    </span>
-                  )}
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-
           <form
             onSubmit={(e) => {
               e.preventDefault(); // 새로고침 방지
@@ -172,12 +140,12 @@ export default function StudentsViewUI({
                   rowId={studentId}
                 />
               </div>
-              <StudentCardList
+              {/* <StudentCardList
                 students={students}
-                selectedStudent={selectedStudent}
+                selectedHistory={selectedHistory}
                 onSelect={onSelectMobile}
                 openPaymentDrawer={onSelectMobilePayment}
-              />
+              /> */}
               <div className="flex justify-center mt-2">
                 <Pagination
                   count={Math.ceil(total / pagination.perPage)}
@@ -217,13 +185,14 @@ export default function StudentsViewUI({
             minHeight="60vh"
             maxHeight="80vh"
           >
-            <StudentDetail
-              student={selectedStudent}
+            {/* <StudentDetail
+              student={selectedHistory}
               onSuccess={async () => {
                 onCloseDrawer();
                 await onRefetch();
               }}
-            />
+            /> */}
+            <></>
           </CommonSwipeableDrawer>
         )}
 
@@ -235,7 +204,8 @@ export default function StudentsViewUI({
             minHeight="60vh"
             maxHeight="80vh"
           >
-            <PaymentLog student={selectedStudent} />
+            {/* <PaymentLog student={selectedHistory} /> */}
+            <></>
           </CommonSwipeableDrawer>
         )}
         <ActionConfirmationModal

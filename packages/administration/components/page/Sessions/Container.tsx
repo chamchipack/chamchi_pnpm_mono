@@ -7,7 +7,7 @@ export default async function Container() {
 
   return (
     <>
-      <div className="px-4 py-4 flex flex-col gap-4">
+      <div className="p-8 flex flex-col gap-4">
         <Title title="세션 관리" desc="세션 관리합니다" />
       </div>
       <SessionContainer initialSessions={data} />
