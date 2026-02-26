@@ -15,7 +15,9 @@ import json2xlsx from '@/config/utils/xlsx/xlsx';
 
 interface Props {
   onClickRegister: () => void;
+  isRegisterOn?: boolean;
   onClickDelete: (id: string) => void;
+  isDeleteOn?: boolean;
   rowId: string;
 }
 
@@ -23,7 +25,16 @@ const baseBtn =
   'flex items-center gap-2 px-2 py-1 rounded-md border text-xs transition';
 
 const DefaultToolbar = forwardRef(
-  ({ onClickRegister, onClickDelete, rowId }: Props, ref) => {
+  (
+    {
+      onClickRegister,
+      onClickDelete,
+      isRegisterOn = false,
+      isDeleteOn = true,
+      rowId,
+    }: Props,
+    ref,
+  ) => {
     function flattenObject(obj: any, parentKey = '', result: any = {}): any {
       for (let key in obj) {
         if (obj.hasOwnProperty(key)) {
@@ -98,13 +109,15 @@ const DefaultToolbar = forwardRef(
           일괄등록
         </button> */}
 
-          <button
-            className={`${baseBtn} border-blue-500 text-blue-600 hover:bg-blue-50`}
-            onClick={onClickRegister}
-          >
-            <Plus size={16} />
-            등록
-          </button>
+          {isRegisterOn && (
+            <button
+              className={`${baseBtn} border-blue-500 text-blue-600 hover:bg-blue-50`}
+              onClick={onClickRegister}
+            >
+              <Plus size={16} />
+              등록
+            </button>
+          )}
 
           {/* <button
           className={`${baseBtn} border-indigo-500 text-indigo-600 hover:bg-indigo-50`}
@@ -113,7 +126,7 @@ const DefaultToolbar = forwardRef(
           수정
         </button> */}
 
-          {rowId && (
+          {rowId && isDeleteOn && (
             <button
               className={`${baseBtn} border-red-500 text-red-600 hover:bg-red-50`}
               onClick={() => onClickDelete(rowId)}

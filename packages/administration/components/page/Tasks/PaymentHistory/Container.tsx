@@ -1,10 +1,34 @@
+'use client';
+
+import { usePaymentHistory } from './hooks/usePaymentHistory';
+import PaymentHistoryView from './section/PaymentHistoryView';
+
 export default function Container() {
+  const {
+    data,
+    keyword,
+    setKeyword,
+    statusFilter,
+    setStatusFilter,
+    total,
+    pagination,
+    setPagination,
+    isLoading,
+    refetch,
+  } = usePaymentHistory();
+
   return (
-    <div className="h-full bg-gray-50/50 rounded-[2rem] border border-dashed border-gray-200 flex flex-col items-center justify-center">
-      <p className="font-bold text-gray-800">출석 처리 화면</p>
-      <p className="text-sm text-gray-400">
-        학생 명단을 불러와 출석을 체크하세요.
-      </p>
-    </div>
+    <PaymentHistoryView
+      data={data}
+      keyword={keyword}
+      total={total}
+      pagination={pagination}
+      setPagination={setPagination}
+      statusFilter={statusFilter}
+      onKeywordChange={setKeyword}
+      onStatusChange={setStatusFilter}
+      isLoading={isLoading}
+      refetch={refetch}
+    />
   );
 }

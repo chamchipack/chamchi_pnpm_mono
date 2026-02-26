@@ -58,7 +58,7 @@ interface Props {
   isLoading: boolean;
 }
 
-export default function AttendanceViewUI({
+export default function PaymentHistoryViewUI({
   students,
   total,
   pagination,
