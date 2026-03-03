@@ -9,7 +9,7 @@ import {
 import { Search } from 'lucide-react';
 import Title from '@/components/common/layout/Title/Title';
 import CommonSwipeableDrawer from '@/components/common/backdrop/CommonSwipeableDrawer';
-// import StudentCardList from './StudentCardList';
+import StudentCardList from './StudentCardList';
 import Pagination from '@mui/material/Pagination';
 import { Attendance } from '@/lib/type/Attendance';
 // import StudentDetail from './detail/StudentDetail';
@@ -22,6 +22,7 @@ import ActionConfirmationModal from '@/components/common/backdrop/ActionConfirma
 import { deleteStudent } from '@/lib/swr/students';
 import { useRecoilState } from 'recoil';
 import { alertModalAtom } from '@/lib/store/alert/alert-state';
+import LogsPage from '@/components/page/Dashboards/LogsPage';
 
 const STATUS_LIST = [
   { label: '재원', value: true },
@@ -144,12 +145,13 @@ export default function AttendanceViewUI({
                   rowId={studentId}
                 />
               </div>
-              {/* <StudentCardList
+              <StudentCardList
                 students={students}
-                selectedHistory={selectedHistory}
+                selectedStudent={selectedHistory}
                 onSelect={onSelectMobile}
                 openPaymentDrawer={onSelectMobilePayment}
-              /> */}
+              />
+              {/* <LogsPage /> */}
               <div className="flex justify-center mt-2">
                 <Pagination
                   count={Math.ceil(total / pagination.perPage)}

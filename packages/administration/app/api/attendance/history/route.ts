@@ -22,7 +22,7 @@ export async function GET(req: Request) {
 
     if (keyword) {
       // name LIKE 검색
-      filters.push(`name ~ "${keyword}"`);
+      filters.push(`studentName ~ "${keyword}"`);
     }
 
     if (currentStatus !== null) {

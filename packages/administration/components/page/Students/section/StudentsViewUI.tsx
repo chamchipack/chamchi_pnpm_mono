@@ -90,6 +90,7 @@ export default function StudentsViewUI({
       onClickDelete={() => {
         setModalOpen(true);
       }}
+      isRegisterOn
       rowId={studentId}
     />
   );

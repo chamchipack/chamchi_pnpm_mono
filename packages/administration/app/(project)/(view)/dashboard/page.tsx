@@ -1,5 +1,4 @@
-import NewDashboard from '@/components/page/Dashboards/\bNew';
-import ModernDashboard from '@/components/page/Dashboards/Container';
+import NewDashboard from '@/components/page/Dashboards/New';
 import { Metadata } from 'next';
 import Script from 'next/script';
 

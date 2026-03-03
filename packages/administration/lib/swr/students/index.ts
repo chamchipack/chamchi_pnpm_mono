@@ -42,3 +42,21 @@ export async function deleteStudent(id: string) {
 
   return res.json();
 }
+
+export async function getStudentForEnrollment(num: string) {
+  try {
+    const res = await fetch(`/api/dashboard/register?month=${num}`, {
+      method: 'GET',
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      throw new Error('결제 조회 실패');
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+}
