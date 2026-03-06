@@ -36,7 +36,7 @@ export default function NewDashboard() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="relative flex-1 md:w-64">
+          {/* <div className="relative flex-1 md:w-64">
             <Search
               className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
               size={16}
@@ -49,11 +49,11 @@ export default function NewDashboard() {
           </div>
           <button className="p-2.5 bg-white border border-slate-200 rounded-2xl text-slate-400 hover:text-blue-600 transition-colors">
             <Bell size={20} />
-          </button>
+          </button> */}
         </div>
       </header>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <TodayAttendance />
         <EntireStudents />
         <TaskCount />

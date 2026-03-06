@@ -140,24 +140,29 @@ export default function StudentsViewUI({
 
           <form
             onSubmit={(e) => {
-              e.preventDefault(); // 새로고침 방지
+              e.preventDefault();
               onSearch();
             }}
-            className="flex items-center gap-2 max-w-[550px]"
+            className="flex items-center w-full max-w-[500px] bg-slate-50 border border-slate-200 rounded-2xl p-1.5 transition-all duration-300 focus-within:bg-white focus-within:border-slate-400"
           >
-            <input
-              type="text"
-              placeholder="이름 검색"
-              value={keywordText}
-              onChange={(e) => onTextChange(e.target.value)}
-              className="w-full h-10 pl-4 text-base rounded-md border border-gray-300 focus:outline-none"
-            />
+            <div className="flex items-center flex-1 px-3">
+              {/* 은은한 슬레이트 포인트 아이콘 */}
+              <Search size={18} className="text-slate-400" strokeWidth={2} />
+              <input
+                type="text"
+                placeholder="수강생 이름 검색"
+                value={keywordText}
+                onChange={(e) => onTextChange(e.target.value)}
+                className="w-full bg-transparent border-none outline-none px-3 text-sm font-bold text-slate-800 placeholder:text-slate-300 placeholder:font-medium"
+              />
+            </div>
 
+            {/* 채도가 없는 깔끔한 다크 포인트 버튼 */}
             <button
               type="submit"
-              className="flex items-center justify-center rounded-md border border-gray-300 px-3 h-10 text-gray-600 hover:bg-gray-100"
+              className="h-9 px-5 rounded-xl bg-slate-800 text-white text-[11px] font-black uppercase tracking-tight hover:bg-slate-900 active:scale-95 transition-all duration-200 shrink-0"
             >
-              <Search size={18} />
+              조회
             </button>
           </form>
         </div>

@@ -1,5 +1,5 @@
-import Test from './section/Container';
+import Containers from './section/Container';
 
 export default function Container() {
-  return <Test />;
+  return <Containers />;
 }

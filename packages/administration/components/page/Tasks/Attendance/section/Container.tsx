@@ -1,6 +1,6 @@
 'use client';
 
-import { getTodaySessions } from '@/lib/swr/attendance';
+import { createAttendanceData, getTodaySessions } from '@/lib/swr/attendance';
 import { useEffect, useState } from 'react';
 import {
   Calendar,
@@ -11,10 +11,12 @@ import {
   LayoutList,
   ChevronRight,
 } from 'lucide-react';
-import { formatDate } from '@/config/utils/time';
+import { formatDate, formatDateTime } from '@/config/utils/time';
 import ActionConfirmationModal from '@/components/common/backdrop/ActionConfirmationModal';
+import { useRecoilState } from 'recoil';
+import { alertModalAtom } from '@/lib/store/alert/alert-state';
 
-type AttendanceStatus = 'present' | 'late' | 'absent' | 'makeup';
+type AttendanceStatus = 'present' | 'late' | 'absent' | 'excused';
 
 interface SessionItem {
   id: string;
@@ -50,7 +52,7 @@ const statusStyles: Record<
     inactive:
       'bg-white border-gray-200 text-gray-500 hover:border-rose-200 hover:text-rose-600',
   },
-  makeup: {
+  excused: {
     label: '보강',
     icon: RefreshCcw,
     active: 'bg-blue-500 border-blue-500 text-white shadow-md shadow-blue-100',
@@ -62,11 +64,13 @@ const statusStyles: Record<
 export default function Container() {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
+  const [alert, setAlert] = useRecoilState(alertModalAtom);
+
   const [date, setDate] = useState<string>(
     () => new Date().toISOString().split('T')[0],
   );
 
-  const [exDate, setExDate] = useState<string>(() => new Date().toISOString());
+  const [exDate, setExDate] = useState<string>('');
 
   const [sessions, setSessions] = useState<SessionItem[]>([]);
   const [attendance, setAttendance] = useState<
@@ -110,7 +114,7 @@ export default function Container() {
       if (cur) acc[cur]++;
       return acc;
     },
-    { present: 0, late: 0, absent: 0, makeup: 0 },
+    { present: 0, late: 0, absent: 0, excused: 0 },
   );
 
   return (
@@ -139,7 +143,7 @@ export default function Container() {
               { key: 'present', label: '출석', color: 'text-emerald-600' },
               { key: 'late', label: '지각', color: 'text-amber-600' },
               { key: 'absent', label: '결석', color: 'text-rose-600' },
-              { key: 'makeup', label: '보강', color: 'text-blue-600' },
+              { key: 'excused', label: '보강', color: 'text-blue-600' },
             ].map((s) => (
               <div
                 key={s.key}
@@ -240,20 +244,61 @@ export default function Container() {
           setModalOpen(false);
         }}
         onClickCheck={async () => {
-          console.log(attendance);
           try {
-          } catch {
+            if (!selected?.id) return;
+
+            const studentId = selected.id;
+            const status = attendance?.[studentId];
+
+            if (!status) return;
+
+            if (status === 'excused' && !exDate)
+              return setAlert((prev) => ({
+                ...prev,
+                type: 'warning',
+                open: true,
+                message: '보강날짜를 선택해주세요.',
+              }));
+
+            const payload = {
+              sessionId: selected.sessionId?.[0] ?? null,
+              classId: selected.classId?.[0] ?? null,
+              studentId,
+              studentName: selected.name ?? '',
+              paymentType: selected.paymentType ?? '',
+              dayOfWeek: new Date(date).getDay().toString() ?? null,
+              attendanceDate: date ?? formatDate(new Date()),
+              status,
+              confirmationDate: formatDateTime(new Date()),
+              excusedDate: exDate ? formatDate(new Date(exDate)) : null,
+            };
+
+            await createAttendanceData(payload);
+
+            setAlert((prev) => ({
+              ...prev,
+              type: 'success',
+              open: true,
+              message: '처리되었습니다',
+            }));
+
+            loadData(date);
+            alert.onClose?.();
+          } catch (error) {
+            setExDate('');
+            console.error('attendance create error:', error);
           } finally {
-            handleStatusChange(selected.id, null as any);
+            handleStatusChange(selected?.id, null as any);
             setModalOpen(false);
             setSelected(null);
+            setExDate('');
           }
         }}
         title={selected?.name + ' 출석 데이터 처리'}
         content={'선택된 정보로 출석을 처리합니다.'}
         processing={false}
       >
-        {attendance[selected?.id] === 'makeup' && (
+        {attendance[selected?.id] === 'excused' && (
           <div className="flex justify-center">
             <input
               type="date"

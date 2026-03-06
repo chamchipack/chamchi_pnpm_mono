@@ -11,3 +11,19 @@ export const getTodaySessions = async (date: string) => {
 
   return res.json() as Promise<{ id: string; name: string }[]>;
 };
+
+export const createAttendanceData = async (data: any) => {
+  const res = await fetch('/api/attendance/active', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    throw new Error('데이터 생성 실패');
+  }
+
+  return res.json();
+};
