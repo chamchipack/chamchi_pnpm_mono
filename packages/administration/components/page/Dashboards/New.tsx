@@ -21,7 +21,6 @@ import AsideComponent from './Aside';
 import MonthlyNewStudents from './Register';
 
 export default function NewDashboard() {
-  console.log('SD?FS?DFS?DFS?FD?');
   return (
     <div className="min-h-screen bg-[#F4F7FE] p-4 md:p-8 font-sans text-slate-800">
       {/* 1. Header Section */}

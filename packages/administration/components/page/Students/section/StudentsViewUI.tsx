@@ -103,7 +103,7 @@ export default function StudentsViewUI({
 
   return (
     <>
-      <div className="p-8 flex flex-col gap-4">
+      <div className="py-8 px-6 flex flex-col gap-4">
         <Title title="수강생 관리" desc="수강생 관리합니다" />
 
         {/* 🔹 필터 */}

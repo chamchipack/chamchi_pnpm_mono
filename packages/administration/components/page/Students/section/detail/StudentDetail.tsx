@@ -286,37 +286,30 @@ export default function StudentDetail({ student, onSuccess }: Props) {
         <div className="flex-1 overflow-y-auto px-4 pt-2 pb-6 flex flex-col gap-4">
           <div className="w-[50px] h-[5px] bg-gray-300 rounded-xl mx-auto" />
 
-          <h3 className="text-lg font-semibold text-center">
-            {isEditMode ? '수강생 정보 수정' : '수강생 등록'}
-          </h3>
+          <div className="space-y-1">
+            <h3 className="text-xl font-black text-slate-900 text-left px-1">
+              {isEditMode ? '수강생 정보 수정' : '새로운 수강생 등록'}
+            </h3>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-wider px-1">
+              Student Information Management
+            </p>
+          </div>
 
-          <div className="flex flex-row items-center">
-            <span className="text-sm font-medium text-gray-600 w-12">이름</span>
+          <div className="space-y-2">
+            <label className="text-[11px] font-black text-slate-400 uppercase ml-1 tracking-wider">
+              이름
+            </label>
             <input
               type="text"
               value={form.name}
               onChange={(e) => updateField('name', e.target.value)}
-              className="w-full h-10 pl-4 text-base rounded-md border border-gray-300 focus:outline-none"
+              placeholder="이름을 입력하세요"
+              className="w-full h-12 pl-4 text-sm font-bold rounded-2xl bg-slate-50 border-2 border-transparent focus:bg-white focus:border-slate-900/10 outline-none transition-all placeholder:text-slate-300 text-slate-700 shadow-sm shadow-slate-100/50"
             />
           </div>
 
-          {/* <Section title="수강 형태">
-            <div className="flex gap-2">
-              <SelectButton
-                label="레슨"
-                active={form.type === 'lesson'}
-                onClick={() => updateField('type', 'lesson')}
-              />
-              <SelectButton
-                label="수업"
-                active={form.type === 'class'}
-                onClick={() => updateField('type', 'class')}
-              />
-            </div>
-          </Section> */}
-
           <Section title="결제 타입">
-            <div className="flex gap-2">
+            <div className="flex gap-3 mt-1">
               <SelectButton
                 label="회차결제"
                 active={form.paymentType === 'package'}
@@ -331,28 +324,25 @@ export default function StudentDetail({ student, onSuccess }: Props) {
           </Section>
 
           <Section title="등록일">
-            <input
-              type="date"
-              value={form.enrollmentDate}
-              onChange={(e) => updateField('enrollmentDate', e.target.value)}
-              className="w-full h-8 rounded-md border border-gray-300 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative group">
+              <input
+                type="date"
+                value={form.enrollmentDate}
+                onChange={(e) => updateField('enrollmentDate', e.target.value)}
+                className="w-full h-11 rounded-2xl bg-slate-50 border-none px-4 text-sm font-bold text-slate-600 outline-none cursor-pointer focus:bg-slate-100 transition-colors"
+              />
+            </div>
           </Section>
 
           {form.paymentType === 'package' && (
-            <div className="flex flex-row justify-between mt-2 px-2 pt-4 border-t border-gray-100">
-              <span className="text-sm font-medium text-gray-600">
-                레슨 횟수
-              </span>
-
-              <div className="flex flex-col w-80 max-w-70">
+            <div className="space-y-6 pt-4 border-t border-slate-50 animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="space-y-4 px-1">
                 <SliderRow
                   label="전체 레슨 횟수"
                   value={form.lessonTotal}
                   max={8}
                   onChange={(v) => updateField('lessonTotal', v)}
                 />
-
                 <SliderRow
                   label="남은 레슨 횟수"
                   value={form.lessonRemaining}
@@ -363,22 +353,21 @@ export default function StudentDetail({ student, onSuccess }: Props) {
             </div>
           )}
 
-          <div className="flex flex-row justify-between mt-2 px-2 py-4 border-t border-gray-100">
-            <span className="text-sm font-medium text-gray-600">
+          <div className="pt-4 border-t border-slate-50 space-y-4">
+            <label className="text-[11px] font-black text-slate-400 uppercase ml-1 tracking-wider">
               클래스 선택
-            </span>
-
-            <div className="flex flex-col w-80 max-w-70">
+            </label>
+            <div className="space-y-3">
               <input
                 type="text"
                 value={searchKeyword}
                 onChange={(e) => setSearchKeyword(e.target.value)}
-                placeholder="클래스 검색"
-                className="w-full h-9 px-3 rounded-md border border-gray-300 text-sm"
+                placeholder="수강할 클래스 검색"
+                className="w-full h-11 px-4 rounded-2xl bg-slate-50 border-none text-sm font-bold text-slate-700 outline-none placeholder:text-slate-300 focus:ring-2 focus:ring-slate-100"
               />
 
               {searchResults.length > 0 && (
-                <div className="border border-t-0 border-gray-200 rounded-b-md max-h-40 overflow-y-auto">
+                <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-xl shadow-slate-200/40">
                   {searchResults.map((item) => (
                     <div
                       key={item.id}
@@ -386,7 +375,7 @@ export default function StudentDetail({ student, onSuccess }: Props) {
                         setSearchKeyword('');
                         addClass(item);
                       }}
-                      className="px-3 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+                      className="px-4 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 cursor-pointer transition-colors border-b border-slate-50 last:border-none"
                     >
                       {item.name}
                     </div>
@@ -394,17 +383,17 @@ export default function StudentDetail({ student, onSuccess }: Props) {
                 </div>
               )}
 
-              <div className="flex flex-wrap gap-2 mt-2">
+              <div className="flex flex-wrap gap-2 mt-1">
                 {selectedClasses.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center gap-2 px-3 py-1 bg-main/10 text-main rounded-full text-sm"
+                    className="flex items-center gap-2 px-4 py-1.5 bg-slate-900 text-white rounded-xl text-[11px] font-black shadow-md shadow-slate-200 animate-in zoom-in-95 duration-200"
                   >
                     <span>{item.name}</span>
                     <button
                       type="button"
                       onClick={() => removeClass(item.id)}
-                      className="text-xs font-bold"
+                      className="hover:text-rose-400 transition-colors"
                     >
                       ✕
                     </button>
@@ -422,23 +411,31 @@ export default function StudentDetail({ student, onSuccess }: Props) {
           </div>
         </div>
       </div>
-      <div className="sticky bottom-0 px-4 pb-4 pt-2 bg-white">
+      <div className="sticky bottom-0 px-6 pb-8 pt-4 bg-white/80 backdrop-blur-md">
         <button
           type="button"
           onClick={handleSubmit}
           disabled={loading}
-          className="
-    w-full h-11 rounded-md font-medium transition text-white
-    bg-main
-    disabled:bg-gray-400
-    disabled:cursor-not-allowed
-  "
+          className={`
+        w-full h-14 rounded-[1.5rem] font-black text-sm transition-all flex items-center justify-center gap-2
+        ${
+          loading
+            ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+            : 'bg-slate-900 text-white hover:bg-slate-800 active:scale-[0.98] shadow-xl shadow-slate-200'
+        }
+      `}
         >
-          {loading
-            ? '저장 중...'
-            : isEditMode
-              ? '변경사항 저장'
-              : '수강생 등록'}
+          {loading ? (
+            <span className="flex items-center gap-2 animate-pulse">
+              저장 중...
+            </span>
+          ) : (
+            <>
+              <span className="mb-0.5">
+                {isEditMode ? '변경사항 저장' : '수강생 등록하기'}
+              </span>
+            </>
+          )}
         </button>
       </div>
     </>

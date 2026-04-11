@@ -112,25 +112,31 @@ export default function SessionScheduleEditor({ session, setSession }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-10 mt-2">
+    <div className="flex flex-col gap-12 mt-4">
       {displaySessions.map((sessionItem, sessionIndex) => (
-        <div key={sessionIndex} className="flex flex-col gap-6">
-          {/* ===== 요일 선택 ===== */}
-          <div>
-            <div className="grid grid-cols-7 gap-2 mt-4">
+        <div
+          key={sessionIndex}
+          className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-2 duration-500"
+        >
+          {/* ===== 요일 선택 섹션 ===== */}
+          <div className="space-y-3">
+            <label className="text-[11px] font-black text-slate-400 uppercase ml-1 tracking-wider">
+              요일 선택
+            </label>
+            <div className="grid grid-cols-7 gap-2">
               {DAY_LIST.map((day) => {
                 const isSelected = sessionItem.regularDays.includes(day.value);
 
                 return (
                   <label
                     key={day.value}
-                    className={`flex items-center justify-center h-10 rounded-md border cursor-pointer text-sm transition
-                      ${
-                        isSelected
-                          ? 'bg-main text-white border-main'
-                          : 'bg-white border-gray-300 text-gray-600'
-                      }
-                    `}
+                    className={`flex items-center justify-center h-12 rounded-2xl cursor-pointer text-sm font-black transition-all duration-200 shadow-sm
+                  ${
+                    isSelected
+                      ? 'bg-slate-900 text-white scale-105 shadow-slate-200'
+                      : 'bg-slate-50 text-slate-400 hover:bg-slate-100 hover:text-slate-600'
+                  }
+                `}
                   >
                     <input
                       type="checkbox"
@@ -145,59 +151,74 @@ export default function SessionScheduleEditor({ session, setSession }: Props) {
             </div>
           </div>
 
-          {/* ===== 시간 설정 ===== */}
+          {/* ===== 시간 설정 섹션 ===== */}
           <div className="flex flex-col gap-4">
-            {sessionItem.regularDays.length === 0 && (
-              <div className="text-sm text-gray-400">요일을 선택해주세요.</div>
+            {sessionItem.regularDays.length === 0 ? (
+              <div className="py-12 bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-100 flex items-center justify-center">
+                <p className="text-sm text-slate-300 font-bold">
+                  상단에서 요일을 먼저 선택해주세요.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-3">
+                <label className="text-[11px] font-black text-slate-400 uppercase ml-1 tracking-wider">
+                  시간 상세 설정
+                </label>
+                {sessionItem.regularDays.map((day) => {
+                  const lessonTime = sessionItem.lessonTimes?.[day];
+
+                  return (
+                    <div
+                      key={day}
+                      className="bg-white border border-slate-100 rounded-[1.5rem] p-5 flex items-center justify-between group hover:border-slate-300 transition-colors shadow-sm shadow-slate-100/50"
+                    >
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-900 font-black text-xs group-hover:bg-slate-900 group-hover:text-white transition-all">
+                          {DAY_LABEL_MAP[day]}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <div className="relative">
+                          <input
+                            type="time"
+                            step="900"
+                            value={lessonTime?.stime || ''}
+                            onChange={(e) =>
+                              handleTimeChange(
+                                sessionIndex,
+                                day,
+                                'stime',
+                                e.target.value,
+                              )
+                            }
+                            className="h-10 px-4 rounded-xl bg-slate-50 border-none text-[13px] font-black text-slate-700 outline-none focus:ring-2 focus:ring-slate-100 transition-all appearance-none cursor-pointer"
+                          />
+                        </div>
+
+                        <span className="text-slate-300 font-bold">/</span>
+
+                        <div className="relative">
+                          <input
+                            type="time"
+                            value={lessonTime?.etime || ''}
+                            onChange={(e) =>
+                              handleTimeChange(
+                                sessionIndex,
+                                day,
+                                'etime',
+                                e.target.value,
+                              )
+                            }
+                            className="h-10 px-4 rounded-xl bg-slate-50 border-none text-[13px] font-black text-slate-700 outline-none focus:ring-2 focus:ring-slate-100 transition-all appearance-none cursor-pointer"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             )}
-
-            {sessionItem.regularDays.map((day) => {
-              const lessonTime = sessionItem.lessonTimes?.[day];
-
-              return (
-                <div
-                  key={day}
-                  className="border border-gray-200 rounded-md p-4 flex flex-col gap-3"
-                >
-                  <div className="text-sm font-medium text-gray-700">
-                    {DAY_LABEL_MAP[day]}
-                  </div>
-
-                  <div className="flex items-center gap-3">
-                    <input
-                      type="time"
-                      step="900"
-                      value={lessonTime?.stime || ''}
-                      onChange={(e) =>
-                        handleTimeChange(
-                          sessionIndex,
-                          day,
-                          'stime',
-                          e.target.value,
-                        )
-                      }
-                      className="h-9 px-3 rounded-md border border-gray-300 text-sm flex-1"
-                    />
-
-                    <span className="text-gray-400">~</span>
-
-                    <input
-                      type="time"
-                      value={lessonTime?.etime || ''}
-                      onChange={(e) =>
-                        handleTimeChange(
-                          sessionIndex,
-                          day,
-                          'etime',
-                          e.target.value,
-                        )
-                      }
-                      className="h-9 px-3 rounded-md border border-gray-300 text-sm flex-1"
-                    />
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       ))}

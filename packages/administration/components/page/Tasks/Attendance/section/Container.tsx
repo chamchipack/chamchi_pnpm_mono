@@ -271,8 +271,10 @@ export default function Container() {
               status,
               confirmationDate: formatDateTime(new Date()),
               excusedDate: exDate ? formatDate(new Date(exDate)) : null,
+              lessonBasedPayment: selected?.lessonBasedPayment || {},
+              regularPayment: selected?.regularPayment || {},
             };
-
+            // console.log(selected);
             await createAttendanceData(payload);
 
             setAlert((prev) => ({

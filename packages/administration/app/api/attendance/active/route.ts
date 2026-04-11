@@ -2,6 +2,30 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { pb } from '@/lib/pocketbase/server';
 
+const processAttendance = (payment: any) => {
+  if (!payment?.total) return {};
+  // 기존 데이터를 복사하여 새로운 객체 생성 (불변성 유지)
+  const updated = { ...payment };
+
+  if (updated.remaining > 0) {
+    // 1. 남은 횟수가 있을 때: remaining 차감
+    updated.remaining -= 1;
+
+    // 차감 후 0이 되었다면 결제 필요 상태로 변경
+    if (updated.remaining === 0) {
+      updated.isPaid = false;
+    }
+  } else {
+    // 2. 남은 횟수가 0일 때 (또는 이미 초과 상태일 때)
+    // remaining은 0으로 고정, over(초과 횟수)를 1 증가
+    updated.remaining = 0;
+    updated.over += 1;
+    updated.isPaid = false; // 이미 0이하이므로 항상 false
+  }
+
+  return updated;
+};
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -17,9 +41,11 @@ export async function POST(req: NextRequest) {
       status,
       confirmationDate,
       excusedDate,
+      lessonBasedPayment,
+      regularPayment,
     } = body;
 
-    console.log(body);
+    const newLessonPaymentData = processAttendance(lessonBasedPayment);
 
     // ✅ 필수값 체크
     if (!sessionId || !studentId || !attendanceDate || !status || !dayOfWeek) {
@@ -60,6 +86,12 @@ export async function POST(req: NextRequest) {
     };
 
     const record = await pb.collection('attendance').create(data);
+
+    if (Object.keys(newLessonPaymentData).length) {
+      const updatedRecord = await pb.collection('student').update(studentId, {
+        lessonBasedPayment: newLessonPaymentData,
+      });
+    }
 
     return NextResponse.json(record);
   } catch (error) {
