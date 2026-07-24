@@ -19,6 +19,7 @@ interface Props {
   onClickDelete: (id: string) => void;
   isDeleteOn?: boolean;
   rowId: string;
+  isExcelOn?: boolean;
 }
 
 const baseBtn =
@@ -32,6 +33,7 @@ const DefaultToolbar = forwardRef(
       isRegisterOn = false,
       isDeleteOn = true,
       rowId,
+      isExcelOn = false,
     }: Props,
     ref,
   ) => {
@@ -94,13 +96,15 @@ const DefaultToolbar = forwardRef(
     return (
       <>
         <div className="flex justify-end w-full mt-2 flex-wrap gap-2 px-2">
-          <button
-            className={`${baseBtn} border-green-500 text-green-600 hover:bg-green-50`}
-            onClick={writeExcelFile}
-          >
-            <FileSpreadsheet size={16} />
-            엑셀출력
-          </button>
+          {isExcelOn && (
+            <button
+              className={`${baseBtn} border-green-500 text-green-600 hover:bg-green-50`}
+              onClick={writeExcelFile}
+            >
+              <FileSpreadsheet size={16} />
+              엑셀출력
+            </button>
+          )}
 
           {/* <button
           className={`${baseBtn} border-yellow-500 text-yellow-600 hover:bg-yellow-50`}
@@ -111,10 +115,10 @@ const DefaultToolbar = forwardRef(
 
           {isRegisterOn && (
             <button
-              className={`${baseBtn} border-blue-500 text-blue-600 hover:bg-blue-50`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-blue-600 bg-blue-100 hover:bg-blue-100 hover:shadow-sm active:scale-[0.97] transition-all duration-150"
               onClick={onClickRegister}
             >
-              <Plus size={16} />
+              <Plus size={16} strokeWidth={2.5} />
               등록
             </button>
           )}
@@ -128,10 +132,10 @@ const DefaultToolbar = forwardRef(
 
           {rowId && isDeleteOn && (
             <button
-              className={`${baseBtn} border-red-500 text-red-600 hover:bg-red-50`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-bold text-red-600 bg-red-100 hover:bg-red-100 hover:shadow-sm active:scale-[0.97] transition-all duration-150"
               onClick={() => onClickDelete(rowId)}
             >
-              <Trash2 size={16} />
+              <Trash2 size={16} strokeWidth={2.5} />
               삭제
             </button>
           )}

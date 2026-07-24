@@ -1,4 +1,3 @@
-import { fetchAllAliases } from '@/api/server';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,24 +14,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     'dalkomkeikeu',
   ];
 
-  const aliasList = await fetchAllAliases();
-
-  return [
-    // 정적 페이지들
-    ...staticPages.map((path) => ({
-      url: `${baseUrl}${path}`,
-      lastModified: new Date().toISOString().split('T')[0],
-    })),
-
-    // 동적 store alias 페이지들
-    // ...sellerAliases.map((alias) => ({
-    //   url: `${baseUrl}/store/${alias}`,
-    //   lastModified: new Date().toISOString().split('T')[0],
-    // })),
-
-    ...aliasList.map((alias) => ({
-      url: `${baseUrl}/store/${alias}`,
-      lastModified: new Date().toISOString().split('T')[0],
-    })),
-  ];
+  return [];
 }

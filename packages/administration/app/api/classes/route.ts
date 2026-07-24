@@ -1,5 +1,5 @@
 // app/api/students/route.ts
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { pb } from '@/lib/pocketbase/server';
 
 export async function GET(req: Request) {
@@ -41,5 +41,30 @@ export async function GET(req: Request) {
       { message: 'Internal Server Error' },
       { status: 500 },
     );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+
+    if (!body?.name) {
+      return NextResponse.json(
+        { message: '이름은 필수입니다.' },
+        { status: 400 },
+      );
+    }
+
+    const createdClass = await pb.collection('class').create(body);
+
+    return NextResponse.json(
+      {
+        class: createdClass,
+      },
+      { status: 201 },
+    );
+  } catch (error) {
+    console.error('Class POST error:', error);
+    return NextResponse.json({ message: '클래스 생성 실패' }, { status: 500 });
   }
 }

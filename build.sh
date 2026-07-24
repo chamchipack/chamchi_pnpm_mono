@@ -15,6 +15,8 @@ elif [ "$selection" -eq 2 ]; then
   PROJECT="blog"
 elif [ "$selection" -eq 3 ]; then
    PROJECT="pick-pic"
+elif [ "$selection" -eq 6 ]; then
+   PROJECT="administration"
 else
   echo "Invalid selection. Please choose 1 or 2."
   exit 1

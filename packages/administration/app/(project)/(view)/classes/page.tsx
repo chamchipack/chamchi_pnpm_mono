@@ -1,3 +1,4 @@
+import Container from '@/components/page/Classes/Container';
 import { Metadata } from 'next';
 import Script from 'next/script';
 
@@ -34,7 +35,7 @@ const Page = () => {
 
   return (
     <>
-      <div>classes</div>
+      <Container />
 
       <Script
         id="jsonld-home"
