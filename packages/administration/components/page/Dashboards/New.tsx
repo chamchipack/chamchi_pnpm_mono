@@ -1,17 +1,4 @@
 import React from 'react';
-import {
-  UserCheck,
-  History,
-  CreditCard,
-  Receipt,
-  Plus,
-  Users,
-  ArrowUpRight,
-  TrendingUp,
-  Calendar as CalendarIcon,
-  Search,
-  Bell,
-} from 'lucide-react';
 import TodayAttendance from './CardOne/TodayAttendance';
 import EntireStudents from './CardOne/EntireStudents';
 import TaskCount from './CardOne/TaskCount';
@@ -19,6 +6,7 @@ import MonthlyPayment from './CardOne/MonthlyPayment';
 import PaymentHistorySection from './PaymentHistorySection';
 import AsideComponent from './Aside';
 import MonthlyNewStudents from './Register';
+import CohortRetention from './Cohort';
 
 export default function NewDashboard() {
   return (
@@ -66,6 +54,9 @@ export default function NewDashboard() {
 
           <PaymentHistorySection />
 
+          <section className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
+            <CohortRetention />
+          </section>
           {/* 결제 처리 섹션 */}
           <section className="bg-white rounded-[2.5rem] p-8 shadow-sm border border-slate-100">
             <MonthlyNewStudents />

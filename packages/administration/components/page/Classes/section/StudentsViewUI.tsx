@@ -108,65 +108,6 @@ export default function StudentsViewUI({
         <Title title="클래스 관리" desc="클래스 관리합니다" />
 
         {/* 🔹 필터 */}
-        <div className="flex flex-col gap-3">
-          <div className="flex gap-2.5 flex-wrap items-center">
-            {STATUS_LIST.map(({ label, value }) => {
-              const isActive = statusFilter === value;
-              return (
-                <button
-                  key={label}
-                  type="button"
-                  onClick={() => onStatusChange(isActive ? null : value)}
-                  className={`
-          relative px-4 py-1.5 rounded-xl text-xs font-bold transition-all duration-300
-          ${
-            isActive
-              ? 'bg-main text-white shadow-lg shadow-main/20 scale-105 z-10'
-              : 'bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700'
-          }
-        `}
-                >
-                  {/* 활성화 상태일 때 미세한 점 표시 (디테일) */}
-                  {isActive && (
-                    <span className="absolute -top-1 -right-1 flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
-                    </span>
-                  )}
-                  {label}
-                </button>
-              );
-            })}
-          </div>
-
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              onSearch();
-            }}
-            className="flex items-center w-full max-w-[500px] bg-slate-50 border border-slate-200 rounded-2xl p-1.5 transition-all duration-300 focus-within:bg-white focus-within:border-slate-400"
-          >
-            <div className="flex items-center flex-1 px-3">
-              {/* 은은한 슬레이트 포인트 아이콘 */}
-              <Search size={18} className="text-slate-400" strokeWidth={2} />
-              <input
-                type="text"
-                placeholder="수강생 이름 검색"
-                value={keywordText}
-                onChange={(e) => onTextChange(e.target.value)}
-                className="w-full bg-transparent border-none outline-none px-3 text-sm font-bold text-slate-800 placeholder:text-slate-300 placeholder:font-medium"
-              />
-            </div>
-
-            {/* 채도가 없는 깔끔한 다크 포인트 버튼 */}
-            <button
-              type="submit"
-              className="h-9 px-5 rounded-xl bg-slate-800 text-white text-[11px] font-black uppercase tracking-tight hover:bg-slate-900 active:scale-95 transition-all duration-200 shrink-0"
-            >
-              조회
-            </button>
-          </form>
-        </div>
 
         {/* 🔹 리스트 */}
         <Responsive

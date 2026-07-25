@@ -60,3 +60,29 @@ export async function getStudentForEnrollment(num: string) {
     return [];
   }
 }
+
+export async function getCohortRetention(
+  months: number = 6,
+  from?: string,
+  to?: string,
+) {
+  try {
+    const params = new URLSearchParams({ months: String(months) });
+    if (from) params.set('from', from);
+    if (to) params.set('to', to);
+
+    const res = await fetch(`/api/dashboard/cohort?${params.toString()}`, {
+      method: 'GET',
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      throw new Error('코호트 조회 실패');
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(error);
+    return { cohorts: [] };
+  }
+}

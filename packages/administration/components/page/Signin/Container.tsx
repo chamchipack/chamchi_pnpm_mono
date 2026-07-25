@@ -1,10 +1,21 @@
+// app/signin/page.tsx
 'use client';
 
 import React, { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, LogIn, GraduationCap } from 'lucide-react';
+import { useSignIn } from './hooks/useSignIn';
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loading,
+    error,
+    handleSubmit,
+  } = useSignIn();
 
   return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
@@ -25,18 +36,20 @@ export default function LoginPage() {
 
         {/* 메인 폼 카드 */}
         <div className="bg-white rounded-[2.5rem] p-10 border border-slate-100 shadow-sm">
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
             {/* 이메일/아이디 입력 */}
             <div className="space-y-2">
               <label className="text-[11px] font-black text-slate-400 uppercase ml-1 tracking-wider">
-                Email Address
+                ACCOUNT
               </label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors">
                   <Mail size={18} />
                 </div>
                 <input
-                  type="email"
+                  type="name"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@academy.com"
                   className="w-full h-13 pl-12 pr-4 bg-slate-50 border-2 border-transparent rounded-2xl outline-none transition-all text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:bg-white focus:border-slate-900/10"
                 />
@@ -62,6 +75,8 @@ export default function LoginPage() {
                 </div>
                 <input
                   type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="w-full h-13 pl-12 pr-12 bg-slate-50 border-2 border-transparent rounded-2xl outline-none transition-all text-sm font-bold text-slate-700 placeholder:text-slate-300 focus:bg-white focus:border-slate-900/10"
                 />
@@ -75,13 +90,25 @@ export default function LoginPage() {
               </div>
             </div>
 
+            {/* 에러 메시지 */}
+            {error && (
+              <p className="text-xs font-bold text-red-500 text-center -mt-2">
+                {error}
+              </p>
+            )}
+
             {/* 로그인 버튼 */}
             <button
               type="submit"
-              className="w-full h-14 bg-slate-900 text-white rounded-2xl font-black text-sm flex items-center justify-center gap-2 hover:bg-slate-800 transition-all active:scale-[0.98] shadow-lg shadow-slate-100 mt-4"
+              disabled={loading}
+              className={`w-full h-14 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-lg shadow-slate-100 mt-4 ${
+                loading
+                  ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                  : 'bg-slate-900 text-white hover:bg-slate-800'
+              }`}
             >
               <LogIn size={18} />
-              로그인하기
+              {loading ? '로그인 중...' : '로그인하기'}
             </button>
           </form>
         </div>
