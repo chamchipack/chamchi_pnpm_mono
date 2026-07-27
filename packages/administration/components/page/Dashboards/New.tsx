@@ -17,9 +17,9 @@ export default function NewDashboard() {
           <h1 className="text-3xl font-black tracking-tight text-slate-900">
             대시보드
           </h1>
-          <p className="text-slate-500 text-sm mt-1 font-medium">
+          {/* <p className="text-slate-500 text-sm mt-1 font-medium">
             관리자님, 오늘 처리할 작업이 5건 있습니다.
-          </p>
+          </p> */}
         </div>
 
         <div className="flex items-center gap-3">

@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState, useMemo, useEffect } from 'react';
-import { Users, ChevronRight, Layers } from 'lucide-react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
+import { Users, ChevronRight, Layers, Info, X } from 'lucide-react';
 import { getCohortRetention } from '@/lib/swr/students';
 
 interface RetentionPoint {
@@ -19,6 +19,9 @@ interface Cohort {
 
 export default function CohortRetention() {
   const [range, setRange] = useState(6); // 기본 6개월
+  const [showInfo, setShowInfo] = useState(false);
+
+  const infoRef = useRef<HTMLDivElement>(null);
 
   const [cohorts, setCohorts] = useState<Cohort[]>([]);
 
@@ -30,6 +33,20 @@ export default function CohortRetention() {
 
     fetchData();
   }, [range]);
+
+  // 바깥 클릭 시 설명 박스 닫기
+  useEffect(() => {
+    if (!showInfo) return;
+
+    const handleClickOutside = (e: MouseEvent) => {
+      if (infoRef.current && !infoRef.current.contains(e.target as Node)) {
+        setShowInfo(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showInfo]);
 
   // 최신 코호트가 위로 오도록 정렬
   const sortedCohorts = useMemo(() => {
@@ -60,9 +77,43 @@ export default function CohortRetention() {
             <Layers size={20} />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900 leading-tight">
-              코호트 유지율
-            </h2>
+            <div className="flex items-center gap-1.5 relative" ref={infoRef}>
+              <h2 className="text-xl font-bold text-slate-900 leading-tight">
+                코호트 유지율
+              </h2>
+              <button
+                type="button"
+                onClick={() => setShowInfo((prev) => !prev)}
+                className="text-slate-300 hover:text-indigo-500 transition-colors"
+              >
+                <Info size={16} />
+              </button>
+
+              {/* 설명 박스 */}
+              {showInfo && (
+                <div className="absolute top-full left-0 mt-2 w-72 p-4 bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/60 z-10 animate-in fade-in slide-in-from-top-1 duration-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-[11px] font-black text-indigo-600 uppercase tracking-wider">
+                      코호트 분석이란?
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShowInfo(false)}
+                      className="text-slate-300 hover:text-slate-500"
+                    >
+                      <X size={14} />
+                    </button>
+                  </div>
+                  <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                    같은 달에 등록한 학생들을 하나의 그룹(코호트)으로 묶어,
+                    시간이 지나면서 몇 명이 계속 다니고 있는지 추적하는
+                    분석이에요. 예를 들어 6월에 등록한 학생 30명 중 3개월 뒤에도
+                    남아있는 인원 비율을 확인할 수 있어요. 이를 통해 몇 개월차에
+                    이탈이 많이 발생하는지 파악할 수 있습니다.
+                  </p>
+                </div>
+              )}
+            </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
               Cohort Retention
             </p>

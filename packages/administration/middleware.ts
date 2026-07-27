@@ -26,6 +26,10 @@ export async function middleware(req: NextRequest) {
 
   const pb = new PocketBase(process.env.POCKETBASE_URL);
 
+  if (pathname === '/') {
+    return NextResponse.redirect(new URL('/dashboard', req.url));
+  }
+
   // 쿠키에서 인증 정보 불러오기
   pb.authStore.loadFromCookie(req.headers.get('cookie') || '');
 

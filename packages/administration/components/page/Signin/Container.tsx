@@ -62,12 +62,12 @@ export default function LoginPage() {
                 <label className="text-[11px] font-black text-slate-400 uppercase tracking-wider">
                   Password
                 </label>
-                <button
+                {/* <button
                   type="button"
                   className="text-[10px] font-black text-slate-300 hover:text-slate-600 transition-colors"
                 >
                   비밀번호 찾기
-                </button>
+                </button> */}
               </div>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300 group-focus-within:text-slate-900 transition-colors">

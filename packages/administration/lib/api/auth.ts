@@ -16,3 +16,21 @@ export async function signInWithPocketBase(email: string, password: string) {
 
   return { authData, cookie };
 }
+
+// lib/swr/auth.ts (또는 기존 auth 관련 파일)
+export async function logout() {
+  try {
+    const res = await fetch('/api/logout', {
+      method: 'POST',
+    });
+
+    if (!res.ok) {
+      throw new Error('로그아웃 실패');
+    }
+
+    return true;
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}
