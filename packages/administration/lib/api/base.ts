@@ -1,2 +1,2 @@
 // src/lib/api/base.ts
-export const POCKETBASE_URL = 'https://rpg.chamchipack.com';
+export const POCKETBASE_URL = 'https://api.chamchipack.com';
