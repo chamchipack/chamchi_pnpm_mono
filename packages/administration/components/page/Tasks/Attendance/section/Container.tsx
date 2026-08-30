@@ -88,14 +88,17 @@ export default function Container() {
 
       const initial: Record<string, AttendanceStatus> = {};
 
-      (data ?? []).forEach((item: SessionItem) => {
-        if (item.attendanceStatus) {
-          initial[item.id] = item.attendanceStatus;
-        }
-        // null이면 세팅 안 함 → 아무 버튼도 선택되지 않음
-      });
+      if (Array.isArray(data)) {
+        (data ?? []).forEach((item: SessionItem) => {
+          if (item.attendanceStatus) {
+            initial[item.id] = item.attendanceStatus;
+          }
+          // null이면 세팅 안 함 → 아무 버튼도 선택되지 않음
+        });
 
-      setAttendance(initial);
+        setAttendance(initial);
+      }
+      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -171,7 +174,7 @@ export default function Container() {
           </h2>
         </div>
 
-        {sessions.length === 0 ? (
+        {!Array.isArray(sessions) || sessions.length === 0 ? (
           <div className="bg-white rounded-[2rem] p-20 text-center border border-dashed border-gray-200">
             <p className="text-gray-400 font-bold">
               해당 날짜에 예정된 수업이 없습니다.
@@ -179,59 +182,60 @@ export default function Container() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {sessions.map((session) => (
-              <div
-                key={session.id}
-                className="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 p-5 flex flex-col gap-4"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-hover:text-main group-hover:bg-main/5 transition-colors">
-                    <ChevronRight size={16} />
+            {Array.isArray(sessions) &&
+              sessions.map((session) => (
+                <div
+                  key={session.id}
+                  className="group bg-white rounded-2xl border border-gray-100 hover:border-gray-200 hover:shadow-lg transition-all duration-300 p-5 flex flex-col gap-4"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 group-hover:text-main group-hover:bg-main/5 transition-colors">
+                      <ChevronRight size={16} />
+                    </div>
+                    <h3 className="font-bold text-gray-800 text-xl tracking-tight truncate">
+                      {session.name}
+                    </h3>
                   </div>
-                  <h3 className="font-bold text-gray-800 text-xl tracking-tight truncate">
-                    {session.name}
-                  </h3>
-                </div>
 
-                <div className="grid grid-cols-4 gap-2 mt-auto">
-                  {(Object.keys(statusStyles) as AttendanceStatus[]).map(
-                    (status) => {
-                      const isActive = attendance[session.id] === status;
-                      const style = statusStyles[status];
-                      const Icon = style.icon;
+                  <div className="grid grid-cols-4 gap-2 mt-auto">
+                    {(Object.keys(statusStyles) as AttendanceStatus[]).map(
+                      (status) => {
+                        const isActive = attendance[session.id] === status;
+                        const style = statusStyles[status];
+                        const Icon = style.icon;
 
-                      const isLocked = !!session.attendanceStatus; // 🔥 추가
+                        const isLocked = !!session.attendanceStatus; // 🔥 추가
 
-                      return (
-                        <button
-                          key={status}
-                          disabled={isLocked} // 🔥 클릭 막기
-                          onClick={() => {
-                            if (isLocked) return; // 🔥 안전 가드
-                            handleStatusChange(session.id, status);
-                            setSelected(session);
-                            setModalOpen(true);
-                          }}
-                          className={`
+                        return (
+                          <button
+                            key={status}
+                            disabled={isLocked} // 🔥 클릭 막기
+                            onClick={() => {
+                              if (isLocked) return; // 🔥 안전 가드
+                              handleStatusChange(session.id, status);
+                              setSelected(session);
+                              setModalOpen(true);
+                            }}
+                            className={`
           flex flex-col items-center justify-center gap-1.5 py-2.5 rounded-xl border-2 transition-all duration-200 active:scale-95
           ${isActive ? style.active : style.inactive}
           ${isLocked ? 'cursor-not-allowed opacity-70' : ''}
         `}
-                        >
-                          <Icon
-                            size={14}
-                            className={isActive ? 'text-white' : 'opacity-40'}
-                          />
-                          <span className="text-[11px] font-bold">
-                            {style.label}
-                          </span>
-                        </button>
-                      );
-                    },
-                  )}
+                          >
+                            <Icon
+                              size={14}
+                              className={isActive ? 'text-white' : 'opacity-40'}
+                            />
+                            <span className="text-[11px] font-bold">
+                              {style.label}
+                            </span>
+                          </button>
+                        );
+                      },
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
           </div>
         )}
       </div>

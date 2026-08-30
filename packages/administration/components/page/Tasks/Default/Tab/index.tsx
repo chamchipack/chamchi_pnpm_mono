@@ -61,7 +61,7 @@ export default function TaskTabs() {
   };
 
   return (
-    <div className="flex flex-col gap-6 px-8 py-4 min-h-[600px] mx-auto">
+    <div className="flex flex-col gap-6 px-4 py-4 min-h-[600px] mx-auto">
       {/* 1. 상단 가로형 플로팅 메뉴 (모바일 2x2, 데스크탑 1x4) */}
       <nav className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {tabs.map((tab) => {

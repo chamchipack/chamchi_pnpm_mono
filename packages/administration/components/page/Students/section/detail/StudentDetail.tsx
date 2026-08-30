@@ -119,8 +119,8 @@ export default function StudentDetail({ student, onSuccess }: Props) {
         enrollmentDate: student.enrollmentDate ?? '',
         lessonTotal: student.lessonBasedPayment?.total ?? 0,
         lessonRemaining: student.lessonBasedPayment?.remaining ?? 0,
-        isPaid: student.lessonBasePayment?.isPaid ?? false,
-        over: student.lessonBasePayment?.over ?? 0,
+        isPaid: student.lessonBasedPayment?.isPaid ?? false,
+        over: student.lessonBasedPayment?.over ?? 0,
       });
     };
 
@@ -253,7 +253,6 @@ export default function StudentDetail({ student, onSuccess }: Props) {
 
       if (!checkData(payload)) return;
       //sessionId 필요
-      console.log(student);
 
       if (student?.id) await updateStudent(student?.id, payload);
       else await createStudent(payload);

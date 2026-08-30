@@ -3,15 +3,13 @@ import { Metadata } from 'next';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: '피크피크 : 나만의 레터링 케이크 주문 제작 플랫폼',
-  description:
-    '세상에 하나뿐인 레터링 케이크, 피크피크에서 간편하게 주문하세요.',
+  title: '기타 앤 기타 스튜디오',
+  description: '학원생 관리',
   keywords: ['케이크', '레터링케이크', '맞춤제작'],
   openGraph: {
     // ...defaultOpenGraph,
-    title: '피크피크 : 나만의 레터링 케이크 주문 제작 플랫폼',
-    description:
-      '세상에 하나뿐인 레터링 케이크, 피크피크에서 간편하게 주문하세요.',
+    title: '기타 앤 기타 스튜디오',
+    description: '학원생 관리',
     url: 'https://pick-pic.co.kr/',
   },
   // robots: defaultRobots,
@@ -24,8 +22,7 @@ const Page = () => {
     '@type': 'WebSite',
     name: '피크피크',
     url: 'https://pick-pic.co.kr',
-    description:
-      '세상에 하나뿐인 레터링 케이크, 피크피크에서 간편하게 주문하세요.',
+    description: '학원생 관리',
     potentialAction: {
       '@type': 'SearchAction',
       target: 'https://pick-pic.co.kr/store?keyword={search_term_string}',

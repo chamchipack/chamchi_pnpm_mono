@@ -165,8 +165,8 @@ export default function PaymentHistoryView(props: Props) {
   ];
 
   const handleRowDoubleClick = (params: GridRowParams<Attendance>) => {
-    setSelectedHistory(params.row);
-    setDrawerOpen(true);
+    // setSelectedHistory(params.row);
+    // setDrawerOpen(true);
   };
 
   const handlePaginationChange = (model: GridPaginationModel) => {

@@ -41,8 +41,8 @@ export function useSignIn() {
       router.refresh();
     } catch (err) {
       setError('로그인 중 오류가 발생했습니다.');
-    } finally {
       setLoading(false);
+    } finally {
     }
   };
 
